@@ -56,6 +56,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Studenda.Core\Studenda.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Components\UI\NavigationBarComponent.xaml.cs">
 	    <DependentUpon>NavigationBarComponent.xaml</DependentUpon>
 	  </Compile>
