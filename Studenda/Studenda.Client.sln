@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Studenda.View", "Studenda.View\Studenda.View.csproj", "{EB02DAFA-42BD-499D-9730-7635A88C662C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Studenda.Core", "Studenda.Core\Studenda.Core.csproj", "{7A5C35D7-07A5-463A-B0CE-CF03646EA099}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB02DAFA-42BD-499D-9730-7635A88C662C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB02DAFA-42BD-499D-9730-7635A88C662C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB02DAFA-42BD-499D-9730-7635A88C662C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EB02DAFA-42BD-499D-9730-7635A88C662C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB02DAFA-42BD-499D-9730-7635A88C662C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB02DAFA-42BD-499D-9730-7635A88C662C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7A5C35D7-07A5-463A-B0CE-CF03646EA099}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A5C35D7-07A5-463A-B0CE-CF03646EA099}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A5C35D7-07A5-463A-B0CE-CF03646EA099}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A5C35D7-07A5-463A-B0CE-CF03646EA099}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC30F66E-29A7-499A-B4FD-AEFC19935CC1}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Studenda.View.AndroidView.ProfileView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:Studenda.Components.UI"
+    xmlns:local="clr-namespace:Studenda.Components.UI"
+    BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
+    Shell.NavBarIsVisible="False">
+
+    <VerticalStackLayout>
+
+        <components:NavigationBarComponent Title="Профиль" />
+
+        <Grid>
+            <Border
+                Margin="20,20,0,0"
+                HeightRequest="160"
+                HorizontalOptions="Start"
+                StrokeShape="RoundRectangle 30"
+                Style="{StaticResource ProfileBorderTheme}"
+                VerticalOptions="Start"
+                WidthRequest="160">
+                <ImageButton />
+            </Border>
+            <Border Margin="200,50,10,10" Style="{StaticResource ProfileBorderTheme}">
+                <local:StudendaEntry Placeholder="Name" Style="{StaticResource ProfileEntryTheme}" />
+            </Border>
+
+            <Border Margin="200,85,10,10" Style="{StaticResource ProfileBorderTheme}">
+                <local:StudendaEntry Placeholder="Surname" Style="{StaticResource ProfileEntryTheme}" />
+            </Border>
+
+            <Border Margin="200,120,10,10" Style="{StaticResource ProfileBorderTheme}">
+                <Grid>
+                    <local:StudendaEntry
+                        HorizontalOptions="Start"
+                        IsReadOnly="True"
+                        Placeholder="Date of birth"
+                        Style="{StaticResource ProfileEntryTheme}"
+                        Text="{Binding DateOfBirth}"
+                        WidthRequest="155" />
+                    <DatePicker
+                        x:Name="DateOfBirth"
+                        Margin="155,0,0,0"
+                        BackgroundColor="Gray"
+                        HorizontalOptions="Center"
+                        TextColor="Black" />
+                </Grid>
+            </Border>
+
+            <Border
+                Margin="20,200,0,0"
+                HorizontalOptions="Start"
+                Style="{StaticResource ProfileBorderTheme}"
+                VerticalOptions="Start">
+                <local:StudendaEntry
+                    Margin="0,0,0,-4"
+                    Placeholder="Faculty"
+                    Style="{StaticResource ProfileEntryTheme}"
+                    Text="{Binding Faculty.Name}" />
+            </Border>
+
+            <Border
+                Margin="20,235,0,0"
+                HorizontalOptions="Start"
+                Style="{StaticResource ProfileBorderTheme}"
+                VerticalOptions="Start">
+                <local:StudendaEntry
+                    Margin="0,0,0,-4"
+                    Placeholder="Course"
+                    Style="{StaticResource ProfileEntryTheme}"
+                    Text="{Binding Course.Name}" />
+            </Border>
+
+            <Border
+                Margin="20,270,0,0"
+                HorizontalOptions="Start"
+                Style="{StaticResource ProfileBorderTheme}"
+                VerticalOptions="Start">
+                <local:StudendaEntry
+                    Margin="0,0,0,-4"
+                    BackgroundColor="Transparent"
+                    MaxLength="16"
+                    Placeholder="Group"
+                    Style="{StaticResource ProfileEntryTheme}"
+                    Text="{Binding Group.Name}" />
+            </Border>
+
+
+        </Grid>
+
+    </VerticalStackLayout>
+</ContentPage>
