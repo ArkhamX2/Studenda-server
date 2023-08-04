@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Studenda.Model.Data.Configuration;
+using Studenda.Core.Data.Configuration;
 
-namespace Studenda.Model.Shared;
+namespace Studenda.Core.Model;
 
 /// <summary>
 /// Модель стандартного объекта с соответствующей
@@ -24,15 +24,15 @@ public abstract class Entity
 		/// Конструктор.
 		/// </summary>
 		/// <param name="configuration">Конфигурация базы данных.</param>
-		protected Configuration(DatabaseConfiguration configuration)
+		protected Configuration(ContextConfiguration configuration)
 		{
-			DatabaseConfiguration = configuration;
+			ContextConfiguration = configuration;
 		}
 
 		/// <summary>
 		/// Конфигурация базы данных.
 		/// </summary>
-		private DatabaseConfiguration DatabaseConfiguration { get; set; }
+		private ContextConfiguration ContextConfiguration { get; set; }
 
 		/// <summary>
 		/// Задать конфигурацию для модели.
@@ -41,13 +41,36 @@ public abstract class Entity
 		public virtual void Configure(EntityTypeBuilder<T> builder)
 		{
 			builder.Property(entity => entity.CreatedAt)
-				.HasColumnType(DatabaseConfiguration.DateTimeType)
-				.HasDefaultValueSql(DatabaseConfiguration.DateTimeValueCurrent);
+				.HasColumnType(ContextConfiguration.DateTimeType)
+				.HasDefaultValueSql(ContextConfiguration.DateTimeValueCurrent);
 
 			builder.Property(entity => entity.UpdatedAt)
-				.HasColumnType(DatabaseConfiguration.DateTimeType);
+				.HasColumnType(ContextConfiguration.DateTimeType);
 		}
 	}
+    
+	/*                   __ _                       _   _
+	 *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
+	 *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
+	 * | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
+	 *  \___\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
+	 *                        |___/
+	 * Константы, задающие базовые конфигурации полей
+	 * и ограничения модели.
+	 */
+	#region Configuration
+
+	/// <summary>
+	/// Статус необходимости наличия значения в поле <see cref="CreatedAt"/>.
+	/// </summary>
+	private const bool IsCreatedAtRequired = false;
+
+	/// <summary>
+	/// Статус необходимости наличия значения в поле <see cref="UpdatedAt"/>.
+	/// </summary>
+	private const bool IsUpdatedAtRequired = false;
+	
+	#endregion
 	
     /*             _   _ _
      *   ___ _ __ | |_(_) |_ _   _
@@ -55,7 +78,6 @@ public abstract class Entity
      * |  __/ | | | |_| | |_| |_| |
      *  \___|_| |_|\__|_|\__|\__, |
      *                       |___/
-     *
      * Поля данных, соответствующие таковым в таблице
      * модели в базе данных.
      */

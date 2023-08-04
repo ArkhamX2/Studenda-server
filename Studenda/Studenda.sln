@@ -5,11 +5,11 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Studenda.Core", "Studenda.Core\Studenda.Core.csproj", "{7A5C35D7-07A5-463A-B0CE-CF03646EA099}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Studenda.Application", "Studenda.View\Studenda.Application.csproj", "{07967566-D190-4E89-B158-C34E224CCA69}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Studenda.Service", "Studenda.Service\Studenda.Service.csproj", "{1CC2EBF4-941A-4516-B931-2BF37323A86D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Studenda.Core.Test.Integration", "Studenda.Core.Test.Integration\Studenda.Core.Test.Integration.csproj", "{39A9592E-691F-46DB-B01B-60431EFE13F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Studenda.Application", "Studenda.Application\Studenda.Application.csproj", "{058C09CE-10F3-4088-865F-0CA89611C183}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,12 +21,6 @@ Global
 		{7A5C35D7-07A5-463A-B0CE-CF03646EA099}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A5C35D7-07A5-463A-B0CE-CF03646EA099}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A5C35D7-07A5-463A-B0CE-CF03646EA099}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07967566-D190-4E89-B158-C34E224CCA69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07967566-D190-4E89-B158-C34E224CCA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07967566-D190-4E89-B158-C34E224CCA69}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{07967566-D190-4E89-B158-C34E224CCA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07967566-D190-4E89-B158-C34E224CCA69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07967566-D190-4E89-B158-C34E224CCA69}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{1CC2EBF4-941A-4516-B931-2BF37323A86D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1CC2EBF4-941A-4516-B931-2BF37323A86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CC2EBF4-941A-4516-B931-2BF37323A86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,6 +29,12 @@ Global
 		{39A9592E-691F-46DB-B01B-60431EFE13F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39A9592E-691F-46DB-B01B-60431EFE13F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39A9592E-691F-46DB-B01B-60431EFE13F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{058C09CE-10F3-4088-865F-0CA89611C183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{058C09CE-10F3-4088-865F-0CA89611C183}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{058C09CE-10F3-4088-865F-0CA89611C183}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{058C09CE-10F3-4088-865F-0CA89611C183}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{058C09CE-10F3-4088-865F-0CA89611C183}.Release|Any CPU.Build.0 = Release|Any CPU
+		{058C09CE-10F3-4088-865F-0CA89611C183}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Studenda.Model.Shared.Account;
-using Studenda.Model.Shared.Common;
+using Studenda.Core.Model.Account;
+using Studenda.Core.Model.Common;
 
-namespace Studenda.Model.Shared.Link;
+namespace Studenda.Core.Model.Link;
 
 /// <summary>
 /// Связь многие ко многим для <see cref="Account.User"/> и <see cref="Common.Group"/>.
@@ -29,13 +29,38 @@ public class UserGroupLink
 
             builder.HasOne(link => link.User)
                 .WithMany(user => user.UserGroupLinks)
-                .HasForeignKey(link => link.UserId);
+                .HasForeignKey(link => link.UserId)
+                .IsRequired(IsUserIdRequired);
 
             builder.HasOne(link => link.Group)
                 .WithMany(group => group.UserGroupLinks)
-                .HasForeignKey(link => link.GroupId);
+                .HasForeignKey(link => link.GroupId)
+                .IsRequired(IsGroupIdRequired);
         }
     }
+    
+    /*                   __ _                       _   _
+     *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
+     *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
+     * | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
+     *  \___\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
+     *                        |___/
+     * Константы, задающие базовые конфигурации полей
+     * и ограничения модели.
+     */
+    #region Configuration
+
+    /// <summary>
+    /// Статус необходимости наличия значения в поле <see cref="UserId"/>.
+    /// </summary>
+    public const bool IsUserIdRequired = true;
+
+    /// <summary>
+    /// Статус необходимости наличия значения в поле <see cref="GroupId"/>.
+    /// </summary>
+    public const bool IsGroupIdRequired = true;
+
+    #endregion
     
     /*             _   _ _
      *   ___ _ __ | |_(_) |_ _   _
@@ -43,7 +68,6 @@ public class UserGroupLink
      * |  __/ | | | |_| | |_| |_| |
      *  \___|_| |_|\__|_|\__|\__, |
      *                       |___/
-     *
      * Поля данных, соответствующие таковым в таблице
      * модели в базе данных.
      */

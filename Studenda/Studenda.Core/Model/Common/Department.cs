@@ -1,38 +1,37 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Studenda.Model.Data.Configuration;
+using Studenda.Core.Data.Configuration;
 
-namespace Studenda.Model.Shared.Account;
+namespace Studenda.Core.Model.Common;
 
 /// <summary>
-/// Роль пользователя.
-/// TODO: Обозначить права доступа.
+/// Факультет.
 /// </summary>
-public class UserRole : Entity
+public class Department : Entity
 {
     /// <summary>
-    /// Конфигурация модели <see cref="User"/>.
+    /// Конфигурация модели <see cref="Department"/>.
     /// </summary>
-    internal class Configuration : Configuration<UserRole>
+    internal class Configuration : Configuration<Department>
     {
         /// <summary>
         /// Конструктор.
         /// </summary>
         /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(DatabaseConfiguration configuration) : base(configuration) { }
+        public Configuration(ContextConfiguration configuration) : base(configuration) { }
 
         /// <summary>
         /// Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<UserRole> builder)
+        public override void Configure(EntityTypeBuilder<Department> builder)
         {
-            builder.Property(role => role.Name)
-                .HasMaxLength(User.NameLengthMax)
-                .IsRequired();
+            builder.Property(department => department.Name)
+                .HasMaxLength(NameLengthMax)
+                .IsRequired(IsNameRequired);
 
-            builder.HasMany(role => role.Users)
-                .WithOne(user => user.UserRole)
-                .HasForeignKey(user => user.UserRoleId);
+            builder.HasMany(department => department.Courses)
+                .WithOne(course => course.Department)
+                .HasForeignKey(course => course.DepartmentId);
 
             base.Configure(builder);
         }
@@ -44,21 +43,20 @@ public class UserRole : Entity
      * | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
      *  \___\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
      *                        |___/
-     *
      * Константы, задающие базовые конфигурации полей
      * и ограничения модели.
      */
     #region Configuration
 
     /// <summary>
-    /// Минимальная длина поля <see cref="Name"/>.
-    /// </summary>
-    public const int NameLengthMin = 1;
-
-    /// <summary>
     /// Максимальная длина поля <see cref="Name"/>.
     /// </summary>
     public const int NameLengthMax = 128;
+
+    /// <summary>
+    /// Статус необходимости наличия значения в поле <see cref="Name"/>.
+    /// </summary>
+    public const bool IsNameRequired = true;
 
     #endregion
 
@@ -68,7 +66,6 @@ public class UserRole : Entity
      * |  __/ | | | |_| | |_| |_| |
      *  \___|_| |_|\__|_|\__|\__, |
      *                       |___/
-     *
      * Поля данных, соответствующие таковым в таблице
      * модели в базе данных.
      */
@@ -82,7 +79,7 @@ public class UserRole : Entity
     #endregion
 
     /// <summary>
-    /// Связанные объекты <see cref="User"/>.
+    /// Связанные объекты <see cref="Course"/>.
     /// </summary>
-    public List<User> Users { get; set; } = null!;
+    public List<Course> Courses { get; set; } = null!;
 }

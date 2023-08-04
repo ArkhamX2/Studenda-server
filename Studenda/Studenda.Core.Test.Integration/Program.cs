@@ -1,11 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Studenda.Model.Data;
-using Studenda.Model.Data.Configuration;
-using Studenda.Model.Shared.Common;
+using Studenda.Core.Data;
+using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Common;
+
+#if DEBUG
+const bool isDebugMode = true;
+#else
+const bool isDebugMode = false;
+#endif
+
+var configuration = new SqliteConfiguration("Data Source=000_debug_storage.db", isDebugMode);
 
 Console.WriteLine("Starting INSERT test...");
 
-using (var context = new ApplicationContext(new SqliteConfiguration()))
+using (var context = new DataContext(configuration))
 {
     var dept1 = new Department { Name = "dept1" };
     var dept2 = new Department { Name = "dept2" };
@@ -38,17 +46,27 @@ using (var context = new ApplicationContext(new SqliteConfiguration()))
 
 Console.WriteLine("Starting SELECT test...");
 
-using (var context = new ApplicationContext(new SqliteConfiguration()))
+using (var context = new DataContext(configuration))
 {
-    var groups = context.Groups
-        .Include(group => group.Course)
-            .ThenInclude(course => course.Department)
-        .Include(group => group.UserGroupLinks)
-            .ThenInclude(link => link.User)
-                .ThenInclude(user => user.UserRole)
-        .ToList();
-
-    Console.WriteLine(groups.Count);
+    try
+    {
+        // TODO: Найти более эффективный способ загрузки связанных моделей.
+        var groups = context.Groups
+            .Include(group => group.Course)
+                .ThenInclude(course => course.Department)
+            .Include(group => group.UserGroupLinks)
+                .ThenInclude(link => link.User)
+                    .ThenInclude(user => user.Role)
+                        .ThenInclude(role => role.RolePermissionLinks)
+                            .ThenInclude(link => link.Permission)
+            .ToList();
+        
+        Console.WriteLine(groups.Count);
+    }
+    catch (InvalidOperationException exception)
+    {
+        Console.WriteLine(exception);
+    }
 }
 
 Console.WriteLine("Completed!");

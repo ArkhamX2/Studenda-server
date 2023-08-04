@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Studenda.Model\Studenda.Model.csproj" />
+      <ProjectReference Include="..\Studenda.Core\Studenda.Core.csproj" />
     </ItemGroup>
 
 </Project>
