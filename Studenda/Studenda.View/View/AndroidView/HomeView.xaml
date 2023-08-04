@@ -12,16 +12,31 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid x:Name="ProfilePanel" Grid.Row="0">
+        <Grid
+            x:Name="ProfilePanel"
+            Grid.Row="0"
+            BackgroundColor="{StaticResource Primary}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="61" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Image x:Name="ProfilePicture" Grid.Column="0" />
+            <Image
+                x:Name="ProfilePicture"
+                Grid.Column="0"
+                HeightRequest="43"
+                HorizontalOptions="End"
+                Source="profile_pic_mini.png"
+                VerticalOptions="Center"
+                WidthRequest="43" />
             <Image
                 x:Name="NotificatonBell"
                 Grid.Column="1"
-                HorizontalOptions="End" />
+                HeightRequest="46"
+                HorizontalOptions="End"
+                Source="notification_bell.png"
+                VerticalOptions="Center"
+                WidthRequest="58" 
+                Margin="0,0,10,0"/>
         </Grid>
 
         <VerticalStackLayout Grid.Row="1">
