@@ -56,6 +56,9 @@ namespace Studenda.ViewModel
     public partial class ScheduleViewModel : ObservableObject
     {
         [ObservableProperty]
+        private List<Subject> currentDaySubjectList;
+
+        [ObservableProperty]
         private Group selectedGroup;
 
         [ObservableProperty]
@@ -117,6 +120,7 @@ namespace Studenda.ViewModel
                 }
                 , TypeOfWeek);
             ScheduleList = Schedule.ScheduleList;
+            CurrentDaySubjectList = ScheduleList[0].SubjectList;
             GroupList = new List<Group>()
             {
                new Group("Б.ПИН.РИС 20.06"),

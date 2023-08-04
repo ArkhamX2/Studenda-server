@@ -20,9 +20,9 @@ namespace Studenda.ViewModel
         }
 
         [RelayCommand]
-        async private void GoToScheduleView()
+        async private void GoToHomeView()
         {
-            await Shell.Current.GoToAsync($"//{nameof(ScheduleView)}");
+            await Shell.Current.GoToAsync($"//{nameof(HomeView)}");
         }
 
         [RelayCommand]
@@ -38,7 +38,7 @@ namespace Studenda.ViewModel
             {
                 //TODO: Реализация входа в аккаунт
 
-                GoToScheduleView();
+                GoToHomeView();
 
                 //Alert user about something
                 await Application.Current.MainPage.DisplayAlert(

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Studenda.View.AndroidView.HomeView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:Studenda.Components.UI"
+    BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
+    Shell.NavBarIsVisible="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="66" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="ProfilePanel" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="61" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image x:Name="ProfilePicture" Grid.Column="0" />
+            <Image
+                x:Name="NotificatonBell"
+                Grid.Column="1"
+                HorizontalOptions="End" />
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="1">
+            <components:ScheduleDayComponent WeekDayTitle="Расписание">
+                <CollectionView
+                    HorizontalScrollBarVisibility="Never"
+                    IsEnabled="False"
+                    ItemsSource="{Binding CurrentDaySubjectList}"
+                    SelectionMode="None"
+                    VerticalScrollBarVisibility="Never">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <components:SubjectComponent
+                                SubjectPlace="{Binding Place}"
+                                SubjectTimeEnd="{Binding Time}"
+                                SubjectTimeStart="{Binding Time}"
+                                SubjectTitle="{Binding Title}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </components:ScheduleDayComponent>
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

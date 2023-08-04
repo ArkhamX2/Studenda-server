@@ -24,6 +24,11 @@
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate android:HomeView}"
+            Route="HomeView"
+            Shell.FlyoutBehavior="Disabled" />
+        <ShellContent
             Title="Schedule"
             ContentTemplate="{DataTemplate android:ScheduleView}"
             Route="ScheduleView"
