@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Studenda.Components.UI.NotificationComponent"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Border Margin="6,13,6,0" Stroke="Transparent">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="5" />
+        </Border.StrokeShape>
+        <Grid BackgroundColor="{StaticResource White}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="200" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                x:Name="NotificationNameLabel"
+                Grid.Column="0"
+                Margin="10"
+                FontFamily="InterMedium"
+                FontSize="17"
+                HorizontalOptions="Start"
+                VerticalOptions="Center" 
+                TextColor="{DynamicResource ForegroundColor}"/>
+            <Label
+                x:Name="NotificationDateLabel"
+                Grid.Column="1"
+                FontFamily="InterRegular"
+                FontSize="17"
+                HorizontalOptions="Start"
+                VerticalOptions="Center" 
+                TextColor="{DynamicResource ForegroundColor}"/>
+        </Grid>
+    </Border>
+</ContentView>

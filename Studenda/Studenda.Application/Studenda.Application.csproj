@@ -93,6 +93,9 @@
 	  <MauiXaml Update="Components\UI\NavigationBarComponent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Components\UI\NotificationComponent.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Components\UI\ScheduleComponent.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

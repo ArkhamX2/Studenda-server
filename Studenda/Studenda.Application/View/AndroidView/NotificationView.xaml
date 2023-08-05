@@ -4,23 +4,16 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:components="clr-namespace:Studenda.Components.UI"
+    BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
     Shell.NavBarIsVisible="False">
     <VerticalStackLayout>
         <components:NavigationBarComponent Title="Уведомления" />
-        <ListView ItemsSource="{Binding NotificationCollection}">
-            <ListView.ItemTemplate>
+        <CollectionView ItemsSource="{Binding NotificationCollection}">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <ViewCell.View>
-                            <StackLayout>
-                                <Label FontSize="18" Text="{Binding Name}" />
-                                <Label FontSize="14" Text="{Binding Date}" />
-                                <Label FontSize="16" Text="{Binding Description}" />
-                            </StackLayout>
-                        </ViewCell.View>
-                    </ViewCell>
+                    <components:NotificationComponent NotificationDate="{Binding Date}" NotificationName="{Binding Name}" />
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
