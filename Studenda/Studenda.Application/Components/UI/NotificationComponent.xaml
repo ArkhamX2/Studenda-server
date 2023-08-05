@@ -20,16 +20,16 @@
                 FontFamily="InterMedium"
                 FontSize="17"
                 HorizontalOptions="Start"
-                VerticalOptions="Center" 
-                TextColor="{DynamicResource ForegroundColor}"/>
+                TextColor="{DynamicResource ForegroundColor}"
+                VerticalOptions="Center" />
             <Label
                 x:Name="NotificationDateLabel"
                 Grid.Column="1"
                 FontFamily="InterRegular"
                 FontSize="17"
                 HorizontalOptions="Start"
-                VerticalOptions="Center" 
-                TextColor="{DynamicResource ForegroundColor}"/>
+                TextColor="{DynamicResource ForegroundColor}"
+                VerticalOptions="Center" />
         </Grid>
     </Border>
 </ContentView>
