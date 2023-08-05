@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Studenda.Core.Client.Components.UI.ScheduleViewTypeSelector"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Border
+        Margin="23,15,23,15"
+        BackgroundColor="#D9D9D9"
+        Stroke="#D9D9D9">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="5" />
+        </Border.StrokeShape>
+        <Grid HeightRequest="45">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label
+                Grid.Column="0"
+                FontFamily="InterRegular"
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="Сетка"
+                TextColor="{StaticResource ForegroundColor}"
+                VerticalOptions="Center" />
+            <BoxView
+                Grid.Column="0"
+                Margin="-1,0,0,0"
+                HorizontalOptions="End"
+                WidthRequest="3"
+                Color="#a1a1a1" />
+            <Label
+                Grid.Column="1"
+                FontFamily="InterRegular"
+                FontSize="20"
+                HorizontalOptions="Center"
+                Text="Календарь"
+                TextColor="{StaticResource ForegroundColor}"
+                VerticalOptions="Center" />
+        </Grid>
+    </Border>
+</ContentView>

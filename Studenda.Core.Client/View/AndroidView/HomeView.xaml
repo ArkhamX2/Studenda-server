@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Studenda.Core.Client.View.AndroidView.HomeView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
+    BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
+    Shell.NavBarIsVisible="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="66" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid
+            x:Name="ProfilePanel"
+            Grid.Row="0"
+            BackgroundColor="{StaticResource Primary}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="61" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Image
+                x:Name="ProfilePicture"
+                Grid.Column="0"
+                HeightRequest="43"
+                HorizontalOptions="End"
+                Source="profile_pic_mini.png"
+                VerticalOptions="Center"
+                WidthRequest="43" />
+            <Image
+                x:Name="NotificatonBell"
+                Grid.Column="1"
+                HeightRequest="46"
+                HorizontalOptions="End"
+                Source="notification_bell.png"
+                VerticalOptions="Center"
+                WidthRequest="58" 
+                Margin="0,0,10,0"/>
+        </Grid>
+
+        <VerticalStackLayout Grid.Row="1">
+            <ui:ScheduleDayComponent WeekDayTitle="Расписание">
+                <CollectionView
+                    HorizontalScrollBarVisibility="Never"
+                    IsEnabled="False"
+                    ItemsSource="{Binding CurrentDaySubjectList}"
+                    SelectionMode="None"
+                    VerticalScrollBarVisibility="Never">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <ui:SubjectComponent
+                                SubjectPlace="{Binding Place}"
+                                SubjectTimeEnd="{Binding Time}"
+                                SubjectTimeStart="{Binding Time}"
+                                SubjectTitle="{Binding Title}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ui:ScheduleDayComponent>
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>
