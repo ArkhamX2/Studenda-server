@@ -1,0 +1,43 @@
+﻿services:
+  core.server:
+    image: 'studenda.core.server'
+    build:
+      context: '.'
+      dockerfile: 'Studenda.Core.Server/Dockerfile'
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      database:
+        condition: 'service_healthy'
+    environment:
+      ConnectionStrings__Default: 'Server=database;Port=3306;Database=studenda;Uid=arkham;Pwd=secret'
+    networks:
+      - 'inner'
+
+  database:
+    container_name: 'database'
+    image: 'mariadb:latest'
+    environment:
+      MARIADB_DATABASE: 'studenda'
+      MARIADB_USER: 'arkham'
+      MARIADB_PASSWORD: 'secret'
+      MARIADB_ROOT_PASSWORD: 'verysecret'
+    healthcheck:
+      test: 'mariadb --password=$$MARIADB_ROOT_PASSWORD --execute "SHOW DATABASES;"'
+      start_period: '5s'
+      interval: '2s'
+      timeout: '10s'
+      retries: 10
+    ports:
+      - '3306:3306'
+    volumes:
+      - 'data:/var/lib/mysql'
+    networks:
+      - 'inner'
+
+volumes:
+  data:
+
+networks:
+  inner:
