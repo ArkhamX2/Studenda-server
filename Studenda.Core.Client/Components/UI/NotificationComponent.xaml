@@ -20,7 +20,7 @@
                 FontFamily="InterMedium"
                 FontSize="17"
                 HorizontalOptions="Start"
-                Text="{DynamicResource ForegroundColor}"
+                Text="{StaticResource ForegroundColor}"
                 VerticalOptions="Center" />
 
             <Label
@@ -29,7 +29,7 @@
                 FontFamily="InterRegular"
                 FontSize="17"
                 HorizontalOptions="Start"
-                Text="{DynamicResource ForegroundColor}"
+                Text="{StaticResource ForegroundColor}"
                 VerticalOptions="Center" />
         </Grid>
     </Border>
