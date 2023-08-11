@@ -13,7 +13,7 @@
             <RowDefinition Height="97"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:NavigationBarComponent Grid.Row="0" Title="Расписание" />
+        <ui:NavigationBarComponent Grid.Row="0" />
         <ui:CalendarCarouselComponent Grid.Row="1" WeekTypeTitle="{Binding TypeOfWeek}" />
         <ScrollView Grid.Row="2">
             <ui:ScheduleComponent Schedule="{Binding ScheduleList}" />

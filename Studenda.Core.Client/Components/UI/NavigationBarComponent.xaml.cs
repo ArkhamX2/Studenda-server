@@ -11,17 +11,7 @@ public partial class NavigationBarComponent : ContentView
 
             string title = newValue as string;
 
-            if(title != "����������")
-            {
-                control.TitleLabel.IsVisible = true;
-                control.GroupSelector.IsVisible = false;
-                control.TitleLabel.Text = title;
-            }
-            else
-            {
-                control.TitleLabel.IsVisible = false;
                 control.GroupSelector.IsVisible = true;
-            }
         });
         
     NavigationBarViewModel vm = new NavigationBarViewModel();

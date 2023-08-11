@@ -18,15 +18,6 @@
             HorizontalOptions="Start"
             ImageSource="burger_menu.png" />
 
-        <Label
-            x:Name="TitleLabel"
-            Grid.Column="1"
-            FontFamily="InterSemiBold"
-            FontSize="25"
-            HorizontalTextAlignment="Center"
-            TextColor="White"
-            VerticalTextAlignment="Center" />
-
         <ui:GroupSelectorComponent HorizontalOptions="Center" VerticalOptions="Center" x:Name="GroupSelector" Grid.Column="1" />
 
         <Button
