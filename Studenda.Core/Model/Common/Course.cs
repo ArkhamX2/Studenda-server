@@ -23,12 +23,17 @@ public class Course : Identity
     /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
-    public const int NameLengthMax = 128;
+    public const int NameLengthMax = 32;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="Grade" />.
+    /// </summary>
+    public const bool IsGradeRequired = true;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
-    public const bool IsNameRequired = true;
+    public const bool IsNameRequired = false;
 
     /// <summary>
     ///     Конфигурация модели <see cref="Course" />.
@@ -50,9 +55,12 @@ public class Course : Identity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<Course> builder)
         {
+            builder.Property(course => course.Grade)
+                .IsRequired();
+
             builder.Property(course => course.Name)
                 .HasMaxLength(NameLengthMax)
-                .IsRequired();
+                .IsRequired(IsNameRequired);
 
             builder.HasMany(course => course.Groups)
                 .WithOne(group => group.Course)
@@ -77,9 +85,15 @@ public class Course : Identity
     #region Entity
 
     /// <summary>
+    ///     Градация.
+    ///     Числовое представление для операций сравнения.
+    /// </summary>
+    public int Grade { get; set; }
+
+    /// <summary>
     ///     Название.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
 
     #endregion
 
