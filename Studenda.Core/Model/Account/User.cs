@@ -5,60 +5,10 @@ using Studenda.Core.Model.Link;
 namespace Studenda.Core.Model.Account;
 
 /// <summary>
-/// Пользователь.
+///     Пользователь.
 /// </summary>
-public class User : Entity
+public class User : Identity
 {
-    /// <summary>
-    /// Конфигурация модели <see cref="User"/>.
-    /// </summary>
-    internal class Configuration : Configuration<User>
-    {
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration) { }
-
-        /// <summary>
-        /// Задать конфигурацию для модели.
-        /// </summary>
-        /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<User> builder)
-        {
-            builder.Property(user => user.Name)
-                .HasMaxLength(NameLengthMax)
-                .IsRequired(IsNameRequired);
-
-            builder.Property(user => user.Surname)
-                .HasMaxLength(SurnameLengthMax)
-                .IsRequired(IsSurnameRequired);
-
-            builder.Property(user => user.Patronymic)
-                .HasMaxLength(PatronymicLengthMax)
-                .IsRequired(IsPatronymicRequired);
-
-            builder.Property(user => user.Email)
-                .HasMaxLength(EmailLengthMax)
-                .IsRequired(IsEmailRequired);
-
-            builder.Property(user => user.PasswordHash)
-                .HasMaxLength(PasswordHashLengthMax)
-                .IsRequired(IsPasswordHashRequired);
-
-            builder.HasOne(user => user.Role)
-                .WithMany(role => role.Users)
-                .HasForeignKey(user => user.RoleId)
-                .IsRequired(IsRoleIdRequired);
-
-            builder.HasMany(user => user.UserGroupLinks)
-                .WithOne(link => link.User)
-                .HasForeignKey(link => link.UserId);
-
-            base.Configure(builder);
-        }
-    }
-    
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
      *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
@@ -68,63 +18,117 @@ public class User : Entity
      * Константы, задающие базовые конфигурации полей
      * и ограничения модели.
      */
+
     #region Configuration
 
     /// <summary>
-    /// Максимальная длина поля <see cref="Name"/>.
+    ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
     public const int NameLengthMax = 32;
 
     /// <summary>
-    /// Максимальная длина поля <see cref="Surname"/>.
+    ///     Максимальная длина поля <see cref="Surname" />.
     /// </summary>
     public const int SurnameLengthMax = 32;
 
     /// <summary>
-    /// Максимальная длина поля <see cref="Patronymic"/>.
+    ///     Максимальная длина поля <see cref="Patronymic" />.
     /// </summary>
     public const int PatronymicLengthMax = 32;
 
     /// <summary>
-    /// Максимальная длина поля <see cref="Email"/>.
+    ///     Максимальная длина поля <see cref="Login" />.
     /// </summary>
-    public const int EmailLengthMax = 128;
+    public const int LoginLengthMax = 128;
 
     /// <summary>
-    /// Максимальная длина поля <see cref="PasswordHash"/>.
-    /// TODO: Необходимо учитывать метод шифрования.
+    ///     Максимальная длина поля <see cref="PasswordHash" />.
+    ///     TODO: Необходимо учитывать метод шифрования.
     /// </summary>
     public const int PasswordHashLengthMax = 256;
 
     /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="RoleId"/>.
+    ///     Статус необходимости наличия значения в поле <see cref="RoleId" />.
     /// </summary>
     public const bool IsRoleIdRequired = true;
 
     /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="Name"/>.
+    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
     public const bool IsNameRequired = true;
 
     /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="Surname"/>.
+    ///     Статус необходимости наличия значения в поле <see cref="Surname" />.
     /// </summary>
     public const bool IsSurnameRequired = false;
 
     /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="Patronymic"/>.
+    ///     Статус необходимости наличия значения в поле <see cref="Patronymic" />.
     /// </summary>
     public const bool IsPatronymicRequired = false;
 
     /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="Email"/>.
+    ///     Статус необходимости наличия значения в поле <see cref="Login" />.
     /// </summary>
-    public const bool IsEmailRequired = true;
+    public const bool IsLoginRequired = true;
 
     /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="PasswordHash"/>.
+    ///     Статус необходимости наличия значения в поле <see cref="PasswordHash" />.
     /// </summary>
     public const bool IsPasswordHashRequired = true;
+
+    /// <summary>
+    ///     Конфигурация модели <see cref="User" />.
+    /// </summary>
+    internal class Configuration : Configuration<User>
+    {
+        /// <summary>
+        ///     Конструктор.
+        /// </summary>
+        /// <param name="configuration">Конфигурация базы данных.</param>
+        public Configuration(ContextConfiguration configuration) : base(configuration)
+        {
+            // PASS.
+        }
+
+        /// <summary>
+        ///     Задать конфигурацию для модели.
+        /// </summary>
+        /// <param name="builder">Набор интерфейсов настройки модели.</param>
+        public override void Configure(EntityTypeBuilder<User> builder)
+        {
+            builder.Property(user => user.Name)
+                .HasMaxLength(NameLengthMax)
+                .IsRequired();
+
+            builder.Property(user => user.Surname)
+                .HasMaxLength(SurnameLengthMax)
+                .IsRequired(IsSurnameRequired);
+
+            builder.Property(user => user.Patronymic)
+                .HasMaxLength(PatronymicLengthMax)
+                .IsRequired(IsPatronymicRequired);
+
+            builder.Property(user => user.Login)
+                .HasMaxLength(LoginLengthMax)
+                .IsRequired();
+
+            builder.Property(user => user.PasswordHash)
+                .HasMaxLength(PasswordHashLengthMax)
+                .IsRequired();
+
+            builder.HasOne(user => user.Role)
+                .WithMany(role => role.Users)
+                .HasForeignKey(user => user.RoleId)
+                .IsRequired();
+
+            builder.HasMany(user => user.UserGroupLinks)
+                .WithOne(link => link.User)
+                .HasForeignKey(link => link.UserId);
+
+            base.Configure(builder);
+        }
+    }
 
     #endregion
 
@@ -137,50 +141,51 @@ public class User : Entity
      * Поля данных, соответствующие таковым в таблице
      * модели в базе данных.
      */
+
     #region Entity
 
     /// <summary>
-    /// Идентификатор связанного объекта <see cref="Role"/>.
+    ///     Идентификатор связанного объекта <see cref="Role" />.
     /// </summary>
     public int RoleId { get; set; }
 
     /// <summary>
-    /// Имя.
+    ///     Имя.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
 
     /// <summary>
-    /// Фамилия.
-    /// Необязательное поле.
+    ///     Фамилия.
+    ///     Необязательное поле.
     /// </summary>
     public string? Surname { get; set; }
 
     /// <summary>
-    /// Отчество.
-    /// Необязательное поле.
+    ///     Отчество.
+    ///     Необязательное поле.
     /// </summary>
     public string? Patronymic { get; set; }
 
     /// <summary>
-    /// Адрес электронной почты.
+    ///     Адрес электронной почты.
     /// </summary>
-    public string Email { get; set; } = null!;
+    public string Login { get; set; } = null!;
 
     /// <summary>
-    /// Хеш пароля.
-    /// TODO: Разобраться с методом шифрования.
+    ///     Хеш пароля.
+    ///     TODO: Разобраться с методом шифрования.
     /// </summary>
     public string PasswordHash { get; set; } = null!;
 
     #endregion
 
     /// <summary>
-    /// Связанный объект <see cref="Role"/>.
+    ///     Связанный объект <see cref="Role" />.
     /// </summary>
     public Role Role { get; set; } = null!;
 
     /// <summary>
-    /// Связанные объекты <see cref="UserGroupLink"/>.
+    ///     Связанные объекты <see cref="UserGroupLink" />.
     /// </summary>
     public List<UserGroupLink> UserGroupLinks { get; set; } = null!;
 }

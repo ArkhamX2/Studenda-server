@@ -5,30 +5,55 @@ using Studenda.Core.Model.Link;
 namespace Studenda.Core.Model.Account;
 
 /// <summary>
-/// Роль для <see cref="User"/>.
+///     Роль для <see cref="User" />.
 /// </summary>
-public class Role : Entity
+public class Role : Identity
 {
+    /*                   __ _                       _   _
+     *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
+     *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
+     * | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
+     *  \___\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
+     *                        |___/
+     * Константы, задающие базовые конфигурации полей
+     * и ограничения модели.
+     */
+
+    #region Configuration
+
     /// <summary>
-    /// Конфигурация модели <see cref="User"/>.
+    ///     Максимальная длина поля <see cref="Name" />.
+    /// </summary>
+    public const int NameLengthMax = 128;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
+    /// </summary>
+    public const bool IsNameRequired = true;
+
+    /// <summary>
+    ///     Конфигурация модели <see cref="User" />.
     /// </summary>
     internal class Configuration : Configuration<Role>
     {
         /// <summary>
-        /// Конструктор.
+        ///     Конструктор.
         /// </summary>
         /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration) { }
+        public Configuration(ContextConfiguration configuration) : base(configuration)
+        {
+            // PASS.
+        }
 
         /// <summary>
-        /// Задать конфигурацию для модели.
+        ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.Property(role => role.Name)
                 .HasMaxLength(User.NameLengthMax)
-                .IsRequired(IsNameRequired);
+                .IsRequired();
 
             builder.HasMany(role => role.Users)
                 .WithOne(user => user.Role)
@@ -41,27 +66,6 @@ public class Role : Entity
             base.Configure(builder);
         }
     }
-    
-    /*                   __ _                       _   _
-     *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
-     *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
-     * | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
-     *  \___\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
-     *                        |___/
-     * Константы, задающие базовые конфигурации полей
-     * и ограничения модели.
-     */
-    #region Configuration
-
-    /// <summary>
-    /// Максимальная длина поля <see cref="Name"/>.
-    /// </summary>
-    public const int NameLengthMax = 128;
-
-    /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="Name"/>.
-    /// </summary>
-    public const bool IsNameRequired = true;
 
     #endregion
 
@@ -74,22 +78,23 @@ public class Role : Entity
      * Поля данных, соответствующие таковым в таблице
      * модели в базе данных.
      */
+
     #region Entity
 
     /// <summary>
-    /// Название.
+    ///     Название.
     /// </summary>
     public string Name { get; set; } = null!;
 
     #endregion
 
     /// <summary>
-    /// Связанные объекты <see cref="User"/>.
+    ///     Связанные объекты <see cref="User" />.
     /// </summary>
     public List<User> Users { get; set; } = null!;
 
     /// <summary>
-    /// Связанные объекты <see cref="RolePermissionLink"/>.
+    ///     Связанные объекты <see cref="RolePermissionLink" />.
     /// </summary>
     public List<RolePermissionLink> RolePermissionLinks { get; set; } = null!;
 }
