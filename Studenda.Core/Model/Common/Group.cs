@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Link;
+using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Common;
 
@@ -30,6 +30,11 @@ public class Group : Identity
     ///     Статус необходимости наличия значения в поле <see cref="CourseId" />.
     /// </summary>
     public const bool IsCourseIdRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="DepartmentId" />.
+    /// </summary>
+    public const bool IsDepartmentIdRequired = true;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
@@ -65,9 +70,14 @@ public class Group : Identity
                 .HasForeignKey(group => group.CourseId)
                 .IsRequired();
 
-            builder.HasMany(group => group.UserGroupLinks)
-                .WithOne(link => link.Group)
-                .HasForeignKey(link => link.GroupId);
+            builder.HasOne(group => group.Department)
+                .WithMany(course => course.Groups)
+                .HasForeignKey(group => group.DepartmentId)
+                .IsRequired();
+
+            builder.HasMany(group => group.Users)
+                .WithOne(user => user.Group)
+                .HasForeignKey(course => course.GroupId);
 
             base.Configure(builder);
         }
@@ -93,6 +103,11 @@ public class Group : Identity
     public int CourseId { get; set; }
 
     /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Common.Department" />.
+    /// </summary>
+    public int DepartmentId { get; set; }
+
+    /// <summary>
     ///     Название.
     /// </summary>
     public string Name { get; set; } = null!;
@@ -105,7 +120,12 @@ public class Group : Identity
     public Course Course { get; set; } = null!;
 
     /// <summary>
-    ///     Связанные объекты <see cref="UserGroupLink" />.
+    ///     Связанный объект <see cref="Common.Department" />.
     /// </summary>
-    public List<UserGroupLink> UserGroupLinks { get; set; } = null!;
+    public Department Department { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="User" />.
+    /// </summary>
+    public List<User> Users { get; set; } = null!;
 }

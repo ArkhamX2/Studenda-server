@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Common;
 
@@ -54,8 +55,12 @@ public class Department : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.HasMany(department => department.Courses)
-                .WithOne(course => course.Department)
+            builder.HasMany(department => department.Groups)
+                .WithOne(group => group.Department)
+                .HasForeignKey(group => group.DepartmentId);
+
+            builder.HasMany(department => department.Users)
+                .WithOne(user => user.Department)
                 .HasForeignKey(course => course.DepartmentId);
 
             base.Configure(builder);
@@ -84,7 +89,12 @@ public class Department : Identity
     #endregion
 
     /// <summary>
-    ///     Связанные объекты <see cref="Course" />.
+    ///     Связанные объекты <see cref="Group" />.
     /// </summary>
-    public List<Course> Courses { get; set; } = null!;
+    public List<Group> Groups { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="User" />.
+    /// </summary>
+    public List<User> Users { get; set; } = null!;
 }

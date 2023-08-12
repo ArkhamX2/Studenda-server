@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model;
 using Studenda.Core.Model.Common;
-using Studenda.Core.Model.Link;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Model.Security.Management;
 
@@ -85,11 +84,6 @@ public sealed class DataContext : DbContext
     public DbSet<WeekType> WeekTypes => Set<WeekType>();
 
     /// <summary>
-    ///     Набор объектов <see cref="UserGroupLink" />.
-    /// </summary>
-    public DbSet<UserGroupLink> UserGroupLinks => Set<UserGroupLink>();
-
-    /// <summary>
     ///     Набор объектов <see cref="RolePermissionLink" />.
     /// </summary>
     public DbSet<RolePermissionLink> RolePermissionLinks => Set<RolePermissionLink>();
@@ -122,7 +116,6 @@ public sealed class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new WeekType.Configuration(Configuration));
 
         // Связующие таблицы.
-        modelBuilder.ApplyConfiguration(new UserGroupLink.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new RolePermissionLink.Configuration(Configuration));
 
         base.OnModelCreating(modelBuilder);

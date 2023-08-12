@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Link;
+using Studenda.Core.Model.Common;
 using Studenda.Core.Model.Security.Management;
 
 namespace Studenda.Core.Model.Security;
@@ -52,6 +52,16 @@ public class User : Identity
     ///     Статус необходимости наличия значения в поле <see cref="RoleId" />.
     /// </summary>
     public const bool IsRoleIdRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="GroupId" />.
+    /// </summary>
+    public const bool IsGroupIdRequired = false;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="DepartmentId" />.
+    /// </summary>
+    public const bool IsDepartmentIdRequired = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
@@ -122,10 +132,16 @@ public class User : Identity
                 .WithMany(role => role.Users)
                 .HasForeignKey(user => user.RoleId)
                 .IsRequired();
-
-            builder.HasMany(user => user.UserGroupLinks)
-                .WithOne(link => link.User)
-                .HasForeignKey(link => link.UserId);
+            
+            builder.HasOne(user => user.Group)
+                .WithMany(group => group.Users)
+                .HasForeignKey(user => user.GroupId)
+                .IsRequired(IsGroupIdRequired);
+            
+            builder.HasOne(user => user.Department)
+                .WithMany(department => department.Users)
+                .HasForeignKey(user => user.DepartmentId)
+                .IsRequired(IsDepartmentIdRequired);
 
             base.Configure(builder);
         }
@@ -149,6 +165,16 @@ public class User : Identity
     ///     Идентификатор связанного объекта <see cref="Role" />.
     /// </summary>
     public int RoleId { get; set; }
+
+    /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Group" />.
+    /// </summary>
+    public int GroupId { get; set; }
+
+    /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Department" />.
+    /// </summary>
+    public int DepartmentId { get; set; }
 
     /// <summary>
     ///     Имя.
@@ -186,7 +212,12 @@ public class User : Identity
     public Role Role { get; set; } = null!;
 
     /// <summary>
-    ///     Связанные объекты <see cref="UserGroupLink" />.
+    ///     Связанный объект <see cref="Group" />.
     /// </summary>
-    public List<UserGroupLink> UserGroupLinks { get; set; } = null!;
+    public Group? Group { get; set; }
+
+    /// <summary>
+    ///     Связанный объект <see cref="Department" />.
+    /// </summary>
+    public Department? Department { get; set; }
 }

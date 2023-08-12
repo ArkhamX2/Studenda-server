@@ -26,11 +26,6 @@ public class Course : Identity
     public const int NameLengthMax = 128;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="DepartmentId" />.
-    /// </summary>
-    public const bool IsDepartmentIdRequired = true;
-
-    /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
     public const bool IsNameRequired = true;
@@ -59,11 +54,6 @@ public class Course : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.HasOne(course => course.Department)
-                .WithMany(department => department.Courses)
-                .HasForeignKey(course => course.DepartmentId)
-                .IsRequired();
-
             builder.HasMany(course => course.Groups)
                 .WithOne(group => group.Course)
                 .HasForeignKey(group => group.CourseId);
@@ -87,21 +77,11 @@ public class Course : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Department" />.
-    /// </summary>
-    public int DepartmentId { get; set; }
-
-    /// <summary>
     ///     Название.
     /// </summary>
     public string Name { get; set; } = null!;
 
     #endregion
-
-    /// <summary>
-    ///     Связанный объект <see cref="Common.Department" />.
-    /// </summary>
-    public Department Department { get; set; } = null!;
 
     /// <summary>
     ///     Связанные объекты <see cref="Group" />.
