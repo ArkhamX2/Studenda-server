@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Account;
 
-namespace Studenda.Core.Model.Link;
+namespace Studenda.Core.Model.Security.Management;
 
 /// <summary>
-///     Связь многие ко многим для <see cref="Account.Role" /> и <see cref="Account.Permission" />.
+///     Связь многие ко многим для <see cref="Management.Role" /> и <see cref="Management.Permission" />.
 /// </summary>
 public class RolePermissionLink : Entity
 {
@@ -84,24 +83,24 @@ public class RolePermissionLink : Entity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Account.Role" />.
+    ///     Идентификатор связанного объекта <see cref="Management.Role" />.
     /// </summary>
     public int RoleId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Account.Permission" />.
+    ///     Идентификатор связанного объекта <see cref="Management.Permission" />.
     /// </summary>
     public int PermissionId { get; set; }
 
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="Account.Role" />.
+    ///     Связанный объект <see cref="Management.Role" />.
     /// </summary>
     public Role Role { get; set; } = null!;
 
     /// <summary>
-    ///     Связанный объект <see cref="Account.Permission" />.
+    ///     Связанный объект <see cref="Management.Permission" />.
     /// </summary>
     public Permission Permission { get; set; } = null!;
 }

@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Account;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Link;
 
 /// <summary>
-///     Связь многие ко многим для <see cref="Account.User" /> и <see cref="Common.Group" />.
+///     Связь многие ко многим для <see cref="Security.User" /> и <see cref="Common.Group" />.
 /// </summary>
 public class UserGroupLink : Entity
 {
@@ -85,7 +85,7 @@ public class UserGroupLink : Entity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Account.User" />.
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
     /// </summary>
     public int UserId { get; set; }
 
@@ -97,7 +97,7 @@ public class UserGroupLink : Entity
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="Account.User" />.
+    ///     Связанный объект <see cref="Security.User" />.
     /// </summary>
     public User User { get; set; } = null!;
 

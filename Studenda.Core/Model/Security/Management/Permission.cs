@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Link;
 
-namespace Studenda.Core.Model.Account;
+namespace Studenda.Core.Model.Security.Management;
 
 /// <summary>
-///     Роль для <see cref="User" />.
+///     Разрешение для <see cref="Role" />.
+///     Обозначает некоторый доступ к некоторой функции.
 /// </summary>
-public class Role : Identity
+public class Permission : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -32,9 +32,9 @@ public class Role : Identity
     public const bool IsNameRequired = true;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="User" />.
+    ///     Конфигурация модели <see cref="Permission" />.
     /// </summary>
-    internal class Configuration : Configuration<Role>
+    internal class Configuration : Configuration<Permission>
     {
         /// <summary>
         ///     Конструктор.
@@ -49,19 +49,15 @@ public class Role : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Role> builder)
+        public override void Configure(EntityTypeBuilder<Permission> builder)
         {
-            builder.Property(role => role.Name)
-                .HasMaxLength(User.NameLengthMax)
+            builder.Property(permission => permission.Name)
+                .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.HasMany(role => role.Users)
-                .WithOne(user => user.Role)
-                .HasForeignKey(user => user.RoleId);
-
-            builder.HasMany(role => role.RolePermissionLinks)
-                .WithOne(link => link.Role)
-                .HasForeignKey(link => link.RoleId);
+            builder.HasMany(permission => permission.RolePermissionLinks)
+                .WithOne(link => link.Permission)
+                .HasForeignKey(link => link.PermissionId);
 
             base.Configure(builder);
         }
@@ -87,11 +83,6 @@ public class Role : Identity
     public string Name { get; set; } = null!;
 
     #endregion
-
-    /// <summary>
-    ///     Связанные объекты <see cref="User" />.
-    /// </summary>
-    public List<User> Users { get; set; } = null!;
 
     /// <summary>
     ///     Связанные объекты <see cref="RolePermissionLink" />.

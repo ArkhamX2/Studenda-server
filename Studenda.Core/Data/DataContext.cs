@@ -2,9 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model;
-using Studenda.Core.Model.Account;
 using Studenda.Core.Model.Common;
 using Studenda.Core.Model.Link;
+using Studenda.Core.Model.Security;
+using Studenda.Core.Model.Security.Management;
 
 namespace Studenda.Core.Data;
 
