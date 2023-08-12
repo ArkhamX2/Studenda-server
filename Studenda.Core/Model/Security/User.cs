@@ -66,7 +66,7 @@ public class User : Identity
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
-    public const bool IsNameRequired = true;
+    public const bool IsNameRequired = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Surname" />.
@@ -110,7 +110,7 @@ public class User : Identity
         {
             builder.Property(user => user.Name)
                 .HasMaxLength(NameLengthMax)
-                .IsRequired();
+                .IsRequired(IsNameRequired);
 
             builder.Property(user => user.Surname)
                 .HasMaxLength(SurnameLengthMax)
@@ -168,16 +168,19 @@ public class User : Identity
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Group" />.
+    ///     Необязательное поле.
     /// </summary>
     public int GroupId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Department" />.
+    ///     Необязательное поле.
     /// </summary>
     public int DepartmentId { get; set; }
 
     /// <summary>
     ///     Имя.
+    ///     Необязательное поле.
     /// </summary>
     public string? Name { get; set; }
 

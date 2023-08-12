@@ -92,6 +92,7 @@ public class Course : Identity
 
     /// <summary>
     ///     Название.
+    ///     Необязательное поле.
     /// </summary>
     public string? Name { get; set; }
 
