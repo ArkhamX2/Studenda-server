@@ -96,6 +96,9 @@
         <MauiXaml Update="Components\UI\NavigationFooterPanel.xaml">
           <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
+        <MauiXaml Update="Components\UI\NavigationItemComponent.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
         <MauiXaml Update="Components\UI\NotificationComponent.xaml">
           <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
