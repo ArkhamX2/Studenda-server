@@ -37,7 +37,7 @@ public class RolePermissionLink
                 .IsRequired(IsPermissionIdRequired);
         }
     }
-    
+
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
      *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
@@ -60,7 +60,7 @@ public class RolePermissionLink
     public const bool IsPermissionIdRequired = true;
 
     #endregion
-    
+
     /*             _   _ _
      *   ___ _ __ | |_(_) |_ _   _
      *  / _ \ '_ \| __| | __| | | |

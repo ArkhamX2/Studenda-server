@@ -16,7 +16,7 @@ public class MysqlConfiguration : ContextConfiguration
     {
         // PASS.
     }
-    
+
     /// <summary>
     /// Тип полей даты и времени в базе данных.
     /// </summary>

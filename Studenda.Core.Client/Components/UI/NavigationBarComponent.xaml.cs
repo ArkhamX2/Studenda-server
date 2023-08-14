@@ -11,7 +11,7 @@ public partial class NavigationBarComponent : ContentView
 
             string title = newValue as string;
         });
-        
+
     NavigationBarViewModel vm = new NavigationBarViewModel();
     public NavigationBarComponent()
     {
@@ -19,17 +19,17 @@ public partial class NavigationBarComponent : ContentView
         BindingContext = vm;
     }
 
-    public string Title 
+    public string Title
     {
-        get => GetValue(TitleProperty) as string ; 
-        set => SetValue(TitleProperty, value); 
+        get => GetValue(TitleProperty) as string;
+        set => SetValue(TitleProperty, value);
     }
 
     private void BurgerMenu_Clicked(object sender, EventArgs e)
     {
 #if ANDROID
-Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
-Shell.Current.FlyoutBehavior = FlyoutBehavior.Flyout;
+        Shell.Current.FlyoutBehavior = FlyoutBehavior.Locked;
+        Shell.Current.FlyoutBehavior = FlyoutBehavior.Flyout;
 #endif
         Shell.Current.FlyoutIsPresented = true;
     }

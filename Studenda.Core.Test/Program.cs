@@ -60,7 +60,7 @@ using (var context = new DataContext(configuration))
                         .ThenInclude(role => role.RolePermissionLinks)
                             .ThenInclude(link => link.Permission)
             .ToList();
-        
+
         Console.WriteLine(groups.Count);
     }
     catch (InvalidOperationException exception)

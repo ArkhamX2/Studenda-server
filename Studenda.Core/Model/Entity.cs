@@ -11,45 +11,45 @@ namespace Studenda.Core.Model;
 /// </summary>
 public abstract class Entity
 {
-	/// <summary>
-	/// Конфигурация модели <see cref="Entity"/>.
-	/// Используется для дополнительной настройки,
-	/// включая биндинг полей под данные,
-	/// создание зависимостей и маппинг в базе данных.
-	/// </summary>
-	/// <typeparam name="T"><see cref="Entity"/></typeparam>
-	internal abstract class Configuration<T> : IEntityTypeConfiguration<T> where T : Entity
-	{
-		/// <summary>
-		/// Конструктор.
-		/// </summary>
-		/// <param name="configuration">Конфигурация базы данных.</param>
-		protected Configuration(ContextConfiguration configuration)
-		{
-			ContextConfiguration = configuration;
-		}
+    /// <summary>
+    /// Конфигурация модели <see cref="Entity"/>.
+    /// Используется для дополнительной настройки,
+    /// включая биндинг полей под данные,
+    /// создание зависимостей и маппинг в базе данных.
+    /// </summary>
+    /// <typeparam name="T"><see cref="Entity"/></typeparam>
+    internal abstract class Configuration<T> : IEntityTypeConfiguration<T> where T : Entity
+    {
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="configuration">Конфигурация базы данных.</param>
+        protected Configuration(ContextConfiguration configuration)
+        {
+            ContextConfiguration = configuration;
+        }
 
-		/// <summary>
-		/// Конфигурация базы данных.
-		/// </summary>
-		private ContextConfiguration ContextConfiguration { get; }
+        /// <summary>
+        /// Конфигурация базы данных.
+        /// </summary>
+        private ContextConfiguration ContextConfiguration { get; }
 
-		/// <summary>
-		/// Задать конфигурацию для модели.
-		/// </summary>
-		/// <param name="builder">Набор интерфейсов настройки модели.</param>
-		public virtual void Configure(EntityTypeBuilder<T> builder)
-		{
-			builder.Property(entity => entity.CreatedAt)
-				.HasColumnType(ContextConfiguration.DateTimeType)
-				.HasDefaultValueSql(ContextConfiguration.DateTimeValueCurrent);
+        /// <summary>
+        /// Задать конфигурацию для модели.
+        /// </summary>
+        /// <param name="builder">Набор интерфейсов настройки модели.</param>
+        public virtual void Configure(EntityTypeBuilder<T> builder)
+        {
+            builder.Property(entity => entity.CreatedAt)
+                .HasColumnType(ContextConfiguration.DateTimeType)
+                .HasDefaultValueSql(ContextConfiguration.DateTimeValueCurrent);
 
-			builder.Property(entity => entity.UpdatedAt)
-				.HasColumnType(ContextConfiguration.DateTimeType);
-		}
-	}
-    
-	/*                   __ _                       _   _
+            builder.Property(entity => entity.UpdatedAt)
+                .HasColumnType(ContextConfiguration.DateTimeType);
+        }
+    }
+
+    /*                   __ _                       _   _
 	 *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
 	 *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
 	 * | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
@@ -58,20 +58,20 @@ public abstract class Entity
 	 * Константы, задающие базовые конфигурации полей
 	 * и ограничения модели.
 	 */
-	#region Configuration
+    #region Configuration
 
-	/// <summary>
-	/// Статус необходимости наличия значения в поле <see cref="CreatedAt"/>.
-	/// </summary>
-	private const bool IsCreatedAtRequired = false;
+    /// <summary>
+    /// Статус необходимости наличия значения в поле <see cref="CreatedAt"/>.
+    /// </summary>
+    private const bool IsCreatedAtRequired = false;
 
-	/// <summary>
-	/// Статус необходимости наличия значения в поле <see cref="UpdatedAt"/>.
-	/// </summary>
-	private const bool IsUpdatedAtRequired = false;
-	
-	#endregion
-	
+    /// <summary>
+    /// Статус необходимости наличия значения в поле <see cref="UpdatedAt"/>.
+    /// </summary>
+    private const bool IsUpdatedAtRequired = false;
+
+    #endregion
+
     /*             _   _ _
      *   ___ _ __ | |_(_) |_ _   _
      *  / _ \ '_ \| __| | __| | | |
@@ -88,15 +88,15 @@ public abstract class Entity
     /// </summary>
     public int Id { get; set; }
 
-	/// <summary>
-	/// Дата создания.
-	/// </summary>
-	public DateTime CreatedAt { get; set; }
+    /// <summary>
+    /// Дата создания.
+    /// </summary>
+    public DateTime CreatedAt { get; set; }
 
-	/// <summary>
-	/// Дата обновления.
-	/// </summary>
-	public DateTime? UpdatedAt { get; set; }
+    /// <summary>
+    /// Дата обновления.
+    /// </summary>
+    public DateTime? UpdatedAt { get; set; }
 
     #endregion
 }

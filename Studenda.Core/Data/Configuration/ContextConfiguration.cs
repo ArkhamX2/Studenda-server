@@ -19,17 +19,17 @@ public abstract class ContextConfiguration
         ConnectionString = connectionString;
         IsDebugMode = isDebugMode;
     }
-    
+
     /// <summary>
     /// Строка подключения к базе данных.
     /// </summary>
     protected string ConnectionString { get; }
-    
+
     /// <summary>
     /// Статус конфигурации для разработки.
     /// </summary>
     private bool IsDebugMode { get; }
-    
+
     /// <summary>
     /// Тип полей даты и времени в базе данных.
     /// </summary>
@@ -51,10 +51,10 @@ public abstract class ContextConfiguration
         {
             return;
         }
-        
+
         optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.ConfigureWarnings(builder => builder.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
-        
+
         optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
     }
 }

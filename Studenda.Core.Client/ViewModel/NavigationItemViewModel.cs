@@ -1,15 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using Studenda.Core.Client.View.AndroidView;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Studenda.Core.Client.ViewModel
 {
-    public partial class NavigationItemViewModel:ObservableObject
+    public partial class NavigationItemViewModel : ObservableObject
     {
         async public void GoToHome()
         {

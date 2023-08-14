@@ -11,25 +11,25 @@ public partial class NavigationItemComponent : ContentView
             var control = (NavigationItemComponent)bindable;
         });
 
-    
+
 
     NavigationItemViewModel vm = new NavigationItemViewModel();
-	public NavigationItemComponent()
-	{
-		InitializeComponent();
-		BindingContext = vm;
-	}
+    public NavigationItemComponent()
+    {
+        InitializeComponent();
+        BindingContext = vm;
+    }
 
-    public string ItemType 
-    { 
-        get=>GetValue(ItemTypeProperty) as string; 
-        set => SetValue(ItemTypeProperty,value); 
+    public string ItemType
+    {
+        get => GetValue(ItemTypeProperty) as string;
+        set => SetValue(ItemTypeProperty, value);
     }
 
 
     private void NavigationItem_Tapped(object sender, TappedEventArgs e)
     {
-        switch(ItemType) 
+        switch (ItemType)
         {
             case "Profile":
                 vm.GoToProfile();

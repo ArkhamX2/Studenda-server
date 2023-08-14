@@ -38,7 +38,7 @@ public class Permission : Entity
             base.Configure(builder);
         }
     }
-    
+
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
      *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
@@ -61,7 +61,7 @@ public class Permission : Entity
     public const bool IsNameRequired = true;
 
     #endregion
-    
+
     /*             _   _ _
      *   ___ _ __ | |_(_) |_ _   _
      *  / _ \ '_ \| __| | __| | | |

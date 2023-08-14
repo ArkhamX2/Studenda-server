@@ -38,7 +38,7 @@ public class UserGroupLink
                 .IsRequired(IsGroupIdRequired);
         }
     }
-    
+
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
      *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
@@ -61,7 +61,7 @@ public class UserGroupLink
     public const bool IsGroupIdRequired = true;
 
     #endregion
-    
+
     /*             _   _ _
      *   ___ _ __ | |_(_) |_ _   _
      *  / _ \ '_ \| __| | __| | | |
