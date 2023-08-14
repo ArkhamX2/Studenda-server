@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 
-namespace Studenda.Core.Model.Common;
+namespace Studenda.Core.Model.Security.Management;
 
 /// <summary>
-///     Курс.
+///     Связь многие ко многим для <see cref="Management.Role" /> и <see cref="Management.Permission" />.
 /// </summary>
-public class Course : Identity
+public class RolePermissionLink : Entity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -21,24 +21,19 @@ public class Course : Identity
     #region Configuration
 
     /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
+    ///     Статус необходимости наличия значения в поле <see cref="RoleId" />.
     /// </summary>
-    public const int NameLengthMax = 32;
+    public const bool IsRoleIdRequired = true;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Grade" />.
+    ///     Статус необходимости наличия значения в поле <see cref="PermissionId" />.
     /// </summary>
-    public const bool IsGradeRequired = true;
+    public const bool IsPermissionIdRequired = true;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
+    ///     Конфигурация модели <see cref="RolePermissionLink" />.
     /// </summary>
-    public const bool IsNameRequired = false;
-
-    /// <summary>
-    ///     Конфигурация модели <see cref="Course" />.
-    /// </summary>
-    internal class Configuration : Configuration<Course>
+    internal class Configuration : Configuration<RolePermissionLink>
     {
         /// <summary>
         ///     Конструктор.
@@ -53,20 +48,23 @@ public class Course : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Course> builder)
+        public override void Configure(EntityTypeBuilder<RolePermissionLink> builder)
         {
-            builder.Property(course => course.Grade)
+            builder.HasKey(link => new
+            {
+                link.RoleId,
+                link.PermissionId
+            });
+
+            builder.HasOne(link => link.Role)
+                .WithMany(role => role.RolePermissionLinks)
+                .HasForeignKey(link => link.RoleId)
                 .IsRequired();
 
-            builder.Property(course => course.Name)
-                .HasMaxLength(NameLengthMax)
-                .IsRequired(IsNameRequired);
-
-            builder.HasMany(course => course.Groups)
-                .WithOne(group => group.Course)
-                .HasForeignKey(group => group.CourseId);
-
-            base.Configure(builder);
+            builder.HasOne(link => link.Permission)
+                .WithMany(permission => permission.RolePermissionLinks)
+                .HasForeignKey(link => link.PermissionId)
+                .IsRequired();
         }
     }
 
@@ -85,21 +83,24 @@ public class Course : Identity
     #region Entity
 
     /// <summary>
-    ///     Градация.
-    ///     Числовое представление для операций сравнения.
+    ///     Идентификатор связанного объекта <see cref="Management.Role" />.
     /// </summary>
-    public int Grade { get; set; }
+    public int RoleId { get; set; }
 
     /// <summary>
-    ///     Название.
-    ///     Необязательное поле.
+    ///     Идентификатор связанного объекта <see cref="Management.Permission" />.
     /// </summary>
-    public string? Name { get; set; }
+    public int PermissionId { get; set; }
 
     #endregion
 
     /// <summary>
-    ///     Связанные объекты <see cref="Group" />.
+    ///     Связанный объект <see cref="Management.Role" />.
     /// </summary>
-    public List<Group> Groups { get; set; } = null!;
+    public Role Role { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанный объект <see cref="Management.Permission" />.
+    /// </summary>
+    public Permission Permission { get; set; } = null!;
 }

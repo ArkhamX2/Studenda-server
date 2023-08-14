@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 
-namespace Studenda.Core.Model.Common;
+namespace Studenda.Core.Model.Schedule.Management;
 
 /// <summary>
-///     Курс.
+///     Тип учебной недели.
 /// </summary>
-public class Course : Identity
+public class WeekType : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -26,19 +26,14 @@ public class Course : Identity
     public const int NameLengthMax = 32;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Grade" />.
-    /// </summary>
-    public const bool IsGradeRequired = true;
-
-    /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
-    public const bool IsNameRequired = false;
+    public const bool IsNameRequired = true;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="Course" />.
+    ///     Конфигурация модели <see cref="WeekType" />.
     /// </summary>
-    internal class Configuration : Configuration<Course>
+    internal class Configuration : Configuration<WeekType>
     {
         /// <summary>
         ///     Конструктор.
@@ -53,18 +48,11 @@ public class Course : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Course> builder)
+        public override void Configure(EntityTypeBuilder<WeekType> builder)
         {
-            builder.Property(course => course.Grade)
-                .IsRequired();
-
-            builder.Property(course => course.Name)
+            builder.Property(type => type.Name)
                 .HasMaxLength(NameLengthMax)
-                .IsRequired(IsNameRequired);
-
-            builder.HasMany(course => course.Groups)
-                .WithOne(group => group.Course)
-                .HasForeignKey(group => group.CourseId);
+                .IsRequired();
 
             base.Configure(builder);
         }
@@ -85,21 +73,9 @@ public class Course : Identity
     #region Entity
 
     /// <summary>
-    ///     Градация.
-    ///     Числовое представление для операций сравнения.
-    /// </summary>
-    public int Grade { get; set; }
-
-    /// <summary>
     ///     Название.
-    ///     Необязательное поле.
     /// </summary>
-    public string? Name { get; set; }
+    public string Name { get; set; } = null!;
 
     #endregion
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Group" />.
-    /// </summary>
-    public List<Group> Groups { get; set; } = null!;
 }
