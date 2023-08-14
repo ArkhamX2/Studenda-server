@@ -12,18 +12,20 @@
             <RowDefinition Height="66" />
             <RowDefinition Height="97" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="55" />
         </Grid.RowDefinitions>
         <ui:NavigationBarComponent Grid.Row="0">
 
-            <Grid BackgroundColor="{DynamicResource PanelColor}">
+            <Grid BackgroundColor="{DynamicResource PanelColor}" HeightRequest="66">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="62" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="62" />
                 </Grid.ColumnDefinitions>
                 <ui:NavigationItemComponent
                     Grid.Column="0"
-                    HorizontalOptions="Start"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="End"
                     ItemType="Profile"
                     VerticalOptions="Center">
                     <Image Source="profile_pic_mini.png" />
@@ -38,7 +40,8 @@
 
                 <ui:NavigationItemComponent
                     Grid.Column="2"
-                    HorizontalOptions="End"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Start"
                     ItemType="Notifications"
                     VerticalOptions="Center">
                     <Image Source="notification_bell.png" />
@@ -50,5 +53,6 @@
         <ScrollView Grid.Row="2">
             <ui:ScheduleComponent Schedule="{Binding ScheduleList}" />
         </ScrollView>
+        <ui:NavigationFooterPanel Grid.Row="3" />
     </Grid>
 </ContentPage>

@@ -12,33 +12,34 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
+        <ui:NavigationBarComponent Grid.Row="0">
 
-        <Grid
-            x:Name="ProfilePanel"
-            Grid.Row="0"
-            BackgroundColor="{StaticResource PanelColor}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="61" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Image
-                x:Name="ProfilePicture"
-                Grid.Column="0"
-                HeightRequest="43"
-                HorizontalOptions="End"
-                Source="profile_pic_mini.png"
-                VerticalOptions="Center"
-                WidthRequest="43" />
-            <Image
-                x:Name="NotificatonBell"
-                Grid.Column="1"
-                Margin="0,0,10,0"
-                HeightRequest="46"
-                HorizontalOptions="End"
-                Source="notification_bell.png"
-                VerticalOptions="Center"
-                WidthRequest="58" />
-        </Grid>
+            <Grid BackgroundColor="{DynamicResource PanelColor}" HeightRequest="66">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="62" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="62" />
+                </Grid.ColumnDefinitions>
+                <ui:NavigationItemComponent
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="End"
+                    ItemType="Profile"
+                    VerticalOptions="Center">
+                    <Image Source="profile_pic_mini.png" />
+                </ui:NavigationItemComponent>
+
+                <ui:NavigationItemComponent
+                    Grid.Column="2"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Start"
+                    ItemType="Notifications"
+                    VerticalOptions="Center">
+                    <Image Source="notification_bell.png" />
+                </ui:NavigationItemComponent>
+
+            </Grid>
+        </ui:NavigationBarComponent>
 
         <VerticalStackLayout Grid.Row="1">
             <ui:ScheduleDayComponent WeekDayTitle="Расписание">
@@ -99,7 +100,7 @@
                     VerticalScrollBarVisibility="Never">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Label Text="ExamName"/>
+                            <Label Text="ExamName" />
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

@@ -5,14 +5,42 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
     Shell.NavBarIsVisible="False">
-    <VerticalStackLayout>
-        <ui:NavigationBarComponent Title="Уведомления" />
-        <CollectionView ItemsSource="{Binding NotificationCollection}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <ui:NotificationComponent NotificationDate="{Binding Date}" NotificationName="{Binding Name}" />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="66" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <ui:NavigationBarComponent Grid.Row="0">
+            <Grid BackgroundColor="{DynamicResource PanelColor}" HeightRequest="66">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="62" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="62" />
+                </Grid.ColumnDefinitions>
+                <ui:NavigationItemComponent
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="End"
+                    ItemType="Profile"
+                    VerticalOptions="Center">
+                    <Image Source="profile_pic_mini.png" />
+                </ui:NavigationItemComponent>
+            </Grid>
+        </ui:NavigationBarComponent>
+
+        <ScrollView Grid.Row="1">
+
+            <CollectionView ItemsSource="{Binding NotificationCollection}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <ui:NotificationComponent NotificationDate="{Binding Date}" NotificationName="{Binding Name}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </ScrollView>
+
+        <ui:NavigationFooterPanel Grid.Row="2" />
+    </Grid>
 </ContentPage>

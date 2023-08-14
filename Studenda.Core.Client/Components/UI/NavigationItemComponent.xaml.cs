@@ -11,12 +11,6 @@ public partial class NavigationItemComponent : ContentView
             var control = (NavigationItemComponent)bindable;
         });
 
-    public static readonly BindableProperty IsSelectedProperty = BindableProperty.Create(nameof(IsSelected), typeof(string), typeof(NavigationItemComponent),
-        propertyChanged: (bindable, oldValue, newValue) =>
-        {
-            var control = (NavigationItemComponent)bindable;
-
-        });
     
 
     NavigationItemViewModel vm = new NavigationItemViewModel();
@@ -32,11 +26,6 @@ public partial class NavigationItemComponent : ContentView
         set => SetValue(ItemTypeProperty,value); 
     }
 
-    public string IsSelected
-    {
-        get => GetValue(IsSelectedProperty) as string;
-        set => SetValue(IsSelectedProperty,value);
-    }
 
     private void NavigationItem_Tapped(object sender, TappedEventArgs e)
     {

@@ -8,7 +8,6 @@
     <ContentView.ControlTemplate>
         <ControlTemplate>
             <Frame
-                x:Name="NavigationItemFrame"
                 BackgroundColor="Transparent"
                 BorderColor="Transparent">
                 <Frame.GestureRecognizers>

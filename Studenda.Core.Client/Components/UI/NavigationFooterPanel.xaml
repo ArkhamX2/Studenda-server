@@ -2,32 +2,74 @@
 <ContentView
     x:Class="Studenda.Core.Client.Components.UI.NavigationFooterPanel"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <Grid HeightRequest="50" BackgroundColor="#D3C9FD">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI">
+    <Grid BackgroundColor="#D3C9FD" HeightRequest="50">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Button
+        <ui:NavigationItemComponent
             Grid.Column="0"
             HorizontalOptions="Center"
+            ItemType="Home"
             VerticalOptions="Center"
-            WidthRequest="82"
-            Text="Главная"/>
-        <Button
+            WidthRequest="82">
+            <VerticalStackLayout WidthRequest="82">
+                <Image
+                    HeightRequest="30"
+                    HorizontalOptions="Center"
+                    Source="schedule.png" />
+                <Label
+                    FontFamily="InterMedium"
+                    FontSize="10"
+                    HorizontalOptions="Center"
+                    Text="Главная"
+                    TextColor="{StaticResource ForegroundColor}" />
+            </VerticalStackLayout>
+        </ui:NavigationItemComponent>
+
+        <ui:NavigationItemComponent
             Grid.Column="1"
             HorizontalOptions="Center"
+            ItemType="Schedule"
             VerticalOptions="Center"
-            WidthRequest="82" 
-            Text="Расписание"/>
-        <Button
+            WidthRequest="82">
+            <VerticalStackLayout WidthRequest="82">
+                <Image
+                    HeightRequest="30"
+                    HorizontalOptions="Center"
+                    Source="schedule.png" />
+                <Label
+                    FontFamily="InterMedium"
+                    FontSize="10"
+                    HorizontalOptions="Center"
+                    Text="Расписание"
+                    TextColor="{StaticResource ForegroundColor}" />
+            </VerticalStackLayout>
+        </ui:NavigationItemComponent>
+
+        <ui:NavigationItemComponent
             Grid.Column="2"
             HorizontalOptions="Center"
+            ItemType="Journal"
             VerticalOptions="Center"
-            WidthRequest="82" 
-            Text="Журнал"/>
+            WidthRequest="82">
+            <VerticalStackLayout WidthRequest="82">
+                <Image
+                    HeightRequest="30"
+                    HorizontalOptions="Center"
+                    Source="schedule.png" />
+                <Label
+                    FontFamily="InterMedium"
+                    FontSize="10"
+                    HorizontalOptions="Center"
+                    Text="Журнал"
+                    TextColor="{StaticResource ForegroundColor}" />
+            </VerticalStackLayout>
+        </ui:NavigationItemComponent>
 
     </Grid>
 </ContentView>

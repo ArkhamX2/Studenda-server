@@ -10,8 +10,6 @@ public partial class NavigationBarComponent : ContentView
             var control = (NavigationBarComponent)bindable;
 
             string title = newValue as string;
-
-                control.GroupSelector.IsVisible = true;
         });
         
     NavigationBarViewModel vm = new NavigationBarViewModel();
