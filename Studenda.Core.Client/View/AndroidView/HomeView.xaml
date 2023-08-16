@@ -108,7 +108,7 @@
 
         </VerticalStackLayout>
 
-        <ui:NavigationFooterPanel Grid.Row="2" />
+        <ui:NavigationFooterPanel Grid.Row="2" SelectedTab="Home"/>
 
     </Grid>
 </ContentPage>

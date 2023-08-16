@@ -4,7 +4,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI">
-    <Grid BackgroundColor="#D3C9FD" HeightRequest="50">
+    <Grid
+        x:Name="FooterGrid"
+        BackgroundColor="{StaticResource NavigationFooterColor}"
+        HeightRequest="50">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
@@ -12,6 +15,7 @@
         </Grid.ColumnDefinitions>
 
         <ui:NavigationItemComponent
+            x:Name="HomeItem"
             Grid.Column="0"
             HorizontalOptions="Center"
             ItemType="Home"
@@ -32,6 +36,7 @@
         </ui:NavigationItemComponent>
 
         <ui:NavigationItemComponent
+            x:Name="ScheduleItem"
             Grid.Column="1"
             HorizontalOptions="Center"
             ItemType="Schedule"
@@ -52,6 +57,7 @@
         </ui:NavigationItemComponent>
 
         <ui:NavigationItemComponent
+            x:Name="JournalItem"
             Grid.Column="2"
             HorizontalOptions="Center"
             ItemType="Journal"

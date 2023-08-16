@@ -53,6 +53,6 @@
         <ScrollView Grid.Row="2">
             <ui:ScheduleComponent Schedule="{Binding ScheduleList}" />
         </ScrollView>
-        <ui:NavigationFooterPanel Grid.Row="3" />
+        <ui:NavigationFooterPanel Grid.Row="3" SelectedTab="Schedule" />
     </Grid>
 </ContentPage>
