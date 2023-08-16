@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Server.utils;
+using Studenda.Core.Server.utils.Token;
 
 
 #if DEBUG
@@ -15,9 +16,15 @@ const bool isDebugMode = true;
 const bool isDebugMode = false;
 #endif
 var builder = WebApplication.CreateBuilder(args);
+//добавляет контроллеры
 builder.Services.AddControllers();
+//добавляет в  builder конфигурацию для базы данных(необходимо для  sqlite)
 builder.Services.AddSingleton<ContextConfiguration>(_ => new SqliteConfiguration("Data Source=000_debug_storage.db", isDebugMode));
+//добавляет базу данных
 builder.Services.AddDbContext<DataContext>(o=>o.UseSqlite());
+
+builder.Services.AddScoped<ITokenService, TokenService>();
+//добавляет корс
 builder.Services.AddCors(c => c.AddPolicy("cors", opt =>
 {
     opt.AllowAnyHeader();
