@@ -22,7 +22,7 @@ namespace Studenda.Core.Client.ViewModel
         [RelayCommand]
         async private void GoToHomeView()
         {
-            await Shell.Current.GoToAsync($"//{nameof(ScheduleView)}");
+            await Shell.Current.GoToAsync($"//{nameof(HomeView)}");
         }
 
         [RelayCommand]
