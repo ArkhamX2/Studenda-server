@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
@@ -32,6 +33,10 @@ builder.Services.AddCors(c => c.AddPolicy("cors", opt =>
     opt.AllowAnyMethod();
     opt.WithOrigins(builder.Configuration.GetSection("Cors:Urls").Get<string[]>()!);
 }));
+builder.Services.AddIdentity<Person, IdentityRole<long>>()
+                .AddEntityFrameworkStores<DataContext>()
+                .AddUserManager<UserManager<Person>>()
+                .AddSignInManager<SignInManager<Person>>();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
