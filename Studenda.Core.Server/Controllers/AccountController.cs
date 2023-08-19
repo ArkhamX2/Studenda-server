@@ -8,6 +8,8 @@ using Studenda.Core.Server.utils.Token;
 using Studenda.Core.Server.utils;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Studenda.Core.Model.Account;
 
 namespace Studenda.Core.Server.Controllers
 {
@@ -37,6 +39,8 @@ namespace Studenda.Core.Server.Controllers
             }
 
             var managedUser = await _userManager.FindByEmailAsync(request.Email);
+            var Mapcfg = new MapperConfiguration(cfg => cfg.CreateMap<User, Person>());
+            var mapper = new Mapper(Mapcfg);
 
             if (managedUser == null)
             {
@@ -50,12 +54,12 @@ namespace Studenda.Core.Server.Controllers
                 return BadRequest("Bad credentials");
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.Email == request.Email);
+            var user =mapper.Map<Person>( _context.Users.FirstOrDefault(u => u.Email == request.Email));
 
             if (user is null)
                 return Unauthorized();
 
-            var roleIds = await _context.UserRoles.Where(r => r.Id == user.Id).Select(x => x.RoleId).ToListAsync();
+            var roleIds = await _context.User.Where(r => r.Id == user.Id).Select(x => x.Id).ToListAsync();
             var roles = _context.Roles.Where(x => roleIds.Contains(x.Id)).ToList();
 
             var accessToken = _tokenService.CreateToken(user, roles);
@@ -80,9 +84,9 @@ namespace Studenda.Core.Server.Controllers
 
             var user = new Person
             {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                MiddleName = request.MiddleName,
+                Name = request.FirstName,
+                Surname = request.LastName,
+                Patronymic= request.MiddleName,
                 Email = request.Email,
                 UserName = request.Email
             };
@@ -167,7 +171,7 @@ namespace Studenda.Core.Server.Controllers
         public async Task<IActionResult> RevokeAll()
         {
             var users = _userManager.Users.ToList();
-            foreach (var user in users)
+            foreach (var user in users) 
             {
                 user.RefreshToken = null;
                 await _userManager.UpdateAsync(user);
