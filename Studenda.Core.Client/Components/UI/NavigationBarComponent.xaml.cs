@@ -12,11 +12,9 @@ public partial class NavigationBarComponent : ContentView
             string title = newValue as string;
         });
 
-    NavigationBarViewModel vm = new NavigationBarViewModel();
     public NavigationBarComponent()
     {
         InitializeComponent();
-        BindingContext = vm;
     }
 
     public string Title

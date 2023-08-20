@@ -4,21 +4,23 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
+    xmlns:vm="clr-namespace:Studenda.Core.Client.ViewModel"
     Shell.NavBarIsVisible="False">
-    <Grid>
+    <Grid BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
         <Grid.RowDefinitions>
             <RowDefinition Height="66" />
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <ui:NavigationBarComponent Grid.Row="0">
-            <Grid BackgroundColor="{DynamicResource PanelColor}" HeightRequest="66">
+        <ui:NavigationBarComponent Grid.Row="0" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
+            <Grid BackgroundColor="{DynamicResource PanelColor}" HeightRequest="66" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="62" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="62" />
                 </Grid.ColumnDefinitions>
                 <ui:NavigationItemComponent
+                    BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
                     Grid.Column="0"
                     BackgroundColor="Transparent"
                     HorizontalOptions="End"
@@ -41,6 +43,7 @@
 
         </ScrollView>
 
-        <ui:NavigationFooterPanel Grid.Row="2" />
+        <ui:NavigationFooterPanel Grid.Row="2" 
+                    BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}},  Mode=TwoWay}"/>
     </Grid>
 </ContentPage>

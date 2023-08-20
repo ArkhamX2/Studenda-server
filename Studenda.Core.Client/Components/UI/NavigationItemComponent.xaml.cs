@@ -11,13 +11,11 @@ public partial class NavigationItemComponent : ContentView
             var control = (NavigationItemComponent)bindable;
         });
 
+    NavigationItemViewModel viewModel;
 
-
-    NavigationItemViewModel vm = new NavigationItemViewModel();
     public NavigationItemComponent()
     {
         InitializeComponent();
-        BindingContext = vm;
     }
 
     public string ItemType
@@ -29,25 +27,27 @@ public partial class NavigationItemComponent : ContentView
 
     private void NavigationItem_Tapped(object sender, TappedEventArgs e)
     {
+        var _bindingContext = this.BindingContext as HomeViewModel;
+
         switch (ItemType)
         {
             case "Profile":
-                vm.GoToProfile();
+                _bindingContext.NavigationItemViewModel.GoToProfile(_bindingContext);
                 break;
             case "Notifications":
-                vm.GoToNotifications();
+                _bindingContext.NavigationItemViewModel.GoToNotifications(_bindingContext);
                 break;
             case "Home":
-                vm.GoToHome();
+                _bindingContext.NavigationItemViewModel.GoToHome(_bindingContext);
                 break;
             case "Schedule":
-                vm.GoToSchedule();
+                _bindingContext.NavigationItemViewModel.GoToSchedule(_bindingContext);
                 break;
             case "Journal":
-                vm.GoToJournal();
+                _bindingContext.NavigationItemViewModel.GoToJournal(_bindingContext);
                 break;
             case "Settings":
-                vm.GoToSettings();
+                _bindingContext.NavigationItemViewModel.GoToSettings(_bindingContext);
                 break;
             default:
                 throw new Exception("Указан неверный тип элемента навигации.");

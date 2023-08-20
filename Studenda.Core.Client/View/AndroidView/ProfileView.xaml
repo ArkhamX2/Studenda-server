@@ -4,17 +4,21 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
+    xmlns:vm="clr-namespace:Studenda.Core.Client.ViewModel"
     BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
     Shell.NavBarIsVisible="False">
-    <Grid>
+    <Grid BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
         <Grid.RowDefinitions>
             <RowDefinition Height="66" />
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
-        <ui:NavigationBarComponent Grid.Row="0">
-            <Grid BackgroundColor="{DynamicResource PanelColor}" HeightRequest="66">
+        <ui:NavigationBarComponent Grid.Row="0" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
+            <Grid
+                BackgroundColor="{DynamicResource PanelColor}"
+                BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
+                HeightRequest="66">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="62" />
                     <ColumnDefinition Width="*" />
@@ -23,6 +27,7 @@
                 <ui:NavigationItemComponent
                     Grid.Column="0"
                     BackgroundColor="Transparent"
+                    BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
                     HorizontalOptions="End"
                     ItemType="Settings"
                     VerticalOptions="Center">
@@ -32,6 +37,7 @@
                 <ui:NavigationItemComponent
                     Grid.Column="2"
                     BackgroundColor="Transparent"
+                    BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
                     HorizontalOptions="Start"
                     ItemType="Notifications"
                     VerticalOptions="Center">
@@ -119,6 +125,6 @@
 
         </Grid>
 
-        <ui:NavigationFooterPanel Grid.Row="2" />
+        <ui:NavigationFooterPanel Grid.Row="2" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}" />
     </Grid>
 </ContentPage>
