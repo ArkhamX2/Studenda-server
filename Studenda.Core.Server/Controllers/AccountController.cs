@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Data;
@@ -59,7 +58,7 @@ namespace Studenda.Core.Server.Controllers
             if (user is null)
                 return Unauthorized();
 
-            var roleIds = await _context.User.Where(r => r.Id == user.Id).Select(x => x.Id).ToListAsync();
+            var roleIds = await _context.UserRoles.Where(r => r.UserId == user.Id).Select(x => x.RoleId).ToListAsync();
             var roles = _context.Roles.Where(x => roleIds.Contains(x.Id)).ToList();
 
             var accessToken = _tokenService.CreateToken(user, roles);
@@ -81,7 +80,8 @@ namespace Studenda.Core.Server.Controllers
         public async Task<ActionResult<loginResponse>> Register([FromBody] registerRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(request);
-
+            var Mapcfg = new MapperConfiguration(cfg => cfg.CreateMap<User, Person>());
+            var mapper = new Mapper(Mapcfg);
             var user = new Person
             {
                 Name = request.FirstName,
@@ -99,11 +99,13 @@ namespace Studenda.Core.Server.Controllers
 
             if (!result.Succeeded) return BadRequest(request);
 
-            var findUser = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+            var findUser =mapper.Map<Person> (await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email));
 
             if (findUser == null) throw new Exception($"User {request.Email} not found");
+            List<Role> allRoles = _context.AppRoles.ToList();
+            var role = allRoles.FirstOrDefault(x => x.Name == "");
 
-            await _userManager.AddToRoleAsync(findUser, RoleConsts.Member);
+            await _userManager.AddToRoleAsync(findUser, role.Name);
 
             return await Authenticate(new loginRequest
             {
