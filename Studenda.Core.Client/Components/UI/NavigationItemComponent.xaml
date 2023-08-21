@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Studenda.Core.Client.Components.UI.NavigationItemComponent"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    HeightRequest="46"
+    WidthRequest="58">
+    <ContentView.ControlTemplate>
+        <ControlTemplate>
+            <Frame
+                BackgroundColor="Transparent"
+                BorderColor="Transparent">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="NavigationItem_Tapped" />
+                </Frame.GestureRecognizers>
+                <ContentPresenter
+                    Margin="-20"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+            </Frame>
+        </ControlTemplate>
+    </ContentView.ControlTemplate>
+</ContentView>
