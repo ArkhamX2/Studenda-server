@@ -55,9 +55,9 @@
 
             </Grid>
         </ui:NavigationBarComponent>
-        <ui:CalendarCarouselComponent Grid.Row="1" WeekTypeTitle="{Binding TypeOfWeek}" />
-        <ScrollView Grid.Row="2">
-            <ui:ScheduleComponent Schedule="{Binding ScheduleList}" />
+        <ui:CalendarCarouselComponent Grid.Row="1" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}},Path=ScheduleViewModel, Mode=TwoWay}" WeekTypeTitle="{Binding TypeOfWeek}" />
+        <ScrollView Grid.Row="2" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}},Path=ScheduleViewModel, Mode=TwoWay}">
+            <ui:ScheduleComponent Schedule="{Binding ScheduleList}"  />
         </ScrollView>
         <ui:NavigationFooterPanel
             Grid.Row="3"

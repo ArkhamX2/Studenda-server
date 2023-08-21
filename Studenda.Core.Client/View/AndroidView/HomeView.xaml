@@ -13,9 +13,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <ui:NavigationBarComponent
-            Grid.Row="0"
-            BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
+        <ui:NavigationBarComponent Grid.Row="0" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
 
             <Grid
                 BackgroundColor="{DynamicResource PanelColor}"
@@ -51,8 +49,8 @@
             </Grid>
         </ui:NavigationBarComponent>
 
-        <VerticalStackLayout Grid.Row="1">
-            <ui:ScheduleDayComponent WeekDayTitle="Расписание">
+        <VerticalStackLayout Grid.Row="1" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
+            <ui:ScheduleDayComponent BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ScheduleViewModel, Mode=TwoWay}" WeekDayTitle="Расписание">
                 <CollectionView
                     HorizontalScrollBarVisibility="Never"
                     IsEnabled="False"
@@ -71,7 +69,7 @@
                 </CollectionView>
             </ui:ScheduleDayComponent>
 
-            <VerticalStackLayout Margin="15,15,15,0">
+            <VerticalStackLayout Margin="15,15,15,0" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=NotificationViewModel, Mode=TwoWay}">
                 <Label
                     Margin="5,0,0,24"
                     FontFamily="InterBold"
@@ -94,7 +92,7 @@
             </VerticalStackLayout>
 
 
-            <VerticalStackLayout Margin="15,15,15,0">
+            <VerticalStackLayout Margin="15,15,15,0" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ExamViewModel, Mode=TwoWay}">
                 <Label
                     Margin="5,0,0,24"
                     FontFamily="InterBold"

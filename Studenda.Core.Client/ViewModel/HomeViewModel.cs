@@ -27,6 +27,9 @@ namespace Studenda.Core.Client.ViewModel
         [ObservableProperty]
         private NavigationBarViewModel navigationBarViewModel;
 
+        [ObservableProperty]
+        private ExamViewModel examViewModel;
+
 
 
         public HomeViewModel() 
@@ -43,6 +46,7 @@ namespace Studenda.Core.Client.ViewModel
             JournalViewModel = new JournalViewModel();
             NavigationBarViewModel = new NavigationBarViewModel();
             NavigationItemViewModel = new NavigationItemViewModel();
+            ExamViewModel = new ExamViewModel();
         }
 
         private void InitializeModels()

@@ -31,7 +31,7 @@
             </Grid>
         </ui:NavigationBarComponent>
 
-        <ScrollView Grid.Row="1">
+        <ScrollView Grid.Row="1" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}},Path=NotificationViewModel, Mode=TwoWay}">
 
             <CollectionView ItemsSource="{Binding NotificationCollection}">
                 <CollectionView.ItemTemplate>

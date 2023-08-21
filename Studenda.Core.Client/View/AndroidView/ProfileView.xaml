@@ -47,7 +47,7 @@
             </Grid>
         </ui:NavigationBarComponent>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}},Path=ProfileViewModel, Mode=TwoWay}">
             <Border
                 Margin="20,20,0,0"
                 HeightRequest="160"

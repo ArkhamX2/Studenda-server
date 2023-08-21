@@ -39,6 +39,9 @@ namespace Studenda.Core.Client.ViewModel
         private ObservableCollection<Notification> notificationCollection;
 
         [ObservableProperty]
+        private List<Notification> recentNotificationList;
+
+        [ObservableProperty]
         private int count;
 
         //TODO: Возникают ошибки приявзки, но при этом всё отображается корректно. Нужно убрать ошибки привязки
@@ -46,6 +49,12 @@ namespace Studenda.Core.Client.ViewModel
         {
             NotificationCollection = new(NotificationList);
             Count = NotificationCollection.Count;
+            RecentNotificationList = new List<Notification>() 
+            { 
+                NotificationList[0], 
+                NotificationList[1], 
+                NotificationList[2] 
+            };
         }
 
     }
