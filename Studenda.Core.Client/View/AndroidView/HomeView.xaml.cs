@@ -9,9 +9,5 @@ public partial class HomeView : ContentPage
     {
         BindingContext = vm;
         InitializeComponent();
-        //Console.WriteLine(this.GRIDLAYOUT.BindingContext);
-        //Console.WriteLine(this.NAVBAR.BindingContext);
-        //Console.WriteLine(this.NAVBARGRID.BindingContext);
-        //Console.WriteLine(this.ProfileNavigationItem.BindingContext);
     }
 }

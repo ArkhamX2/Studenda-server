@@ -7,19 +7,17 @@
     xmlns:vm="clr-namespace:Studenda.Core.Client.ViewModel"
     BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
     Shell.NavBarIsVisible="False">
-    <Grid x:Name="GRIDLAYOUT" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
+    <Grid BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
         <Grid.RowDefinitions>
             <RowDefinition Height="66" />
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <ui:NavigationBarComponent
-            x:Name="NAVBAR"
             Grid.Row="0"
             BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
 
             <Grid
-                x:Name="NAVBARGRID"
                 BackgroundColor="{DynamicResource PanelColor}"
                 BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
                 HeightRequest="66">

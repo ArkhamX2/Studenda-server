@@ -11,8 +11,6 @@ public partial class NavigationItemComponent : ContentView
             var control = (NavigationItemComponent)bindable;
         });
 
-    NavigationItemViewModel viewModel;
-
     public NavigationItemComponent()
     {
         InitializeComponent();
