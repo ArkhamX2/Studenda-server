@@ -5,23 +5,46 @@ using Studenda.Core.Data.Configuration;
 namespace Studenda.Core.Model;
 
 /// <summary>
-/// Модель стандартного объекта с соответствующей
-/// таблицей в базе данных.
-/// Реализация Table Per Class подхода.
+///     Модель стандартного объекта с соответствующей
+///     таблицей в базе данных.
 /// </summary>
 public abstract class Entity
 {
+    /*                   __ _                       _   _
+     *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
+     *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
+     * | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
+     *  \___\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
+     *                        |___/
+     * Константы, задающие базовые конфигурации полей
+     * и ограничения модели.
+     */
+
+    #region Configuration
+
     /// <summary>
-    /// Конфигурация модели <see cref="Entity"/>.
-    /// Используется для дополнительной настройки,
-    /// включая биндинг полей под данные,
-    /// создание зависимостей и маппинг в базе данных.
+    ///     Статус необходимости наличия значения в поле <see cref="CreatedAt" />.
     /// </summary>
-    /// <typeparam name="T"><see cref="Entity"/></typeparam>
+    private const bool IsCreatedAtRequired = false;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="UpdatedAt" />.
+    /// </summary>
+    private const bool IsUpdatedAtRequired = false;
+
+    /// <summary>
+    ///     Конфигурация модели <see cref="Entity" />.
+    ///     Используется для дополнительной настройки,
+    ///     включая биндинг полей под данные,
+    ///     создание зависимостей и маппинг в базе данных.
+    /// </summary>
+    /// <typeparam name="T">
+    ///     <see cref="Entity" />
+    /// </typeparam>
     internal abstract class Configuration<T> : IEntityTypeConfiguration<T> where T : Entity
     {
         /// <summary>
-        /// Конструктор.
+        ///     Конструктор.
         /// </summary>
         /// <param name="configuration">Конфигурация базы данных.</param>
         protected Configuration(ContextConfiguration configuration)
@@ -30,12 +53,12 @@ public abstract class Entity
         }
 
         /// <summary>
-        /// Конфигурация базы данных.
+        ///     Конфигурация базы данных.
         /// </summary>
         private ContextConfiguration ContextConfiguration { get; }
 
         /// <summary>
-        /// Задать конфигурацию для модели.
+        ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public virtual void Configure(EntityTypeBuilder<T> builder)
@@ -49,27 +72,6 @@ public abstract class Entity
         }
     }
 
-    /*                   __ _                       _   _
-	 *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
-	 *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
-	 * | (_| (_) | | | |  _| | (_| | |_| | | | (_| | |_| | (_) | | | |
-	 *  \___\___/|_| |_|_| |_|\__, |\__,_|_|  \__,_|\__|_|\___/|_| |_|
-	 *                        |___/
-	 * Константы, задающие базовые конфигурации полей
-	 * и ограничения модели.
-	 */
-    #region Configuration
-
-    /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="CreatedAt"/>.
-    /// </summary>
-    private const bool IsCreatedAtRequired = false;
-
-    /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="UpdatedAt"/>.
-    /// </summary>
-    private const bool IsUpdatedAtRequired = false;
-
     #endregion
 
     /*             _   _ _
@@ -81,20 +83,16 @@ public abstract class Entity
      * Поля данных, соответствующие таковым в таблице
      * модели в базе данных.
      */
+
     #region Entity
 
     /// <summary>
-    /// Идентификатор.
-    /// </summary>
-    public int Id { get; set; }
-
-    /// <summary>
-    /// Дата создания.
+    ///     Дата создания.
     /// </summary>
     public DateTime CreatedAt { get; set; }
 
     /// <summary>
-    /// Дата обновления.
+    ///     Дата обновления.
     /// </summary>
     public DateTime? UpdatedAt { get; set; }
 
