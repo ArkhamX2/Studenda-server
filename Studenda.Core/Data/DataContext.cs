@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -7,6 +9,8 @@ using Studenda.Core.Model;
 using Studenda.Core.Model.Account;
 using Studenda.Core.Model.Common;
 using Studenda.Core.Model.Link;
+using Studenda.Core.Model.Account;
+using Studenda.Core.Server.utils;
 
 namespace Studenda.Core.Data;
 
@@ -26,7 +30,7 @@ namespace Studenda.Core.Data;
 ///   Объекты вставляются со статусом Unchanged.
 ///   При коммите изменений ничего не произойдет.
 /// </summary>
-public sealed class DataContext : DbContext
+public sealed class DataContext : IdentityDbContext<Person, IdentityRole<long>, long>
 {
     /// <summary>
     /// Конструктор.
@@ -63,7 +67,7 @@ public sealed class DataContext : DbContext
     /// <summary>
     /// Набор объектов <see cref="Role"/>.
     /// </summary>
-    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<Role> AppRoles => Set<Role>();
 
     /// <summary>
     /// Набор объектов <see cref="Permission"/>.
