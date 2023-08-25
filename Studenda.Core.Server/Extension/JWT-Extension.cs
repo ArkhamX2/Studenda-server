@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Studenda.Core.Server.utils;
+using Studenda.Core.Server.Utils;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -26,9 +26,9 @@ namespace Studenda.Core.Server.Extension
             };
             return claims;
         }
-        
 
-        public static JwtSecurityToken CreateJwtToken(this IEnumerable<Claim> claims,  IConfiguration configuration)
+
+        public static JwtSecurityToken CreateJwtToken(this IEnumerable<Claim> claims, IConfiguration configuration)
         {
             var expire = configuration.GetSection("Jwt:Expire").Get<int>();
 
@@ -48,7 +48,7 @@ namespace Studenda.Core.Server.Extension
             var token = new JwtSecurityToken(
                 AuthOptions.ISSUER,
                 AuthOptions.AUDIENCE,
-                expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
+                expires: DateTime.UtcNow.AddMinutes(tokenValidityInMinutes),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );

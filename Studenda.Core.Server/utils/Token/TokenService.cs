@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Studenda.Core.Model.Account;
 using Studenda.Core.Server.Extension;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace Studenda.Core.Server.utils.Token
+namespace Studenda.Core.Server.Utils.Token
 {
-    public class TokenService:ITokenService
+    public class TokenService : ITokenService
     {
         private readonly IConfiguration _configuration;
 

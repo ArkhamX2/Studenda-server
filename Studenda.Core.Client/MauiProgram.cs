@@ -1,8 +1,4 @@
-﻿using CommunityToolkit.Maui;
-using CommunityToolkit.Maui.Markup;
-using Microsoft.Extensions.Logging;
-
-namespace Studenda.Core.Client;
+﻿namespace Studenda.Core.Client;
 
 public static class MauiProgram
 {

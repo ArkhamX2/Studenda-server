@@ -2,15 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Logging;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model;
 using Studenda.Core.Model.Account;
 using Studenda.Core.Model.Common;
 using Studenda.Core.Model.Link;
-using Studenda.Core.Model.Account;
-using Studenda.Core.Server.utils;
 
 namespace Studenda.Core.Data;
 

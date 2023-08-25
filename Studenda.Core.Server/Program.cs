@@ -1,14 +1,11 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Server.utils;
-using Studenda.Core.Server.utils.Token;
+using Studenda.Core.Server.Utils;
+using Studenda.Core.Server.Utils.Token;
 
 
 #if DEBUG
@@ -22,7 +19,7 @@ builder.Services.AddControllers();
 //добавляет в  builder конфигурацию для базы данных(необходимо для  sqlite)
 builder.Services.AddSingleton<ContextConfiguration>(_ => new SqliteConfiguration("Data Source=000_debug_storage.db", isDebugMode));
 //добавляет базу данных
-builder.Services.AddDbContext<DataContext>(o=>o.UseSqlite());
+builder.Services.AddDbContext<DataContext>(o => o.UseSqlite());
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 //добавляет корс
@@ -57,7 +54,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
             // валидация ключа безопасности
             ValidateIssuerSigningKey = true,
-            ClockSkew=TimeSpan.FromMinutes(2),
+            ClockSkew = TimeSpan.FromMinutes(2),
         };
     });
 

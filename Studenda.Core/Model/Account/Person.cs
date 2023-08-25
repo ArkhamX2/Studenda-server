@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Studenda.Core.Server.utils
+namespace Studenda.Core.Server.Utils
 {
     public class Person : IdentityUser<long>
     {
