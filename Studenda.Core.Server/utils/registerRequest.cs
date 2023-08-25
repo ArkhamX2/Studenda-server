@@ -2,7 +2,7 @@
 
 namespace Studenda.Core.Server.utils
 {
-    public class registerRequest
+    public class RegisterRequest
     {
 
         public string Email { get; set; } = null!;

@@ -30,7 +30,7 @@ namespace Studenda.Core.Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<loginResponse>> Authenticate([FromBody] loginRequest request)
+        public async Task<ActionResult<LoginResponse>> Authenticate([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -67,7 +67,7 @@ namespace Studenda.Core.Server.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(new loginResponse
+            return Ok(new LoginResponse
             {
                 Username = user.Name!,
                 Email = user.Email!,
@@ -77,7 +77,7 @@ namespace Studenda.Core.Server.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<loginResponse>> Register([FromBody] registerRequest request)
+        public async Task<ActionResult<LoginResponse>> Register([FromBody] RegisterRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(request);
             var Mapcfg = new MapperConfiguration(cfg => cfg.CreateMap<User, Person>());
@@ -107,7 +107,7 @@ namespace Studenda.Core.Server.Controllers
 
             await _userManager.AddToRoleAsync(findUser, role.Name);
 
-            return await Authenticate(new loginRequest
+            return await Authenticate(new LoginRequest
             {
                 Email = request.Email,
                 Password = request.Password

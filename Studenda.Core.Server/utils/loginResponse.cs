@@ -1,6 +1,6 @@
 ﻿namespace Studenda.Core.Server.utils
 {
-    public class loginResponse
+    public class LoginResponse
     {
         public string Username { get; set; } = null!;
         public string Email { get; set; } = null!;
