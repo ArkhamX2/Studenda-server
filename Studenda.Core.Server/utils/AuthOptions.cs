@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Studenda.Core.Server.utils
+namespace Studenda.Core.Server.Utils
 {
     public class AuthOptions
     {

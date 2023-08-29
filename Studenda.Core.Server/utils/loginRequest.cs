@@ -1,4 +1,4 @@
-﻿namespace Studenda.Core.Server.utils
+﻿namespace Studenda.Core.Server.Utils
 {
     public class LoginRequest
     {

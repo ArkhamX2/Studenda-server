@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Studenda.Core.Model.Account;
 using Studenda.Core.Server.Utils;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Studenda.Core.Server.Extension
@@ -13,7 +15,7 @@ namespace Studenda.Core.Server.Extension
     public static class JWTExtension
     {
 
-        public static List<Claim> CreateClaims(this Person user, List<IdentityRole<long>> roles)
+        public static List<Claim> CreateClaims(this Account user, List<IdentityRole<long>> roles)
         {
             var claims = new List<Claim>
             {

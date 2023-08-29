@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Account;
 using Studenda.Core.Server.Utils;
 using Studenda.Core.Server.Utils.Token;
 
@@ -19,7 +20,6 @@ builder.Services.AddControllers();
 //добавл€ет в  builder конфигурацию дл€ базы данных(необходимо дл€  sqlite)
 builder.Services.AddSingleton<ContextConfiguration>(_ => new SqliteConfiguration("Data Source=000_debug_storage.db", isDebugMode));
 //добавл€ет базу данных
-builder.Services.AddDbContext<DataContext>(o => o.UseSqlite());
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 //добавл€ет корс
@@ -30,10 +30,10 @@ builder.Services.AddCors(c => c.AddPolicy("cors", opt =>
     opt.AllowAnyMethod();
     opt.WithOrigins(builder.Configuration.GetSection("Cors:Urls").Get<string[]>()!);
 }));
-builder.Services.AddIdentity<Person, IdentityRole<long>>()
+builder.Services.AddIdentity<Account, IdentityRole<long>>()
                 .AddEntityFrameworkStores<DataContext>()
-                .AddUserManager<UserManager<Person>>()
-                .AddSignInManager<SignInManager<Person>>();
+                .AddUserManager<UserManager<Account>>()
+                .AddSignInManager<SignInManager<Account>>();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

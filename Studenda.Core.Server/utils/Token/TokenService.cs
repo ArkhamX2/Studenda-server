@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Studenda.Core.Model.Account;
 using Studenda.Core.Server.Extension;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -13,7 +14,7 @@ namespace Studenda.Core.Server.Utils.Token
             _configuration = configuration;
         }
 
-        public string CreateToken(Person user, List<IdentityRole<long>> roles)
+        public string CreateToken(Account user, List<IdentityRole<long>> roles)
         {
             var token = user
                 .CreateClaims(roles)

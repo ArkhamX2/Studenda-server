@@ -1,4 +1,4 @@
-﻿namespace Studenda.Core.Server.utils.Token
+﻿namespace Studenda.Core.Server.Utils.Token
 {
     public class TokenModel
     {

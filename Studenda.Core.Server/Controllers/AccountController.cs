@@ -9,6 +9,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Studenda.Core.Model.Account;
+using Studenda.Core.Server.Utils.Token;
+using Studenda.Core.Server.Utils;
 
 namespace Studenda.Core.Server.Controllers
 {
@@ -16,12 +18,12 @@ namespace Studenda.Core.Server.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<Person> _userManager;
+        private readonly UserManager<Account> _userManager;
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
         private readonly IConfiguration _configuration;
 
-        public AccountController (ITokenService tokenService, DataContext context, UserManager<Person> userManager, IConfiguration configuration)
+        public AccountController (ITokenService tokenService, DataContext context, UserManager<Account> userManager, IConfiguration configuration)
         {
             _tokenService = tokenService;
             _context = context;
@@ -38,7 +40,7 @@ namespace Studenda.Core.Server.Controllers
             }
 
             var managedUser = await _userManager.FindByEmailAsync(request.Email);
-            var Mapcfg = new MapperConfiguration(cfg => cfg.CreateMap<User, Person>());
+            var Mapcfg = new MapperConfiguration(cfg => cfg.CreateMap<User, Account>());
             var mapper = new Mapper(Mapcfg);
 
             if (managedUser == null)
@@ -53,7 +55,7 @@ namespace Studenda.Core.Server.Controllers
                 return BadRequest("Bad credentials");
             }
 
-            var user =mapper.Map<Person>( _context.Users.FirstOrDefault(u => u.Email == request.Email));
+            var user =mapper.Map<Account>( _context.Users.FirstOrDefault(u => u.Email == request.Email));
 
             if (user is null)
                 return Unauthorized();
@@ -80,9 +82,9 @@ namespace Studenda.Core.Server.Controllers
         public async Task<ActionResult<LoginResponse>> Register([FromBody] RegisterRequest request)
         {
             if (!ModelState.IsValid) return BadRequest(request);
-            var Mapcfg = new MapperConfiguration(cfg => cfg.CreateMap<User, Person>());
+            var Mapcfg = new MapperConfiguration(cfg => cfg.CreateMap<User, Account>());
             var mapper = new Mapper(Mapcfg);
-            var user = new Person
+            var user = new Account
             {
                 Name = request.FirstName,
                 Surname = request.LastName,
@@ -99,7 +101,7 @@ namespace Studenda.Core.Server.Controllers
 
             if (!result.Succeeded) return BadRequest(request);
 
-            var findUser =mapper.Map<Person> (await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email));
+            var findUser =mapper.Map<Account> (await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email));
 
             if (findUser == null) throw new Exception($"User {request.Email} not found");
             List<Role> allRoles = _context.AppRoles.ToList();
