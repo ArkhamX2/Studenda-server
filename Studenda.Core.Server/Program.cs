@@ -1,65 +1,82 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Account;
-using Studenda.Core.Server.Utils;
-using Studenda.Core.Server.Utils.Token;
-
+using Studenda.Core.Server.Common.Data.Factory;
+using Studenda.Core.Server.Security.Data;
+using Studenda.Core.Server.Security.Data.Factory;
+using Studenda.Core.Server.Security.Service;
+using Studenda.Core.Server.Security.Service.Token;
 
 #if DEBUG
 const bool isDebugMode = true;
 #else
 const bool isDebugMode = false;
 #endif
-var builder = WebApplication.CreateBuilder(args);
-//добавляет контроллеры
-builder.Services.AddControllers();
-//добавляет в  builder конфигурацию для базы данных(необходимо для  sqlite)
-builder.Services.AddSingleton<ContextConfiguration>(_ => new SqliteConfiguration("Data Source=000_debug_storage.db", isDebugMode));
-//добавляет базу данных
 
-builder.Services.AddScoped<ITokenService, TokenService>();
-//добавляет корс
-builder.Services.AddCors(c => c.AddPolicy("cors", opt =>
+var applicationBuilder = WebApplication.CreateBuilder(args);
+var contextConfiguration = new SqliteConfiguration("Data Source=000_debug_storage.db", isDebugMode);
+
+applicationBuilder.Services.AddSingleton<IContextFactory<DataContext>>(
+    new DataContextFactory(contextConfiguration));
+applicationBuilder.Services.AddScoped<DataContext>(provider =>
 {
-    opt.AllowAnyHeader();
-    opt.AllowCredentials();
-    opt.AllowAnyMethod();
-    opt.WithOrigins(builder.Configuration.GetSection("Cors:Urls").Get<string[]>()!);
-}));
-builder.Services.AddIdentity<Account, IdentityRole<long>>()
-                .AddEntityFrameworkStores<DataContext>()
-                .AddUserManager<UserManager<Account>>()
-                .AddSignInManager<SignInManager<Account>>();
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+    var factory = provider.GetService<IContextFactory<DataContext>>();
+
+    return factory!.CreateDataContext();
+});
+
+applicationBuilder.Services.AddSingleton<IContextFactory<IdentityContext>>(
+    new IdentityContextFactory(contextConfiguration));
+applicationBuilder.Services.AddScoped<IdentityContext>(provider =>
+{
+    var factory = provider.GetService<IContextFactory<IdentityContext>>();
+
+    return factory!.CreateDataContext();
+});
+
+applicationBuilder.Services.AddControllers();
+applicationBuilder.Services.AddCors(options =>
+    options.AddPolicy("cors", builder =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            // указывает, будет ли валидироваться издатель при валидации токена
-            ValidateIssuer = true,
-            // строка, представляющая издателя
-            ValidIssuer = AuthOptions.ISSUER,
-            // будет ли валидироваться потребитель токена
-            ValidateAudience = true,
-            // установка потребителя токена
-            ValidAudience = AuthOptions.AUDIENCE,
-            // будет ли валидироваться время существования
-            ValidateLifetime = true,
-            // установка ключа безопасности
-            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            // валидация ключа безопасности
-            ValidateIssuerSigningKey = true,
-            ClockSkew = TimeSpan.FromMinutes(2),
-        };
-    });
+        builder.AllowAnyHeader();
+        builder.AllowCredentials();
+        builder.AllowAnyMethod();
+        builder.WithOrigins(applicationBuilder.Configuration.GetSection("Cors:Urls").Get<string[]>()!);
+    }));
 
+applicationBuilder.Services.AddScoped<ITokenService, TokenService>();
+applicationBuilder.Services.AddIdentity<Account, IdentityRole>()
+    .AddEntityFrameworkStores<IdentityContext>()
+    .AddUserManager<UserManager<Account>>()
+    .AddSignInManager<SignInManager<Account>>();
 
-var app = builder.Build();
-app.UseCors("cors");
-app.MapControllers();
-app.Run();
+applicationBuilder.Services.AddAuthorization();
+applicationBuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        // СѓРєР°Р·С‹РІР°РµС‚, Р±СѓРґРµС‚ Р»Рё РІР°Р»РёРґРёСЂРѕРІР°С‚СЊСЃСЏ РёР·РґР°С‚РµР»СЊ РїСЂРё РІР°Р»РёРґР°С†РёРё С‚РѕРєРµРЅР°
+        ValidateIssuer = true,
+        // СЃС‚СЂРѕРєР°, РїСЂРµРґСЃС‚Р°РІР»СЏСЋС‰Р°СЏ РёР·РґР°С‚РµР»СЏ
+        ValidIssuer = JwtManager.Issuer,
+        // Р±СѓРґРµС‚ Р»Рё РІР°Р»РёРґРёСЂРѕРІР°С‚СЊСЃСЏ РїРѕС‚СЂРµР±РёС‚РµР»СЊ С‚РѕРєРµРЅР°
+        ValidateAudience = true,
+        // СѓСЃС‚Р°РЅРѕРІРєР° РїРѕС‚СЂРµР±РёС‚РµР»СЏ С‚РѕРєРµРЅР°
+        ValidAudience = JwtManager.Audience,
+        // Р±СѓРґРµС‚ Р»Рё РІР°Р»РёРґРёСЂРѕРІР°С‚СЊСЃСЏ РІСЂРµРјСЏ СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёСЏ
+        ValidateLifetime = true,
+        // СѓСЃС‚Р°РЅРѕРІРєР° РєР»СЋС‡Р° Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё
+        IssuerSigningKey = JwtManager.GetSymmetricSecurityKey(),
+        // РІР°Р»РёРґР°С†РёСЏ РєР»СЋС‡Р° Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё
+        ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.FromMinutes(2)
+    };
+});
+
+var application = applicationBuilder.Build();
+
+application.UseCors("cors");
+application.MapControllers();
+application.Run();
