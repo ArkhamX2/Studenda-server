@@ -34,24 +34,38 @@ public class AccountController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<SecurityResponse>> Authenticate([FromBody] LoginRequest request)
     {
-        if (!ModelState.IsValid) return BadRequest(request);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(request);
+        }
 
         var persistenceAccount = await userManager.FindByEmailAsync(request.Email);
 
-        if (persistenceAccount == null) return BadRequest("Bad credentials");
+        if (persistenceAccount == null)
+        {
+            return BadRequest("Bad credentials");
+        }
 
         var isValidPassword = await userManager.CheckPasswordAsync(persistenceAccount, request.Password);
 
-        if (!isValidPassword) return BadRequest("Bad credentials");
+        if (!isValidPassword)
+        {
+            return BadRequest("Bad credentials");
+        }
 
         // TODO: зачем второй раз получать аккаунт?
         var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account =
-            mapper.Map<Account>(identityDataContext.Users.FirstOrDefault(account => account.Email == request.Email));
+        var account = mapper.Map<Account>(identityDataContext
+            .Users.FirstOrDefault(account => account.Email == request.Email));
 
-        if (account is null) return Unauthorized();
+        if (account is null)
+        {
+            return Unauthorized();
+        }
 
-        var roleIds = await identityDataContext.UserRoles.Where(r => r.UserId == account.Id).Select(x => x.RoleId)
+        var roleIds = await identityDataContext.UserRoles
+            .Where(r => r.UserId == account.Id)
+            .Select(x => x.RoleId)
             .ToListAsync();
         var roles = identityDataContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
 
@@ -74,7 +88,10 @@ public class AccountController : ControllerBase
     [HttpPost("register")]
     public async Task<ActionResult<SecurityResponse>> Register([FromBody] RegisterRequest request)
     {
-        if (!ModelState.IsValid) return BadRequest(request);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(request);
+        }
 
         var persistenceAccount = new Account
         {
@@ -84,23 +101,34 @@ public class AccountController : ControllerBase
 
         var result = await userManager.CreateAsync(persistenceAccount, request.Password);
 
-        foreach (var error in result.Errors) ModelState.AddModelError(error.Code, error.Description);
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(error.Code, error.Description);
+        }
 
-        if (!result.Succeeded) return BadRequest(request);
+        if (!result.Succeeded)
+        {
+            return BadRequest(request);
+        }
 
         // TODO: зачем второй раз получать аккаунт?
         var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account =
-            mapper.Map<Account>(
-                await identityDataContext.Users.FirstOrDefaultAsync(account => account.Email == request.Email));
+        var account = mapper.Map<Account>(await identityDataContext.Users
+            .FirstOrDefaultAsync(account => account.Email == request.Email));
 
-        if (account == null) throw new Exception($"Account {request.Email} was not found");
+        if (account == null)
+        {
+            throw new Exception($"Account {request.Email} was not found");
+        }
 
         // TODO: очень ресурсозатратно. доработать.
         var roleList = identityDataContext.Roles.ToList();
         var role = roleList.FirstOrDefault(role => role.Name == "");
 
-        if (role?.Name == null) throw new Exception($"Role for {request.Email} was not found");
+        if (role?.Name == null)
+        {
+            throw new Exception($"Role for {request.Email} was not found");
+        }
 
         await userManager.AddToRoleAsync(account, role.Name);
 
@@ -115,20 +143,28 @@ public class AccountController : ControllerBase
     [Route("refresh-token")]
     public async Task<IActionResult> RefreshToken(TokenPair? tokenPair)
     {
-        if (tokenPair is null) return BadRequest("Invalid client request");
+        if (tokenPair is null)
+        {
+            return BadRequest("Invalid client request");
+        }
 
         var accessToken = tokenPair.AccessToken;
         var refreshToken = tokenPair.RefreshToken;
         var principal = configuration.GetPrincipalFromExpiredToken(accessToken);
 
-        if (principal == null) return BadRequest("Invalid access token or refresh token");
+        if (principal == null)
+        {
+            return BadRequest("Invalid access token or refresh token");
+        }
 
         // TODO: это не выглядит безопасным.
         var account = await userManager.FindByNameAsync(principal.Identity!.Name!);
 
         if (account == null || account.RefreshToken != refreshToken ||
             account.RefreshTokenExpiryTime <= DateTime.UtcNow)
+        {
             return BadRequest("Invalid access token or refresh token");
+        }
 
         var newAccessToken = configuration.CreateToken(principal.Claims.ToList());
         var newRefreshToken = configuration.GenerateRefreshToken();
@@ -151,7 +187,10 @@ public class AccountController : ControllerBase
     {
         var account = await userManager.FindByNameAsync(accountName);
 
-        if (account == null) return BadRequest("Invalid account name");
+        if (account == null)
+        {
+            return BadRequest("Invalid account name");
+        }
 
         account.RefreshToken = null;
 
