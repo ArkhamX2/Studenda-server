@@ -37,14 +37,6 @@ applicationBuilder.Services.AddScoped<IdentityContext>(provider =>
 });
 
 applicationBuilder.Services.AddControllers();
-applicationBuilder.Services.AddCors(options =>
-    options.AddPolicy("cors", builder =>
-    {
-        builder.AllowAnyHeader();
-        builder.AllowCredentials();
-        builder.AllowAnyMethod();
-        builder.WithOrigins(applicationBuilder.Configuration.GetSection("Cors:Urls").Get<string[]>()!);
-    }));
 
 applicationBuilder.Services.AddScoped<ITokenService, TokenService>();
 applicationBuilder.Services.AddIdentity<Account, IdentityRole>()
@@ -77,6 +69,5 @@ applicationBuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationSc
 
 var application = applicationBuilder.Build();
 
-application.UseCors("cors");
 application.MapControllers();
 application.Run();

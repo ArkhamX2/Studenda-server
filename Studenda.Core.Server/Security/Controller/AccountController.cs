@@ -18,15 +18,15 @@ namespace Studenda.Core.Server.Security.Controller;
 public class AccountController : ControllerBase
 {
     private readonly IConfiguration configuration;
-    private readonly IdentityDbContext<Account> identityDataContext;
+    private readonly IdentityContext identityContext;
     private readonly ITokenService tokenService;
     private readonly UserManager<Account> userManager;
 
-    public AccountController(ITokenService tokenService, IdentityDbContext<Account> identityDataContext,
+    public AccountController(ITokenService tokenService, IdentityContext identityContext,
         UserManager<Account> userManager, IConfiguration configuration)
     {
         this.tokenService = tokenService;
-        this.identityDataContext = identityDataContext;
+        this.identityContext = identityContext;
         this.userManager = userManager;
         this.configuration = configuration;
     }
@@ -55,7 +55,7 @@ public class AccountController : ControllerBase
 
         // TODO: зачем второй раз получать аккаунт?
         var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account = mapper.Map<Account>(identityDataContext
+        var account = mapper.Map<Account>(identityContext
             .Users.FirstOrDefault(account => account.Email == request.Email));
 
         if (account is null)
@@ -63,11 +63,11 @@ public class AccountController : ControllerBase
             return Unauthorized();
         }
 
-        var roleIds = await identityDataContext.UserRoles
+        var roleIds = await identityContext.UserRoles
             .Where(r => r.UserId == account.Id)
             .Select(x => x.RoleId)
             .ToListAsync();
-        var roles = identityDataContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
+        var roles = identityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
 
         var accessToken = tokenService.CreateToken(account, roles);
 
@@ -75,7 +75,7 @@ public class AccountController : ControllerBase
         account.RefreshTokenExpiryTime =
             DateTime.UtcNow.AddDays(configuration.GetSection("Jwt:RefreshTokenValidityInDays").Get<int>());
 
-        await identityDataContext.SaveChangesAsync();
+        await identityContext.SaveChangesAsync();
 
         return Ok(new SecurityResponse
         {
@@ -113,7 +113,7 @@ public class AccountController : ControllerBase
 
         // TODO: зачем второй раз получать аккаунт?
         var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account = mapper.Map<Account>(await identityDataContext.Users
+        var account = mapper.Map<Account>(await identityContext.Users
             .FirstOrDefaultAsync(account => account.Email == request.Email));
 
         if (account == null)
@@ -122,7 +122,7 @@ public class AccountController : ControllerBase
         }
 
         // TODO: очень ресурсозатратно. доработать.
-        var roleList = identityDataContext.Roles.ToList();
+        var roleList = identityContext.Roles.ToList();
         var role = roleList.FirstOrDefault(role => role.Name == "");
 
         if (role?.Name == null)
