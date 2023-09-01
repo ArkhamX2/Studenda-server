@@ -3,32 +3,33 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Data;
 using Studenda.Core.Server.Extension;
-using Studenda.Core.Server.utils.Token;
-using Studenda.Core.Server.utils;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Studenda.Core.Model.Account;
 using Studenda.Core.Server.Utils.Token;
 using Studenda.Core.Server.Utils;
+using Studenda.Core.Server.Data;
 
 namespace Studenda.Core.Server.Controllers
 {
-    [Route("account")]
     [ApiController]
+    [Route("account")]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<Account> _userManager;
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
         private readonly IConfiguration _configuration;
+        private readonly ServerDataContext _serverDataContext;
 
-        public AccountController (ITokenService tokenService, DataContext context, UserManager<Account> userManager, IConfiguration configuration)
+        public AccountController(ITokenService tokenService, DataContext context, UserManager<Account> userManager, IConfiguration configuration, ServerDataContext serverDataContext)
         {
             _tokenService = tokenService;
             _context = context;
             _userManager = userManager;
             _configuration = configuration;
+            _serverDataContext = serverDataContext;
         }
 
         [HttpPost("login")]
@@ -55,13 +56,13 @@ namespace Studenda.Core.Server.Controllers
                 return BadRequest("Bad credentials");
             }
 
-            var user =mapper.Map<Account>( _context.Users.FirstOrDefault(u => u.Email == request.Email));
+            var user = mapper.Map<Account>(_context.Users.FirstOrDefault(u => u.Email == request.Email));
 
             if (user is null)
                 return Unauthorized();
 
-            var roleIds = await _context.UserRoles.Where(r => r.UserId == user.Id).Select(x => x.RoleId).ToListAsync();
-            var roles = _context.Roles.Where(x => roleIds.Contains(x.Id)).ToList();
+            var roleIds = await _serverDataContext.UserRoles.Where(r => r.UserId == user.Id).Select(x => x.RoleId).ToListAsync();
+            var roles = _serverDataContext.Roles.Where(x => roleIds.Contains(x.Id)).ToList();
 
             var accessToken = _tokenService.CreateToken(user, roles);
             user.RefreshToken = _configuration.GenerateRefreshToken();
@@ -88,7 +89,7 @@ namespace Studenda.Core.Server.Controllers
             {
                 Name = request.FirstName,
                 Surname = request.LastName,
-                Patronymic= request.MiddleName,
+                Patronymic = request.MiddleName,
                 Email = request.Email,
                 UserName = request.Email
             };
@@ -101,7 +102,7 @@ namespace Studenda.Core.Server.Controllers
 
             if (!result.Succeeded) return BadRequest(request);
 
-            var findUser =mapper.Map<Account> (await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email));
+            var findUser = mapper.Map<Account>(await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email));
 
             if (findUser == null) throw new Exception($"User {request.Email} not found");
             List<Role> allRoles = _context.AppRoles.ToList();
@@ -175,13 +176,21 @@ namespace Studenda.Core.Server.Controllers
         public async Task<IActionResult> RevokeAll()
         {
             var users = _userManager.Users.ToList();
-            foreach (var user in users) 
+            foreach (var user in users)
             {
                 user.RefreshToken = null;
                 await _userManager.UpdateAsync(user);
             }
 
             return Ok();
+        }
+        [HttpGet]
+        [Route("hello")]
+        public async Task<List<Model.Common.Department>> Test()
+        {
+            var u = _context.Departments.ToList();
+            return u;
+            
         }
     }
 }
