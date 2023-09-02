@@ -26,7 +26,7 @@ namespace Studenda.Core.Data;
 ///   Объекты вставляются со статусом Unchanged.
 ///   При коммите изменений ничего не произойдет.
 /// </summary>
-public sealed class DataContext : DbContext
+public class DataContext : DbContext
 {
     /// <summary>
     /// Конструктор.
