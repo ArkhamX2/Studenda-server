@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Studenda.Core.Data;
 using Studenda.Core.Model.Account;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Data.Transfer;
@@ -16,19 +17,25 @@ namespace Studenda.Core.Server.Security.Controller;
 [ApiController]
 public class AccountController : ControllerBase
 {
-    private readonly IConfiguration configuration;
-    private readonly IdentityContext identityContext;
-    private readonly ITokenService tokenService;
-    private readonly UserManager<Account> userManager;
-
-    public AccountController(ITokenService tokenService, IdentityContext identityContext,
-        UserManager<Account> userManager, IConfiguration configuration)
+    public AccountController(
+        IConfiguration configuration,
+        DataContext dataContext,
+        IdentityContext identityContext,
+        ITokenService tokenService,
+        UserManager<Account> userManager)
     {
-        this.tokenService = tokenService;
-        this.identityContext = identityContext;
-        this.userManager = userManager;
-        this.configuration = configuration;
+        Configuration = configuration;
+        DataContext = dataContext;
+        IdentityContext = identityContext;
+        TokenService = tokenService;
+        UserManager = userManager;
     }
+
+    private IConfiguration Configuration { get; }
+    private DataContext DataContext { get; }
+    private IdentityContext IdentityContext { get; }
+    private ITokenService TokenService { get; }
+    private UserManager<Account> UserManager { get; }
 
     [HttpPost("login")]
     public async Task<ActionResult<SecurityResponse>> Authenticate([FromBody] LoginRequest request)
@@ -38,14 +45,14 @@ public class AccountController : ControllerBase
             return BadRequest(request);
         }
 
-        var persistenceAccount = await userManager.FindByEmailAsync(request.Email);
+        var persistenceAccount = await UserManager.FindByEmailAsync(request.Email);
 
         if (persistenceAccount == null)
         {
             return BadRequest("Bad credentials");
         }
 
-        var isValidPassword = await userManager.CheckPasswordAsync(persistenceAccount, request.Password);
+        var isValidPassword = await UserManager.CheckPasswordAsync(persistenceAccount, request.Password);
 
         if (!isValidPassword)
         {
@@ -54,7 +61,7 @@ public class AccountController : ControllerBase
 
         // TODO: зачем второй раз получать аккаунт?
         var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account = mapper.Map<Account>(identityContext
+        var account = mapper.Map<Account>(IdentityContext
             .Users.FirstOrDefault(account => account.Email == request.Email));
 
         if (account is null)
@@ -62,19 +69,19 @@ public class AccountController : ControllerBase
             return Unauthorized();
         }
 
-        var roleIds = await identityContext.UserRoles
+        var roleIds = await IdentityContext.UserRoles
             .Where(r => r.UserId == account.Id)
             .Select(x => x.RoleId)
             .ToListAsync();
-        var roles = identityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
+        var roles = IdentityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
 
-        var accessToken = tokenService.CreateToken(account, roles);
+        var accessToken = TokenService.CreateToken(account, roles);
 
-        account.RefreshToken = configuration.GenerateRefreshToken();
+        account.RefreshToken = Configuration.GenerateRefreshToken();
         account.RefreshTokenExpiryTime =
-            DateTime.UtcNow.AddDays(configuration.GetSection("Jwt:RefreshTokenValidityInDays").Get<int>());
+            DateTime.UtcNow.AddDays(Configuration.GetSection("Jwt:RefreshTokenValidityInDays").Get<int>());
 
-        await identityContext.SaveChangesAsync();
+        await IdentityContext.SaveChangesAsync();
 
         return Ok(new SecurityResponse
         {
@@ -98,7 +105,7 @@ public class AccountController : ControllerBase
             UserName = request.Email
         };
 
-        var result = await userManager.CreateAsync(persistenceAccount, request.Password);
+        var result = await UserManager.CreateAsync(persistenceAccount, request.Password);
 
         foreach (var error in result.Errors)
         {
@@ -112,7 +119,7 @@ public class AccountController : ControllerBase
 
         // TODO: зачем второй раз получать аккаунт?
         var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account = mapper.Map<Account>(await identityContext.Users
+        var account = mapper.Map<Account>(await IdentityContext.Users
             .FirstOrDefaultAsync(account => account.Email == request.Email));
 
         if (account == null)
@@ -121,7 +128,7 @@ public class AccountController : ControllerBase
         }
 
         // TODO: очень ресурсозатратно. доработать.
-        var roleList = identityContext.Roles.ToList();
+        var roleList = IdentityContext.Roles.ToList();
         var role = roleList.FirstOrDefault(role => role.Name == "");
 
         if (role?.Name == null)
@@ -129,7 +136,7 @@ public class AccountController : ControllerBase
             throw new Exception($"Role for {request.Email} was not found");
         }
 
-        await userManager.AddToRoleAsync(account, role.Name);
+        await UserManager.AddToRoleAsync(account, role.Name);
 
         return await Authenticate(new LoginRequest
         {
@@ -149,7 +156,7 @@ public class AccountController : ControllerBase
 
         var accessToken = tokenPair.AccessToken;
         var refreshToken = tokenPair.RefreshToken;
-        var principal = configuration.GetPrincipalFromExpiredToken(accessToken);
+        var principal = Configuration.GetPrincipalFromExpiredToken(accessToken);
 
         if (principal == null)
         {
@@ -157,7 +164,7 @@ public class AccountController : ControllerBase
         }
 
         // TODO: это не выглядит безопасным.
-        var account = await userManager.FindByNameAsync(principal.Identity!.Name!);
+        var account = await UserManager.FindByNameAsync(principal.Identity!.Name!);
 
         if (account == null || account.RefreshToken != refreshToken ||
             account.RefreshTokenExpiryTime <= DateTime.UtcNow)
@@ -165,12 +172,12 @@ public class AccountController : ControllerBase
             return BadRequest("Invalid access token or refresh token");
         }
 
-        var newAccessToken = configuration.CreateToken(principal.Claims.ToList());
-        var newRefreshToken = configuration.GenerateRefreshToken();
+        var newAccessToken = Configuration.CreateToken(principal.Claims.ToList());
+        var newRefreshToken = Configuration.GenerateRefreshToken();
 
         account.RefreshToken = newRefreshToken;
 
-        await userManager.UpdateAsync(account);
+        await UserManager.UpdateAsync(account);
 
         return new ObjectResult(new
         {
@@ -184,7 +191,7 @@ public class AccountController : ControllerBase
     [Route("revoke/{accountName}")]
     public async Task<IActionResult> Revoke(string accountName)
     {
-        var account = await userManager.FindByNameAsync(accountName);
+        var account = await UserManager.FindByNameAsync(accountName);
 
         if (account == null)
         {
@@ -193,7 +200,7 @@ public class AccountController : ControllerBase
 
         account.RefreshToken = null;
 
-        await userManager.UpdateAsync(account);
+        await UserManager.UpdateAsync(account);
 
         return Ok();
     }
@@ -203,16 +210,23 @@ public class AccountController : ControllerBase
     [Route("revoke-all")]
     public async Task<IActionResult> RevokeAll()
     {
-        var accountList = userManager.Users.ToList();
+        var accountList = UserManager.Users.ToList();
 
         foreach (var account in accountList)
         {
             account.RefreshToken = null;
 
             // TODO: очень ресурсозатратно. доработать.
-            await userManager.UpdateAsync(account);
+            await UserManager.UpdateAsync(account);
         }
 
         return Ok();
+    }
+
+    [HttpGet]
+    [Route("hello")]
+    public List<Model.Common.Department> Test()
+    {
+        return DataContext.Departments.ToList();
     }
 }
