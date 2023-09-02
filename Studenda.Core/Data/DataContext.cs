@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Studenda.Core.Data.Configuration;
@@ -105,6 +103,7 @@ public class DataContext : DbContext
     /// Используется для настройки сессии.
     /// </summary>
     /// <param name="optionsBuilder">Набор интерфейсов настройки сессии.</param>
+    /// <exception cref="Exception">При ошибке подключения.</exception>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         Configuration.ConfigureContext(optionsBuilder);
