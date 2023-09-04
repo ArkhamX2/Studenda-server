@@ -16,10 +16,11 @@ const bool isDebugMode = false;
 #endif
 
 var applicationBuilder = WebApplication.CreateBuilder(args);
-var contextConfiguration = new SqliteConfiguration("Data Source=000_debug_storage.db", isDebugMode);
+var dataConfiguration = new SqliteConfiguration("Data Source=000_debug_data_storage.db", isDebugMode);
+var identityConfiguration = new SqliteConfiguration("Data Source=001_debug_identity_storage.db", isDebugMode);
 
 applicationBuilder.Services.AddSingleton<IContextFactory<DataContext>>(
-    new DataContextFactory(contextConfiguration));
+    new DataContextFactory(dataConfiguration));
 applicationBuilder.Services.AddScoped<DataContext>(provider =>
 {
     var factory = provider.GetService<IContextFactory<DataContext>>();
@@ -28,7 +29,7 @@ applicationBuilder.Services.AddScoped<DataContext>(provider =>
 });
 
 applicationBuilder.Services.AddSingleton<IContextFactory<IdentityContext>>(
-    new IdentityContextFactory(contextConfiguration));
+    new IdentityContextFactory(identityConfiguration));
 applicationBuilder.Services.AddScoped<IdentityContext>(provider =>
 {
     var factory = provider.GetService<IContextFactory<IdentityContext>>();
