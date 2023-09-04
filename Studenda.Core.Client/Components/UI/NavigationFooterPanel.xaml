@@ -23,10 +23,12 @@
             WidthRequest="82">
             <VerticalStackLayout WidthRequest="82">
                 <Image
+                    x:Name="HomeItemIcon"
                     HeightRequest="30"
                     HorizontalOptions="Center"
-                    Source="schedule.png" />
+                    Source="home.png" />
                 <Label
+                    x:Name="HomeItemLabel"
                     FontFamily="InterMedium"
                     FontSize="10"
                     HorizontalOptions="Center"
@@ -44,10 +46,12 @@
             WidthRequest="82">
             <VerticalStackLayout WidthRequest="82">
                 <Image
+                    x:Name="ScheduleItemIcon"
                     HeightRequest="30"
                     HorizontalOptions="Center"
                     Source="schedule.png" />
                 <Label
+                    x:Name="ScheduleItemLabel"
                     FontFamily="InterMedium"
                     FontSize="10"
                     HorizontalOptions="Center"
@@ -65,10 +69,12 @@
             WidthRequest="82">
             <VerticalStackLayout WidthRequest="82">
                 <Image
+                    x:Name="JournalItemIcon"
                     HeightRequest="30"
                     HorizontalOptions="Center"
-                    Source="schedule.png" />
+                    Source="journal.png" />
                 <Label
+                    x:Name="JournalItemLabel"
                     FontFamily="InterMedium"
                     FontSize="10"
                     HorizontalOptions="Center"
