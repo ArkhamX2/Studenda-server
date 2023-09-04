@@ -40,8 +40,8 @@
                 <ui:GroupSelectorComponent
                     x:Name="GroupSelector"
                     Grid.Column="1"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center" />
+                    VerticalOptions="Center"
+                    HeightRequest="38"/>
 
                 <ui:NavigationItemComponent
                     Grid.Column="2"

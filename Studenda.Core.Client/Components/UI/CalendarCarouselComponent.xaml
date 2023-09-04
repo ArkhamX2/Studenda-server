@@ -23,27 +23,23 @@
             </Border.StrokeShape>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="30" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="30" />
                 </Grid.ColumnDefinitions>
 
-                <ImageButton
+                <Image
                     Grid.Column="0"
-                    Margin="-10,0,0,0"
-                    Aspect="Center"
+                    Margin="0,0,0,0"
                     BackgroundColor="Transparent"
-                    HeightRequest="25"
-                    HorizontalOptions="Center"
-                    Source="left_arrow.png"
-                    VerticalOptions="Center"
-                    WidthRequest="13" />
+                    Source="left_arrow.png" 
+                    HeightRequest="25"/>
                 <HorizontalStackLayout
                     Grid.Column="1"
                     HorizontalOptions="Center"
                     VerticalOptions="Center">
 
-                    <VerticalStackLayout Margin="0,0,14,0" WidthRequest="41">
+                    <VerticalStackLayout Margin="10,0,10,0" WidthRequest="36">
                         <Label
                             x:Name="FirstDate"
                             Style="{StaticResource CalendarCarouselDayNumbarTheme}"
@@ -54,7 +50,7 @@
                             Text="ПН" />
                     </VerticalStackLayout>
 
-                    <VerticalStackLayout Margin="0,0,14,0" WidthRequest="41">
+                    <VerticalStackLayout Margin="0,0,10,0" WidthRequest="36">
                         <Label
                             x:Name="SecondDate"
                             Style="{StaticResource CalendarCarouselDayNumbarTheme}"
@@ -65,7 +61,7 @@
                             Text="ВТ" />
                     </VerticalStackLayout>
 
-                    <VerticalStackLayout Margin="0,0,14,0" WidthRequest="41">
+                    <VerticalStackLayout Margin="0,0,10,0" WidthRequest="36">
                         <Label
                             x:Name="ThirdDate"
                             Style="{StaticResource CalendarCarouselDayNumbarTheme}"
@@ -76,7 +72,7 @@
                             Text="СР" />
                     </VerticalStackLayout>
 
-                    <VerticalStackLayout Margin="0,0,14,0" WidthRequest="41">
+                    <VerticalStackLayout Margin="0,0,10,0" WidthRequest="36">
                         <Label
                             x:Name="FourthDate"
                             Style="{StaticResource CalendarCarouselDayNumbarTheme}"
@@ -87,7 +83,7 @@
                             Text="ЧТ" />
                     </VerticalStackLayout>
 
-                    <VerticalStackLayout Margin="0,0,14,0" WidthRequest="41">
+                    <VerticalStackLayout Margin="0,0,10,0" WidthRequest="36">
                         <Label
                             x:Name="FifthDate"
                             Style="{StaticResource CalendarCarouselDayNumbarTheme}"
@@ -98,7 +94,7 @@
                             Text="ПТ" />
                     </VerticalStackLayout>
 
-                    <VerticalStackLayout Margin="0,0,0,0" WidthRequest="41">
+                    <VerticalStackLayout Margin="0,0,10,0" WidthRequest="36">
                         <Label
                             x:Name="SixthDate"
                             Style="{StaticResource CalendarCarouselDayNumbarTheme}"
@@ -111,16 +107,12 @@
 
                 </HorizontalStackLayout>
 
-                <ImageButton
+                <Image
                     Grid.Column="2"
-                    Margin="-16,0,0,0"
-                    Aspect="Center"
+                    Margin="0,0,0,0"
                     BackgroundColor="Transparent"
-                    HeightRequest="25"
-                    HorizontalOptions="Center"
                     Source="right_arrow.png"
-                    VerticalOptions="Center"
-                    WidthRequest="13" />
+                    HeightRequest="25"/>
             </Grid>
         </Border>
     </VerticalStackLayout>

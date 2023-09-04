@@ -59,14 +59,14 @@
                 <ImageButton />
             </Border>
             <Border Margin="200,50,10,10" Style="{StaticResource ProfileBorderTheme}">
-                <ui:StudendaEntry Placeholder="Name" Style="{StaticResource ProfileEntryTheme}" />
+                
             </Border>
 
             <Border Margin="200,85,10,10" Style="{StaticResource ProfileBorderTheme}">
                 <ui:StudendaEntry Placeholder="Surname" Style="{StaticResource ProfileEntryTheme}" />
             </Border>
 
-            <Border Margin="200,120,10,10" Style="{StaticResource ProfileBorderTheme}">
+            <Border Margin="200,120,10,10" Style="{StaticResource ProfileBorderTheme}" Padding="0">
                 <Grid>
                     <ui:StudendaEntry
                         HorizontalOptions="Start"
