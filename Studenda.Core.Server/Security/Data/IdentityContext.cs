@@ -9,6 +9,19 @@ public class IdentityContext : IdentityDbContext<Account>
     public IdentityContext(ContextConfiguration configuration)
     {
         Configuration = configuration;
+
+        // TODO: Использовать асинхронные запросы.
+        if (!Database.CanConnect())
+        {
+            if (!Database.EnsureCreated())
+            {
+                throw new Exception("Connection error!");
+            }
+        }
+        else
+        {
+            Database.EnsureCreated();
+        }
     }
 
     private ContextConfiguration Configuration { get; }
