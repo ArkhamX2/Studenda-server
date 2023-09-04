@@ -129,7 +129,7 @@ public class AccountController : ControllerBase
 
         // TODO: очень ресурсозатратно. доработать.
         var roleList = IdentityContext.Roles.ToList();
-        var role = roleList.FirstOrDefault(role => role.Name == "");
+        var role = roleList.FirstOrDefault(role => role.Name == "Student");
 
         if (role?.Name == null)
         {
