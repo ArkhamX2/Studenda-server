@@ -225,8 +225,9 @@ public class AccountController : ControllerBase
 
     [HttpGet]
     [Route("hello")]
-    public List<Model.Common.Department> Test()
+    public async Task Test()
     {
-        return DataContext.Departments.ToList();
+        Response.ContentType = "text/html;charset=utf-8";
+        await Response.WriteAsync("<h2>Hello METANIT.COM</h2>");
     }
 }
