@@ -23,7 +23,7 @@ namespace Studenda.Core.Data;
 ///     Объекты вставляются со статусом Unchanged.
 ///     При коммите изменений ничего не произойдет.
 /// </summary>
-public sealed class DataContext : DbContext
+public class DataContext : DbContext
 {
     /// <summary>
     ///     Конструктор.
@@ -57,7 +57,7 @@ public sealed class DataContext : DbContext
     /// <summary>
     ///     Набор объектов <see cref="Role" />.
     /// </summary>
-    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<Role> AppRoles => Set<Role>();
 
     /// <summary>
     ///     Набор объектов <see cref="Permission" />.
@@ -94,6 +94,7 @@ public sealed class DataContext : DbContext
     ///     Используется для настройки сессии.
     /// </summary>
     /// <param name="optionsBuilder">Набор интерфейсов настройки сессии.</param>
+    /// <exception cref="Exception">При ошибке подключения.</exception>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         Configuration.ConfigureContext(optionsBuilder);
