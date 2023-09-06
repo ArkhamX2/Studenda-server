@@ -20,21 +20,23 @@
                 Style="{StaticResource ProfileEntryTheme}" />
         </VerticalStackLayout>
 
-        <VerticalStackLayout>
+        <!--<VerticalStackLayout>
             <Label Text="Повторите пароль" />
             <Entry
                 IsPassword="True"
                 Placeholder="Пароль"
                 Style="{StaticResource ProfileEntryTheme}" />
-        </VerticalStackLayout>
+        </VerticalStackLayout>-->
 
-        <HorizontalStackLayout>
+        <!--<HorizontalStackLayout>
             <CheckBox
                 BackgroundColor="Black"
                 HeightRequest="20"
                 HorizontalOptions="Center"
                 WidthRequest="20" />
             <Label Margin="0" Style="{StaticResource WhiteLabelTheme}" />
-        </HorizontalStackLayout>
+        </HorizontalStackLayout>-->
+
+        <Button Command="{Binding CreateAccountCommand}" Text="Зарегистрироваться" />
     </VerticalStackLayout>
 </ContentPage>

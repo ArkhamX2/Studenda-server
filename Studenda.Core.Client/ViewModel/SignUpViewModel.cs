@@ -22,11 +22,15 @@ namespace Studenda.Core.Client.ViewModel
         }
 
         [RelayCommand]
-        private void CreateAccount()
+        private async void CreateAccount()
         {
             try
             {
                 //TODO: Создание аккаунта
+                await Application.Current.MainPage.DisplayAlert(
+                    "Submit",
+                    $"You entered {Username} and {Password}",
+                    "OK");
             }
             catch (Exception e)
             {
