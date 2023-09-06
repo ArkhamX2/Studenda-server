@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="Studenda.Core.Client.View.AndroidView.ScheduleView"
+    x:Class="Studenda.Core.Client.View.AndroidView.JournalView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
     xmlns:vm="clr-namespace:Studenda.Core.Client.ViewModel"
-    BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
     Shell.NavBarIsVisible="False">
 
     <Grid BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
         <Grid.RowDefinitions>
             <RowDefinition Height="66" />
-            <RowDefinition Height="97" />
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
@@ -27,6 +25,7 @@
                     <ColumnDefinition Width="62" />
                 </Grid.ColumnDefinitions>
                 <ui:NavigationItemComponent
+                    x:Name="ProfileNavigationItem"
                     Grid.Column="0"
                     BackgroundColor="Transparent"
                     BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
@@ -36,18 +35,12 @@
                     <Image Source="profile_pic_mini.png" />
                 </ui:NavigationItemComponent>
 
-
-                <ui:GroupSelectorComponent
-                    x:Name="GroupSelector"
-                    Grid.Column="1"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center" />
-
                 <ui:NavigationItemComponent
+                    x:Name="NotificationNavigationItem"
                     Grid.Column="2"
                     BackgroundColor="Transparent"
                     BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
-                    HorizontalOptions="End"
+                    HorizontalOptions="Start"
                     ItemType="Notifications"
                     VerticalOptions="Center">
                     <Image Source="notification_bell.png" />
@@ -55,16 +48,11 @@
 
             </Grid>
         </ui:NavigationBarComponent>
-        <ui:CalendarCarouselComponent
-            Grid.Row="1"
-            BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ScheduleViewModel, Mode=TwoWay}"
-            WeekTypeTitle="{Binding TypeOfWeek}" />
-        <ScrollView Grid.Row="2" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ScheduleViewModel, Mode=TwoWay}">
-            <ui:ScheduleComponent Schedule="{Binding ScheduleList}" />
-        </ScrollView>
+
+
         <ui:NavigationFooterPanel
             Grid.Row="3"
             BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
-            SelectedTab="Schedule" />
+            SelectedTab="Journal" />
     </Grid>
 </ContentPage>

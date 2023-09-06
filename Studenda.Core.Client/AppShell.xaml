@@ -43,6 +43,11 @@
             ContentTemplate="{DataTemplate android:NotificationView}"
             Route="NotificationView"
             Shell.FlyoutBehavior="Disabled" />
+        <ShellContent
+            Title="Journal"
+            ContentTemplate="{DataTemplate android:JournalView}"
+            Route="JournalView"
+            Shell.FlyoutBehavior="Disabled" />
 
     </FlyoutItem>
 

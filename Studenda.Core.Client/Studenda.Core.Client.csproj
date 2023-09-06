@@ -133,6 +133,9 @@
         <MauiXaml Update="View\AndroidView\HomeView.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
+        <MauiXaml Update="View\AndroidView\JournalView.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
         <MauiXaml Update="View\AndroidView\NotificationView.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>

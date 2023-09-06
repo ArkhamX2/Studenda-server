@@ -12,7 +12,6 @@ namespace Studenda.Core.Client.ViewModel
                 {"vm",homeViewModel }
             };
             await Shell.Current.GoToAsync($"//{nameof(HomeView)}", navigationParameter);
-            //?vm={homeViewModel}
         }
         async public void GoToSchedule(HomeViewModel homeViewModel)
         {
@@ -25,11 +24,11 @@ namespace Studenda.Core.Client.ViewModel
 
         async public void GoToJournal(HomeViewModel homeViewModel)
         {
-            //var navigationParameter = new Dictionary<string, object>
-            //{
-            //    {"vm",homeViewModel }
-            //};
-            //await Shell.Current.GoToAsync($"//{nameof(JournalView)}", navigationParameter);
+            var navigationParameter = new Dictionary<string, object>
+            {
+                {"vm",homeViewModel }
+            };
+            await Shell.Current.GoToAsync($"//{nameof(JournalView)}", navigationParameter);
         }
         async public void GoToProfile(HomeViewModel homeViewModel)
         {

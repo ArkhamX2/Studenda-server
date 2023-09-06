@@ -3,7 +3,7 @@ using Studenda.Core.Client.ViewModel;
 namespace Studenda.Core.Client.View.AndroidView;
 
 [QueryProperty(nameof(ViewModel), "vm")]
-public partial class ProfileView : ContentPage
+public partial class JournalView : ContentPage
 {
     HomeViewModel _viewModel;
     public HomeViewModel ViewModel
@@ -16,9 +16,9 @@ public partial class ProfileView : ContentPage
             OnPropertyChanged();
         }
     }
-    public ProfileView()
-    {
-        InitializeComponent();
+    public JournalView()
+	{
+		InitializeComponent();
 
         BindingContext = ViewModel;
     }
