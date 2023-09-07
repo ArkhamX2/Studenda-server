@@ -6,13 +6,13 @@
 
     <Picker
         x:Name="GroupPicker"
-        Margin="0,10,0,0"
+        Margin="0,0,0,0"
         FontFamily="InterSemiBold"
-        FontSize="20"
-        HeightRequest="28"
-        HorizontalOptions="Center"
+        FontSize="18"
+        HeightRequest="48"
         TextColor="#FFFFFF"
-        ZIndex="10">
+        ZIndex="10"
+        BackgroundColor="Transparent">
         <Picker.Items>
             <x:String>Б.ПИН.РИС2006</x:String>
             <x:String>Б.ПИН.РИС2106</x:String>

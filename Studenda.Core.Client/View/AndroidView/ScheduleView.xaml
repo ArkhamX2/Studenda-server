@@ -40,6 +40,7 @@
                 <ui:GroupSelectorComponent
                     x:Name="GroupSelector"
                     Grid.Column="1"
+                    HeightRequest="36"
                     HorizontalOptions="Center"
                     VerticalOptions="Center" />
 
