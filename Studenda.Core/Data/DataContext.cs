@@ -57,7 +57,7 @@ public class DataContext : DbContext
     /// <summary>
     ///     Набор объектов <see cref="Role" />.
     /// </summary>
-    public DbSet<Role> AppRoles => Set<Role>();
+    public DbSet<Role> Roles => Set<Role>();
 
     /// <summary>
     ///     Набор объектов <see cref="Permission" />.
