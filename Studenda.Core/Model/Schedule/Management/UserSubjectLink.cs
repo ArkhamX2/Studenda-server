@@ -4,6 +4,9 @@ using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Schedule.Management;
 
+/// <summary>
+///     Связь многие ко многим для <see cref="User" /> и <see cref="Subject" />.
+/// </summary>
 public class UserSubjectLink : Entity
 {
     /*                   __ _                       _   _

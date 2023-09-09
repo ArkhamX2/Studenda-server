@@ -90,9 +90,19 @@ public class DataContext : DbContext
     public DbSet<Subject> Subjects => Set<Subject>();
 
     /// <summary>
+    ///     Набор объектов <see cref="SubjectPosition" />.
+    /// </summary>
+    public DbSet<SubjectPosition> SubjectPositions => Set<SubjectPosition>();
+
+    /// <summary>
     ///     Набор объектов <see cref="RolePermissionLink" />.
     /// </summary>
     public DbSet<RolePermissionLink> RolePermissionLinks => Set<RolePermissionLink>();
+
+    /// <summary>
+    ///     Набор объектов <see cref="UserSubjectLink" />.
+    /// </summary>
+    public DbSet<UserSubjectLink> UserSubjectLinks => Set<UserSubjectLink>();
 
     /// <summary>
     ///     Обработать инициализацию сессии.

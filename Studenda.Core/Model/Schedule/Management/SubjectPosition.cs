@@ -3,10 +3,7 @@ using Studenda.Core.Data.Configuration;
 
 namespace Studenda.Core.Model.Schedule.Management;
 
-/// <summary>
-///     Занятие.
-/// </summary>
-public class Subject : Identity
+public class SubjectPosition : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -21,19 +18,29 @@ public class Subject : Identity
     #region Configuration
 
     /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
+    ///     Максимальная длина поля <see cref="StartLabel" />.
     /// </summary>
-    public const int NameLengthMax = 32;
+    public const int StartLabelLengthMax = 32;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
+    ///     Максимальная длина поля <see cref="EndLabel" />.
     /// </summary>
-    public const bool IsNameRequired = true;
+    public const int EndLabelLengthMax = 32;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="Subject" />.
+    ///     Статус необходимости наличия значения в поле <see cref="StartLabel" />.
     /// </summary>
-    internal class Configuration : Configuration<Subject>
+    public const bool IsStartLabelRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="EndLabel" />.
+    /// </summary>
+    public const bool IsEndLabelRequired = true;
+
+    /// <summary>
+    ///     Конфигурация модели <see cref="SubjectPosition" />.
+    /// </summary>
+    internal class Configuration : Configuration<SubjectPosition>
     {
         /// <summary>
         ///     Конструктор.
@@ -48,15 +55,15 @@ public class Subject : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Subject> builder)
+        public override void Configure(EntityTypeBuilder<SubjectPosition> builder)
         {
-            builder.Property(type => type.Name)
-                .HasMaxLength(NameLengthMax)
+            builder.Property(type => type.StartLabel)
+                .HasMaxLength(StartLabelLengthMax)
                 .IsRequired();
 
-            builder.HasMany(user => user.UserSubjectLinks)
-                .WithOne(link => link.Subject)
-                .HasForeignKey(link => link.SubjectId);
+            builder.Property(type => type.EndLabel)
+                .HasMaxLength(EndLabelLengthMax)
+                .IsRequired();
 
             base.Configure(builder);
         }
@@ -77,14 +84,14 @@ public class Subject : Identity
     #region Entity
 
     /// <summary>
-    ///     Название.
+    ///     Обозначение начала.
     /// </summary>
-    public string Name { get; set; } = null!;
-
-    #endregion
+    public string StartLabel { get; set; } = null!;
 
     /// <summary>
-    ///     Связанные объекты <see cref="UserSubjectLink" />.
+    ///     Обозначение окончания.
     /// </summary>
-    public List<UserSubjectLink> UserSubjectLinks { get; set; } = null!;
+    public string EndLabel { get; set; } = null!;
+
+    #endregion
 }
