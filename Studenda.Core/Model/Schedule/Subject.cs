@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Security;
+using Studenda.Core.Model.Schedule.Link;
 
-namespace Studenda.Core.Model.Schedule.Management;
+namespace Studenda.Core.Model.Schedule;
 
 /// <summary>
-///     Связь многие ко многим для <see cref="User" /> и <see cref="Subject" />.
+///     Занятие.
 /// </summary>
-public class UserSubjectLink : Entity
+public class Subject : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -22,19 +22,19 @@ public class UserSubjectLink : Entity
     #region Configuration
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
+    ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
-    public const bool IsUserIdRequired = true;
+    public const int NameLengthMax = 32;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="SubjectId" />.
+    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
-    public const bool IsSubjectIdRequired = true;
+    public const bool IsNameRequired = true;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="UserSubjectLink" />.
+    ///     Конфигурация модели <see cref="Subject" />.
     /// </summary>
-    internal class Configuration : Configuration<UserSubjectLink>
+    internal class Configuration : Configuration<Subject>
     {
         /// <summary>
         ///     Конструктор.
@@ -49,23 +49,21 @@ public class UserSubjectLink : Entity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<UserSubjectLink> builder)
+        public override void Configure(EntityTypeBuilder<Subject> builder)
         {
-            builder.HasKey(link => new
-            {
-                link.UserId,
-                link.SubjectId
-            });
-
-            builder.HasOne(link => link.User)
-                .WithMany(role => role.UserSubjectLinks)
-                .HasForeignKey(link => link.UserId)
+            builder.Property(type => type.Name)
+                .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.HasOne(link => link.Subject)
-                .WithMany(permission => permission.UserSubjectLinks)
-                .HasForeignKey(link => link.SubjectId)
-                .IsRequired();
+            builder.HasMany(subject => subject.StaticSchedules)
+                .WithOne(schedule => schedule.Subject)
+                .HasForeignKey(schedule => schedule.SubjectId);
+
+            builder.HasMany(user => user.UserSubjectLinks)
+                .WithOne(link => link.Subject)
+                .HasForeignKey(link => link.SubjectId);
+
+            base.Configure(builder);
         }
     }
 
@@ -84,24 +82,19 @@ public class UserSubjectLink : Entity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Название.
     /// </summary>
-    public int UserId { get; set; }
-
-    /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Management.Subject" />.
-    /// </summary>
-    public int SubjectId { get; set; }
+    public string Name { get; set; } = null!;
 
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="Security.User" />.
+    ///     Связанные объекты <see cref="StaticSchedule" />.
     /// </summary>
-    public User User { get; set; } = null!;
+    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
 
     /// <summary>
-    ///     Связанный объект <see cref="Management.Subject" />.
+    ///     Связанные объекты <see cref="UserSubjectLink" />.
     /// </summary>
-    public Subject Subject { get; set; } = null!;
+    public List<UserSubjectLink> UserSubjectLinks { get; set; } = null!;
 }

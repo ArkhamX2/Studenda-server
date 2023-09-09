@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Schedule.Link;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security.Management;
 
@@ -138,18 +139,18 @@ public class User : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Role" />.
+    ///     Идентификатор связанного объекта <see cref="Management.Role" />.
     /// </summary>
     public int RoleId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Group" />.
+    ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     ///     Необязательное поле.
     /// </summary>
     public int GroupId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Department" />.
+    ///     Идентификатор связанного объекта <see cref="Common.Department" />.
     ///     Необязательное поле.
     /// </summary>
     public int DepartmentId { get; set; }
@@ -175,17 +176,17 @@ public class User : Identity
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="Role" />.
+    ///     Связанный объект <see cref="Management.Role" />.
     /// </summary>
     public Role Role { get; set; } = null!;
 
     /// <summary>
-    ///     Связанный объект <see cref="Group" />.
+    ///     Связанный объект <see cref="Common.Group" />.
     /// </summary>
     public Group? Group { get; set; }
 
     /// <summary>
-    ///     Связанный объект <see cref="Department" />.
+    ///     Связанный объект <see cref="Common.Department" />.
     /// </summary>
     public Department? Department { get; set; }
 

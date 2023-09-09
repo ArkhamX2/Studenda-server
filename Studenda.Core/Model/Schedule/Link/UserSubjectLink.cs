@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Security;
 
-namespace Studenda.Core.Model.Schedule.Management;
+namespace Studenda.Core.Model.Schedule.Link;
 
 /// <summary>
-///     Занятие.
+///     Связь многие ко многим для <see cref="Security.User" /> и <see cref="Schedule.Subject" />.
 /// </summary>
-public class Subject : Identity
+public class UserSubjectLink : Entity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -21,19 +22,19 @@ public class Subject : Identity
     #region Configuration
 
     /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
+    ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
     /// </summary>
-    public const int NameLengthMax = 32;
+    public const bool IsUserIdRequired = true;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
+    ///     Статус необходимости наличия значения в поле <see cref="SubjectId" />.
     /// </summary>
-    public const bool IsNameRequired = true;
+    public const bool IsSubjectIdRequired = true;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="Subject" />.
+    ///     Конфигурация модели <see cref="UserSubjectLink" />.
     /// </summary>
-    internal class Configuration : Configuration<Subject>
+    internal class Configuration : Configuration<UserSubjectLink>
     {
         /// <summary>
         ///     Конструктор.
@@ -48,21 +49,23 @@ public class Subject : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Subject> builder)
+        public override void Configure(EntityTypeBuilder<UserSubjectLink> builder)
         {
-            builder.Property(type => type.Name)
-                .HasMaxLength(NameLengthMax)
+            builder.HasKey(link => new
+            {
+                link.UserId,
+                link.SubjectId
+            });
+
+            builder.HasOne(link => link.User)
+                .WithMany(role => role.UserSubjectLinks)
+                .HasForeignKey(link => link.UserId)
                 .IsRequired();
 
-            builder.HasMany(subject => subject.StaticSchedules)
-                .WithOne(schedule => schedule.Subject)
-                .HasForeignKey(schedule => schedule.SubjectId);
-
-            builder.HasMany(user => user.UserSubjectLinks)
-                .WithOne(link => link.Subject)
-                .HasForeignKey(link => link.SubjectId);
-
-            base.Configure(builder);
+            builder.HasOne(link => link.Subject)
+                .WithMany(permission => permission.UserSubjectLinks)
+                .HasForeignKey(link => link.SubjectId)
+                .IsRequired();
         }
     }
 
@@ -81,19 +84,24 @@ public class Subject : Identity
     #region Entity
 
     /// <summary>
-    ///     Название.
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public int UserId { get; set; }
+
+    /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Schedule.Subject" />.
+    /// </summary>
+    public int SubjectId { get; set; }
 
     #endregion
 
     /// <summary>
-    ///     Связанные объекты <see cref="StaticSchedule" />.
+    ///     Связанный объект <see cref="Security.User" />.
     /// </summary>
-    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
+    public User User { get; set; } = null!;
 
     /// <summary>
-    ///     Связанные объекты <see cref="UserSubjectLink" />.
+    ///     Связанный объект <see cref="Schedule.Subject" />.
     /// </summary>
-    public List<UserSubjectLink> UserSubjectLinks { get; set; } = null!;
+    public Subject Subject { get; set; } = null!;
 }

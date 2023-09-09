@@ -97,7 +97,7 @@ public class StaticSchedule : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Management.Subject" />.
+    ///     Идентификатор связанного объекта <see cref="Schedule.Subject" />.
     /// </summary>
     public int SubjectId { get; set; }
 
@@ -130,7 +130,7 @@ public class StaticSchedule : Identity
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="Management.Subject" />.
+    ///     Связанный объект <see cref="Schedule.Subject" />.
     /// </summary>
     public Subject Subject { get; set; } = null!;
 
