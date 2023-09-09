@@ -84,24 +84,24 @@ public class UserSubjectLink : Entity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="User" />.
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
     /// </summary>
     public int UserId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Subject" />.
+    ///     Идентификатор связанного объекта <see cref="Management.Subject" />.
     /// </summary>
     public int SubjectId { get; set; }
 
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="User" />.
+    ///     Связанный объект <see cref="Security.User" />.
     /// </summary>
     public User User { get; set; } = null!;
 
     /// <summary>
-    ///     Связанный объект <see cref="Subject" />.
+    ///     Связанный объект <see cref="Management.Subject" />.
     /// </summary>
     public Subject Subject { get; set; } = null!;
 }

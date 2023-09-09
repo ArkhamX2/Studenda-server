@@ -54,6 +54,10 @@ public class Subject : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
+            builder.HasMany(subject => subject.StaticSchedules)
+                .WithOne(schedule => schedule.Subject)
+                .HasForeignKey(schedule => schedule.SubjectId);
+
             builder.HasMany(user => user.UserSubjectLinks)
                 .WithOne(link => link.Subject)
                 .HasForeignKey(link => link.SubjectId);
@@ -82,6 +86,11 @@ public class Subject : Identity
     public string Name { get; set; } = null!;
 
     #endregion
+
+    /// <summary>
+    ///     Связанные объекты <see cref="StaticSchedule" />.
+    /// </summary>
+    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
 
     /// <summary>
     ///     Связанные объекты <see cref="UserSubjectLink" />.

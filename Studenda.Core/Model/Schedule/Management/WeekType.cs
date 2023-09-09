@@ -62,6 +62,10 @@ public class WeekType : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 
+            builder.HasMany(type => type.StaticSchedules)
+                .WithOne(schedule => schedule.WeekType)
+                .HasForeignKey(schedule => schedule.WeekTypeId);
+
             base.Configure(builder);
         }
     }
@@ -92,4 +96,9 @@ public class WeekType : Identity
     public string? Name { get; set; }
 
     #endregion
+
+    /// <summary>
+    ///     Связанные объекты <see cref="StaticSchedule" />.
+    /// </summary>
+    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
 }

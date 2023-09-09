@@ -59,6 +59,10 @@ public class DayPosition : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 
+            builder.HasMany(position => position.StaticSchedules)
+                .WithOne(schedule => schedule.DayPosition)
+                .HasForeignKey(schedule => schedule.DayPositionId);
+
             base.Configure(builder);
         }
     }
@@ -89,4 +93,9 @@ public class DayPosition : Identity
     public string? Name { get; set; }
 
     #endregion
+
+    /// <summary>
+    ///     Связанные объекты <see cref="StaticSchedule" />.
+    /// </summary>
+    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Model.Security.Management;
@@ -80,11 +81,6 @@ public class DataContext : DbContext
     public DbSet<Group> Groups => Set<Group>();
 
     /// <summary>
-    ///     Набор объектов <see cref="WeekType" />.
-    /// </summary>
-    public DbSet<WeekType> WeekTypes => Set<WeekType>();
-
-    /// <summary>
     ///     Набор объектов <see cref="Subject" />.
     /// </summary>
     public DbSet<Subject> Subjects => Set<Subject>();
@@ -98,6 +94,16 @@ public class DataContext : DbContext
     ///     Набор объектов <see cref="DayPosition" />.
     /// </summary>
     public DbSet<DayPosition> DayPositions => Set<DayPosition>();
+
+    /// <summary>
+    ///     Набор объектов <see cref="WeekType" />.
+    /// </summary>
+    public DbSet<WeekType> WeekTypes => Set<WeekType>();
+
+    /// <summary>
+    ///     Набор объектов <see cref="StaticSchedule" />.
+    /// </summary>
+    public DbSet<StaticSchedule> StaticSchedules => Set<StaticSchedule>();
 
     /// <summary>
     ///     Набор объектов <see cref="RolePermissionLink" />.
@@ -135,10 +141,15 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new Department.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Course.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Group.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Subject.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new SubjectPosition.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new DayPosition.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new WeekType.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new StaticSchedule.Configuration(Configuration));
 
         // Связующие таблицы.
         modelBuilder.ApplyConfiguration(new RolePermissionLink.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new UserSubjectLink.Configuration(Configuration));
 
         base.OnModelCreating(modelBuilder);
     }

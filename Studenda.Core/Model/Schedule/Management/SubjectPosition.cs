@@ -87,6 +87,10 @@ public class SubjectPosition : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 
+            builder.HasMany(position => position.StaticSchedules)
+                .WithOne(schedule => schedule.SubjectPosition)
+                .HasForeignKey(schedule => schedule.SubjectPositionId);
+
             base.Configure(builder);
         }
     }
@@ -129,4 +133,9 @@ public class SubjectPosition : Identity
     public string? Name { get; set; }
 
     #endregion
+
+    /// <summary>
+    ///     Связанные объекты <see cref="StaticSchedule" />.
+    /// </summary>
+    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
 }
