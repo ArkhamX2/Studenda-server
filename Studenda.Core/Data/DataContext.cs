@@ -85,6 +85,11 @@ public class DataContext : DbContext
     public DbSet<WeekType> WeekTypes => Set<WeekType>();
 
     /// <summary>
+    ///     Набор объектов <see cref="Subject" />.
+    /// </summary>
+    public DbSet<Subject> Subjects => Set<Subject>();
+
+    /// <summary>
     ///     Набор объектов <see cref="RolePermissionLink" />.
     /// </summary>
     public DbSet<RolePermissionLink> RolePermissionLinks => Set<RolePermissionLink>();

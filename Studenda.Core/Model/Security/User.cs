@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security.Management;
 
 namespace Studenda.Core.Model.Security;
@@ -114,6 +115,10 @@ public class User : Identity
                 .HasForeignKey(user => user.DepartmentId)
                 .IsRequired(IsDepartmentIdRequired);
 
+            builder.HasMany(user => user.UserSubjectLinks)
+                .WithOne(link => link.User)
+                .HasForeignKey(link => link.UserId);
+
             base.Configure(builder);
         }
     }
@@ -183,4 +188,9 @@ public class User : Identity
     ///     Связанный объект <see cref="Department" />.
     /// </summary>
     public Department? Department { get; set; }
+
+    /// <summary>
+    ///     Связанные объекты <see cref="UserSubjectLink" />.
+    /// </summary>
+    public List<UserSubjectLink> UserSubjectLinks { get; set; } = null!;
 }
