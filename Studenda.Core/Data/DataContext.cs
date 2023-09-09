@@ -108,6 +108,11 @@ public class DataContext : DbContext
     public DbSet<StaticSchedule> StaticSchedules => Set<StaticSchedule>();
 
     /// <summary>
+    ///     Набор объектов <see cref="ScheduleChange" />.
+    /// </summary>
+    public DbSet<ScheduleChange> ScheduleChanges => Set<ScheduleChange>();
+
+    /// <summary>
     ///     Набор объектов <see cref="RolePermissionLink" />.
     /// </summary>
     public DbSet<RolePermissionLink> RolePermissionLinks => Set<RolePermissionLink>();
@@ -153,6 +158,7 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new WeekType.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Subject.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new StaticSchedule.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new ScheduleChange.Configuration(Configuration));
 
         // Связующие таблицы.
         modelBuilder.ApplyConfiguration(new RolePermissionLink.Configuration(Configuration));

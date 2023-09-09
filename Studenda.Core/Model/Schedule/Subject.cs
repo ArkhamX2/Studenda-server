@@ -59,6 +59,10 @@ public class Subject : Identity
                 .WithOne(schedule => schedule.Subject)
                 .HasForeignKey(schedule => schedule.SubjectId);
 
+            builder.HasMany(subject => subject.ScheduleChanges)
+                .WithOne(change => change.Subject)
+                .HasForeignKey(change => change.SubjectId);
+
             builder.HasMany(user => user.UserSubjectLinks)
                 .WithOne(link => link.Subject)
                 .HasForeignKey(link => link.SubjectId);
@@ -92,6 +96,11 @@ public class Subject : Identity
     ///     Связанные объекты <see cref="StaticSchedule" />.
     /// </summary>
     public List<StaticSchedule> StaticSchedules { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="ScheduleChange" />.
+    /// </summary>
+    public List<ScheduleChange> ScheduleChanges { get; set; } = null!;
 
     /// <summary>
     ///     Связанные объекты <see cref="UserSubjectLink" />.

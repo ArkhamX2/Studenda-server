@@ -30,6 +30,31 @@ public class StaticSchedule : Identity
     public const int DescriptionLengthMax = 256;
 
     /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="SubjectId" />.
+    /// </summary>
+    public const bool IsSubjectIdRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="SubjectPositionId" />.
+    /// </summary>
+    public const bool IsSubjectPositionIdRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="DayPositionId" />.
+    /// </summary>
+    public const bool IsDayPositionIdRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="WeekTypeId" />.
+    /// </summary>
+    public const bool IsWeekTypeIdRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="GroupId" />.
+    /// </summary>
+    public const bool IsGroupIdRequired = true;
+
+    /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Description" />.
     /// </summary>
     public const bool IsDescriptionRequired = false;
@@ -82,6 +107,10 @@ public class StaticSchedule : Identity
             builder.Property(type => type.Description)
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
+
+            builder.HasMany(schedule => schedule.ScheduleChanges)
+                .WithOne(change => change.StaticSchedule)
+                .HasForeignKey(change => change.StaticScheduleId);
 
             base.Configure(builder);
         }
@@ -158,4 +187,9 @@ public class StaticSchedule : Identity
     ///     Связанный объект <see cref="Common.Group" />.
     /// </summary>
     public Group Group { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="ScheduleChange" />.
+    /// </summary>
+    public List<ScheduleChange> ScheduleChanges { get; set; } = null!;
 }
