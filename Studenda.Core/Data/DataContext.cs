@@ -95,6 +95,11 @@ public class DataContext : DbContext
     public DbSet<SubjectPosition> SubjectPositions => Set<SubjectPosition>();
 
     /// <summary>
+    ///     Набор объектов <see cref="DayPosition" />.
+    /// </summary>
+    public DbSet<DayPosition> DayPositions => Set<DayPosition>();
+
+    /// <summary>
     ///     Набор объектов <see cref="RolePermissionLink" />.
     /// </summary>
     public DbSet<RolePermissionLink> RolePermissionLinks => Set<RolePermissionLink>();

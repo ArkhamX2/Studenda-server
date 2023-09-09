@@ -3,7 +3,7 @@ using Studenda.Core.Data.Configuration;
 
 namespace Studenda.Core.Model.Schedule.Management;
 
-public class SubjectPosition : Identity
+public class DayPosition : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -18,16 +18,6 @@ public class SubjectPosition : Identity
     #region Configuration
 
     /// <summary>
-    ///     Максимальная длина поля <see cref="StartLabel" />.
-    /// </summary>
-    public const int StartLabelLengthMax = 32;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="EndLabel" />.
-    /// </summary>
-    public const int EndLabelLengthMax = 32;
-
-    /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
     public const int NameLengthMax = 64;
@@ -38,24 +28,14 @@ public class SubjectPosition : Identity
     public const bool IsIndexRequired = true;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="StartLabel" />.
-    /// </summary>
-    public const bool IsStartLabelRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="EndLabel" />.
-    /// </summary>
-    public const bool IsEndLabelRequired = false;
-
-    /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
     public const bool IsNameRequired = false;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="SubjectPosition" />.
+    ///     Конфигурация модели <see cref="DayPosition" />.
     /// </summary>
-    internal class Configuration : Configuration<SubjectPosition>
+    internal class Configuration : Configuration<DayPosition>
     {
         /// <summary>
         ///     Конструктор.
@@ -70,18 +50,10 @@ public class SubjectPosition : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<SubjectPosition> builder)
+        public override void Configure(EntityTypeBuilder<DayPosition> builder)
         {
             builder.Property(type => type.Index)
                 .IsRequired();
-
-            builder.Property(type => type.StartLabel)
-                .HasMaxLength(StartLabelLengthMax)
-                .IsRequired(IsStartLabelRequired);
-
-            builder.Property(type => type.EndLabel)
-                .HasMaxLength(EndLabelLengthMax)
-                .IsRequired(IsEndLabelRequired);
 
             builder.Property(type => type.Name)
                 .HasMaxLength(NameLengthMax)
@@ -106,21 +78,9 @@ public class SubjectPosition : Identity
     #region Entity
 
     /// <summary>
-    ///     Индекс в учебном дне.
+    ///     Индекс в учебной неделе.
     /// </summary>
     public int Index { get; set; }
-
-    /// <summary>
-    ///     Обозначение начала.
-    ///     Необязательное поле.
-    /// </summary>
-    public string? StartLabel { get; set; }
-
-    /// <summary>
-    ///     Обозначение окончания.
-    ///     Необязательное поле.
-    /// </summary>
-    public string? EndLabel { get; set; }
 
     /// <summary>
     ///     Название.
