@@ -38,17 +38,6 @@ public class User : Identity
     public const int PatronymicLengthMax = 32;
 
     /// <summary>
-    ///     Максимальная длина поля <see cref="Login" />.
-    /// </summary>
-    public const int LoginLengthMax = 128;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="PasswordHash" />.
-    ///     TODO: Необходимо учитывать метод шифрования.
-    /// </summary>
-    public const int PasswordHashLengthMax = 256;
-
-    /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="RoleId" />.
     /// </summary>
     public const bool IsRoleIdRequired = true;
@@ -77,16 +66,6 @@ public class User : Identity
     ///     Статус необходимости наличия значения в поле <see cref="Patronymic" />.
     /// </summary>
     public const bool IsPatronymicRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Login" />.
-    /// </summary>
-    public const bool IsLoginRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="PasswordHash" />.
-    /// </summary>
-    public const bool IsPasswordHashRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="User" />.
@@ -119,14 +98,6 @@ public class User : Identity
             builder.Property(user => user.Patronymic)
                 .HasMaxLength(PatronymicLengthMax)
                 .IsRequired(IsPatronymicRequired);
-
-            builder.Property(user => user.Login)
-                .HasMaxLength(LoginLengthMax)
-                .IsRequired();
-
-            builder.Property(user => user.PasswordHash)
-                .HasMaxLength(PasswordHashLengthMax)
-                .IsRequired();
 
             builder.HasOne(user => user.Role)
                 .WithMany(role => role.Users)
@@ -195,17 +166,6 @@ public class User : Identity
     ///     Необязательное поле.
     /// </summary>
     public string? Patronymic { get; set; }
-
-    /// <summary>
-    ///     Адрес электронной почты.
-    /// </summary>
-    public string Login { get; set; } = null!;
-
-    /// <summary>
-    ///     Хеш пароля.
-    ///     TODO: Разобраться с методом шифрования.
-    /// </summary>
-    public string PasswordHash { get; set; } = null!;
 
     #endregion
 
