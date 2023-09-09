@@ -5,6 +5,11 @@ using Studenda.Core.Model.Schedule.Management;
 
 namespace Studenda.Core.Model.Schedule;
 
+/// <summary>
+///     Статичное расписание.
+///     Представляет собой занятие в определенный день
+///     для определенной группы.
+/// </summary>
 public class StaticSchedule : Identity
 {
     /*                   __ _                       _   _

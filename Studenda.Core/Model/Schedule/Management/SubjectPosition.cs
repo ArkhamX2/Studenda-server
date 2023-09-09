@@ -3,6 +3,9 @@ using Studenda.Core.Data.Configuration;
 
 namespace Studenda.Core.Model.Schedule.Management;
 
+/// <summary>
+///     Позиция занятия в учебном дне.
+/// </summary>
 public class SubjectPosition : Identity
 {
     /*                   __ _                       _   _

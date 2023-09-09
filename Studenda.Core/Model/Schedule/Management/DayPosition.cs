@@ -3,6 +3,9 @@ using Studenda.Core.Data.Configuration;
 
 namespace Studenda.Core.Model.Schedule.Management;
 
+/// <summary>
+///     Позиция учебного дня в учебной неделе.
+/// </summary>
 public class DayPosition : Identity
 {
     /*                   __ _                       _   _

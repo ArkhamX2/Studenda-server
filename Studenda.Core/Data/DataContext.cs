@@ -83,11 +83,6 @@ public class DataContext : DbContext
     public DbSet<Group> Groups => Set<Group>();
 
     /// <summary>
-    ///     Набор объектов <see cref="Subject" />.
-    /// </summary>
-    public DbSet<Subject> Subjects => Set<Subject>();
-
-    /// <summary>
     ///     Набор объектов <see cref="SubjectPosition" />.
     /// </summary>
     public DbSet<SubjectPosition> SubjectPositions => Set<SubjectPosition>();
@@ -101,6 +96,11 @@ public class DataContext : DbContext
     ///     Набор объектов <see cref="WeekType" />.
     /// </summary>
     public DbSet<WeekType> WeekTypes => Set<WeekType>();
+
+    /// <summary>
+    ///     Набор объектов <see cref="Subject" />.
+    /// </summary>
+    public DbSet<Subject> Subjects => Set<Subject>();
 
     /// <summary>
     ///     Набор объектов <see cref="StaticSchedule" />.
@@ -137,16 +137,21 @@ public class DataContext : DbContext
     /// <param name="modelBuilder">Набор интерфейсов настройки модели.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new User.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Role.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Permission.Configuration(Configuration));
+        // Общее.
         modelBuilder.ApplyConfiguration(new Department.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Course.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Group.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Subject.Configuration(Configuration));
+
+        // Безопасность.
+        modelBuilder.ApplyConfiguration(new User.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Role.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Permission.Configuration(Configuration));
+
+        // Расписание.
         modelBuilder.ApplyConfiguration(new SubjectPosition.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new DayPosition.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new WeekType.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Subject.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new StaticSchedule.Configuration(Configuration));
 
         // Связующие таблицы.
