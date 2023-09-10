@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
-using Studenda.Core.Model.Schedule.Link;
-using Studenda.Core.Model.Schedule.Management;
+using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Security.Management;
 
 namespace Studenda.Core.Model.Security;
@@ -89,18 +88,6 @@ public class User : Identity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.Property(user => user.Name)
-                .HasMaxLength(NameLengthMax)
-                .IsRequired(IsNameRequired);
-
-            builder.Property(user => user.Surname)
-                .HasMaxLength(SurnameLengthMax)
-                .IsRequired(IsSurnameRequired);
-
-            builder.Property(user => user.Patronymic)
-                .HasMaxLength(PatronymicLengthMax)
-                .IsRequired(IsPatronymicRequired);
-
             builder.HasOne(user => user.Role)
                 .WithMany(role => role.Users)
                 .HasForeignKey(user => user.RoleId)
@@ -116,9 +103,21 @@ public class User : Identity
                 .HasForeignKey(user => user.DepartmentId)
                 .IsRequired(IsDepartmentIdRequired);
 
-            builder.HasMany(user => user.UserSubjectLinks)
-                .WithOne(link => link.User)
-                .HasForeignKey(link => link.UserId);
+            builder.Property(user => user.Name)
+                .HasMaxLength(NameLengthMax)
+                .IsRequired(IsNameRequired);
+
+            builder.Property(user => user.Surname)
+                .HasMaxLength(SurnameLengthMax)
+                .IsRequired(IsSurnameRequired);
+
+            builder.Property(user => user.Patronymic)
+                .HasMaxLength(PatronymicLengthMax)
+                .IsRequired(IsPatronymicRequired);
+
+            builder.HasMany(user => user.Subjects)
+                .WithOne(subject => subject.User)
+                .HasForeignKey(subject => subject.UserId);
 
             base.Configure(builder);
         }
@@ -191,7 +190,7 @@ public class User : Identity
     public Department? Department { get; set; }
 
     /// <summary>
-    ///     Связанные объекты <see cref="UserSubjectLink" />.
+    ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<UserSubjectLink> UserSubjectLinks { get; set; } = null!;
+    public List<Subject> Subjects { get; set; } = null!;
 }

@@ -4,7 +4,6 @@ using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model;
 using Studenda.Core.Model.Common;
 using Studenda.Core.Model.Schedule;
-using Studenda.Core.Model.Schedule.Link;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Model.Security.Link;
@@ -118,11 +117,6 @@ public class DataContext : DbContext
     public DbSet<RolePermissionLink> RolePermissionLinks => Set<RolePermissionLink>();
 
     /// <summary>
-    ///     Набор объектов <see cref="UserSubjectLink" />.
-    /// </summary>
-    public DbSet<UserSubjectLink> UserSubjectLinks => Set<UserSubjectLink>();
-
-    /// <summary>
     ///     Обработать инициализацию сессии.
     ///     Используется для настройки сессии.
     /// </summary>
@@ -162,7 +156,6 @@ public class DataContext : DbContext
 
         // Связующие таблицы.
         modelBuilder.ApplyConfiguration(new RolePermissionLink.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new UserSubjectLink.Configuration(Configuration));
 
         base.OnModelCreating(modelBuilder);
     }

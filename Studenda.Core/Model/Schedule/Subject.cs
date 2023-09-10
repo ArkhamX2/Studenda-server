@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Schedule.Link;
+using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Schedule;
 
@@ -27,6 +27,11 @@ public class Subject : Identity
     public const int NameLengthMax = 32;
 
     /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
+    /// </summary>
+    public const bool IsUserIdRequired = true;
+
+    /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
     public const bool IsNameRequired = true;
@@ -51,6 +56,11 @@ public class Subject : Identity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<Subject> builder)
         {
+            builder.HasOne(subject => subject.User)
+                .WithMany(user => user.Subjects)
+                .HasForeignKey(user => user.UserId)
+                .IsRequired();
+
             builder.Property(type => type.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
@@ -62,10 +72,6 @@ public class Subject : Identity
             builder.HasMany(subject => subject.ScheduleChanges)
                 .WithOne(change => change.Subject)
                 .HasForeignKey(change => change.SubjectId);
-
-            builder.HasMany(user => user.UserSubjectLinks)
-                .WithOne(link => link.Subject)
-                .HasForeignKey(link => link.SubjectId);
 
             base.Configure(builder);
         }
@@ -86,11 +92,21 @@ public class Subject : Identity
     #region Entity
 
     /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    /// </summary>
+    public int UserId { get; set; }
+
+    /// <summary>
     ///     Название.
     /// </summary>
     public string Name { get; set; } = null!;
 
     #endregion
+
+    /// <summary>
+    ///     Связанный объект <see cref="Security.User" />.
+    /// </summary>
+    public User User { get; set; } = null!;
 
     /// <summary>
     ///     Связанные объекты <see cref="StaticSchedule" />.
@@ -101,9 +117,4 @@ public class Subject : Identity
     ///     Связанные объекты <see cref="ScheduleChange" />.
     /// </summary>
     public List<ScheduleChange> ScheduleChanges { get; set; } = null!;
-
-    /// <summary>
-    ///     Связанные объекты <see cref="UserSubjectLink" />.
-    /// </summary>
-    public List<UserSubjectLink> UserSubjectLinks { get; set; } = null!;
 }
