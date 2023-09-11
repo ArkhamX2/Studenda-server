@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Studenda.Core.Data;
+using Studenda.Core.Data.Transfer.Security;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Server.Security.Data;
-using Studenda.Core.Server.Security.Data.Transfer;
 using Studenda.Core.Server.Security.Service;
 using Studenda.Core.Server.Security.Service.Token;
 
