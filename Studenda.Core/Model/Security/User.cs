@@ -49,11 +49,6 @@ public class User : Identity
     public const bool IsGroupIdRequired = false;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="DepartmentId" />.
-    /// </summary>
-    public const bool IsDepartmentIdRequired = false;
-
-    /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
     public const bool IsNameRequired = false;
@@ -97,11 +92,6 @@ public class User : Identity
                 .WithMany(group => group.Users)
                 .HasForeignKey(user => user.GroupId)
                 .IsRequired(IsGroupIdRequired);
-            
-            builder.HasOne(user => user.Department)
-                .WithMany(department => department.Users)
-                .HasForeignKey(user => user.DepartmentId)
-                .IsRequired(IsDepartmentIdRequired);
 
             builder.Property(user => user.Name)
                 .HasMaxLength(NameLengthMax)
@@ -149,12 +139,6 @@ public class User : Identity
     public int GroupId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Department" />.
-    ///     Необязательное поле.
-    /// </summary>
-    public int DepartmentId { get; set; }
-
-    /// <summary>
     ///     Имя.
     ///     Необязательное поле.
     /// </summary>
@@ -183,11 +167,6 @@ public class User : Identity
     ///     Связанный объект <see cref="Common.Group" />.
     /// </summary>
     public Group? Group { get; set; }
-
-    /// <summary>
-    ///     Связанный объект <see cref="Common.Department" />.
-    /// </summary>
-    public Department? Department { get; set; }
 
     /// <summary>
     ///     Связанные объекты <see cref="Subject" />.

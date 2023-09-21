@@ -59,10 +59,6 @@ public class Department : Identity
                 .WithOne(group => group.Department)
                 .HasForeignKey(group => group.DepartmentId);
 
-            builder.HasMany(department => department.Users)
-                .WithOne(user => user.Department)
-                .HasForeignKey(course => course.DepartmentId);
-
             base.Configure(builder);
         }
     }
@@ -92,9 +88,4 @@ public class Department : Identity
     ///     Связанные объекты <see cref="Group" />.
     /// </summary>
     public List<Group> Groups { get; set; } = null!;
-
-    /// <summary>
-    ///     Связанные объекты <see cref="User" />.
-    /// </summary>
-    public List<User> Users { get; set; } = null!;
 }
