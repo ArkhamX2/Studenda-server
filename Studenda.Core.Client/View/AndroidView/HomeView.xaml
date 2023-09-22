@@ -32,7 +32,9 @@
                     HorizontalOptions="End"
                     ItemType="Profile"
                     VerticalOptions="Center">
-                    <Image Source="profile_pic_mini.png" />
+                    <Button Command="{Binding GroupSelectorCommand}"
+                        >                        
+                    </Button>
                 </ui:NavigationItemComponent>
 
                 <ui:NavigationItemComponent

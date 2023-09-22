@@ -25,83 +25,23 @@
             HorizontalOptions="Center"
             WidthRequest="225" />
 
-        <Label
-            Margin="0,16,0,14"
-            FontSize="24"
-            Style="{StaticResource WhiteLabelTheme}"
-            Text="Sign in" />
-
-        <VerticalStackLayout Margin="5" Spacing="5">
-            <Label
-                Margin="0"
-                FontSize="20"
-                Style="{StaticResource WhiteLabelTheme}"
-                Text="Login" />
-
-            <Border Style="{StaticResource SignEntryBorderTheme}">
-                <ui:StudendaEntry
-                    MaxLength="32"
-                    Placeholder="Login"
-                    Text="{Binding Username}"
-                    WidthRequest="340" />
-            </Border>
-        </VerticalStackLayout>
-
-
-        <VerticalStackLayout Margin="5" Spacing="5">
-            <Label
-                Margin="0"
-                FontSize="20"
-                Style="{StaticResource WhiteLabelTheme}"
-                Text="Password" />
-
-            <Border Style="{StaticResource SignEntryBorderTheme}">
-                <ui:StudendaEntry
-                    IsPassword="True"
-                    MaxLength="16"
-                    Placeholder="Password"
-                    Text="{Binding Password}"
-                    WidthRequest="340" />
-            </Border>
-        </VerticalStackLayout>
         <Button
             Margin="30,30,30,15"
             BackgroundColor="{DynamicResource ButtonColor}"
-            Command="{Binding SubmitCommand}"
+            Command="{Binding VerificationCommand}"
             Style="{StaticResource AppButton}"
             Text="Sign In"
             WidthRequest="340" />
-        <HorizontalStackLayout Margin="0,0,0,5" HorizontalOptions="Center">
-            <CheckBox
-                BackgroundColor="Black"
-                HeightRequest="20"
-                HorizontalOptions="Center"
-                WidthRequest="20" />
-            <Label
-                Margin="0"
-                Style="{StaticResource WhiteLabelTheme}"
-                Text="Запомнить меня"
-                VerticalOptions="Center" />
-        </HorizontalStackLayout>
 
         <HorizontalStackLayout Margin="5" HorizontalOptions="Center">
-            <Button
-                Margin="0,0,0,0"
-                Padding="20,0,20,0"
-                BorderColor="{DynamicResource ButtonColor}"
-                BorderWidth="1"
-                HorizontalOptions="Start"
-                Style="{StaticResource TextButton}"
-                Text="Forgot password" />
-
             <Button
                 Margin="30,0,0,0"
                 Padding="20,0,20,0"
                 BorderColor="{DynamicResource ButtonColor}"
                 BorderWidth="1"
-                Command="{Binding CreateCommand}"
+                Command="{Binding GuestCommand}"
                 Style="{StaticResource TextButton}"
-                Text="Sign Up" />
+                Text="Войти как гость" />
         </HorizontalStackLayout>
 
 

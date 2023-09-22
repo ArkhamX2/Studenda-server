@@ -9,12 +9,6 @@ namespace Studenda.Core.Client.ViewModel
         [ObservableProperty]
         private bool activityIndicatorIsRunning = true;
 
-        [ObservableProperty]
-        private string username = "";
-
-        [ObservableProperty]
-        private string password;
-
         public LogInViewModel()
         {
         }
@@ -26,25 +20,19 @@ namespace Studenda.Core.Client.ViewModel
         }
 
         [RelayCommand]
-        async private void GoToRegisterView()
+        async private void GoToVerificationView()
         {
-            await Shell.Current.GoToAsync($"{nameof(SignUpView)}");
+            await Shell.Current.GoToAsync($"{nameof(VerificationView)}");
         }
 
         [RelayCommand]
-        private async void Submit()
+        private async void Guest()
         {
             try
             {
-                //TODO: Реализация входа в аккаунт
 
                 GoToHomeView();
 
-                //Alert user about something
-                await Application.Current.MainPage.DisplayAlert(
-                    "Submit",
-                    $"You entered {Username} and {Password}",
-                    "OK");
             }
             catch (Exception e)
             {
@@ -58,11 +46,11 @@ namespace Studenda.Core.Client.ViewModel
         }
 
         [RelayCommand]
-        private void Create()
+        private void Verification()
         {
             try
             {
-                GoToRegisterView();
+                GoToVerificationView();
             }
             catch (Exception e)
             {

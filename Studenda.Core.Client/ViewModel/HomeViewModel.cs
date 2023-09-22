@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Studenda.Core.Client.View.AndroidView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +32,8 @@ namespace Studenda.Core.Client.ViewModel
         [ObservableProperty]
         private ExamViewModel examViewModel;
 
-
+        [ObservableProperty]
+        private GroupSelectorViewModel groupSelectorViewModel;
 
         public HomeViewModel() 
         {
@@ -47,11 +50,32 @@ namespace Studenda.Core.Client.ViewModel
             NavigationBarViewModel = new NavigationBarViewModel();
             NavigationItemViewModel = new NavigationItemViewModel();
             ExamViewModel = new ExamViewModel();
+            GroupSelectorViewModel = new GroupSelectorViewModel();
         }
 
         private void InitializeModels()
         {
             //Добавить инициализацию модели и распихивание её по вьюмоделам
+        }
+
+        [RelayCommand]
+        async private void GoToGroupSelectorView()
+        {
+            await Shell.Current.GoToAsync($"{nameof(GroupSelectorView)}");
+        }
+
+        [RelayCommand]
+        private void GroupSelector()
+        {
+            try
+            {
+                GoToGroupSelectorView();
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message);
+            }
         }
     }
 }

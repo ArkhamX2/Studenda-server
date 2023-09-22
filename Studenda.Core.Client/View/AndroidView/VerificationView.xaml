@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
+             x:Class="Studenda.Core.Client.View.AndroidView.VerificationView"
+             Title="VerificationView"
+             Shell.FlyoutBehavior="Disabled"
+             Shell.NavBarIsVisible="False"
+             >
+    <VerticalStackLayout>
+        <Label
+                Margin="0"
+                FontSize="60"
+                Style="{StaticResource WhiteLabelTheme}"
+                TextColor="Black"
+                Text="Login" />
+
+            <Border Style="{StaticResource SignEntryBorderTheme}">
+                <ui:StudendaEntry
+                    MaxLength="32"
+                    Placeholder="Почта"
+                    WidthRequest="340" />
+            </Border>
+            <Button Command="{Binding SignInCommand}"
+            >            
+        </Button>
+    </VerticalStackLayout>
+</ContentPage>

@@ -70,9 +70,6 @@
         <Compile Update="View\AndroidView\ChoseRoleView.xaml.cs">
             <DependentUpon>ChoseRoleView.xaml</DependentUpon>
         </Compile>
-        <Compile Update="View\AndroidView\SignUpView.xaml.cs">
-            <DependentUpon>SignUpView.xaml</DependentUpon>
-        </Compile>
         <Compile Update="View\AndroidView\ScheduleView.xaml.cs">
             <DependentUpon>ScheduleView.xaml</DependentUpon>
         </Compile>
@@ -130,6 +127,9 @@
         <MauiXaml Update="View\AndroidView\ChoseRoleView.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
+        <MauiXaml Update="View\AndroidView\GroupSelectorView.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
         <MauiXaml Update="View\AndroidView\HomeView.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
@@ -140,9 +140,6 @@
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
         <MauiXaml Update="View\AndroidView\ProfileView.xaml">
-            <Generator>MSBuild:Compile</Generator>
-        </MauiXaml>
-        <MauiXaml Update="View\AndroidView\SignUpView.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
         <MauiXaml Update="View\AndroidView\ScheduleView.xaml">
@@ -174,6 +171,9 @@
         </MauiXaml>
         <MauiXaml Update="Resources\Styles\Theme\WhiteLabelTheme.xaml">
             <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="View\AndroidView\VerificationView.xaml">
+          <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
     </ItemGroup>
 

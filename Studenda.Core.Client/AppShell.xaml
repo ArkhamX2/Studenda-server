@@ -17,10 +17,10 @@
         Route="LogInView" />
 
     <ShellContent
-        Title="Sign Up"
-        ContentTemplate="{DataTemplate android:SignUpView}"
+        Title="VerificationView"
+        ContentTemplate="{DataTemplate android:VerificationView}"
         FlyoutItemIsVisible="False"
-        Route="RegisterView" />
+        Route="VerificationView" />
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
@@ -48,7 +48,12 @@
             ContentTemplate="{DataTemplate android:JournalView}"
             Route="JournalView"
             Shell.FlyoutBehavior="Disabled" />
-
+        <ShellContent
+            Title="GroupSelector"
+            ContentTemplate="{DataTemplate android:GroupSelectorView}"
+            Route="GroupSelectorView"
+            Shell.FlyoutBehavior="Disabled" />
+        
     </FlyoutItem>
 
     <Shell.FlyoutFooter>
