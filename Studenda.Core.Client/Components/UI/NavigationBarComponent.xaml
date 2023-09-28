@@ -6,7 +6,10 @@
     xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI">
     <ContentView.ControlTemplate>
         <ControlTemplate>
-            <Frame BackgroundColor="Transparent" BorderColor="Transparent" CornerRadius="0">
+            <Frame
+                BackgroundColor="Transparent"
+                BorderColor="Transparent"
+                CornerRadius="0">
                 <ContentPresenter Margin="-20" />
             </Frame>
         </ControlTemplate>

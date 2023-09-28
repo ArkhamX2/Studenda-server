@@ -18,6 +18,7 @@
     <Color x:Key="MainWindowBackgroundColor">#F0F1F5</Color>
     <Color x:Key="SecondaryWindowBackgroundColor">#D3C9FD</Color>
     <Color x:Key="ButtonColor">#371F76</Color>
+    <Color x:Key="SubButtonColor">#E7E1FF</Color>
     <Color x:Key="PanelColor">#643B9F</Color>
     <Color x:Key="ForegroundColor">#371F76</Color>
     <Color x:Key="NavigationFooterColor">#D3C9FD</Color>

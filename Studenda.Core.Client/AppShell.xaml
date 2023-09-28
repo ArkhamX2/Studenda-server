@@ -53,7 +53,7 @@
             ContentTemplate="{DataTemplate android:GroupSelectorView}"
             Route="GroupSelectorView"
             Shell.FlyoutBehavior="Disabled" />
-        
+
     </FlyoutItem>
 
     <Shell.FlyoutFooter>

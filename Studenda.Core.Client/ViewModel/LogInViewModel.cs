@@ -26,12 +26,18 @@ namespace Studenda.Core.Client.ViewModel
         }
 
         [RelayCommand]
+        async private void GoToGroupSelectorView()
+        {
+            await Shell.Current.GoToAsync($"{nameof(GroupSelectorView)}");
+        }
+
+        [RelayCommand]
         private async void Guest()
         {
             try
             {
 
-                GoToHomeView();
+                GoToGroupSelectorView();
 
             }
             catch (Exception e)
