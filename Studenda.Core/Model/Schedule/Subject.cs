@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Schedule;
@@ -22,19 +23,19 @@ public class Subject : Identity
     #region Configuration
 
     /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
+    ///     Статус необходимости наличия значения в поле <see cref="DisciplineId" />.
     /// </summary>
-    public const int NameLengthMax = 32;
+    public const bool IsDisciplineIdRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="SubjectTypeId" />.
+    /// </summary>
+    public const bool IsSubjectTypeIdRequired = true;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
     /// </summary>
-    public const bool IsUserIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
-    public const bool IsNameRequired = true;
+    public const bool IsUserIdRequired = false;
 
     /// <summary>
     ///     Конфигурация модели <see cref="Subject" />.
@@ -56,14 +57,20 @@ public class Subject : Identity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<Subject> builder)
         {
-            builder.HasOne(subject => subject.User)
-                .WithMany(user => user.Subjects)
-                .HasForeignKey(user => user.UserId)
+            builder.HasOne(subject => subject.Discipline)
+                .WithMany(discipline => discipline.Subjects)
+                .HasForeignKey(subject => subject.DisciplineId)
                 .IsRequired();
 
-            builder.Property(type => type.Name)
-                .HasMaxLength(NameLengthMax)
+            builder.HasOne(subject => subject.SubjectType)
+                .WithMany(type => type.Subjects)
+                .HasForeignKey(subject => subject.SubjectTypeId)
                 .IsRequired();
+
+            builder.HasOne(subject => subject.User)
+                .WithMany(user => user.Subjects)
+                .HasForeignKey(subject => subject.UserId)
+                .IsRequired(IsUserIdRequired);
 
             builder.HasMany(subject => subject.StaticSchedules)
                 .WithOne(schedule => schedule.Subject)
@@ -92,21 +99,37 @@ public class Subject : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Идентификатор связанного объекта <see cref="Management.Discipline" />.
     /// </summary>
-    public int UserId { get; set; }
+    public int DisciplineId { get; set; }
 
     /// <summary>
-    ///     Название.
+    ///     Идентификатор связанного объекта <see cref="Management.SubjectType" />.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public int SubjectTypeId { get; set; }
+
+    /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Необязательное поле.
+    /// </summary>
+    public int UserId { get; set; }
 
     #endregion
 
     /// <summary>
+    ///     Связанный объект <see cref="Management.Discipline" />.
+    /// </summary>
+    public Discipline Discipline { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанный объект <see cref="Management.SubjectType" />.
+    /// </summary>
+    public SubjectType SubjectType { get; set; } = null!;
+
+    /// <summary>
     ///     Связанный объект <see cref="Security.User" />.
     /// </summary>
-    public User User { get; set; } = null!;
+    public User? User { get; set; }
 
     /// <summary>
     ///     Связанные объекты <see cref="StaticSchedule" />.

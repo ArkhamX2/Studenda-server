@@ -1,14 +1,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Security;
 
-namespace Studenda.Core.Model.Common;
+namespace Studenda.Core.Model.Schedule.Management;
 
 /// <summary>
-///     Группа.
+///     Учебная дисциплина.
 /// </summary>
-public class Group : Identity
+public class Discipline : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -25,17 +24,17 @@ public class Group : Identity
     /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
-    public const int NameLengthMax = 128;
+    public const int NameLengthMax = 32;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="CourseId" />.
+    ///     Максимальная длина поля <see cref="Description" />.
     /// </summary>
-    public const bool IsCourseIdRequired = true;
+    public const int DescriptionLengthMax = 32;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="DepartmentId" />.
+    ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
     /// </summary>
-    public const bool IsDepartmentIdRequired = true;
+    public const bool IsUserIdRequired = true;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
@@ -43,9 +42,14 @@ public class Group : Identity
     public const bool IsNameRequired = true;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="Group" />.
+    ///     Статус необходимости наличия значения в поле <see cref="Description" />.
     /// </summary>
-    internal class Configuration : Configuration<Group>
+    public const bool IsDescriptionRequired = false;
+
+    /// <summary>
+    ///     Конфигурация модели <see cref="Discipline" />.
+    /// </summary>
+    internal class Configuration : Configuration<Discipline>
     {
         /// <summary>
         ///     Конструктор.
@@ -60,29 +64,24 @@ public class Group : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Group> builder)
+        public override void Configure(EntityTypeBuilder<Discipline> builder)
         {
-            builder.Property(group => group.Name)
+            builder.HasOne(discipline => discipline.User)
+                .WithMany(user => user.Disciplines)
+                .HasForeignKey(discipline => discipline.UserId)
+                .IsRequired();
+
+            builder.Property(discipline => discipline.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.HasOne(group => group.Course)
-                .WithMany(course => course.Groups)
-                .HasForeignKey(group => group.CourseId)
-                .IsRequired();
+            builder.Property(discipline => discipline.Description)
+                .HasMaxLength(DescriptionLengthMax)
+                .IsRequired(IsDescriptionRequired);
 
-            builder.HasOne(group => group.Department)
-                .WithMany(department => department.Groups)
-                .HasForeignKey(group => group.DepartmentId)
-                .IsRequired();
-
-            builder.HasMany(group => group.Users)
-                .WithOne(user => user.Group)
-                .HasForeignKey(course => course.GroupId);
-
-            builder.HasMany(group => group.StaticSchedules)
-                .WithOne(schedule => schedule.Group)
-                .HasForeignKey(schedule => schedule.GroupId);
+            builder.HasMany(discipline => discipline.Subjects)
+                .WithOne(subject => subject.Discipline)
+                .HasForeignKey(subject => subject.DisciplineId);
 
             base.Configure(builder);
         }
@@ -103,39 +102,30 @@ public class Group : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Course" />.
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
     /// </summary>
-    public int CourseId { get; set; }
-
-    /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Department" />.
-    /// </summary>
-    public int DepartmentId { get; set; }
+    public int UserId { get; set; }
 
     /// <summary>
     ///     Название.
     /// </summary>
     public string Name { get; set; } = null!;
 
+    /// <summary>
+    ///     Описание.
+    ///     Необязательное поле.
+    /// </summary>
+    public string? Description { get; set; }
+
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="Common.Course" />.
+    ///     Связанный объект <see cref="Security.User" />.
     /// </summary>
-    public Course Course { get; set; } = null!;
+    public User User { get; set; } = null!;
 
     /// <summary>
-    ///     Связанный объект <see cref="Common.Department" />.
+    ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public Department Department { get; set; } = null!;
-
-    /// <summary>
-    ///     Связанные объекты <see cref="User" />.
-    /// </summary>
-    public List<User> Users { get; set; } = null!;
-
-    /// <summary>
-    ///     Связанные объекты <see cref="StaticSchedule" />.
-    /// </summary>
-    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
+    public List<Subject> Subjects { get; set; } = null!;
 }

@@ -104,7 +104,7 @@ public class StaticSchedule : Identity
                 .HasForeignKey(schedule => schedule.GroupId)
                 .IsRequired();
 
-            builder.Property(type => type.Description)
+            builder.Property(schedule => schedule.Description)
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
 

@@ -75,18 +75,18 @@ public class SubjectPosition : Identity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<SubjectPosition> builder)
         {
-            builder.Property(type => type.Index)
+            builder.Property(position => position.Index)
                 .IsRequired();
 
-            builder.Property(type => type.StartLabel)
+            builder.Property(position => position.StartLabel)
                 .HasMaxLength(StartLabelLengthMax)
                 .IsRequired(IsStartLabelRequired);
 
-            builder.Property(type => type.EndLabel)
+            builder.Property(position => position.EndLabel)
                 .HasMaxLength(EndLabelLengthMax)
                 .IsRequired(IsEndLabelRequired);
 
-            builder.Property(type => type.Name)
+            builder.Property(position => position.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 

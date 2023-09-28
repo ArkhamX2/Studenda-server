@@ -1,12 +1,13 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 
 namespace Studenda.Core.Model.Schedule.Management;
 
 /// <summary>
-///     Позиция учебного дня в учебной неделе.
+///     Тип занятия.
 /// </summary>
-public class DayPosition : Identity
+public class SubjectType : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -23,22 +24,27 @@ public class DayPosition : Identity
     /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
-    public const int NameLengthMax = 64;
+    public const int NameLengthMax = 32;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Index" />.
+    ///     Значение по умолчанию для поля <see cref="IsScorable" />.
     /// </summary>
-    public const bool IsIndexRequired = true;
+    public const bool IsScorableDefaultValue = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
-    public const bool IsNameRequired = false;
+    public const bool IsNameRequired = true;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="DayPosition" />.
+    ///     Статус необходимости наличия значения в поле <see cref="IsScorable" />.
     /// </summary>
-    internal class Configuration : Configuration<DayPosition>
+    public const bool IsScorableRequired = true;
+
+    /// <summary>
+    ///     Конфигурация модели <see cref="SubjectType" />.
+    /// </summary>
+    internal class Configuration : Configuration<SubjectType>
     {
         /// <summary>
         ///     Конструктор.
@@ -53,18 +59,19 @@ public class DayPosition : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<DayPosition> builder)
+        public override void Configure(EntityTypeBuilder<SubjectType> builder)
         {
-            builder.Property(position => position.Index)
+            builder.Property(type => type.Name)
+                .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.Property(position => position.Name)
-                .HasMaxLength(NameLengthMax)
-                .IsRequired(IsNameRequired);
+            builder.Property(type => type.IsScorable)
+                .HasDefaultValue(false)
+                .IsRequired();
 
-            builder.HasMany(position => position.StaticSchedules)
-                .WithOne(schedule => schedule.DayPosition)
-                .HasForeignKey(schedule => schedule.DayPositionId);
+            builder.HasMany(type => type.Subjects)
+                .WithOne(subject => subject.SubjectType)
+                .HasForeignKey(subject => subject.SubjectTypeId);
 
             base.Configure(builder);
         }
@@ -85,20 +92,19 @@ public class DayPosition : Identity
     #region Entity
 
     /// <summary>
-    ///     Индекс в учебной неделе.
+    ///     Название.
     /// </summary>
-    public int Index { get; set; }
+    public string Name { get; set; } = null!;
 
     /// <summary>
-    ///     Название.
-    ///     Необязательное поле.
+    ///     Статус оцениваемости.
     /// </summary>
-    public string? Name { get; set; }
+    public bool IsScorable { get; set; }
 
     #endregion
 
     /// <summary>
-    ///     Связанные объекты <see cref="StaticSchedule" />.
+    ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
+    public List<Subject> Subjects { get; set; } = null!;
 }

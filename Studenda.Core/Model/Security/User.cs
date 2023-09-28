@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
 using Studenda.Core.Model.Schedule;
+using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security.Management;
 
 namespace Studenda.Core.Model.Security;
@@ -109,6 +110,10 @@ public class User : Identity
                 .WithOne(subject => subject.User)
                 .HasForeignKey(subject => subject.UserId);
 
+            builder.HasMany(user => user.Disciplines)
+                .WithOne(discipline => discipline.User)
+                .HasForeignKey(discipline => discipline.UserId);
+
             base.Configure(builder);
         }
     }
@@ -172,4 +177,9 @@ public class User : Identity
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
     public List<Subject> Subjects { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Discipline" />.
+    /// </summary>
+    public List<Discipline> Disciplines { get; set; } = null!;
 }

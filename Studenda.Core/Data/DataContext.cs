@@ -97,6 +97,16 @@ public class DataContext : DbContext
     public DbSet<WeekType> WeekTypes => Set<WeekType>();
 
     /// <summary>
+    ///     Набор объектов <see cref="Discipline" />.
+    /// </summary>
+    public DbSet<Discipline> Disciplines => Set<Discipline>();
+
+    /// <summary>
+    ///     Набор объектов <see cref="SubjectType" />.
+    /// </summary>
+    public DbSet<SubjectType> SubjectTypes => Set<SubjectType>();
+
+    /// <summary>
     ///     Набор объектов <see cref="Subject" />.
     /// </summary>
     public DbSet<Subject> Subjects => Set<Subject>();
@@ -150,6 +160,8 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new SubjectPosition.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new DayPosition.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new WeekType.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Discipline.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new SubjectType.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Subject.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new StaticSchedule.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new ScheduleChange.Configuration(Configuration));

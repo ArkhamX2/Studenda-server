@@ -71,7 +71,7 @@ public class ScheduleChange : Identity
                 .HasForeignKey(change => change.SubjectId)
                 .IsRequired(IsSubjectIdRequired);
 
-            builder.Property(type => type.Description)
+            builder.Property(change => change.Description)
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
 
