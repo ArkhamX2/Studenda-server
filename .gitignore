@@ -475,3 +475,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+*.db
+Studenda.Core.Server/001_debug_identity_storage.db-shm
+Studenda.Core.Server/001_debug_identity_storage.db-wal
