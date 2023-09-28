@@ -72,5 +72,7 @@ applicationBuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationSc
 
 var application = applicationBuilder.Build();
 application.UseMiddleware<ExceptionHandler>();
+application.UseAuthentication();
+application.UseAuthorization();
 application.MapControllers();
 application.Run();

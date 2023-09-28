@@ -135,8 +135,14 @@ public class AccountController : ControllerBase
         {
             throw new Exception($"Role for {request.Email} was not found");
         }
-
-        await UserManager.AddToRoleAsync(account, role.Name);
+        if (account.Email == "Quest")
+        {
+            await UserManager.AddToRoleAsync(account, "Quest");
+        }
+        else
+        {
+            await UserManager.AddToRoleAsync(account, role.Name);
+        }
 
         return await Authenticate(new LoginRequest
         {
@@ -229,5 +235,21 @@ public class AccountController : ControllerBase
     {
         Response.ContentType = "text/html;charset=utf-8";
         await Response.WriteAsync("<h2>Hello METANIT.COM</h2>");
+    }
+    [Authorize(Roles ="Quest")]
+    [HttpGet]
+    [Route("helloQ")]
+    public async Task TestQuest()
+    {
+        Response.ContentType = "text/html;charset=utf-8";
+        await Response.WriteAsync("<h2>Hello Quest</h2>");
+    }
+    [Authorize(Roles = "Student")]
+    [HttpGet]
+    [Route("helloS")]
+    public async Task TestStudent()
+    {
+        Response.ContentType = "text/html;charset=utf-8";
+        await Response.WriteAsync("<h2>Hello Student</h2>");
     }
 }
