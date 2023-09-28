@@ -11,13 +11,14 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.NavBarIsVisible="False"
     WidthRequest="750">
-    <VerticalStackLayout
-        x:Name="LoginPageStackLayout"
-        Padding="30,0"
-        Spacing="0"
-        WidthRequest="480">
-
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="350" />
+            <RowDefinition Height="100" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
         <Frame
+            Grid.Row="0"
             Margin="10"
             BackgroundColor="White"
             CornerRadius="30"
@@ -26,24 +27,23 @@
             WidthRequest="225" />
 
         <Button
-            Margin="30,30,30,15"
+            Grid.Row="1"
             BackgroundColor="{DynamicResource ButtonColor}"
             Command="{Binding VerificationCommand}"
+            HeightRequest="58"
             Style="{StaticResource AppButton}"
-            Text="Sign In"
-            WidthRequest="340" />
+            Text="Войти"
+            WidthRequest="344" />
 
-        <HorizontalStackLayout Margin="5" HorizontalOptions="Center">
-            <Button
-                Margin="30,0,0,0"
-                Padding="20,0,20,0"
-                BorderColor="{DynamicResource ButtonColor}"
-                BorderWidth="1"
-                Command="{Binding GuestCommand}"
-                Style="{StaticResource TextButton}"
-                Text="Войти как гость" />
-        </HorizontalStackLayout>
+        <Button
+            Grid.Row="2"
+            BorderColor="{DynamicResource ButtonColor}"
+            BorderWidth="0"
+            Command="{Binding GuestCommand}"
+            HeightRequest="24"
+            Style="{StaticResource TextButton}"
+            Text="Войти как гость"
+            WidthRequest="200" />
 
-
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

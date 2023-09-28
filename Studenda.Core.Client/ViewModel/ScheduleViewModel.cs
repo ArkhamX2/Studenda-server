@@ -116,9 +116,11 @@ namespace Studenda.Core.Client.ViewModel
                         new Subject("8.30","Среда","вц-303"),
                         new Subject("8.30","Среда","вц-303"),
                         new Subject("8.30","Математика","вц-303"),
-                    }),
+                    }
+                    ),
                 }
                 , TypeOfWeek);
+      
             ScheduleList = Schedule.ScheduleList;
             CurrentDaySubjectList = ScheduleList[0].SubjectList;
             GroupList = new List<Group>()
