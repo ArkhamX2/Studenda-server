@@ -75,4 +75,6 @@ application.UseMiddleware<ExceptionHandler>();
 application.UseAuthentication();
 application.UseAuthorization();
 application.MapControllers();
+application.UseAuthentication();
+application.UseAuthorization();
 application.Run();
