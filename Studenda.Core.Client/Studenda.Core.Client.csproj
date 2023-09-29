@@ -172,6 +172,9 @@
         <MauiXaml Update="Resources\Styles\Theme\WhiteLabelTheme.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
+        <MauiXaml Update="View\AndroidView\VerificationApproveView.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
         <MauiXaml Update="View\AndroidView\VerificationView.xaml">
           <Generator>MSBuild:Compile</Generator>
         </MauiXaml>

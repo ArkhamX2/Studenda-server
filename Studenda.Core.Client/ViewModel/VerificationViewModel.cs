@@ -11,9 +11,9 @@ namespace Studenda.Core.Client.ViewModel
     public partial class VerificationViewModel
     {
         [RelayCommand]
-        async private void GoToHomeView()
+        async private void GoToVerificationApproveView()
         {
-            await Shell.Current.GoToAsync($"//{nameof(HomeView)}");
+            await Shell.Current.GoToAsync($"//{nameof(VerificationApproveView)}");
         }
 
         [RelayCommand]
@@ -21,7 +21,7 @@ namespace Studenda.Core.Client.ViewModel
         {
             try
             {
-                GoToHomeView();
+                GoToVerificationApproveView();
             }
             catch (Exception e)
             {

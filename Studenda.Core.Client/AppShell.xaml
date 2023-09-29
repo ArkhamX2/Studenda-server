@@ -21,6 +21,12 @@
         ContentTemplate="{DataTemplate android:VerificationView}"
         FlyoutItemIsVisible="False"
         Route="VerificationView" />
+    
+    <ShellContent
+        Title="VerificationApproveView"
+        ContentTemplate="{DataTemplate android:VerificationApproveView}"
+        FlyoutItemIsVisible="False"
+        Route="VerificationApproveView" />
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
