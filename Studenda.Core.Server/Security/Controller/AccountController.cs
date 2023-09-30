@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Studenda.Core.Data;
 using Studenda.Core.Model.Account;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Data.Transfer;
@@ -13,32 +12,29 @@ using Studenda.Core.Server.Security.Service.Token;
 
 namespace Studenda.Core.Server.Security.Controller;
 
-[Route("account")]
+[Route("api/security")]
 [ApiController]
 public class AccountController : ControllerBase
 {
     public AccountController(
         IConfiguration configuration,
-        DataContext dataContext,
         IdentityContext identityContext,
         ITokenService tokenService,
         UserManager<Account> userManager)
     {
         Configuration = configuration;
-        DataContext = dataContext;
         IdentityContext = identityContext;
         TokenService = tokenService;
         UserManager = userManager;
     }
 
     private IConfiguration Configuration { get; }
-    private DataContext DataContext { get; }
     private IdentityContext IdentityContext { get; }
     private ITokenService TokenService { get; }
     private UserManager<Account> UserManager { get; }
 
     [HttpPost("login")]
-    public async Task<ActionResult<SecurityResponse>> Authenticate([FromBody] LoginRequest request)
+    public async Task<ActionResult<SecurityResponse>> Login([FromBody] LoginRequest request)
     {
         if (!ModelState.IsValid)
         {
@@ -74,7 +70,6 @@ public class AccountController : ControllerBase
             .Select(x => x.RoleId)
             .ToListAsync();
         var roles = IdentityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
-
         var accessToken = TokenService.CreateToken(account, roles);
 
         account.RefreshToken = Configuration.GenerateRefreshToken();
@@ -129,22 +124,24 @@ public class AccountController : ControllerBase
 
         // TODO: очень ресурсозатратно. доработать.
         var roleList = IdentityContext.Roles.ToList();
-        var role = roleList.FirstOrDefault(role => role.Name == "Student");
+        var role = roleList.FirstOrDefault(role => string.Equals(role.Name, "Student"));
 
         if (role?.Name == null)
         {
             throw new Exception($"Role for {request.Email} was not found");
         }
-        if (account.Email == "Quest")
+
+        // TODO: почему Email? это ломает валидацию данных. нужно пересмотреть проверку.
+        if (account.Email == "Guest")
         {
-            await UserManager.AddToRoleAsync(account, "Quest");
+            await UserManager.AddToRoleAsync(account, "Guest");
         }
         else
         {
             await UserManager.AddToRoleAsync(account, role.Name);
         }
 
-        return await Authenticate(new LoginRequest
+        return await Login(new LoginRequest
         {
             Email = request.Email,
             Password = request.Password
@@ -152,7 +149,7 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost]
-    [Route("refresh-token")]
+    [Route("token/refresh")]
     public async Task<IActionResult> RefreshToken(TokenPair? tokenPair)
     {
         if (tokenPair is null)
@@ -194,8 +191,8 @@ public class AccountController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    [Route("revoke/{accountName}")]
-    public async Task<IActionResult> Revoke(string accountName)
+    [Route("token/revoke/{accountName}")]
+    public async Task<IActionResult> RevokeToken(string accountName)
     {
         var account = await UserManager.FindByNameAsync(accountName);
 
@@ -213,8 +210,8 @@ public class AccountController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    [Route("revoke-all")]
-    public async Task<IActionResult> RevokeAll()
+    [Route("token/revoke")]
+    public async Task<IActionResult> RevokeAllTokens()
     {
         var accountList = UserManager.Users.ToList();
 
@@ -230,26 +227,11 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
-    [Route("hello")]
+    [Route("test")]
     public async Task Test()
     {
         Response.ContentType = "text/html;charset=utf-8";
+
         await Response.WriteAsync("<h2>Hello METANIT.COM</h2>");
-    }
-    [Authorize(Roles ="Quest")]
-    [HttpGet]
-    [Route("helloQ")]
-    public async Task TestQuest()
-    {
-        Response.ContentType = "text/html;charset=utf-8";
-        await Response.WriteAsync("<h2>Hello Quest</h2>");
-    }
-    [Authorize(Roles = "Student")]
-    [HttpGet]
-    [Route("helloS")]
-    public async Task TestStudent()
-    {
-        Response.ContentType = "text/html;charset=utf-8";
-        await Response.WriteAsync("<h2>Hello Student</h2>");
     }
 }
