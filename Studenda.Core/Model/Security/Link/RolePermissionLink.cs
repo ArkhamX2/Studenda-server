@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Security.Management;
 
-namespace Studenda.Core.Model.Security.Management;
+namespace Studenda.Core.Model.Security.Link;
 
 /// <summary>
 ///     Связь многие ко многим для <see cref="Management.Role" /> и <see cref="Management.Permission" />.

@@ -1,14 +1,13 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Security.Link;
 
-namespace Studenda.Core.Model.Security.Management;
+namespace Studenda.Core.Model.Schedule.Management;
 
 /// <summary>
-///     Разрешение для <see cref="Role" />.
-///     Обозначает некоторый доступ к некоторой функции.
+///     Тип занятия.
 /// </summary>
-public class Permission : Identity
+public class SubjectType : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -25,7 +24,12 @@ public class Permission : Identity
     /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
-    public const int NameLengthMax = 128;
+    public const int NameLengthMax = 32;
+
+    /// <summary>
+    ///     Значение по умолчанию для поля <see cref="IsScorable" />.
+    /// </summary>
+    public const bool IsScorableDefaultValue = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
@@ -33,9 +37,14 @@ public class Permission : Identity
     public const bool IsNameRequired = true;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="Permission" />.
+    ///     Статус необходимости наличия значения в поле <see cref="IsScorable" />.
     /// </summary>
-    internal class Configuration : Configuration<Permission>
+    public const bool IsScorableRequired = true;
+
+    /// <summary>
+    ///     Конфигурация модели <see cref="SubjectType" />.
+    /// </summary>
+    internal class Configuration : Configuration<SubjectType>
     {
         /// <summary>
         ///     Конструктор.
@@ -50,15 +59,23 @@ public class Permission : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Permission> builder)
+        public override void Configure(EntityTypeBuilder<SubjectType> builder)
         {
-            builder.Property(permission => permission.Name)
+            builder.Property(type => type.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.HasMany(permission => permission.RolePermissionLinks)
-                .WithOne(link => link.Permission)
-                .HasForeignKey(link => link.PermissionId);
+            builder.Property(type => type.IsScorable)
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            builder.HasMany(type => type.Subjects)
+                .WithOne(subject => subject.SubjectType)
+                .HasForeignKey(subject => subject.SubjectTypeId);
+
+            builder.HasMany(type => type.SubjectChanges)
+                .WithOne(change => change.SubjectType)
+                .HasForeignKey(change => change.SubjectTypeId);
 
             base.Configure(builder);
         }
@@ -83,10 +100,20 @@ public class Permission : Identity
     /// </summary>
     public string Name { get; set; } = null!;
 
+    /// <summary>
+    ///     Статус оцениваемости.
+    /// </summary>
+    public bool IsScorable { get; set; }
+
     #endregion
 
     /// <summary>
-    ///     Связанные объекты <see cref="RolePermissionLink" />.
+    ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<RolePermissionLink> RolePermissionLinks { get; set; } = null!;
+    public List<Subject> Subjects { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="SubjectChange" />.
+    /// </summary>
+    public List<SubjectChange> SubjectChanges { get; set; } = null!;
 }

@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Security.Link;
 
-namespace Studenda.Core.Model.Security.Management;
+namespace Studenda.Core.Model.Schedule.Management;
 
 /// <summary>
-///     Разрешение для <see cref="Role" />.
-///     Обозначает некоторый доступ к некоторой функции.
+///     Позиция учебного дня в учебной неделе.
 /// </summary>
-public class Permission : Identity
+public class DayPosition : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -25,17 +23,22 @@ public class Permission : Identity
     /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
-    public const int NameLengthMax = 128;
+    public const int NameLengthMax = 64;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="Index" />.
+    /// </summary>
+    public const bool IsIndexRequired = true;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
-    public const bool IsNameRequired = true;
+    public const bool IsNameRequired = false;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="Permission" />.
+    ///     Конфигурация модели <see cref="DayPosition" />.
     /// </summary>
-    internal class Configuration : Configuration<Permission>
+    internal class Configuration : Configuration<DayPosition>
     {
         /// <summary>
         ///     Конструктор.
@@ -50,15 +53,18 @@ public class Permission : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Permission> builder)
+        public override void Configure(EntityTypeBuilder<DayPosition> builder)
         {
-            builder.Property(permission => permission.Name)
-                .HasMaxLength(NameLengthMax)
+            builder.Property(position => position.Index)
                 .IsRequired();
 
-            builder.HasMany(permission => permission.RolePermissionLinks)
-                .WithOne(link => link.Permission)
-                .HasForeignKey(link => link.PermissionId);
+            builder.Property(position => position.Name)
+                .HasMaxLength(NameLengthMax)
+                .IsRequired(IsNameRequired);
+
+            builder.HasMany(position => position.StaticSchedules)
+                .WithOne(schedule => schedule.DayPosition)
+                .HasForeignKey(schedule => schedule.DayPositionId);
 
             base.Configure(builder);
         }
@@ -79,14 +85,20 @@ public class Permission : Identity
     #region Entity
 
     /// <summary>
-    ///     Название.
+    ///     Индекс в учебной неделе.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public int Index { get; set; }
+
+    /// <summary>
+    ///     Название.
+    ///     Необязательное поле.
+    /// </summary>
+    public string? Name { get; set; }
 
     #endregion
 
     /// <summary>
-    ///     Связанные объекты <see cref="RolePermissionLink" />.
+    ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<RolePermissionLink> RolePermissionLinks { get; set; } = null!;
+    public List<Subject> StaticSchedules { get; set; } = null!;
 }

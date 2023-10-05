@@ -4,9 +4,9 @@ using Studenda.Core.Data.Configuration;
 namespace Studenda.Core.Model.Schedule.Management;
 
 /// <summary>
-///     Тип учебной недели.
+///     Позиция занятия в учебном дне.
 /// </summary>
-public class WeekType : Identity
+public class SubjectPosition : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -21,6 +21,16 @@ public class WeekType : Identity
     #region Configuration
 
     /// <summary>
+    ///     Максимальная длина поля <see cref="StartLabel" />.
+    /// </summary>
+    public const int StartLabelLengthMax = 32;
+
+    /// <summary>
+    ///     Максимальная длина поля <see cref="EndLabel" />.
+    /// </summary>
+    public const int EndLabelLengthMax = 32;
+
+    /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
     public const int NameLengthMax = 64;
@@ -31,14 +41,24 @@ public class WeekType : Identity
     public const bool IsIndexRequired = true;
 
     /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="StartLabel" />.
+    /// </summary>
+    public const bool IsStartLabelRequired = false;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="EndLabel" />.
+    /// </summary>
+    public const bool IsEndLabelRequired = false;
+
+    /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
     public const bool IsNameRequired = false;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="WeekType" />.
+    ///     Конфигурация модели <see cref="SubjectPosition" />.
     /// </summary>
-    internal class Configuration : Configuration<WeekType>
+    internal class Configuration : Configuration<SubjectPosition>
     {
         /// <summary>
         ///     Конструктор.
@@ -53,18 +73,26 @@ public class WeekType : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<WeekType> builder)
+        public override void Configure(EntityTypeBuilder<SubjectPosition> builder)
         {
-            builder.Property(type => type.Index)
+            builder.Property(position => position.Index)
                 .IsRequired();
 
-            builder.Property(type => type.Name)
+            builder.Property(position => position.StartLabel)
+                .HasMaxLength(StartLabelLengthMax)
+                .IsRequired(IsStartLabelRequired);
+
+            builder.Property(position => position.EndLabel)
+                .HasMaxLength(EndLabelLengthMax)
+                .IsRequired(IsEndLabelRequired);
+
+            builder.Property(position => position.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 
-            builder.HasMany(type => type.StaticSchedules)
-                .WithOne(schedule => schedule.WeekType)
-                .HasForeignKey(schedule => schedule.WeekTypeId);
+            builder.HasMany(position => position.StaticSchedules)
+                .WithOne(schedule => schedule.SubjectPosition)
+                .HasForeignKey(schedule => schedule.SubjectPositionId);
 
             base.Configure(builder);
         }
@@ -85,9 +113,21 @@ public class WeekType : Identity
     #region Entity
 
     /// <summary>
-    ///     Индекс относительно начала учебного года.
+    ///     Индекс в учебном дне.
     /// </summary>
     public int Index { get; set; }
+
+    /// <summary>
+    ///     Обозначение начала.
+    ///     Необязательное поле.
+    /// </summary>
+    public string? StartLabel { get; set; }
+
+    /// <summary>
+    ///     Обозначение окончания.
+    ///     Необязательное поле.
+    /// </summary>
+    public string? EndLabel { get; set; }
 
     /// <summary>
     ///     Название.

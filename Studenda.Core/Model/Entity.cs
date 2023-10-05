@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
@@ -10,6 +12,19 @@ namespace Studenda.Core.Model;
 /// </summary>
 public abstract class Entity
 {
+    /// <summary>
+    ///     Вычислить массив байтов хеш-суммы.
+    /// </summary>
+    /// <param name="entity">Модель стандартного объекта.</param>
+    /// <returns>Массив байтов.</returns>
+    private static IEnumerable<byte> ComputeDataHash(Entity entity)
+    {
+        var json = Newtonsoft.Json.JsonConvert.SerializeObject(entity);
+        var bytes = Encoding.UTF8.GetBytes(json);
+
+        return MD5.HashData(bytes);
+    }
+
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
      *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
@@ -97,4 +112,19 @@ public abstract class Entity
     public DateTime? UpdatedAt { get; set; }
 
     #endregion
+
+    /// <summary>
+    ///     Массив байтов хеш-суммы.
+    /// </summary>
+    private IEnumerable<byte> DataHash => ComputeDataHash(this);
+
+    /// <summary>
+    ///     Сравнить хеш-суммы с указанной моделью.
+    /// </summary>
+    /// <param name="entity">Модель стандартного объекта.</param>
+    /// <returns>Статус сравнения.</returns>
+    public bool CompareWith(Entity entity)
+    {
+        return ComputeDataHash(entity).SequenceEqual(DataHash);
+    }
 }

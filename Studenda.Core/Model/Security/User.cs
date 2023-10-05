@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Schedule;
+using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security.Management;
 
 namespace Studenda.Core.Model.Security;
@@ -23,6 +25,11 @@ public class User : Identity
     #region Configuration
 
     /// <summary>
+    ///     Максимальная длина поля <see cref="IdentityId" />.
+    /// </summary>
+    public const int IdentityIdLengthMax = 128;
+
+    /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
     public const int NameLengthMax = 32;
@@ -38,15 +45,9 @@ public class User : Identity
     public const int PatronymicLengthMax = 32;
 
     /// <summary>
-    ///     Максимальная длина поля <see cref="Login" />.
+    ///     Статус необходимости наличия значения в поле <see cref="IdentityId" />.
     /// </summary>
-    public const int LoginLengthMax = 128;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="PasswordHash" />.
-    ///     TODO: Необходимо учитывать метод шифрования.
-    /// </summary>
-    public const int PasswordHashLengthMax = 256;
+    public const bool IsIdentityIdRequired = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="RoleId" />.
@@ -57,11 +58,6 @@ public class User : Identity
     ///     Статус необходимости наличия значения в поле <see cref="GroupId" />.
     /// </summary>
     public const bool IsGroupIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="DepartmentId" />.
-    /// </summary>
-    public const bool IsDepartmentIdRequired = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
@@ -77,16 +73,6 @@ public class User : Identity
     ///     Статус необходимости наличия значения в поле <see cref="Patronymic" />.
     /// </summary>
     public const bool IsPatronymicRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Login" />.
-    /// </summary>
-    public const bool IsLoginRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="PasswordHash" />.
-    /// </summary>
-    public const bool IsPasswordHashRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="User" />.
@@ -108,6 +94,20 @@ public class User : Identity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<User> builder)
         {
+            builder.HasOne(user => user.Role)
+                .WithMany(role => role.Users)
+                .HasForeignKey(user => user.RoleId)
+                .IsRequired();
+            
+            builder.HasOne(user => user.Group)
+                .WithMany(group => group.Users)
+                .HasForeignKey(user => user.GroupId)
+                .IsRequired(IsGroupIdRequired);
+
+            builder.Property(user => user.IdentityId)
+                .HasMaxLength(IdentityIdLengthMax)
+                .IsRequired(IsIdentityIdRequired);
+
             builder.Property(user => user.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
@@ -120,28 +120,17 @@ public class User : Identity
                 .HasMaxLength(PatronymicLengthMax)
                 .IsRequired(IsPatronymicRequired);
 
-            builder.Property(user => user.Login)
-                .HasMaxLength(LoginLengthMax)
-                .IsRequired();
+            builder.HasMany(user => user.Subjects)
+                .WithOne(subject => subject.User)
+                .HasForeignKey(subject => subject.UserId);
 
-            builder.Property(user => user.PasswordHash)
-                .HasMaxLength(PasswordHashLengthMax)
-                .IsRequired();
+            builder.HasMany(user => user.SubjectChanges)
+                .WithOne(change => change.User)
+                .HasForeignKey(change => change.UserId);
 
-            builder.HasOne(user => user.Role)
-                .WithMany(role => role.Users)
-                .HasForeignKey(user => user.RoleId)
-                .IsRequired();
-            
-            builder.HasOne(user => user.Group)
-                .WithMany(group => group.Users)
-                .HasForeignKey(user => user.GroupId)
-                .IsRequired(IsGroupIdRequired);
-            
-            builder.HasOne(user => user.Department)
-                .WithMany(department => department.Users)
-                .HasForeignKey(user => user.DepartmentId)
-                .IsRequired(IsDepartmentIdRequired);
+            builder.HasMany(user => user.Disciplines)
+                .WithOne(discipline => discipline.User)
+                .HasForeignKey(discipline => discipline.UserId);
 
             base.Configure(builder);
         }
@@ -162,21 +151,21 @@ public class User : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Role" />.
+    ///     Идентификатор связанного объекта <see cref="Management.Role" />.
     /// </summary>
     public int RoleId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Group" />.
+    ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     ///     Необязательное поле.
     /// </summary>
     public int GroupId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Department" />.
+    ///     Идентификатор в системе безопасности.
     ///     Необязательное поле.
     /// </summary>
-    public int DepartmentId { get; set; }
+    public string? IdentityId { get; set; }
 
     /// <summary>
     ///     Имя.
@@ -196,31 +185,30 @@ public class User : Identity
     /// </summary>
     public string? Patronymic { get; set; }
 
-    /// <summary>
-    ///     Адрес электронной почты.
-    /// </summary>
-    public string Login { get; set; } = null!;
-
-    /// <summary>
-    ///     Хеш пароля.
-    ///     TODO: Разобраться с методом шифрования.
-    /// </summary>
-    public string PasswordHash { get; set; } = null!;
-
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="Role" />.
+    ///     Связанный объект <see cref="Management.Role" />.
     /// </summary>
     public Role Role { get; set; } = null!;
 
     /// <summary>
-    ///     Связанный объект <see cref="Group" />.
+    ///     Связанный объект <see cref="Common.Group" />.
     /// </summary>
     public Group? Group { get; set; }
 
     /// <summary>
-    ///     Связанный объект <see cref="Department" />.
+    ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public Department? Department { get; set; }
+    public List<Subject> Subjects { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="SubjectChange" />.
+    /// </summary>
+    public List<SubjectChange> SubjectChanges { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Discipline" />.
+    /// </summary>
+    public List<Discipline> Disciplines { get; set; } = null!;
 }
