@@ -25,6 +25,11 @@ public class User : Identity
     #region Configuration
 
     /// <summary>
+    ///     Максимальная длина поля <see cref="IdentityId" />.
+    /// </summary>
+    public const int IdentityIdLengthMax = 128;
+
+    /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
     public const int NameLengthMax = 32;
@@ -38,6 +43,11 @@ public class User : Identity
     ///     Максимальная длина поля <see cref="Patronymic" />.
     /// </summary>
     public const int PatronymicLengthMax = 32;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="IdentityId" />.
+    /// </summary>
+    public const bool IsIdentityIdRequired = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="RoleId" />.
@@ -94,6 +104,10 @@ public class User : Identity
                 .HasForeignKey(user => user.GroupId)
                 .IsRequired(IsGroupIdRequired);
 
+            builder.Property(user => user.IdentityId)
+                .HasMaxLength(IdentityIdLengthMax)
+                .IsRequired(IsIdentityIdRequired);
+
             builder.Property(user => user.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
@@ -146,6 +160,12 @@ public class User : Identity
     ///     Необязательное поле.
     /// </summary>
     public int GroupId { get; set; }
+
+    /// <summary>
+    ///     Идентификатор в системе безопасности.
+    ///     Необязательное поле.
+    /// </summary>
+    public string? IdentityId { get; set; }
 
     /// <summary>
     ///     Имя.

@@ -109,12 +109,12 @@ public class DataContext : DbContext
     /// <summary>
     ///     Набор объектов <see cref="Subject" />.
     /// </summary>
-    public DbSet<Subject> StaticSchedules => Set<Subject>();
+    public DbSet<Subject> Subjects => Set<Subject>();
 
     /// <summary>
     ///     Набор объектов <see cref="SubjectChange" />.
     /// </summary>
-    public DbSet<SubjectChange> ScheduleChanges => Set<SubjectChange>();
+    public DbSet<SubjectChange> SubjectChanges => Set<SubjectChange>();
 
     /// <summary>
     ///     Набор объектов <see cref="RolePermissionLink" />.
