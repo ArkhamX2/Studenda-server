@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Schedule.Management;
+using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Schedule;
 
@@ -32,9 +34,19 @@ public class ScheduleChange : Identity
     public const bool IsStaticScheduleIdRequired = true;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="SubjectId" />.
+    ///     Статус необходимости наличия значения в поле <see cref="DisciplineId" />.
     /// </summary>
-    public const bool IsSubjectIdRequired = false;
+    public const bool IsDisciplineIdRequired = false;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="SubjectTypeId" />.
+    /// </summary>
+    public const bool IsSubjectTypeIdRequired = false;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
+    /// </summary>
+    public const bool IsUserIdRequired = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Description" />.
@@ -66,10 +78,20 @@ public class ScheduleChange : Identity
                 .HasForeignKey(change => change.StaticScheduleId)
                 .IsRequired();
 
-            builder.HasOne(change => change.Subject)
-                .WithMany(subject => subject.ScheduleChanges)
-                .HasForeignKey(change => change.SubjectId)
-                .IsRequired(IsSubjectIdRequired);
+            builder.HasOne(change => change.Discipline)
+                .WithMany(discipline => discipline.ScheduleChanges)
+                .HasForeignKey(change => change.DisciplineId)
+                .IsRequired(IsDisciplineIdRequired);
+
+            builder.HasOne(change => change.SubjectType)
+                .WithMany(type => type.ScheduleChanges)
+                .HasForeignKey(change => change.SubjectTypeId)
+                .IsRequired(IsSubjectTypeIdRequired);
+
+            builder.HasOne(change => change.User)
+                .WithMany(user => user.ScheduleChanges)
+                .HasForeignKey(change => change.UserId)
+                .IsRequired(IsUserIdRequired);
 
             builder.Property(change => change.Description)
                 .HasMaxLength(DescriptionLengthMax)
@@ -99,10 +121,22 @@ public class ScheduleChange : Identity
     public int StaticScheduleId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Schedule.Subject" />.
+    ///     Идентификатор связанного объекта <see cref="Management.Discipline" />.
     ///     Необязательное поле.
     /// </summary>
-    public int SubjectId { get; set; }
+    public int DisciplineId { get; set; }
+
+    /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Management.SubjectType" />.
+    ///     Необязательное поле.
+    /// </summary>
+    public int SubjectTypeId { get; set; }
+
+    /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Необязательное поле.
+    /// </summary>
+    public int UserId { get; set; }
 
     /// <summary>
     ///     Описание.
@@ -118,7 +152,17 @@ public class ScheduleChange : Identity
     public StaticSchedule StaticSchedule { get; set; } = null!;
 
     /// <summary>
-    ///     Связанный объект <see cref="Schedule.Subject" />.
+    ///     Связанный объект <see cref="Management.Discipline" />.
     /// </summary>
-    public Subject? Subject { get; set; }
+    public Discipline? Discipline { get; set; }
+
+    /// <summary>
+    ///     Связанный объект <see cref="Management.SubjectType" />.
+    /// </summary>
+    public SubjectType? SubjectType { get; set; }
+
+    /// <summary>
+    ///     Связанный объект <see cref="Security.User" />.
+    /// </summary>
+    public User? User { get; set; }
 }

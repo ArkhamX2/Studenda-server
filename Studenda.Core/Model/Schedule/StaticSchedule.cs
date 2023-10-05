@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
 using Studenda.Core.Model.Schedule.Management;
+using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Schedule;
 
@@ -30,9 +31,9 @@ public class StaticSchedule : Identity
     public const int DescriptionLengthMax = 256;
 
     /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="SubjectId" />.
+    ///     Статус необходимости наличия значения в поле <see cref="DisciplineId" />.
     /// </summary>
-    public const bool IsSubjectIdRequired = true;
+    public const bool IsDisciplineIdRequired = true;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="SubjectPositionId" />.
@@ -48,6 +49,16 @@ public class StaticSchedule : Identity
     ///     Статус необходимости наличия значения в поле <see cref="WeekTypeId" />.
     /// </summary>
     public const bool IsWeekTypeIdRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="SubjectTypeId" />.
+    /// </summary>
+    public const bool IsSubjectTypeIdRequired = false;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
+    /// </summary>
+    public const bool IsUserIdRequired = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="GroupId" />.
@@ -79,9 +90,9 @@ public class StaticSchedule : Identity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<StaticSchedule> builder)
         {
-            builder.HasOne(schedule => schedule.Subject)
-                .WithMany(subject => subject.StaticSchedules)
-                .HasForeignKey(schedule => schedule.SubjectId)
+            builder.HasOne(schedule => schedule.Discipline)
+                .WithMany(discipline => discipline.StaticSchedules)
+                .HasForeignKey(schedule => schedule.DisciplineId)
                 .IsRequired();
 
             builder.HasOne(schedule => schedule.SubjectPosition)
@@ -98,6 +109,16 @@ public class StaticSchedule : Identity
                 .WithMany(type => type.StaticSchedules)
                 .HasForeignKey(schedule => schedule.WeekTypeId)
                 .IsRequired();
+
+            builder.HasOne(schedule => schedule.SubjectType)
+                .WithMany(type => type.StaticSchedules)
+                .HasForeignKey(schedule => schedule.SubjectTypeId)
+                .IsRequired(IsSubjectTypeIdRequired);
+
+            builder.HasOne(schedule => schedule.User)
+                .WithMany(user => user.StaticSchedules)
+                .HasForeignKey(schedule => schedule.UserId)
+                .IsRequired(IsUserIdRequired);
 
             builder.HasOne(schedule => schedule.Group)
                 .WithMany(group => group.StaticSchedules)
@@ -131,9 +152,9 @@ public class StaticSchedule : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Schedule.Subject" />.
+    ///     Идентификатор связанного объекта <see cref="Management.Discipline" />.
     /// </summary>
-    public int SubjectId { get; set; }
+    public int DisciplineId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.SubjectPosition" />.
@@ -151,6 +172,18 @@ public class StaticSchedule : Identity
     public int WeekTypeId { get; set; }
 
     /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Management.SubjectType" />.
+    ///     Необязательное поле.
+    /// </summary>
+    public int SubjectTypeId { get; set; }
+
+    /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Необязательное поле.
+    /// </summary>
+    public int UserId { get; set; }
+
+    /// <summary>
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     /// </summary>
     public int GroupId { get; set; }
@@ -164,9 +197,9 @@ public class StaticSchedule : Identity
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="Schedule.Subject" />.
+    ///     Связанный объект <see cref="Management.Discipline" />.
     /// </summary>
-    public Subject Subject { get; set; } = null!;
+    public Discipline Discipline { get; set; } = null!;
 
     /// <summary>
     ///     Связанный объект <see cref="Management.SubjectPosition" />.
@@ -182,6 +215,16 @@ public class StaticSchedule : Identity
     ///     Связанный объект <see cref="Management.WeekType" />.
     /// </summary>
     public WeekType WeekType { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанный объект <see cref="Management.SubjectType" />.
+    /// </summary>
+    public SubjectType? SubjectType { get; set; }
+
+    /// <summary>
+    ///     Связанный объект <see cref="Security.User" />.
+    /// </summary>
+    public User? User { get; set; }
 
     /// <summary>
     ///     Связанный объект <see cref="Common.Group" />.

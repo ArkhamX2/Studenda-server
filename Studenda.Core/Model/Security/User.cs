@@ -106,9 +106,13 @@ public class User : Identity
                 .HasMaxLength(PatronymicLengthMax)
                 .IsRequired(IsPatronymicRequired);
 
-            builder.HasMany(user => user.Subjects)
-                .WithOne(subject => subject.User)
-                .HasForeignKey(subject => subject.UserId);
+            builder.HasMany(user => user.StaticSchedules)
+                .WithOne(schedule => schedule.User)
+                .HasForeignKey(schedule => schedule.UserId);
+
+            builder.HasMany(user => user.ScheduleChanges)
+                .WithOne(change => change.User)
+                .HasForeignKey(change => change.UserId);
 
             builder.HasMany(user => user.Disciplines)
                 .WithOne(discipline => discipline.User)
@@ -174,9 +178,14 @@ public class User : Identity
     public Group? Group { get; set; }
 
     /// <summary>
-    ///     Связанные объекты <see cref="Subject" />.
+    ///     Связанные объекты <see cref="StaticSchedule" />.
     /// </summary>
-    public List<Subject> Subjects { get; set; } = null!;
+    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="ScheduleChange" />.
+    /// </summary>
+    public List<ScheduleChange> ScheduleChanges { get; set; } = null!;
 
     /// <summary>
     ///     Связанные объекты <see cref="Discipline" />.

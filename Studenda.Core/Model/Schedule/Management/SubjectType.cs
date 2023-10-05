@@ -69,9 +69,13 @@ public class SubjectType : Identity
                 .HasDefaultValue(false)
                 .IsRequired();
 
-            builder.HasMany(type => type.Subjects)
-                .WithOne(subject => subject.SubjectType)
-                .HasForeignKey(subject => subject.SubjectTypeId);
+            builder.HasMany(type => type.StaticSchedules)
+                .WithOne(schedule => schedule.SubjectType)
+                .HasForeignKey(schedule => schedule.SubjectTypeId);
+
+            builder.HasMany(type => type.ScheduleChanges)
+                .WithOne(change => change.SubjectType)
+                .HasForeignKey(change => change.SubjectTypeId);
 
             base.Configure(builder);
         }
@@ -104,7 +108,12 @@ public class SubjectType : Identity
     #endregion
 
     /// <summary>
-    ///     Связанные объекты <see cref="Subject" />.
+    ///     Связанные объекты <see cref="StaticSchedule" />.
     /// </summary>
-    public List<Subject> Subjects { get; set; } = null!;
+    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="ScheduleChange" />.
+    /// </summary>
+    public List<ScheduleChange> ScheduleChanges { get; set; } = null!;
 }

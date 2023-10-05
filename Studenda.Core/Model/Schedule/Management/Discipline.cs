@@ -79,9 +79,13 @@ public class Discipline : Identity
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
 
-            builder.HasMany(discipline => discipline.Subjects)
-                .WithOne(subject => subject.Discipline)
-                .HasForeignKey(subject => subject.DisciplineId);
+            builder.HasMany(discipline => discipline.StaticSchedules)
+                .WithOne(schedule => schedule.Discipline)
+                .HasForeignKey(schedule => schedule.DisciplineId);
+
+            builder.HasMany(discipline => discipline.ScheduleChanges)
+                .WithOne(change => change.Discipline)
+                .HasForeignKey(change => change.DisciplineId);
 
             base.Configure(builder);
         }
@@ -125,7 +129,12 @@ public class Discipline : Identity
     public User User { get; set; } = null!;
 
     /// <summary>
-    ///     Связанные объекты <see cref="Subject" />.
+    ///     Связанные объекты <see cref="StaticSchedule" />.
     /// </summary>
-    public List<Subject> Subjects { get; set; } = null!;
+    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="ScheduleChange" />.
+    /// </summary>
+    public List<ScheduleChange> ScheduleChanges { get; set; } = null!;
 }
