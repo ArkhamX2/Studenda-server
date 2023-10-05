@@ -98,7 +98,7 @@ public class DayPosition : Identity
     #endregion
 
     /// <summary>
-    ///     Связанные объекты <see cref="StaticSchedule" />.
+    ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
+    public List<Subject> StaticSchedules { get; set; } = null!;
 }

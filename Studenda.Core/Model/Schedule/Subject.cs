@@ -7,11 +7,10 @@ using Studenda.Core.Model.Security;
 namespace Studenda.Core.Model.Schedule;
 
 /// <summary>
-///     Статичное расписание.
-///     Представляет собой занятие в определенный день
+///     Статичное занятие на определенный день
 ///     для определенной группы.
 /// </summary>
-public class StaticSchedule : Identity
+public class Subject : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -71,9 +70,9 @@ public class StaticSchedule : Identity
     public const bool IsDescriptionRequired = false;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="StaticSchedule" />.
+    ///     Конфигурация модели <see cref="Subject" />.
     /// </summary>
-    internal class Configuration : Configuration<StaticSchedule>
+    internal class Configuration : Configuration<Subject>
     {
         /// <summary>
         ///     Конструктор.
@@ -88,49 +87,49 @@ public class StaticSchedule : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<StaticSchedule> builder)
+        public override void Configure(EntityTypeBuilder<Subject> builder)
         {
-            builder.HasOne(schedule => schedule.Discipline)
-                .WithMany(discipline => discipline.StaticSchedules)
-                .HasForeignKey(schedule => schedule.DisciplineId)
+            builder.HasOne(subject => subject.Discipline)
+                .WithMany(discipline => discipline.Subjects)
+                .HasForeignKey(subject => subject.DisciplineId)
                 .IsRequired();
 
-            builder.HasOne(schedule => schedule.SubjectPosition)
+            builder.HasOne(subject => subject.SubjectPosition)
                 .WithMany(position => position.StaticSchedules)
-                .HasForeignKey(schedule => schedule.SubjectPositionId)
+                .HasForeignKey(subject => subject.SubjectPositionId)
                 .IsRequired();
 
-            builder.HasOne(schedule => schedule.DayPosition)
+            builder.HasOne(subject => subject.DayPosition)
                 .WithMany(position => position.StaticSchedules)
-                .HasForeignKey(schedule => schedule.DayPositionId)
+                .HasForeignKey(subject => subject.DayPositionId)
                 .IsRequired();
 
-            builder.HasOne(schedule => schedule.WeekType)
+            builder.HasOne(subject => subject.WeekType)
                 .WithMany(type => type.StaticSchedules)
-                .HasForeignKey(schedule => schedule.WeekTypeId)
+                .HasForeignKey(subject => subject.WeekTypeId)
                 .IsRequired();
 
-            builder.HasOne(schedule => schedule.SubjectType)
-                .WithMany(type => type.StaticSchedules)
-                .HasForeignKey(schedule => schedule.SubjectTypeId)
+            builder.HasOne(subject => subject.SubjectType)
+                .WithMany(type => type.Subjects)
+                .HasForeignKey(subject => subject.SubjectTypeId)
                 .IsRequired(IsSubjectTypeIdRequired);
 
-            builder.HasOne(schedule => schedule.User)
-                .WithMany(user => user.StaticSchedules)
-                .HasForeignKey(schedule => schedule.UserId)
+            builder.HasOne(subject => subject.User)
+                .WithMany(user => user.Subjects)
+                .HasForeignKey(subject => subject.UserId)
                 .IsRequired(IsUserIdRequired);
 
-            builder.HasOne(schedule => schedule.Group)
+            builder.HasOne(subject => subject.Group)
                 .WithMany(group => group.StaticSchedules)
-                .HasForeignKey(schedule => schedule.GroupId)
+                .HasForeignKey(subject => subject.GroupId)
                 .IsRequired();
 
-            builder.Property(schedule => schedule.Description)
+            builder.Property(subject => subject.Description)
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
 
-            builder.HasMany(schedule => schedule.ScheduleChanges)
-                .WithOne(change => change.StaticSchedule)
+            builder.HasMany(subject => subject.ScheduleChanges)
+                .WithOne(change => change.Subject)
                 .HasForeignKey(change => change.StaticScheduleId);
 
             base.Configure(builder);
@@ -232,7 +231,7 @@ public class StaticSchedule : Identity
     public Group Group { get; set; } = null!;
 
     /// <summary>
-    ///     Связанные объекты <see cref="ScheduleChange" />.
+    ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
-    public List<ScheduleChange> ScheduleChanges { get; set; } = null!;
+    public List<SubjectChange> ScheduleChanges { get; set; } = null!;
 }

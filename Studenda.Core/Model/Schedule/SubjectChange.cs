@@ -6,10 +6,10 @@ using Studenda.Core.Model.Security;
 namespace Studenda.Core.Model.Schedule;
 
 /// <summary>
-///     Замена статичного расписания.
-///     Позволяет подменить занятие у конкретного расписания.
+///     Замена статичного занятия.
+///     Позволяет подменить данные у конкретного занятия.
 /// </summary>
-public class ScheduleChange : Identity
+public class SubjectChange : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -54,9 +54,9 @@ public class ScheduleChange : Identity
     public const bool IsDescriptionRequired = false;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="ScheduleChange" />.
+    ///     Конфигурация модели <see cref="SubjectChange" />.
     /// </summary>
-    internal class Configuration : Configuration<ScheduleChange>
+    internal class Configuration : Configuration<SubjectChange>
     {
         /// <summary>
         ///     Конструктор.
@@ -71,25 +71,25 @@ public class ScheduleChange : Identity
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<ScheduleChange> builder)
+        public override void Configure(EntityTypeBuilder<SubjectChange> builder)
         {
-            builder.HasOne(change => change.StaticSchedule)
-                .WithMany(schedule => schedule.ScheduleChanges)
+            builder.HasOne(change => change.Subject)
+                .WithMany(subject => subject.ScheduleChanges)
                 .HasForeignKey(change => change.StaticScheduleId)
                 .IsRequired();
 
             builder.HasOne(change => change.Discipline)
-                .WithMany(discipline => discipline.ScheduleChanges)
+                .WithMany(discipline => discipline.SubjectChanges)
                 .HasForeignKey(change => change.DisciplineId)
                 .IsRequired(IsDisciplineIdRequired);
 
             builder.HasOne(change => change.SubjectType)
-                .WithMany(type => type.ScheduleChanges)
+                .WithMany(type => type.SubjectChanges)
                 .HasForeignKey(change => change.SubjectTypeId)
                 .IsRequired(IsSubjectTypeIdRequired);
 
             builder.HasOne(change => change.User)
-                .WithMany(user => user.ScheduleChanges)
+                .WithMany(user => user.SubjectChanges)
                 .HasForeignKey(change => change.UserId)
                 .IsRequired(IsUserIdRequired);
 
@@ -116,7 +116,7 @@ public class ScheduleChange : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Schedule.StaticSchedule" />.
+    ///     Идентификатор связанного объекта <see cref="Subject" />.
     /// </summary>
     public int StaticScheduleId { get; set; }
 
@@ -147,9 +147,9 @@ public class ScheduleChange : Identity
     #endregion
 
     /// <summary>
-    ///     Связанный объект <see cref="Schedule.StaticSchedule" />.
+    ///     Связанный объект <see cref="Subject" />.
     /// </summary>
-    public StaticSchedule StaticSchedule { get; set; } = null!;
+    public Subject Subject { get; set; } = null!;
 
     /// <summary>
     ///     Связанный объект <see cref="Management.Discipline" />.

@@ -135,7 +135,7 @@ public class Group : Identity
     public List<User> Users { get; set; } = null!;
 
     /// <summary>
-    ///     Связанные объекты <see cref="StaticSchedule" />.
+    ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<StaticSchedule> StaticSchedules { get; set; } = null!;
+    public List<Subject> StaticSchedules { get; set; } = null!;
 }

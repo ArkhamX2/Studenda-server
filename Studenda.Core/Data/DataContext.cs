@@ -107,14 +107,14 @@ public class DataContext : DbContext
     public DbSet<SubjectType> SubjectTypes => Set<SubjectType>();
 
     /// <summary>
-    ///     Набор объектов <see cref="StaticSchedule" />.
+    ///     Набор объектов <see cref="Subject" />.
     /// </summary>
-    public DbSet<StaticSchedule> StaticSchedules => Set<StaticSchedule>();
+    public DbSet<Subject> StaticSchedules => Set<Subject>();
 
     /// <summary>
-    ///     Набор объектов <see cref="ScheduleChange" />.
+    ///     Набор объектов <see cref="SubjectChange" />.
     /// </summary>
-    public DbSet<ScheduleChange> ScheduleChanges => Set<ScheduleChange>();
+    public DbSet<SubjectChange> ScheduleChanges => Set<SubjectChange>();
 
     /// <summary>
     ///     Набор объектов <see cref="RolePermissionLink" />.
@@ -157,8 +157,8 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new WeekType.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Discipline.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new SubjectType.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new StaticSchedule.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new ScheduleChange.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Subject.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new SubjectChange.Configuration(Configuration));
 
         // Связующие таблицы.
         modelBuilder.ApplyConfiguration(new RolePermissionLink.Configuration(Configuration));
