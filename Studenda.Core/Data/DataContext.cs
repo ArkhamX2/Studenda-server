@@ -13,7 +13,6 @@ namespace Studenda.Core.Data;
 
 /// <summary>
 ///     Сессия работы с базой данных.
-///     TODO: Создать класс управления контекстами и их конфигурациями.
 ///     Памятка для работы с кешем:
 ///     - context.Add() для запроса INSERT.
 ///     Объекты вставляются со статусом Added.
@@ -34,16 +33,6 @@ public class DataContext : DbContext
     public DataContext(ContextConfiguration configuration)
     {
         Configuration = configuration;
-
-        // TODO: Использовать асинхронные запросы.
-        if (!Database.CanConnect())
-        {
-            if (!Database.EnsureCreated()) throw new Exception("Connection error!");
-        }
-        else
-        {
-            Database.EnsureCreated();
-        }
     }
 
     /// <summary>
@@ -122,8 +111,35 @@ public class DataContext : DbContext
     public DbSet<RolePermissionLink> RolePermissionLinks => Set<RolePermissionLink>();
 
     /// <summary>
-    ///     Обработать инициализацию сессии.
-    ///     Используется для настройки сессии.
+    ///     Попытаться инициализировать сессию.
+    ///     Используется для проверки подключения
+    ///     и инициализации структуры таблиц.
+    /// </summary>
+    /// <returns>Статус успешности инициализации.</returns>
+    public bool TryInitialize()
+    {
+        var canConnect = Database.CanConnect();
+        var isCreated = Database.EnsureCreated();
+
+        return canConnect || isCreated;
+    }
+
+    /// <summary>
+    ///     Попытаться асинхронно инициализировать сессию.
+    ///     Используется для проверки подключения
+    ///     и инициализации структуры таблиц.
+    /// </summary>
+    /// <returns>Статус успешности инициализации.</returns>
+    public async Task<bool> TryInitializeAsync()
+    {
+        var canConnect = await Database.CanConnectAsync();
+        var isCreated = await Database.EnsureCreatedAsync();
+
+        return canConnect || isCreated;
+    }
+
+    /// <summary>
+    ///     Обработать настройку сессии.
     /// </summary>
     /// <param name="optionsBuilder">Набор интерфейсов настройки сессии.</param>
     /// <exception cref="Exception">При ошибке подключения.</exception>
