@@ -33,10 +33,16 @@ public partial class ScheduleView : ContentPage
         Task.Run(
             async () =>
             {
+
                 loaded = true;
-                //await Task.Delay(50);
                 await MainThread.InvokeOnMainThreadAsync(async () => 
-                await LazyH.LoadViewAsync());
+                await Schedule.LoadViewAsync());
             });
+    }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        loaded = false;
+        OnAppearing();
     }
 }

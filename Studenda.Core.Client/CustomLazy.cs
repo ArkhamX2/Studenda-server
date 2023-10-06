@@ -1,15 +1,10 @@
-﻿using CommunityToolkit.Maui;
-using CommunityToolkit.Maui.Markup;
+﻿using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Maui.Views;
 
 namespace Studenda.Core.Client
 {
-    public class CustomLazy<TView> : CommunityToolkit.Maui.Views.LazyView where TView : View, new()
+    public class CustomLazy<TView> : LazyView where TView : View, new()
     {
-        public CustomLazy()
-        {
-
-        }
-
         public override async ValueTask LoadViewAsync()
         {
             // display a loading indicator
@@ -19,7 +14,7 @@ namespace Studenda.Core.Client
             await Task.Delay(10);
 
             // load the view
-            Content = new TView { BindingContext = BindingContext };
+            Content = new TView { BindingContext = this.BindingContext };
 
             SetHasLazyViewLoaded(true);
         }

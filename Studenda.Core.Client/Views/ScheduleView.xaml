@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
+    xmlns:wrapper="clr-namespace:Studenda.Core.Client.Components.UI.Wrappers"
     xmlns:vm="clr-namespace:Studenda.Core.Client.ViewModels"
     xmlns:control="clr-namespace:Studenda.Core.Client"
     BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
@@ -62,7 +63,11 @@
             BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ScheduleViewModel, Mode=TwoWay}"
             WeekTypeTitle="{Binding TypeOfWeek}" />
 
-        <control:CustomLazy Grid.Row="2" x:Name="LazyH" x:TypeArguments="ui:ScrollScheduleComponent"/>
+        <control:CustomLazy Grid.Row="2" 
+                            x:Name="Schedule"
+                            x:TypeArguments="wrapper:ScheduleComponentWrapper"
+                            BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ScheduleViewModel, Mode=TwoWay}"
+                            />
 
         <ui:NavigationFooterPanel
             Grid.Row="3"

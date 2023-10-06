@@ -67,6 +67,9 @@
         <Compile Update="Components\UI\GroupSelectorComponent.xaml.cs">
             <DependentUpon>GroupSelectorComponent.xaml</DependentUpon>
         </Compile>
+        <Compile Update="Components\UI\Wrappers\ScheduleComponentWrapper.xaml.cs">
+          <DependentUpon>ScheduleComponentWrapper.xaml</DependentUpon>
+        </Compile>
         <Compile Update="Views\ChoseRoleView.xaml.cs">
             <DependentUpon>ChoseRoleView.xaml</DependentUpon>
         </Compile>
@@ -112,7 +115,10 @@
         <MauiXaml Update="Components\UI\GroupSelectorComponent.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
-        <MauiXaml Update="Components\UI\ScrollScheduleComponent.xaml">
+        <MauiXaml Update="Components\UI\Wrappers\ScheduleDayComponentWrapper.xaml">
+          <Generator>MSBuild:Compile</Generator>
+        </MauiXaml>
+        <MauiXaml Update="Components\UI\Wrappers\ScheduleComponentWrapper.xaml">
           <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
         <MauiXaml Update="Components\UI\SubjectComponent.xaml">
