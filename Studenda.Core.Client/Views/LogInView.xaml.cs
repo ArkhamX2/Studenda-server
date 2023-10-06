@@ -11,4 +11,5 @@ public partial class LogInView : ContentPage
         BindingContext = vm;
 
     }
+
 }

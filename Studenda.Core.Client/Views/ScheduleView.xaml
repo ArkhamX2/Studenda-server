@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
     xmlns:vm="clr-namespace:Studenda.Core.Client.ViewModels"
+    xmlns:control="clr-namespace:Studenda.Core.Client"
     BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
     Shell.NavBarIsVisible="False">
 
@@ -60,9 +61,9 @@
             Grid.Row="1"
             BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ScheduleViewModel, Mode=TwoWay}"
             WeekTypeTitle="{Binding TypeOfWeek}" />
-        <ScrollView Grid.Row="2" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ScheduleViewModel, Mode=TwoWay}">
-            <ui:ScheduleComponent Schedule="{Binding ScheduleList}" />
-        </ScrollView>
+
+        <control:CustomLazy Grid.Row="2" x:Name="LazyH" x:TypeArguments="ui:ScrollScheduleComponent"/>
+
         <ui:NavigationFooterPanel
             Grid.Row="3"
             BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
