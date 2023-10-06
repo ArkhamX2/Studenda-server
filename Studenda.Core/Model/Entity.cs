@@ -116,7 +116,7 @@ public abstract class Entity
     /// <summary>
     ///     Массив байтов хеш-суммы.
     /// </summary>
-    private IEnumerable<byte> DataHash => ComputeDataHash(this);
+    public IEnumerable<byte> DataHash => ComputeDataHash(this);
 
     /// <summary>
     ///     Сравнить хеш-суммы с указанной моделью.
