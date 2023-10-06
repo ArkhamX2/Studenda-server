@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Studenda.Core.Client.ViewModel
+namespace Studenda.Core.Client.ViewModels
 {
     public class Faculty
     {

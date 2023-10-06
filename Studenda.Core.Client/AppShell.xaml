@@ -3,8 +3,7 @@
     x:Class="Studenda.Core.Client.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:android="clr-namespace:Studenda.Core.Client.View.AndroidView"
-    xmlns:local="clr-namespace:Studenda.Core.Client.View"
+    xmlns:local="clr-namespace:Studenda.Core.Client.Views"
     BackgroundColor="{DynamicResource PanelColor}"
     HeightRequest="1034"
     Shell.TabBarIsVisible="False"
@@ -12,51 +11,51 @@
 
     <ShellContent
         Title="Login page"
-        ContentTemplate="{DataTemplate android:LogInView}"
+        ContentTemplate="{DataTemplate local:LogInView}"
         FlyoutItemIsVisible="False"
         Route="LogInView" />
 
     <ShellContent
         Title="VerificationView"
-        ContentTemplate="{DataTemplate android:VerificationView}"
+        ContentTemplate="{DataTemplate local:VerificationView}"
         FlyoutItemIsVisible="False"
         Route="VerificationView" />
     
     <ShellContent
         Title="VerificationApproveView"
-        ContentTemplate="{DataTemplate android:VerificationApproveView}"
+        ContentTemplate="{DataTemplate local:VerificationApproveView}"
         FlyoutItemIsVisible="False"
         Route="VerificationApproveView" />
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent
             Title="Home"
-            ContentTemplate="{DataTemplate android:HomeView}"
+            ContentTemplate="{DataTemplate local:HomeView}"
             Route="HomeView"
             Shell.FlyoutBehavior="Disabled" />
         <ShellContent
             Title="Schedule"
-            ContentTemplate="{DataTemplate android:ScheduleView}"
+            ContentTemplate="{DataTemplate local:ScheduleView}"
             Route="ScheduleView"
             Shell.FlyoutBehavior="Disabled" />
         <ShellContent
             Title="Profile"
-            ContentTemplate="{DataTemplate android:ProfileView}"
+            ContentTemplate="{DataTemplate local:ProfileView}"
             Route="ProfileView"
             Shell.FlyoutBehavior="Disabled" />
         <ShellContent
             Title="Notifications"
-            ContentTemplate="{DataTemplate android:NotificationView}"
+            ContentTemplate="{DataTemplate local:NotificationView}"
             Route="NotificationView"
             Shell.FlyoutBehavior="Disabled" />
         <ShellContent
             Title="Journal"
-            ContentTemplate="{DataTemplate android:JournalView}"
+            ContentTemplate="{DataTemplate local:JournalView}"
             Route="JournalView"
             Shell.FlyoutBehavior="Disabled" />
         <ShellContent
             Title="GroupSelector"
-            ContentTemplate="{DataTemplate android:GroupSelectorView}"
+            ContentTemplate="{DataTemplate local:GroupSelectorView}"
             Route="GroupSelectorView"
             Shell.FlyoutBehavior="Disabled" />
 

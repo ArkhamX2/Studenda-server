@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Studenda.Core.Client.View.AndroidView;
+using Studenda.Core.Client.Views;
 
-namespace Studenda.Core.Client.ViewModel
+namespace Studenda.Core.Client.ViewModels
 {
     public partial class LogInViewModel : ObservableObject
     {

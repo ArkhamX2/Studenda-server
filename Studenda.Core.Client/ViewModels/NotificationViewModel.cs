@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 
-namespace Studenda.Core.Client.ViewModel
+namespace Studenda.Core.Client.ViewModels
 {
     public partial class NotificationViewModel : ObservableObject
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Studenda.Core.Client.ViewModel
+namespace Studenda.Core.Client.ViewModels
 {
     public partial class JournalViewModel:ObservableObject
     {

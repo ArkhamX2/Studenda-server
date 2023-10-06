@@ -1,4 +1,4 @@
-﻿namespace Studenda.Core.Client.View;
+﻿namespace Studenda.Core.Client.Views;
 
 public partial class MainPage : ContentPage
 {

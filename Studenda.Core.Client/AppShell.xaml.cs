@@ -1,5 +1,5 @@
-﻿using Studenda.Core.Client.View.AndroidView;
-using Studenda.Core.Client.ViewModel;
+﻿using Studenda.Core.Client.Views;
+using Studenda.Core.Client.ViewModels;
 
 namespace Studenda.Core.Client;
 

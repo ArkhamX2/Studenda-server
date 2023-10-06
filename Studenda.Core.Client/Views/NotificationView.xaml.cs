@@ -1,6 +1,6 @@
-using Studenda.Core.Client.ViewModel;
+using Studenda.Core.Client.ViewModels;
 
-namespace Studenda.Core.Client.View.AndroidView;
+namespace Studenda.Core.Client.Views;
 
 [QueryProperty(nameof(ViewModel),"vm")]
 public partial class NotificationView : ContentPage

@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Studenda.Core.Client.View.AndroidView;
+using Studenda.Core.Client.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Studenda.Core.Client.ViewModel
+namespace Studenda.Core.Client.ViewModels
 {
     public partial class VerificationApproveViewModel
     {
