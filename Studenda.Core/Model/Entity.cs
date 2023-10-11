@@ -116,7 +116,17 @@ public abstract class Entity
     /// <summary>
     ///     Массив байтов хеш-суммы.
     /// </summary>
-    private IEnumerable<byte> DataHash => ComputeDataHash(this);
+    public IEnumerable<byte> DataHash => ComputeDataHash(this);
+
+    /// <summary>
+    ///     Сравнить хеш-сумму модели с указанным массивом байтов.
+    /// </summary>
+    /// <param name="dataHash">Массив байтов хеш-суммы.</param>
+    /// <returns>Статус сравнения.</returns>
+    public bool CompareWith(IEnumerable<byte> dataHash)
+    {
+        return dataHash.SequenceEqual(DataHash);
+    }
 
     /// <summary>
     ///     Сравнить хеш-суммы с указанной моделью.
@@ -125,6 +135,6 @@ public abstract class Entity
     /// <returns>Статус сравнения.</returns>
     public bool CompareWith(Entity entity)
     {
-        return ComputeDataHash(entity).SequenceEqual(DataHash);
+        return CompareWith(ComputeDataHash(entity));
     }
 }

@@ -11,11 +11,18 @@ public class MysqlConfiguration : ContextConfiguration
     ///     Конструктор.
     /// </summary>
     /// <param name="connectionString">Строка подключения к базе данных.</param>
+    /// <param name="serverVersion">Версия сервера базы данных.</param>
     /// <param name="isDebugMode">Статус конфигурации для разработки.</param>
-    public MysqlConfiguration(string connectionString, bool isDebugMode) : base(connectionString, isDebugMode)
+    public MysqlConfiguration(string connectionString, ServerVersion serverVersion, bool isDebugMode) : base(
+        connectionString, isDebugMode)
     {
-        // PASS.
+        ServerVersion = serverVersion;
     }
+
+    /// <summary>
+    ///     Версия сервера базы данных.
+    /// </summary>
+    private ServerVersion ServerVersion { get; }
 
     /// <summary>
     ///     Тип полей даты и времени в базе данных.
@@ -32,14 +39,10 @@ public class MysqlConfiguration : ContextConfiguration
     ///     Применить настройки к сессии.
     /// </summary>
     /// <param name="optionsBuilder">Набор интерфейсов настройки сессии.</param>
-    /// <exception cref="NotImplementedException">По причине отсутствия поддержки.</exception>
     public override void ConfigureContext(DbContextOptionsBuilder optionsBuilder)
     {
-        // TODO: Добавить зависимость для поддержки MySQL, либо переделать все под другую базу данных.
-        // optionsBuilder.UseMysql(ConnectionString);
+        optionsBuilder.UseMySql(ConnectionString, ServerVersion);
 
-        // base.ConfigureContext(optionsBuilder);
-
-        throw new NotImplementedException("MySQL is not supported yet!");
+        base.ConfigureContext(optionsBuilder);
     }
 }
