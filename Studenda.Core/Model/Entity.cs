@@ -114,27 +114,22 @@ public abstract class Entity
     #endregion
 
     /// <summary>
-    ///     Массив байтов хеш-суммы.
+    ///     Вычислить и получить массив байтов хеш-суммы.
     /// </summary>
-    public IEnumerable<byte> DataHash => ComputeDataHash(this);
+    /// <returns>Массив байтов хеш-суммы.</returns>
+    public IEnumerable<byte> GetDataHash() => ComputeDataHash(this);
 
     /// <summary>
     ///     Сравнить хеш-сумму модели с указанным массивом байтов.
     /// </summary>
     /// <param name="dataHash">Массив байтов хеш-суммы.</param>
     /// <returns>Статус сравнения.</returns>
-    public bool CompareWith(IEnumerable<byte> dataHash)
-    {
-        return dataHash.SequenceEqual(DataHash);
-    }
+    public bool CompareWith(IEnumerable<byte> dataHash) => dataHash.SequenceEqual(GetDataHash());
 
     /// <summary>
     ///     Сравнить хеш-суммы с указанной моделью.
     /// </summary>
     /// <param name="entity">Модель стандартного объекта.</param>
     /// <returns>Статус сравнения.</returns>
-    public bool CompareWith(Entity entity)
-    {
-        return CompareWith(ComputeDataHash(entity));
-    }
+    public bool CompareWith(Entity entity) => CompareWith(ComputeDataHash(entity));
 }
