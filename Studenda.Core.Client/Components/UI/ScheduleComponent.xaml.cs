@@ -9,7 +9,8 @@ public partial class ScheduleComponent : ContentView
         {
             var control = (ScheduleComponent)bindable;
 
-            control.ScheduleListView.ItemsSource = newValue as List<DaySchedule>;
+            List<DaySchedule> scheduleList = newValue as List<DaySchedule>;
+            BindableLayout.SetItemsSource(control.ScheduleListView, scheduleList);
         });
 
     public ScheduleComponent()

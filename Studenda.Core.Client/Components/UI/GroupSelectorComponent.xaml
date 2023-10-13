@@ -6,10 +6,10 @@
 
     <Picker
         x:Name="GroupPicker"
-        Margin="0,10,0,0"
+        Margin="0,0,0,0"
         FontFamily="InterSemiBold"
-        FontSize="20"
-        HeightRequest="28"
+        FontSize="14"
+        HeightRequest="48"
         HorizontalOptions="Center"
         TextColor="#FFFFFF"
         ZIndex="10">

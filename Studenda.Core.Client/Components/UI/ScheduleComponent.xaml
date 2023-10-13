@@ -4,42 +4,33 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI">
-    <ListView
-        Margin="0,0,0,10"
+    <FlexLayout
         x:Name="ScheduleListView"
-        HorizontalScrollBarVisibility="Never"
-        IsEnabled="False"
-        SelectionMode="None"
-        VerticalScrollBarVisibility="Never">
-        <ListView.ItemTemplate>
+        Margin="0,0,0,10"
+        Direction="Column"
+        IsEnabled="False">
+        <BindableLayout.ItemTemplate>
             <DataTemplate>
-                <ViewCell>
-                    <ViewCell.View>
-                        <ui:ScheduleDayComponent WeekDayTitle="{Binding DayTitle}">
-                            <ListView
-                                    HorizontalScrollBarVisibility="Never"
-                                    IsEnabled="False"
-                                    ItemsSource="{Binding SubjectList}"
-                                    SelectionMode="None"
-                                    VerticalScrollBarVisibility="Never">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <ViewCell>
-                                                <ViewCell.View>
-                                                    <ui:SubjectComponent
-                                                        SubjectPlace="{Binding Place}"
-                                                        SubjectTimeEnd="{Binding Time}"
-                                                        SubjectTimeStart="{Binding Time}"
-                                                        SubjectTitle="{Binding Title}" />
-                                                </ViewCell.View>
-                                            </ViewCell>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                        </ui:ScheduleDayComponent>
-                    </ViewCell.View>
-                </ViewCell>
+                <ui:ScheduleDayComponent WeekDayTitle="{Binding DayTitle}">
+                    <CollectionView
+                        HorizontalScrollBarVisibility="Never"
+                        IsEnabled="False"
+                        ItemsSource="{Binding SubjectList}"
+                        SelectionMode="None"
+                        VerticalScrollBarVisibility="Never">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <ui:SubjectComponent
+                                    SubjectPlace="{Binding Place}"
+                                    SubjectTimeEnd="{Binding Time}"
+                                    SubjectTimeStart="{Binding Time}"
+                                    SubjectTitle="{Binding Title}" />
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ui:ScheduleDayComponent>
             </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+        </BindableLayout.ItemTemplate>
+    </FlexLayout>
 </ContentView>

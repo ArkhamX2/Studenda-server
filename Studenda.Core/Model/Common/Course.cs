@@ -4,44 +4,10 @@ using Studenda.Core.Data.Configuration;
 namespace Studenda.Core.Model.Common;
 
 /// <summary>
-/// Курс.
+///     Курс.
 /// </summary>
-public class Course : Entity
+public class Course : Identity
 {
-    /// <summary>
-    /// Конфигурация модели <see cref="Course"/>.
-    /// </summary>
-    internal class Configuration : Configuration<Course>
-    {
-        /// <summary>
-        /// Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration) { }
-
-        /// <summary>
-        /// Задать конфигурацию для модели.
-        /// </summary>
-        /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Course> builder)
-        {
-            builder.Property(course => course.Name)
-                .HasMaxLength(NameLengthMax)
-                .IsRequired(IsNameRequired);
-
-            builder.HasOne(course => course.Department)
-                .WithMany(department => department.Courses)
-                .HasForeignKey(course => course.DepartmentId)
-                .IsRequired(IsDepartmentIdRequired);
-
-            builder.HasMany(course => course.Groups)
-                .WithOne(group => group.Course)
-                .HasForeignKey(group => group.CourseId);
-
-            base.Configure(builder);
-        }
-    }
-    
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
      *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
@@ -51,22 +17,58 @@ public class Course : Entity
      * Константы, задающие базовые конфигурации полей
      * и ограничения модели.
      */
+
     #region Configuration
 
     /// <summary>
-    /// Максимальная длина поля <see cref="Name"/>.
+    ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
-    public const int NameLengthMax = 128;
+    public const int NameLengthMax = 32;
 
     /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="DepartmentId"/>.
+    ///     Статус необходимости наличия значения в поле <see cref="Grade" />.
     /// </summary>
-    public const bool IsDepartmentIdRequired = true;
+    public const bool IsGradeRequired = true;
 
     /// <summary>
-    /// Статус необходимости наличия значения в поле <see cref="Name"/>.
+    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
-    public const bool IsNameRequired = true;
+    public const bool IsNameRequired = false;
+
+    /// <summary>
+    ///     Конфигурация модели <see cref="Course" />.
+    /// </summary>
+    internal class Configuration : Configuration<Course>
+    {
+        /// <summary>
+        ///     Конструктор.
+        /// </summary>
+        /// <param name="configuration">Конфигурация базы данных.</param>
+        public Configuration(ContextConfiguration configuration) : base(configuration)
+        {
+            // PASS.
+        }
+
+        /// <summary>
+        ///     Задать конфигурацию для модели.
+        /// </summary>
+        /// <param name="builder">Набор интерфейсов настройки модели.</param>
+        public override void Configure(EntityTypeBuilder<Course> builder)
+        {
+            builder.Property(course => course.Grade)
+                .IsRequired();
+
+            builder.Property(course => course.Name)
+                .HasMaxLength(NameLengthMax)
+                .IsRequired(IsNameRequired);
+
+            builder.HasMany(course => course.Groups)
+                .WithOne(group => group.Course)
+                .HasForeignKey(group => group.CourseId);
+
+            base.Configure(builder);
+        }
+    }
 
     #endregion
 
@@ -79,27 +81,25 @@ public class Course : Entity
      * Поля данных, соответствующие таковым в таблице
      * модели в базе данных.
      */
+
     #region Entity
 
     /// <summary>
-    /// Идентификатор связанного объекта <see cref="Common.Department"/>.
+    ///     Градация.
+    ///     Числовое представление для операций сравнения.
     /// </summary>
-    public int DepartmentId { get; set; }
+    public int Grade { get; set; }
 
     /// <summary>
-    /// Название.
+    ///     Название.
+    ///     Необязательное поле.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
 
     #endregion
 
     /// <summary>
-    /// Связанный объект <see cref="Common.Department"/>.
-    /// </summary>
-    public Department Department { get; set; } = null!;
-
-    /// <summary>
-    /// Связанные объекты <see cref="Group"/>.
+    ///     Связанные объекты <see cref="Group" />.
     /// </summary>
     public List<Group> Groups { get; set; } = null!;
 }

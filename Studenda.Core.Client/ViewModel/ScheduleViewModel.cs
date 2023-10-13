@@ -11,7 +11,7 @@ namespace Studenda.Core.Client.ViewModel
 
     public enum ScheduleViewType
     {
-        Grid,Calendar
+        Grid, Calendar
     }
 
     public class Subject

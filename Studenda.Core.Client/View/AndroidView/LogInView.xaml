@@ -8,8 +8,8 @@
     HeightRequest="1034"
     MinimumHeightRequest="100"
     MinimumWidthRequest="75"
-    Shell.NavBarIsVisible="False"
     Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False"
     WidthRequest="750">
     <VerticalStackLayout
         x:Name="LoginPageStackLayout"
