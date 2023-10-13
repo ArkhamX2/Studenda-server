@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Data;
-using Studenda.Core.Model.Account;
-using Studenda.Core.Server.Security.Data.Transfer;
+using Studenda.Core.Data.Transfer.Security;
+using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Server.Security.Controller;
 
@@ -11,7 +11,7 @@ public class UserController
 {
     public UserController(DataContext dataContext)
     {
-        DataContext=dataContext;
+        DataContext = dataContext;
     }
 
     private DataContext DataContext { get; }
