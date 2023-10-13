@@ -14,9 +14,9 @@ namespace Studenda.Core.Server.Security.Controller;
 
 [Route("api/security")]
 [ApiController]
-public class AccountController : ControllerBase
+public class SecurityController : ControllerBase
 {
-    public AccountController(
+    public SecurityController(
         IConfiguration configuration,
         IdentityContext identityContext,
         ITokenService tokenService,

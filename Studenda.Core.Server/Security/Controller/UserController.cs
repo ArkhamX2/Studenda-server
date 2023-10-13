@@ -5,11 +5,11 @@ using Studenda.Core.Server.Security.Data.Transfer;
 
 namespace Studenda.Core.Server.Security.Controller;
 
-[Route("api")]
+[Route("api/user")]
 [ApiController]
-public class StudendaController
+public class UserController
 {
-    public StudendaController(DataContext dataContext)
+    public UserController(DataContext dataContext)
     {
         DataContext=dataContext;
     }

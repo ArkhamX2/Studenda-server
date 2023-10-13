@@ -15,10 +15,24 @@ const bool isDebugMode = true;
 const bool isDebugMode = false;
 #endif
 
-var applicationBuilder = WebApplication.CreateBuilder(args);
+// TODO: Использовать отдельный класс для работы с конфигурацией.
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", false, true)
+    .Build();
 
-var dataConfiguration = new SqliteConfiguration("Data Source=000_debug_data_storage.db", isDebugMode);
-var identityConfiguration = new SqliteConfiguration("Data Source=001_debug_identity_storage.db", isDebugMode);
+var defaultConnectionString = configuration.GetConnectionString("DefaultConnection");
+var identityConnectionString = configuration.GetConnectionString("IdentityConnection");
+
+if (string.IsNullOrEmpty(defaultConnectionString) || string.IsNullOrEmpty(identityConnectionString))
+{
+    throw new Exception("Connection string is null or empty!");
+}
+
+// TODO: Конфигурация контекстов на основе конфигурации приложения.
+var dataConfiguration = new SqliteConfiguration(defaultConnectionString, isDebugMode);
+var identityConfiguration = new SqliteConfiguration(identityConnectionString, isDebugMode);
+
+var applicationBuilder = WebApplication.CreateBuilder(args);
 
 applicationBuilder.Services.AddSingleton<IContextFactory<DataContext>>(
     new DataContextFactory(dataConfiguration));
@@ -50,27 +64,22 @@ applicationBuilder.Services.AddIdentity<Account, IdentityRole>()
 applicationBuilder.Services.AddAuthorization();
 applicationBuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
+    // TODO: Вынести в отдельный класс ближе к конфигурациям.
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        // указывает, будет ли валидироваться издатель при валидации токена
         ValidateIssuer = true,
-        // строка, представляющая издателя
-        ValidIssuer = JwtManager.Issuer,
-        // будет ли валидироваться потребитель токена
         ValidateAudience = true,
-        // установка потребителя токена
-        ValidAudience = JwtManager.Audience,
-        // будет ли валидироваться время существования
         ValidateLifetime = true,
-        // установка ключа безопасности
-        IssuerSigningKey = JwtManager.GetSymmetricSecurityKey(),
-        // валидация ключа безопасности
         ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.FromMinutes(2)
+        ValidIssuer = JwtManager.Issuer,
+        ValidAudience = JwtManager.Audience,
+        ClockSkew = TimeSpan.FromMinutes(2),
+        IssuerSigningKey = JwtManager.GetSymmetricSecurityKey()
     };
 });
 
 var application = applicationBuilder.Build();
+
 application.UseMiddleware<ExceptionHandler>();
 application.UseAuthentication();
 application.UseAuthorization();
