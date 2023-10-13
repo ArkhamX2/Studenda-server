@@ -20,7 +20,7 @@ public class UserController
     [HttpGet]
     public ActionResult<User> GetUserFromSecurityResponse(SecurityResponse response)
     {
-        var user = DataContext.Users.FirstOrDefault(x => x.Email == response.Email);
+        var user = DataContext.Users.FirstOrDefault(user => user.IdentityId == response.User.IdentityId);
 
         return user;
     }

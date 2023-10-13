@@ -1,9 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Studenda.Core.Data;
 using Studenda.Core.Data.Transfer.Security;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Server.Security.Data;
@@ -18,17 +18,20 @@ public class SecurityController : ControllerBase
 {
     public SecurityController(
         IConfiguration configuration,
+        DataContext dataContext,
         IdentityContext identityContext,
         ITokenService tokenService,
         UserManager<Account> userManager)
     {
         Configuration = configuration;
+        DataContext = dataContext;
         IdentityContext = identityContext;
         TokenService = tokenService;
         UserManager = userManager;
     }
 
     private IConfiguration Configuration { get; }
+    private DataContext DataContext { get; }
     private IdentityContext IdentityContext { get; }
     private ITokenService TokenService { get; }
     private UserManager<Account> UserManager { get; }
@@ -41,34 +44,25 @@ public class SecurityController : ControllerBase
             return BadRequest(request);
         }
 
-        var persistenceAccount = await UserManager.FindByEmailAsync(request.Email);
-
-        if (persistenceAccount == null)
-        {
-            return BadRequest("Bad credentials");
-        }
-
-        var isValidPassword = await UserManager.CheckPasswordAsync(persistenceAccount, request.Password);
-
-        if (!isValidPassword)
-        {
-            return BadRequest("Bad credentials");
-        }
-
-        // TODO: зачем второй раз получать аккаунт?
-        var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account = mapper.Map<Account>(IdentityContext
-            .Users.FirstOrDefault(account => account.Email == request.Email));
+        var account = await UserManager.FindByEmailAsync(request.Email);
 
         if (account is null)
         {
             return Unauthorized();
         }
 
+        var isValidPassword = await UserManager.CheckPasswordAsync(account, request.Password);
+
+        if (!isValidPassword)
+        {
+            return Unauthorized();
+        }
+
         var roleIds = await IdentityContext.UserRoles
-            .Where(r => r.UserId == account.Id)
-            .Select(x => x.RoleId)
+            .Where(userRole => userRole.UserId == account.Id)
+            .Select(userRole => userRole.RoleId)
             .ToListAsync();
+
         var roles = IdentityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
         var accessToken = TokenService.CreateToken(account, roles);
 
@@ -78,9 +72,16 @@ public class SecurityController : ControllerBase
 
         await IdentityContext.SaveChangesAsync();
 
+        var user = await DataContext.Users.FirstOrDefaultAsync(user => user.IdentityId == account.Id);
+
+        if (user is null)
+        {
+            return Unauthorized();
+        }
+
         return Ok(new SecurityResponse
         {
-            Email = account.Email!,
+            User = user,
             Token = accessToken,
             RefreshToken = account.RefreshToken
         });
@@ -94,12 +95,14 @@ public class SecurityController : ControllerBase
             return BadRequest(request);
         }
 
-        var persistenceAccount = new Account
-        {
-            Email = request.Email,
-            UserName = request.Email
-        };
+        var role = await DataContext.Roles.FirstOrDefaultAsync(role => role.Name == request.RoleName);
 
+        if (role?.Name is null)
+        {
+            throw new Exception($"Role '{request.RoleName}' does not exists!");
+        }
+
+        var persistenceAccount = new Account { Email = request.Email };
         var result = await UserManager.CreateAsync(persistenceAccount, request.Password);
 
         foreach (var error in result.Errors)
@@ -112,39 +115,26 @@ public class SecurityController : ControllerBase
             return BadRequest(request);
         }
 
-        // TODO: зачем второй раз получать аккаунт?
-        var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account = mapper.Map<Account>(await IdentityContext.Users
-            .FirstOrDefaultAsync(account => account.Email == request.Email));
+        var account = await IdentityContext.Users.FirstOrDefaultAsync(account => account.Email == request.Email);
 
-        if (account == null)
+        if (account is null)
         {
-            throw new Exception($"Account {request.Email} was not found");
+            throw new Exception("Internal error! Please try again.");
         }
 
-        // TODO: очень ресурсозатратно. доработать.
-        var roleList = IdentityContext.Roles.ToList();
-        var role = roleList.FirstOrDefault(role => string.Equals(role.Name, "Student"));
-
-        if (role?.Name == null)
+        await UserManager.AddToRoleAsync(account, request.RoleName);
+        await DataContext.Users.AddAsync(new User
         {
-            throw new Exception($"Role for {request.Email} was not found");
-        }
+            Role = role,
+            IdentityId = account.Id
+        });
 
-        // TODO: почему Email? это ломает валидацию данных. нужно пересмотреть проверку.
-        if (account.Email == "Guest")
-        {
-            await UserManager.AddToRoleAsync(account, "Guest");
-        }
-        else
-        {
-            await UserManager.AddToRoleAsync(account, role.Name);
-        }
-
+        // TODO: Использовать сервис, а не перекладывать ответственность на контроллер.
         return await Login(new LoginRequest
         {
             Email = request.Email,
-            Password = request.Password
+            Password = request.Password,
+            RoleName = request.RoleName
         });
     }
 
