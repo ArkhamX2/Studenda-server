@@ -8,6 +8,8 @@
         <Setter Property="TextColor" Value="Black" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="MaxLength" Value="24" />
+        <Setter Property="HeightRequest" Value="48"/>
+        <Setter Property="Margin" Value="5"/>
     </Style>
 
 </ResourceDictionary>

@@ -13,8 +13,10 @@ var configuration = new SqliteConfiguration("Data Source=000_debug_storage.db", 
 
 Console.WriteLine("Starting INSERT test...");
 
-using (var context = new DataContext(configuration))
+await using (var context = new DataContext(configuration))
 {
+    await InitializeContext(context);
+
     var dept1 = new Department { Name = "Факультет 1" };
     var dept2 = new Department { Name = "Факультет 2" };
     var dept3 = new Department { Name = "Факультет 3" };
@@ -41,24 +43,27 @@ using (var context = new DataContext(configuration))
     var grp9 = new Group { Course = crs6, Department = dept3, Name = "Группа 9" };
 
     context.Groups.AddRange(grp1, grp2, grp3, grp4, grp5, grp6, grp7, grp8, grp9);
-    context.SaveChanges();
+
+    await context.SaveChangesAsync();
 }
 
 Console.WriteLine("Starting SELECT test...");
 
-using (var context = new DataContext(configuration))
+await using (var context = new DataContext(configuration))
 {
+    await InitializeContext(context);
+
     try
     {
         // TODO: Найти более эффективный способ загрузки связанных моделей.
-        var groups = context.Groups
+        var groups = await context.Groups
             .Include(group => group.Course)
             .Include(group => group.Department)
             .Include(group => group.Users)
                 .ThenInclude(user => user.Role)
                     .ThenInclude(role => role.RolePermissionLinks)
                         .ThenInclude(link => link.Permission)
-            .ToList();
+            .ToListAsync();
 
         Console.WriteLine(groups.Count);
     }
@@ -70,3 +75,15 @@ using (var context = new DataContext(configuration))
 
 Console.WriteLine("Completed!");
 Console.ReadLine();
+
+return;
+
+async Task InitializeContext(DataContext context)
+{
+    var status = await context.TryInitializeAsync();
+
+    if (!status)
+    {
+        throw new Exception("Context initialization error");
+    }
+}

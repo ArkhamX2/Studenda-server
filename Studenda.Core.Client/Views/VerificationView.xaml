@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Studenda.Core.Client.Views.VerificationView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
+    Title="VerificationView"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.NavBarIsVisible="False">
+    <VerticalStackLayout BackgroundColor="{StaticResource MainWindowBackgroundColor}">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="55" />
+                <RowDefinition Height="280" />
+            </Grid.RowDefinitions>
+
+            <ui:NavigationBarComponent Grid.Row="0">
+                <Grid BackgroundColor="{DynamicResource PanelColor}" HeightRequest="66">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="62" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="62" />
+                    </Grid.ColumnDefinitions>
+                    <ui:NavigationItemComponent
+                        Grid.Column="0"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="End"
+                        ItemType="Profile"
+                        VerticalOptions="Center">
+                        <Image HeightRequest="30" Source="left_arrow.png" />
+                    </ui:NavigationItemComponent>
+                    <ui:NavigationItemComponent
+                        Grid.Column="1"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        WidthRequest="300">
+                        <Label
+                            FontFamily="InterSemiBold"
+                            FontSize="25"
+                            Text="Вход" />
+                    </ui:NavigationItemComponent>
+                </Grid>
+            </ui:NavigationBarComponent>
+
+            <VerticalStackLayout
+                Grid.Row="1"
+                VerticalOptions="End"
+                WidthRequest="380">
+                <Label
+                    Margin="0"
+                    FontFamily="InterMedium"
+                    FontSize="20"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource WhiteLabelTheme}"
+                    Text="Введите свой email"
+                    TextColor="{StaticResource ForegroundColor}" />
+
+                <Border
+                    Margin="0,23,0,0"
+                    HorizontalOptions="Start"
+                    Style="{StaticResource SignEntryBorderTheme}">
+                    <ui:StudendaEntry
+                        MaxLength="32"
+                        Placeholder="Почта"
+                        WidthRequest="380" />
+                </Border>
+
+                <Button
+                    Grid.Row="2"
+                    Margin="0,22,0,0"
+                    BackgroundColor="{DynamicResource SubButtonColor}"
+                    BorderWidth="0"
+                    Command="{Binding SignInCommand}"
+                    HeightRequest="24"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource AppButton}"
+                    Text="Получить код"
+                    TextColor="{StaticResource PanelColor}"
+                    WidthRequest="300" />
+            </VerticalStackLayout>
+
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

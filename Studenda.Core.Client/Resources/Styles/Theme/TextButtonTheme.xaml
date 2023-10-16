@@ -5,9 +5,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     <Style x:Key="TextButton" TargetType="{x:Type Button}">
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="BorderWidth" Value="0" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="TextColor" Value="{DynamicResource ButtonColor}" />
+        <Setter Property="FontFamily" Value="InterSemiBold" />
         <Setter Property="FontSize" Value="20" />
     </Style>
 </ResourceDictionary>

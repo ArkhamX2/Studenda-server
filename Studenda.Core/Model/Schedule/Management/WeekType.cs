@@ -23,12 +23,17 @@ public class WeekType : Identity
     /// <summary>
     ///     Максимальная длина поля <see cref="Name" />.
     /// </summary>
-    public const int NameLengthMax = 32;
+    public const int NameLengthMax = 64;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="Index" />.
+    /// </summary>
+    public const bool IsIndexRequired = true;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Name" />.
     /// </summary>
-    public const bool IsNameRequired = true;
+    public const bool IsNameRequired = false;
 
     /// <summary>
     ///     Конфигурация модели <see cref="WeekType" />.
@@ -50,9 +55,16 @@ public class WeekType : Identity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<WeekType> builder)
         {
+            builder.Property(type => type.Index)
+                .IsRequired();
+
             builder.Property(type => type.Name)
                 .HasMaxLength(NameLengthMax)
-                .IsRequired();
+                .IsRequired(IsNameRequired);
+
+            builder.HasMany(type => type.StaticSchedules)
+                .WithOne(schedule => schedule.WeekType)
+                .HasForeignKey(schedule => schedule.WeekTypeId);
 
             base.Configure(builder);
         }
@@ -73,9 +85,20 @@ public class WeekType : Identity
     #region Entity
 
     /// <summary>
-    ///     Название.
+    ///     Индекс относительно начала учебного года.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public int Index { get; set; }
+
+    /// <summary>
+    ///     Название.
+    ///     Необязательное поле.
+    /// </summary>
+    public string? Name { get; set; }
 
     #endregion
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Subject" />.
+    /// </summary>
+    public List<Subject> StaticSchedules { get; set; } = null!;
 }

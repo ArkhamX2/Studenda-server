@@ -18,14 +18,17 @@
     <Color x:Key="MainWindowBackgroundColor">#F0F1F5</Color>
     <Color x:Key="SecondaryWindowBackgroundColor">#D3C9FD</Color>
     <Color x:Key="ButtonColor">#371F76</Color>
+    <Color x:Key="SubButtonColor">#E7E1FF</Color>
     <Color x:Key="PanelColor">#643B9F</Color>
     <Color x:Key="ForegroundColor">#371F76</Color>
+    <Color x:Key="NavigationFooterColor">#D3C9FD</Color>
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
     <SolidColorBrush x:Key="ForegroundBrush" Color="{StaticResource ForegroundColor}" />
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}" />
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}" />
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}" />
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}" />
+    <SolidColorBrush x:Key="GooterBrush" Color="{StaticResource NavigationFooterColor}" />
 
     <SolidColorBrush x:Key="BlueWeekColor" Color="#FF006DC1" />
     <SolidColorBrush x:Key="RedWeekColor" Color="#DC3830" />

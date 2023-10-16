@@ -20,13 +20,13 @@ public class SqliteConfiguration : ContextConfiguration
     /// <summary>
     ///     Тип полей даты и времени в базе данных.
     /// </summary>
-    public override string DateTimeType => "TEXT";
+    internal override string DateTimeType => "TEXT";
 
     /// <summary>
     ///     Указатель использования текущих даты и времени
     ///     для полей типа <see cref="DateTimeType" /> в базе данных.
     /// </summary>
-    public override string DateTimeValueCurrent => "CURRENT_TIMESTAMP";
+    internal override string DateTimeValueCurrent => "CURRENT_TIMESTAMP";
 
     /// <summary>
     ///     Применить настройки к сессии.

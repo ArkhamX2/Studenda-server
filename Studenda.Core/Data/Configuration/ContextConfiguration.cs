@@ -33,13 +33,13 @@ public abstract class ContextConfiguration
     /// <summary>
     ///     Тип полей даты и времени в базе данных.
     /// </summary>
-    public abstract string DateTimeType { get; }
+    internal abstract string DateTimeType { get; }
 
     /// <summary>
     ///     Указатель использования текущих даты и времени
     ///     для полей типа <see cref="DateTimeType" /> в базе данных.
     /// </summary>
-    public abstract string DateTimeValueCurrent { get; }
+    internal abstract string DateTimeValueCurrent { get; }
 
     /// <summary>
     ///     Применить настройки к сессии.

@@ -12,14 +12,14 @@ public partial class CalendarCarouselComponent : ContentView
 
 
     public CalendarCarouselComponent()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
 
-    public string WeekTypeTitle 
-	{ 
-		get=>GetValue(WeekTypeTitleProperty) as string;
-		set=>SetValue(WeekTypeTitleProperty, value); 
-	}
+    public string WeekTypeTitle
+    {
+        get => GetValue(WeekTypeTitleProperty) as string;
+        set => SetValue(WeekTypeTitleProperty, value);
+    }
 
 }

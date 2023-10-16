@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Studenda.Core.Client.Views.ProfileView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
+    xmlns:vm="clr-namespace:Studenda.Core.Client.ViewModels"
+    BackgroundColor="{DynamicResource MainWindowBackgroundColor}"
+    Shell.NavBarIsVisible="False">
+    <Grid BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="66" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <ui:NavigationBarComponent Grid.Row="0" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
+            <Grid
+                BackgroundColor="{DynamicResource PanelColor}"
+                BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
+                HeightRequest="66">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="62" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="62" />
+                </Grid.ColumnDefinitions>
+                <ui:NavigationItemComponent
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
+                    HorizontalOptions="End"
+                    ItemType="Settings"
+                    VerticalOptions="Center">
+                    <Image Source="profile_pic_mini.png" />
+                </ui:NavigationItemComponent>
+
+                <ui:NavigationItemComponent
+                    Grid.Column="2"
+                    BackgroundColor="Transparent"
+                    BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
+                    HorizontalOptions="Start"
+                    ItemType="Notifications"
+                    VerticalOptions="Center">
+                    <Image Source="notification_bell.png" />
+                </ui:NavigationItemComponent>
+
+            </Grid>
+        </ui:NavigationBarComponent>
+
+        <Grid Grid.Row="1" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}},Path=ProfileViewModel, Mode=TwoWay}">
+            <Border
+                Margin="20,20,0,0"
+                HeightRequest="160"
+                HorizontalOptions="Start"
+                StrokeShape="RoundRectangle 30"
+                Style="{StaticResource ProfileBorderTheme}"
+                VerticalOptions="Start"
+                WidthRequest="160">
+                <ImageButton />
+            </Border>
+            <Border Margin="200,50,10,10" Style="{StaticResource ProfileBorderTheme}">
+                
+            </Border>
+
+            <Border Margin="200,85,10,10" Style="{StaticResource ProfileBorderTheme}">
+                <ui:StudendaEntry Placeholder="Surname" Style="{StaticResource ProfileEntryTheme}" />
+            </Border>
+
+            <Border Margin="200,120,10,10" Style="{StaticResource ProfileBorderTheme}" Padding="0">
+                <Grid>
+                    <ui:StudendaEntry
+                        HorizontalOptions="Start"
+                        IsReadOnly="True"
+                        Placeholder="Date of birth"
+                        Style="{StaticResource ProfileEntryTheme}"
+                        Text="{Binding DateOfBirth}"
+                        WidthRequest="155" />
+                    <DatePicker
+                        x:Name="DateOfBirth"
+                        Margin="155,0,0,0"
+                        BackgroundColor="Gray"
+                        HorizontalOptions="Center"
+                        TextColor="Black" />
+                </Grid>
+            </Border>
+
+            <Border
+                Margin="20,200,0,0"
+                HorizontalOptions="Start"
+                Style="{StaticResource ProfileBorderTheme}"
+                VerticalOptions="Start">
+                <ui:StudendaEntry
+                    Margin="0,0,0,-4"
+                    Placeholder="Faculty"
+                    Style="{StaticResource ProfileEntryTheme}"
+                    Text="{Binding Faculty.Name}" />
+            </Border>
+
+            <Border
+                Margin="20,235,0,0"
+                HorizontalOptions="Start"
+                Style="{StaticResource ProfileBorderTheme}"
+                VerticalOptions="Start">
+                <ui:StudendaEntry
+                    Margin="0,0,0,-4"
+                    Placeholder="Course"
+                    Style="{StaticResource ProfileEntryTheme}"
+                    Text="{Binding Course.Name}" />
+            </Border>
+
+            <Border
+                Margin="20,270,0,0"
+                HorizontalOptions="Start"
+                Style="{StaticResource ProfileBorderTheme}"
+                VerticalOptions="Start">
+                <ui:StudendaEntry
+                    Margin="0,0,0,-4"
+                    BackgroundColor="Transparent"
+                    MaxLength="16"
+                    Placeholder="Group"
+                    Style="{StaticResource ProfileEntryTheme}"
+                    Text="{Binding Group.Name}" />
+            </Border>
+
+
+        </Grid>
+
+        <ui:NavigationFooterPanel Grid.Row="2" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}" />
+    </Grid>
+</ContentPage>

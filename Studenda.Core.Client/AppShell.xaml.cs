@@ -1,5 +1,5 @@
-﻿using Studenda.Core.Client.View.AndroidView;
-using Studenda.Core.Client.ViewModel;
+﻿using Studenda.Core.Client.Views;
+using Studenda.Core.Client.ViewModels;
 
 namespace Studenda.Core.Client;
 
@@ -17,6 +17,8 @@ public partial class AppShell
         Routing.RegisterRoute(nameof(ScheduleView), typeof(ScheduleView));
         Routing.RegisterRoute(nameof(ProfileView), typeof(ProfileView));
         Routing.RegisterRoute(nameof(LogInView), typeof(LogInView));
-        Routing.RegisterRoute(nameof(SignUpView), typeof(SignUpView));
+        Routing.RegisterRoute(nameof(JournalView), typeof(JournalView));
+        Routing.RegisterRoute(nameof(VerificationView), typeof(VerificationView));
+        Routing.RegisterRoute(nameof(GroupSelectorView), typeof(GroupSelectorView));
     }
 }

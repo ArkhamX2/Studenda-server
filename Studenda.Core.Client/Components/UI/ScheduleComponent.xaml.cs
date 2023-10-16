@@ -1,4 +1,4 @@
-using Studenda.Core.Client.ViewModel;
+using Studenda.Core.Client.ViewModels;
 
 namespace Studenda.Core.Client.Components.UI;
 
@@ -10,7 +10,7 @@ public partial class ScheduleComponent : ContentView
             var control = (ScheduleComponent)bindable;
 
             List<DaySchedule> scheduleList = newValue as List<DaySchedule>;
-            BindableLayout.SetItemsSource(control.ScheduleListView,scheduleList);
+            BindableLayout.SetItemsSource(control.ScheduleListView, scheduleList);
         });
 
     public ScheduleComponent()

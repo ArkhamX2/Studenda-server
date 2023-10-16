@@ -1,31 +1,73 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using Studenda.Core.Data;
+using Studenda.Core.Data.Configuration;
+using Studenda.Core.Server.Common.Data.Factory;
+using Studenda.Core.Server.Security.Data;
+using Studenda.Core.Server.Security.Data.Factory;
+using Studenda.Core.Server.Security.Service;
+using Studenda.Core.Server.Security.Service.Token;
 
-var builder = WebApplication.CreateBuilder(args);
+#if DEBUG
+const bool isDebugMode = true;
+#else
+const bool isDebugMode = false;
+#endif
 
-// Add services to the container.
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+var applicationBuilder = WebApplication.CreateBuilder(args);
+var contextConfiguration = new SqliteConfiguration("Data Source=000_debug_storage.db", isDebugMode);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+applicationBuilder.Services.AddSingleton<IContextFactory<DataContext>>(
+    new DataContextFactory(contextConfiguration));
+applicationBuilder.Services.AddScoped<DataContext>(provider =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    var factory = provider.GetService<IContextFactory<DataContext>>();
 
-app.UseHttpsRedirection();
+    return factory!.CreateDataContext();
+});
 
-app.UseAuthorization();
+applicationBuilder.Services.AddSingleton<IContextFactory<IdentityContext>>(
+    new IdentityContextFactory(contextConfiguration));
+applicationBuilder.Services.AddScoped<IdentityContext>(provider =>
+{
+    var factory = provider.GetService<IContextFactory<IdentityContext>>();
 
-app.MapControllers();
+    return factory!.CreateDataContext();
+});
 
-app.Run();
+applicationBuilder.Services.AddControllers();
+
+applicationBuilder.Services.AddScoped<ITokenService, TokenService>();
+applicationBuilder.Services.AddIdentity<Account, IdentityRole>()
+    .AddEntityFrameworkStores<IdentityContext>()
+    .AddUserManager<UserManager<Account>>()
+    .AddSignInManager<SignInManager<Account>>();
+
+applicationBuilder.Services.AddAuthorization();
+applicationBuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        // указывает, будет ли валидироваться издатель при валидации токена
+        ValidateIssuer = true,
+        // строка, представляющая издателя
+        ValidIssuer = JwtManager.Issuer,
+        // будет ли валидироваться потребитель токена
+        ValidateAudience = true,
+        // установка потребителя токена
+        ValidAudience = JwtManager.Audience,
+        // будет ли валидироваться время существования
+        ValidateLifetime = true,
+        // установка ключа безопасности
+        IssuerSigningKey = JwtManager.GetSymmetricSecurityKey(),
+        // валидация ключа безопасности
+        ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.FromMinutes(2)
+    };
+});
+
+var application = applicationBuilder.Build();
+application.UseMiddleware<ExceptionHandler>();
+application.MapControllers();
+application.Run();

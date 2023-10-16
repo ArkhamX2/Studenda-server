@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Common;
@@ -71,13 +72,17 @@ public class Group : Identity
                 .IsRequired();
 
             builder.HasOne(group => group.Department)
-                .WithMany(course => course.Groups)
+                .WithMany(department => department.Groups)
                 .HasForeignKey(group => group.DepartmentId)
                 .IsRequired();
 
             builder.HasMany(group => group.Users)
                 .WithOne(user => user.Group)
                 .HasForeignKey(course => course.GroupId);
+
+            builder.HasMany(group => group.StaticSchedules)
+                .WithOne(schedule => schedule.Group)
+                .HasForeignKey(schedule => schedule.GroupId);
 
             base.Configure(builder);
         }
@@ -128,4 +133,9 @@ public class Group : Identity
     ///     Связанные объекты <see cref="User" />.
     /// </summary>
     public List<User> Users { get; set; } = null!;
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Subject" />.
+    /// </summary>
+    public List<Subject> StaticSchedules { get; set; } = null!;
 }
