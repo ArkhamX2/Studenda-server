@@ -1,25 +1,16 @@
 using Studenda.Core.Client.ViewModels;
+using Studenda.Core.Model.Common;
 
 namespace Studenda.Core.Client.Views;
 
-[QueryProperty(nameof(ViewModel), "vm")]
 public partial class GroupSelectorView : ContentPage
 {
-    HomeViewModel _viewModel;
-    public HomeViewModel ViewModel
-    {
-        get => _viewModel;
-        set
-        {
-            _viewModel = value;
-            BindingContext = _viewModel;
-            OnPropertyChanged();
-        }
-    }
+    GroupSelectorViewModel _viewModel = new GroupSelectorViewModel();
+
     public GroupSelectorView()
     {
         InitializeComponent();
 
-        BindingContext = ViewModel;
+        BindingContext = _viewModel;
     }
 }

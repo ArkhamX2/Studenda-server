@@ -47,13 +47,13 @@ namespace Studenda.Core.Client.ViewModels
             await Shell.Current.GoToAsync($"//{nameof(NotificationView)}", navigationParameter);
         }
 
-        async public void GoToSettings(HomeViewModel homeViewModel)
+        async public void GoToLogin()
         {
-            //var navigationParameter = new Dictionary<string, object>
-            //{
-            //    {"vm",homeViewModel }
-            //};
-            //await Shell.Current.GoToAsync($"//{nameof(SettingView)}", navigationParameter);
+            await Shell.Current.GoToAsync($"//{nameof(LogInView)}");
+        }
+        async public void GoToVerification()
+        {
+            await Shell.Current.GoToAsync($"//{nameof(VerificationView)}");
         }
     }
 }

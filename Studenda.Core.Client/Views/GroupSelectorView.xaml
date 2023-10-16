@@ -1,16 +1,103 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage 
+<ContentPage
+    x:Class="Studenda.Core.Client.Views.GroupSelectorView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Studenda.Core.Client.Views.GroupSelectorView"
+    xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
     Title="GroupSelectorView"
     Shell.FlyoutBehavior="Disabled"
-    Shell.NavBarIsVisible="False"
-    >
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    Shell.NavBarIsVisible="False">
+    <VerticalStackLayout BackgroundColor="{StaticResource MainWindowBackgroundColor}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <ui:NavigationBarComponent Grid.Row="0">
+                <Grid BackgroundColor="{DynamicResource PanelColor}" HeightRequest="66">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="62" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="62" />
+                    </Grid.ColumnDefinitions>
+                    <ui:NavigationItemComponent
+                        Grid.Column="0"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="End"
+                        ItemType="Login"
+                        VerticalOptions="Center">
+                        <Image HeightRequest="30" Source="left_arrow.png" />
+                    </ui:NavigationItemComponent>
+                    <ui:NavigationItemComponent
+                        Grid.Column="1"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        ItemType="Label"
+                        VerticalOptions="Center"
+                        WidthRequest="300">
+                        <Label
+                            FontFamily="InterSemiBold"
+                            FontSize="25"
+                            Text="Вход" />
+                    </ui:NavigationItemComponent>
+                </Grid>
+            </ui:NavigationBarComponent>
+
+
+            <VerticalStackLayout Grid.Row="1">
+                <Picker
+                    x:Name="DepartmentPicker"
+                    Title="Факультет"
+                    Margin="0,0,0,0"
+                    BackgroundColor="Transparent"
+                    FontFamily="InterSemiBold"
+                    FontSize="18"
+                    HeightRequest="70"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding Departments}"
+                    SelectedItem="{Binding SelectedDepartment}"
+                    TextColor="{DynamicResource PanelColor}"
+                    ZIndex="10" />
+                <Picker
+                    x:Name="CoursePicker"
+                    Title="Курс"
+                    Margin="0,0,0,0"
+                    BackgroundColor="Black"
+                    FontFamily="InterSemiBold"
+                    FontSize="18"
+                    HeightRequest="70"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding Courses}"
+                    SelectedItem="{Binding SelectedCourse}"
+                    TextColor="{DynamicResource PanelColor}"
+                    ZIndex="10" />
+                <Picker
+                    x:Name="GroupPicker"
+                    Title="Группа"
+                    Margin="0,0,0,0"
+                    BackgroundColor="Transparent"
+                    FontFamily="InterSemiBold"
+                    FontSize="18"
+                    HeightRequest="70"
+                    ItemDisplayBinding="{Binding Name}"
+                    ItemsSource="{Binding Groups}"
+                    SelectedItem="{Binding SelectedGroup}"
+                    TextColor="{DynamicResource PanelColor}"
+                    ZIndex="10" />
+
+                <ui:NavigationItemComponent
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="Center"
+                    ItemType="Home"
+                    VerticalOptions="Center"
+                    WidthRequest="300">
+                    <Label
+                        FontFamily="InterSemiBold"
+                        FontSize="25"
+                        Text="Подтвердить" />
+                </ui:NavigationItemComponent>
+            </VerticalStackLayout>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>
