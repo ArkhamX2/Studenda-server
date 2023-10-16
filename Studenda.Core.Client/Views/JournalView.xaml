@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Studenda.Core.Client.Views.JournalView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
+    xmlns:vm="clr-namespace:Studenda.Core.Client.ViewModels"
+    Shell.NavBarIsVisible="False">
+
+    <Grid BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="66" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <ui:NavigationBarComponent Grid.Row="0" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}">
+
+            <Grid
+                BackgroundColor="{DynamicResource PanelColor}"
+                BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
+                HeightRequest="66">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="62" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="62" />
+                </Grid.ColumnDefinitions>
+                <ui:NavigationItemComponent
+                    x:Name="ProfileNavigationItem"
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
+                    HorizontalOptions="End"
+                    ItemType="Profile"
+                    VerticalOptions="Center">
+                    <Image Source="profile_pic_mini.png" />
+                </ui:NavigationItemComponent>
+
+                <ui:NavigationItemComponent
+                    x:Name="NotificationNavigationItem"
+                    Grid.Column="2"
+                    BackgroundColor="Transparent"
+                    BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
+                    HorizontalOptions="Start"
+                    ItemType="Notifications"
+                    VerticalOptions="Center">
+                    <Image Source="notification_bell.png" />
+                </ui:NavigationItemComponent>
+
+            </Grid>
+        </ui:NavigationBarComponent>
+
+
+        <ui:NavigationFooterPanel
+            Grid.Row="3"
+            BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Mode=TwoWay}"
+            SelectedTab="Journal" />
+    </Grid>
+</ContentPage>

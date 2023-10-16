@@ -8,11 +8,11 @@
         x:Name="GroupPicker"
         Margin="0,0,0,0"
         FontFamily="InterSemiBold"
-        FontSize="14"
+        FontSize="18"
         HeightRequest="48"
-        HorizontalOptions="Center"
         TextColor="#FFFFFF"
-        ZIndex="10">
+        ZIndex="10"
+        BackgroundColor="Transparent">
         <Picker.Items>
             <x:String>Б.ПИН.РИС2006</x:String>
             <x:String>Б.ПИН.РИС2106</x:String>

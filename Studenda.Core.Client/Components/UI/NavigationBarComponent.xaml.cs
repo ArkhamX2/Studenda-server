@@ -1,4 +1,4 @@
-using Studenda.Core.Client.ViewModel;
+using Studenda.Core.Client.ViewModels;
 
 namespace Studenda.Core.Client.Components.UI;
 
