@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Transfer.Security;
 using Studenda.Core.Model.Security;
-using Studenda.Core.Model.Security.Management;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Service;
 using Studenda.Core.Server.Security.Service.Token;
@@ -57,9 +56,7 @@ public class SecurityController : ControllerBase
             return Unauthorized();
         }
 
-        var isValidPassword = await UserManager.CheckPasswordAsync(account, request.Password);
-
-        if (!isValidPassword)
+        if (!await UserManager.CheckPasswordAsync(account, request.Password))
         {
             return Unauthorized();
         }
