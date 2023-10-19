@@ -1,4 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Transfer.Security;
 using Studenda.Core.Model.Security;
+using Studenda.Core.Model.Security.Management;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Service;
 using Studenda.Core.Server.Security.Service.Token;
@@ -21,13 +24,15 @@ public class SecurityController : ControllerBase
         DataContext dataContext,
         IdentityContext identityContext,
         ITokenService tokenService,
-        UserManager<Account> userManager)
+        UserManager<Account> userManager,
+        RoleManager<IdentityRole> roleManager)
     {
         Configuration = configuration;
         DataContext = dataContext;
         IdentityContext = identityContext;
         TokenService = tokenService;
         UserManager = userManager;
+        RoleManager = roleManager;
     }
 
     private IConfiguration Configuration { get; }
@@ -35,6 +40,7 @@ public class SecurityController : ControllerBase
     private IdentityContext IdentityContext { get; }
     private ITokenService TokenService { get; }
     private UserManager<Account> UserManager { get; }
+    private RoleManager<IdentityRole> RoleManager { get; }
 
     [HttpPost("login")]
     public async Task<ActionResult<SecurityResponse>> Login([FromBody] LoginRequest request)
@@ -72,19 +78,29 @@ public class SecurityController : ControllerBase
 
         await IdentityContext.SaveChangesAsync();
 
-        var user = await DataContext.Users.FirstOrDefaultAsync(user => user.IdentityId == account.Id);
+        var user = await DataContext.Users
+            .Include(user => user.Role)
+            .FirstOrDefaultAsync(user => user.IdentityId == account.Id);
 
         if (user is null)
         {
             return Unauthorized();
         }
 
-        return Ok(new SecurityResponse
+        var options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.Preserve,
+            WriteIndented = true
+        };
+
+        var value = new SecurityResponse
         {
             User = user,
             Token = accessToken,
             RefreshToken = account.RefreshToken
-        });
+        };
+
+        return Ok(JsonSerializer.Serialize(value, options));
     }
 
     [HttpPost("register")]
@@ -102,7 +118,12 @@ public class SecurityController : ControllerBase
             throw new Exception($"Role '{request.RoleName}' does not exists!");
         }
 
-        var persistenceAccount = new Account { Email = request.Email };
+        var persistenceAccount = new Account
+        {
+            Email = request.Email,
+            UserName = request.Email
+        };
+
         var result = await UserManager.CreateAsync(persistenceAccount, request.Password);
 
         foreach (var error in result.Errors)
@@ -122,12 +143,20 @@ public class SecurityController : ControllerBase
             throw new Exception("Internal error! Please try again.");
         }
 
+        var identityRole = new IdentityRole
+        {
+            Name = request.RoleName
+        };
+
+        await RoleManager.CreateAsync(identityRole);
         await UserManager.AddToRoleAsync(account, request.RoleName);
         await DataContext.Users.AddAsync(new User
         {
-            Role = role,
+            RoleId = role.Id,
             IdentityId = account.Id
         });
+
+        await DataContext.SaveChangesAsync();
 
         // TODO: Использовать сервис, а не перекладывать ответственность на контроллер.
         return await Login(new LoginRequest

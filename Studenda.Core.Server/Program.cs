@@ -59,6 +59,7 @@ applicationBuilder.Services.AddScoped<ITokenService, TokenService>();
 applicationBuilder.Services.AddIdentity<Account, IdentityRole>()
     .AddEntityFrameworkStores<IdentityContext>()
     .AddUserManager<UserManager<Account>>()
+    .AddRoleManager<RoleManager<IdentityRole>>()
     .AddSignInManager<SignInManager<Account>>();
 
 applicationBuilder.Services.AddAuthorization();
