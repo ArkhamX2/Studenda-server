@@ -112,7 +112,7 @@ public class SecurityController : ControllerBase
 
         if (!result.Succeeded)
         {
-            return BadRequest(request);
+            return BadRequest(ModelState);
         }
 
         var account = await IdentityContext.Users.FirstOrDefaultAsync(account => account.Email == request.Email);
