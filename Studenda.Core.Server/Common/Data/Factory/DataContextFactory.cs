@@ -14,6 +14,13 @@ public class DataContextFactory : IContextFactory<DataContext>
 
     public DataContext CreateDataContext()
     {
-        return new DataContext(Configuration);
+        var context = new DataContext(Configuration);
+
+        if (!context.TryInitialize())
+        {
+            throw new Exception("Failed to initialize data context!");
+        }
+
+        return context;
     }
 }
