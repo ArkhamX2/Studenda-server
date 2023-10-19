@@ -41,6 +41,7 @@ public class SecurityController : ControllerBase
     private UserManager<Account> UserManager { get; }
     private RoleManager<IdentityRole> RoleManager { get; }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<SecurityResponse>> Login([FromBody] LoginRequest request)
     {
@@ -100,6 +101,7 @@ public class SecurityController : ControllerBase
         return Ok(JsonSerializer.Serialize(value, options));
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult<SecurityResponse>> Register([FromBody] RegisterRequest request)
     {

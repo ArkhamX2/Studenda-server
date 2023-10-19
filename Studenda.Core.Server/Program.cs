@@ -34,37 +34,34 @@ var dataConfiguration = new SqliteConfiguration(defaultConnectionString, isDebug
 var identityConfiguration = new SqliteConfiguration(identityConnectionString, isDebugMode);
 
 var applicationBuilder = WebApplication.CreateBuilder(args);
+var serviceCollection = applicationBuilder.Services;
 
-applicationBuilder.Services.AddSingleton<IContextFactory<DataContext>>(
-    new DataContextFactory(dataConfiguration));
-applicationBuilder.Services.AddScoped<DataContext>(provider =>
+serviceCollection.AddSingleton<IContextFactory<DataContext>>(new DataContextFactory(dataConfiguration));
+serviceCollection.AddSingleton<IContextFactory<IdentityContext>>(new IdentityContextFactory(identityConfiguration));
+
+serviceCollection.AddScoped<DataContext>(provider =>
 {
     var factory = provider.GetService<IContextFactory<DataContext>>();
 
     return factory!.CreateDataContext();
 });
-
-applicationBuilder.Services.AddSingleton<IContextFactory<IdentityContext>>(
-    new IdentityContextFactory(identityConfiguration));
-
-applicationBuilder.Services.AddScoped<IdentityContext>(provider =>
+serviceCollection.AddScoped<IdentityContext>(provider =>
 {
     var factory = provider.GetService<IContextFactory<IdentityContext>>();
 
     return factory!.CreateDataContext();
 });
 
-applicationBuilder.Services.AddControllers();
-
-applicationBuilder.Services.AddScoped<ITokenService, TokenService>();
-applicationBuilder.Services.AddIdentity<Account, IdentityRole>()
+serviceCollection.AddScoped<ITokenService, TokenService>();
+serviceCollection.AddIdentity<Account, IdentityRole>()
     .AddEntityFrameworkStores<IdentityContext>()
     .AddUserManager<UserManager<Account>>()
     .AddRoleManager<RoleManager<IdentityRole>>()
     .AddSignInManager<SignInManager<Account>>();
 
-applicationBuilder.Services.AddAuthorization();
-applicationBuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+serviceCollection.AddControllers();
+serviceCollection.AddAuthorization();
+serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     // TODO: Вынести в отдельный класс ближе к конфигурациям.
     options.TokenValidationParameters = new TokenValidationParameters
