@@ -13,6 +13,14 @@ public class IdentityContext : IdentityDbContext<Account>
 
     private ContextConfiguration Configuration { get; }
 
+    public bool TryInitialize()
+    {
+        var canConnect = Database.CanConnect();
+        var isCreated = Database.EnsureCreated();
+
+        return canConnect || isCreated;
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         Configuration.ConfigureContext(optionsBuilder);

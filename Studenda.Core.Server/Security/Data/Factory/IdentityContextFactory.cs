@@ -14,6 +14,13 @@ public class IdentityContextFactory : IContextFactory<IdentityContext>
 
     public IdentityContext CreateDataContext()
     {
-        return new IdentityContext(Configuration);
+        var context = new IdentityContext(Configuration);
+
+        if (!context.TryInitialize())
+        {
+            throw new Exception("Failed to initialize identity context!");
+        }
+
+        return context;
     }
 }

@@ -174,13 +174,13 @@ public class Subject : Identity
     ///     Идентификатор связанного объекта <see cref="Management.SubjectType" />.
     ///     Необязательное поле.
     /// </summary>
-    public int SubjectTypeId { get; set; }
+    public int? SubjectTypeId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Security.User" />.
     ///     Необязательное поле.
     /// </summary>
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.

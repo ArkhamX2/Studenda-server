@@ -14,4 +14,9 @@ public class SecurityRequest
     ///     Пароль.
     /// </summary>
     public string Password { get; init; } = null!;
+
+    /// <summary>
+    ///     Название роли.
+    /// </summary>
+    public string RoleName { get; init; } = null!;
 }

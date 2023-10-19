@@ -1,4 +1,6 @@
-﻿namespace Studenda.Core.Data.Transfer.Security;
+﻿using Studenda.Core.Model.Security;
+
+namespace Studenda.Core.Data.Transfer.Security;
 
 /// <summary>
 ///     Тело ответа модуля безопасности.
@@ -6,9 +8,9 @@
 public class SecurityResponse
 {
     /// <summary>
-    ///     Почта.
+    ///     Объект <see cref="Model.Security.User" />.
     /// </summary>
-    public string Email { get; set; } = null!;
+    public User User { get; init; } = null!;
 
     /// <summary>
     ///     Токен.

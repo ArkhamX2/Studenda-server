@@ -124,19 +124,19 @@ public class SubjectChange : Identity
     ///     Идентификатор связанного объекта <see cref="Management.Discipline" />.
     ///     Необязательное поле.
     /// </summary>
-    public int DisciplineId { get; set; }
+    public int? DisciplineId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.SubjectType" />.
     ///     Необязательное поле.
     /// </summary>
-    public int SubjectTypeId { get; set; }
+    public int? SubjectTypeId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Security.User" />.
     ///     Необязательное поле.
     /// </summary>
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 
     /// <summary>
     ///     Описание.

@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using AutoMapper;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,22 +14,24 @@ using Studenda.Core.Server.Security.Service.Token;
 
 namespace Studenda.Core.Server.Security.Controller;
 
-[Route("account")]
+[Route("api/security")]
 [ApiController]
-public class AccountController : ControllerBase
+public class SecurityController : ControllerBase
 {
-    public AccountController(
+    public SecurityController(
         IConfiguration configuration,
         DataContext dataContext,
         IdentityContext identityContext,
         ITokenService tokenService,
-        UserManager<Account> userManager)
+        UserManager<Account> userManager,
+        RoleManager<IdentityRole> roleManager)
     {
         Configuration = configuration;
         DataContext = dataContext;
         IdentityContext = identityContext;
         TokenService = tokenService;
         UserManager = userManager;
+        RoleManager = roleManager;
     }
 
     private IConfiguration Configuration { get; }
@@ -36,45 +39,35 @@ public class AccountController : ControllerBase
     private IdentityContext IdentityContext { get; }
     private ITokenService TokenService { get; }
     private UserManager<Account> UserManager { get; }
+    private RoleManager<IdentityRole> RoleManager { get; }
 
+    [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<ActionResult<SecurityResponse>> Authenticate([FromBody] LoginRequest request)
+    public async Task<ActionResult<SecurityResponse>> Login([FromBody] LoginRequest request)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(request);
         }
 
-        var persistenceAccount = await UserManager.FindByEmailAsync(request.Email);
-
-        if (persistenceAccount == null)
-        {
-            return BadRequest("Bad credentials");
-        }
-
-        var isValidPassword = await UserManager.CheckPasswordAsync(persistenceAccount, request.Password);
-
-        if (!isValidPassword)
-        {
-            return BadRequest("Bad credentials");
-        }
-
-        // TODO: зачем второй раз получать аккаунт?
-        var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account = mapper.Map<Account>(IdentityContext
-            .Users.FirstOrDefault(account => account.Email == request.Email));
+        var account = await UserManager.FindByEmailAsync(request.Email);
 
         if (account is null)
         {
             return Unauthorized();
         }
 
-        var roleIds = await IdentityContext.UserRoles
-            .Where(r => r.UserId == account.Id)
-            .Select(x => x.RoleId)
-            .ToListAsync();
-        var roles = IdentityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
+        if (!await UserManager.CheckPasswordAsync(account, request.Password))
+        {
+            return Unauthorized();
+        }
 
+        var roleIds = await IdentityContext.UserRoles
+            .Where(userRole => userRole.UserId == account.Id)
+            .Select(userRole => userRole.RoleId)
+            .ToListAsync();
+
+        var roles = IdentityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
         var accessToken = TokenService.CreateToken(account, roles);
 
         account.RefreshToken = Configuration.GenerateRefreshToken();
@@ -83,20 +76,45 @@ public class AccountController : ControllerBase
 
         await IdentityContext.SaveChangesAsync();
 
-        return Ok(new SecurityResponse
+        var user = await DataContext.Users
+            .Include(user => user.Role)
+            .FirstOrDefaultAsync(user => user.IdentityId == account.Id);
+
+        if (user is null)
         {
-            Email = account.Email!,
+            return Unauthorized();
+        }
+
+        var options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.Preserve,
+            WriteIndented = true
+        };
+
+        var value = new SecurityResponse
+        {
+            User = user,
             Token = accessToken,
             RefreshToken = account.RefreshToken
-        });
+        };
+
+        return Ok(JsonSerializer.Serialize(value, options));
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult<SecurityResponse>> Register([FromBody] RegisterRequest request)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(request);
+        }
+
+        var role = await DataContext.Roles.FirstOrDefaultAsync(role => role.Name == request.RoleName);
+
+        if (role?.Name is null)
+        {
+            throw new Exception($"Role '{request.RoleName}' does not exists!");
         }
 
         var persistenceAccount = new Account
@@ -114,39 +132,42 @@ public class AccountController : ControllerBase
 
         if (!result.Succeeded)
         {
-            return BadRequest(request);
+            return BadRequest(ModelState);
         }
 
-        // TODO: зачем второй раз получать аккаунт?
-        var mapper = new Mapper(new MapperConfiguration(expression => expression.CreateMap<User, Account>()));
-        var account = mapper.Map<Account>(await IdentityContext.Users
-            .FirstOrDefaultAsync(account => account.Email == request.Email));
+        var account = await IdentityContext.Users.FirstOrDefaultAsync(account => account.Email == request.Email);
 
-        if (account == null)
+        if (account is null)
         {
-            throw new Exception($"Account {request.Email} was not found");
+            throw new Exception("Internal error! Please try again.");
         }
 
-        // TODO: очень ресурсозатратно. доработать.
-        var roleList = IdentityContext.Roles.ToList();
-        var role = roleList.FirstOrDefault(role => role.Name == "");
-
-        if (role?.Name == null)
+        var identityRole = new IdentityRole
         {
-            throw new Exception($"Role for {request.Email} was not found");
-        }
+            Name = request.RoleName
+        };
 
-        await UserManager.AddToRoleAsync(account, role.Name);
+        await RoleManager.CreateAsync(identityRole);
+        await UserManager.AddToRoleAsync(account, request.RoleName);
+        await DataContext.Users.AddAsync(new User
+        {
+            RoleId = role.Id,
+            IdentityId = account.Id
+        });
 
-        return await Authenticate(new LoginRequest
+        await DataContext.SaveChangesAsync();
+
+        // TODO: Использовать сервис, а не перекладывать ответственность на контроллер.
+        return await Login(new LoginRequest
         {
             Email = request.Email,
-            Password = request.Password
+            Password = request.Password,
+            RoleName = request.RoleName
         });
     }
 
     [HttpPost]
-    [Route("refresh-token")]
+    [Route("token/refresh")]
     public async Task<IActionResult> RefreshToken(TokenPair? tokenPair)
     {
         if (tokenPair is null)
@@ -188,8 +209,8 @@ public class AccountController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    [Route("revoke/{accountName}")]
-    public async Task<IActionResult> Revoke(string accountName)
+    [Route("token/revoke/{accountName}")]
+    public async Task<IActionResult> RevokeToken(string accountName)
     {
         var account = await UserManager.FindByNameAsync(accountName);
 
@@ -207,8 +228,8 @@ public class AccountController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    [Route("revoke-all")]
-    public async Task<IActionResult> RevokeAll()
+    [Route("token/revoke")]
+    public async Task<IActionResult> RevokeAllTokens()
     {
         var accountList = UserManager.Users.ToList();
 
@@ -224,10 +245,11 @@ public class AccountController : ControllerBase
     }
 
     [HttpGet]
-    [Route("hello")]
+    [Route("test")]
     public async Task Test()
     {
         Response.ContentType = "text/html;charset=utf-8";
+
         await Response.WriteAsync("<h2>Hello METANIT.COM</h2>");
     }
 }

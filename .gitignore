@@ -1,6 +1,10 @@
-# globs
+# Local databases
+*.db
+*.db-shm
+*.db-wal
+
+# Globals
 Makefile.in
-*.userprefs
 *.usertasks
 config.make
 config.status
@@ -182,8 +186,6 @@ _Chutzpah*
 
 # Visual C++ cache files
 ipch/
-*.aps
-*.ncb
 *.opendb
 *.opensdf
 *.sdf
@@ -465,13 +467,6 @@ FodyWeavers.xsd
 
 # Local History for Visual Studio Code
 .history/
-
-# Windows Installer files from build outputs
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
 
 # JetBrains Rider
 *.sln.iml

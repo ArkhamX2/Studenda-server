@@ -98,7 +98,7 @@ public class User : Identity
                 .WithMany(role => role.Users)
                 .HasForeignKey(user => user.RoleId)
                 .IsRequired();
-            
+
             builder.HasOne(user => user.Group)
                 .WithMany(group => group.Users)
                 .HasForeignKey(user => user.GroupId)
@@ -159,7 +159,7 @@ public class User : Identity
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     ///     Необязательное поле.
     /// </summary>
-    public int GroupId { get; set; }
+    public int? GroupId { get; set; }
 
     /// <summary>
     ///     Идентификатор в системе безопасности.

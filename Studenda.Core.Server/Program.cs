@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Server.Common.Data.Factory;
+using Studenda.Core.Server.Common.Middleware;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Data.Factory;
 using Studenda.Core.Server.Security.Service;
@@ -15,59 +16,71 @@ const bool isDebugMode = true;
 const bool isDebugMode = false;
 #endif
 
-var applicationBuilder = WebApplication.CreateBuilder(args);
-var contextConfiguration = new SqliteConfiguration("Data Source=000_debug_storage.db", isDebugMode);
+// TODO: Использовать отдельный класс для работы с конфигурацией.
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", false, true)
+    .Build();
 
-applicationBuilder.Services.AddSingleton<IContextFactory<DataContext>>(
-    new DataContextFactory(contextConfiguration));
-applicationBuilder.Services.AddScoped<DataContext>(provider =>
+var defaultConnectionString = configuration.GetConnectionString("DefaultConnection");
+var identityConnectionString = configuration.GetConnectionString("IdentityConnection");
+
+if (string.IsNullOrEmpty(defaultConnectionString) || string.IsNullOrEmpty(identityConnectionString))
+{
+    throw new Exception("Connection string is null or empty!");
+}
+
+// TODO: Конфигурация контекстов на основе конфигурации приложения.
+var dataConfiguration = new SqliteConfiguration(defaultConnectionString, isDebugMode);
+var identityConfiguration = new SqliteConfiguration(identityConnectionString, isDebugMode);
+
+var applicationBuilder = WebApplication.CreateBuilder(args);
+var serviceCollection = applicationBuilder.Services;
+
+serviceCollection.AddSingleton<IContextFactory<DataContext>>(new DataContextFactory(dataConfiguration));
+serviceCollection.AddSingleton<IContextFactory<IdentityContext>>(new IdentityContextFactory(identityConfiguration));
+
+serviceCollection.AddScoped<DataContext>(provider =>
 {
     var factory = provider.GetService<IContextFactory<DataContext>>();
 
     return factory!.CreateDataContext();
 });
-
-applicationBuilder.Services.AddSingleton<IContextFactory<IdentityContext>>(
-    new IdentityContextFactory(contextConfiguration));
-applicationBuilder.Services.AddScoped<IdentityContext>(provider =>
+serviceCollection.AddScoped<IdentityContext>(provider =>
 {
     var factory = provider.GetService<IContextFactory<IdentityContext>>();
 
     return factory!.CreateDataContext();
 });
 
-applicationBuilder.Services.AddControllers();
-
-applicationBuilder.Services.AddScoped<ITokenService, TokenService>();
-applicationBuilder.Services.AddIdentity<Account, IdentityRole>()
+serviceCollection.AddScoped<ITokenService, TokenService>();
+serviceCollection.AddIdentity<Account, IdentityRole>()
     .AddEntityFrameworkStores<IdentityContext>()
     .AddUserManager<UserManager<Account>>()
+    .AddRoleManager<RoleManager<IdentityRole>>()
     .AddSignInManager<SignInManager<Account>>();
 
-applicationBuilder.Services.AddAuthorization();
-applicationBuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+serviceCollection.AddControllers();
+serviceCollection.AddAuthorization();
+serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
+    // TODO: Вынести в отдельный класс ближе к конфигурациям.
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        // указывает, будет ли валидироваться издатель при валидации токена
         ValidateIssuer = true,
-        // строка, представляющая издателя
-        ValidIssuer = JwtManager.Issuer,
-        // будет ли валидироваться потребитель токена
         ValidateAudience = true,
-        // установка потребителя токена
-        ValidAudience = JwtManager.Audience,
-        // будет ли валидироваться время существования
         ValidateLifetime = true,
-        // установка ключа безопасности
-        IssuerSigningKey = JwtManager.GetSymmetricSecurityKey(),
-        // валидация ключа безопасности
         ValidateIssuerSigningKey = true,
-        ClockSkew = TimeSpan.FromMinutes(2)
+        ValidIssuer = JwtManager.Issuer,
+        ValidAudience = JwtManager.Audience,
+        ClockSkew = TimeSpan.FromMinutes(2),
+        IssuerSigningKey = JwtManager.GetSymmetricSecurityKey()
     };
 });
 
 var application = applicationBuilder.Build();
+
 application.UseMiddleware<ExceptionHandler>();
+application.UseAuthentication();
+application.UseAuthorization();
 application.MapControllers();
 application.Run();
