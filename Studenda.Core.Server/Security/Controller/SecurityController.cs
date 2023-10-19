@@ -67,7 +67,7 @@ public class SecurityController : ControllerBase
             .Select(userRole => userRole.RoleId)
             .ToListAsync();
 
-        var roles = IdentityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToList();
+        var roles = await IdentityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToListAsync();
         var accessToken = TokenService.CreateToken(account, roles);
 
         account.RefreshToken = Configuration.GenerateRefreshToken();
@@ -78,6 +78,8 @@ public class SecurityController : ControllerBase
 
         var user = await DataContext.Users
             .Include(user => user.Role)
+            .ThenInclude(role => role.RolePermissionLinks)
+            .ThenInclude(link => link.Permission)
             .FirstOrDefaultAsync(user => user.IdentityId == account.Id);
 
         if (user is null)
