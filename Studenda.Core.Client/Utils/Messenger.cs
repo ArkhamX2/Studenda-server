@@ -9,19 +9,13 @@ namespace Studenda.Core.Client.Utils
 {
     public class DayPressedMessenger : ValueChangedMessage<int>
     {
-        public DayPressedMessenger(int count) : base(count)
+        public DayPressedMessenger(int dayNumber) : base(dayNumber)
         {
         }
     }
     public class SubjectListCountMessenger : ValueChangedMessage<int>
     {
         public SubjectListCountMessenger(int count) : base(count)
-        {
-        }
-    }
-    public class ReloadScheduleMessenger : ValueChangedMessage<int>
-    {
-        public ReloadScheduleMessenger(int count) : base(count)
         {
         }
     }

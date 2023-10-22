@@ -99,19 +99,19 @@ namespace Studenda.Core.Client.ViewModels
                         new Subject("8.30","Среда","вц-303"),
                         new Subject("8.30","Математика","вц-303"),
                     }),
-                    new DaySchedule("Понедельник",new List<Subject>()
+                    new DaySchedule("Четверг",new List<Subject>()
                     {
                         new Subject("8.30","Понедельник","вц-303"),
                         new Subject("8.30","Математика","вц-303"),
                         new Subject("8.30","Понедельник","вц-303"),
                         new Subject("8.30","Математика","вц-303"),
                     }),
-                    new DaySchedule("Вторник",new List<Subject>()
+                    new DaySchedule("Пятница",new List<Subject>()
                     {
                         new Subject("8.30","Вторник","вц-303"),
                         new Subject("8.30","Вторник","вц-303"),
                     }),
-                    new DaySchedule("Среда",new List<Subject>()
+                    new DaySchedule("Суббота",new List<Subject>()
                     {
                         new Subject("8.30","Математика","вц-303"),
                         new Subject("8.30","Среда","вц-303"),
