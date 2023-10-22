@@ -1,16 +1,161 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage 
+<ContentPage
+    x:Class="Studenda.Core.Client.Views.GroupSelectorView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Studenda.Core.Client.Views.GroupSelectorView"
+    xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
     Title="GroupSelectorView"
     Shell.FlyoutBehavior="Disabled"
-    Shell.NavBarIsVisible="False"
-    >
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    Shell.NavBarIsVisible="False">
+    <VerticalStackLayout BackgroundColor="{StaticResource MainWindowBackgroundColor}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <ui:NavigationBarComponent Grid.Row="0">
+                <Grid BackgroundColor="{DynamicResource PanelColor}" HeightRequest="66">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="62" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="62" />
+                    </Grid.ColumnDefinitions>
+                    <ui:NavigationItemComponent
+                        Grid.Column="0"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="End"
+                        ItemType="Login"
+                        VerticalOptions="Center">
+                        <Image HeightRequest="30" Source="left_arrow.png" />
+                    </ui:NavigationItemComponent>
+                    <ui:NavigationItemComponent
+                        Grid.Column="1"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        ItemType="Label"
+                        VerticalOptions="Center"
+                        WidthRequest="300">
+                        <Label
+                            FontFamily="InterSemiBold"
+                            FontSize="25"
+                            Text="Вход" />
+                    </ui:NavigationItemComponent>
+                </Grid>
+            </ui:NavigationBarComponent>
+
+
+            <VerticalStackLayout
+                Grid.Row="1"
+                HorizontalOptions="CenterAndExpand"
+                WidthRequest="300">
+                <Border
+                    Margin="0,81,0,0"
+                    BackgroundColor="#AA8DD3"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+
+                    <Border
+                        Margin="2,2,3,3"
+                        BackgroundColor="{DynamicResource White}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Picker
+                            x:Name="DepartmentPicker"
+                            Margin="0,0,0,0"
+                            BackgroundColor="{DynamicResource White}"
+                            FontFamily="InterSemiBold"
+                            FontSize="18"
+                            HeightRequest="40"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding Departments}"
+                            SelectedItem="{Binding SelectedDepartment}"
+                            TextColor="{DynamicResource PanelColor}"
+                            ZIndex="10" />
+                    </Border>
+                </Border>
+                <Border
+                    Margin="0,41,0,0"
+                    BackgroundColor="#AA8DD3"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+
+                    <Border
+                        Margin="2,2,3,3"
+                        BackgroundColor="{DynamicResource White}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Picker
+                            x:Name="CoursePicker"
+                            Margin="0,0,0,0"
+                            BackgroundColor="{DynamicResource White}"
+                            FontFamily="InterSemiBold"
+                            FontSize="18"
+                            HeightRequest="40"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding Courses}"
+                            SelectedItem="{Binding SelectedCourse}"
+                            TextColor="{DynamicResource PanelColor}"
+                            ZIndex="10" />
+                    </Border>
+                </Border>
+                <Border
+                    Margin="0,41,0,0"
+                    BackgroundColor="#AA8DD3"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+
+                    <Border
+                        Margin="2,2,3,3"
+                        BackgroundColor="{DynamicResource White}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Picker
+                            x:Name="GroupPicker"
+                            Margin="0,0,0,0"
+                            FontFamily="InterSemiBold"
+                            FontSize="18"
+                            HeightRequest="40"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding Groups}"
+                            SelectedItem="{Binding SelectedGroup}"
+                            TextColor="{DynamicResource PanelColor}"
+                            ZIndex="10" />
+                    </Border>
+                </Border>
+
+                <Border
+                    Margin="0,184,0,0"
+                    BackgroundColor="#E7E1FF"
+                    HeightRequest="50"
+                    HorizontalOptions="Center"
+                    StrokeThickness="0"
+                    WidthRequest="300">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Button
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding GoToHomeCommand}"
+                        FontFamily="InterMedium"
+                        FontSize="20"
+                        Text="Подтвердить"
+                        TextColor="{DynamicResource PanelColor}" />
+                </Border>
+            </VerticalStackLayout>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

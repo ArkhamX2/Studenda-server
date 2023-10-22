@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Studenda.Core.Client.Views;
+using Studenda.Core.Model.Common;
 
 namespace Studenda.Core.Client.ViewModels
 {
@@ -125,9 +126,9 @@ namespace Studenda.Core.Client.ViewModels
             CurrentDaySubjectList = ScheduleList[0].SubjectList;
             GroupList = new List<Group>()
             {
-               new Group("Б.ПИН.РИС 20.06"),
-               new Group("Б.ПИН.РИС 21.06"),
-               new Group("Б.ПИН.РИС 22.06"),
+               new Group(){ Name="Б.ПИН.РИС 20.06"},
+               new Group(){ Name="Б.ПИН.РИС 21.06"},
+               new Group() { Name = "Б.ПИН.РИС 22.06" },
             };
             SelectedGroup = GroupList[0];
         }

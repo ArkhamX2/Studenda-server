@@ -26,7 +26,7 @@
                         Grid.Column="0"
                         BackgroundColor="Transparent"
                         HorizontalOptions="End"
-                        ItemType="Profile"
+                        ItemType="Login"
                         VerticalOptions="Center">
                         <Image HeightRequest="30" Source="left_arrow.png" />
                     </ui:NavigationItemComponent>
@@ -34,6 +34,7 @@
                         Grid.Column="1"
                         BackgroundColor="Transparent"
                         HorizontalOptions="Center"
+                        ItemType="Label"
                         VerticalOptions="Center"
                         WidthRequest="300">
                         <Label

@@ -26,6 +26,7 @@ public partial class NavigationItemComponent : ContentView
     private void NavigationItem_Tapped(object sender, TappedEventArgs e)
     {
         var _bindingContext = this.BindingContext as HomeViewModel;
+        var _subContext = new NavigationItemViewModel();
 
         switch (ItemType)
         {
@@ -44,8 +45,13 @@ public partial class NavigationItemComponent : ContentView
             case "Journal":
                 _bindingContext.NavigationItemViewModel.GoToJournal(_bindingContext);
                 break;
-            case "Settings":
-                _bindingContext.NavigationItemViewModel.GoToSettings(_bindingContext);
+            case "Login":
+                _subContext.GoToLogin();
+                break;
+            case "Verification":
+                _subContext.GoToVerification();
+                break;
+            case "Label":
                 break;
             default:
                 throw new Exception("Указан неверный тип элемента навигации.");
