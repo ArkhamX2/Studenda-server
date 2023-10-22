@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Studenda.Core.Client.Services;
 using Studenda.Core.Client.Views;
+using Studenda.Core.Data.Transfer.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,8 @@ namespace Studenda.Core.Client.ViewModels
 {
     public partial class VerificationApproveViewModel
     {
+        readonly ILoginRepository loginRepository = new LoginService();
+
         [RelayCommand]
         async private void GoToHomeView()
         {
@@ -32,12 +36,24 @@ namespace Studenda.Core.Client.ViewModels
         }
 
         [RelayCommand]
-        private void ApproveCode()
+        private async Task ApproveCodeAsync()
         {
             try
             {
-                //Логика по авторизации
-                GoToHomeView();
+                SecurityResponse loginResponse = await loginRepository.Login("test@test.ru","test","student");
+
+                if (loginResponse != null)
+                {
+                    GoToHomeView();
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Error",
+                        $"You entered {123} and {123}. Server Error",
+                        "OK");
+                }
+
             }
             catch (Exception e)
             {
