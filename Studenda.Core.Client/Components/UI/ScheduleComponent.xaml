@@ -12,7 +12,7 @@
         <BindableLayout.ItemTemplate>
             <DataTemplate>
                 <ui:ScheduleDayComponent WeekDayTitle="{Binding DayTitle}">
-                    <CollectionView x:Name="Doter"
+                    <CollectionView
                         HorizontalScrollBarVisibility="Never"
                         IsEnabled="False"
                         ItemsSource="{Binding SubjectList}"
