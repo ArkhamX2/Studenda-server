@@ -23,17 +23,17 @@ public partial class ScheduleView : ContentPage
     {
         InitializeComponent();
         BindingContext = ViewModel;
-        WeakReferenceMessenger.Default.Register<ScheduleView, ReloadScheduleMessenger>(
-this,
-async (recipient, message) =>
-{
-    await recipient.Dispatcher.DispatchAsync(
-        async () =>
-        {
-            loaded = false;
-            recipient.OnAppearing();
-        });
-});
+//        WeakReferenceMessenger.Default.Register<ScheduleView, ReloadScheduleMessenger>(
+//this,
+//async (recipient, message) =>
+//{
+//    await recipient.Dispatcher.DispatchAsync(
+//        async () =>
+//        {
+//            loaded = false;
+//            recipient.OnAppearing();
+//        });
+//});
     }
     private void BurgerMenu_Clicked(object sender, EventArgs e)
     {
