@@ -45,58 +45,116 @@
             </ui:NavigationBarComponent>
 
 
-            <VerticalStackLayout Grid.Row="1">
-                <Picker
-                    x:Name="DepartmentPicker"
-                    Title="Факультет"
-                    Margin="0,0,0,0"
-                    BackgroundColor="Transparent"
-                    FontFamily="InterSemiBold"
-                    FontSize="18"
-                    HeightRequest="70"
-                    ItemDisplayBinding="{Binding Name}"
-                    ItemsSource="{Binding Departments}"
-                    SelectedItem="{Binding SelectedDepartment}"
-                    TextColor="{DynamicResource PanelColor}"
-                    ZIndex="10" />
-                <Picker
-                    x:Name="CoursePicker"
-                    Title="Курс"
-                    Margin="0,0,0,0"
-                    BackgroundColor="Black"
-                    FontFamily="InterSemiBold"
-                    FontSize="18"
-                    HeightRequest="70"
-                    ItemDisplayBinding="{Binding Name}"
-                    ItemsSource="{Binding Courses}"
-                    SelectedItem="{Binding SelectedCourse}"
-                    TextColor="{DynamicResource PanelColor}"
-                    ZIndex="10" />
-                <Picker
-                    x:Name="GroupPicker"
-                    Title="Группа"
-                    Margin="0,0,0,0"
-                    BackgroundColor="Transparent"
-                    FontFamily="InterSemiBold"
-                    FontSize="18"
-                    HeightRequest="70"
-                    ItemDisplayBinding="{Binding Name}"
-                    ItemsSource="{Binding Groups}"
-                    SelectedItem="{Binding SelectedGroup}"
-                    TextColor="{DynamicResource PanelColor}"
-                    ZIndex="10" />
+            <VerticalStackLayout
+                Grid.Row="1"
+                HorizontalOptions="CenterAndExpand"
+                WidthRequest="300">
+                <Border
+                    Margin="0,81,0,0"
+                    BackgroundColor="#AA8DD3"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
 
-                <ui:NavigationItemComponent
-                    BackgroundColor="Transparent"
+                    <Border
+                        Margin="2,2,3,3"
+                        BackgroundColor="{DynamicResource White}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Picker
+                            x:Name="DepartmentPicker"
+                            Margin="0,0,0,0"
+                            BackgroundColor="{DynamicResource White}"
+                            FontFamily="InterSemiBold"
+                            FontSize="18"
+                            HeightRequest="40"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding Departments}"
+                            SelectedItem="{Binding SelectedDepartment}"
+                            TextColor="{DynamicResource PanelColor}"
+                            ZIndex="10" />
+                    </Border>
+                </Border>
+                <Border
+                    Margin="0,41,0,0"
+                    BackgroundColor="#AA8DD3"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+
+                    <Border
+                        Margin="2,2,3,3"
+                        BackgroundColor="{DynamicResource White}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Picker
+                            x:Name="CoursePicker"
+                            Margin="0,0,0,0"
+                            BackgroundColor="{DynamicResource White}"
+                            FontFamily="InterSemiBold"
+                            FontSize="18"
+                            HeightRequest="40"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding Courses}"
+                            SelectedItem="{Binding SelectedCourse}"
+                            TextColor="{DynamicResource PanelColor}"
+                            ZIndex="10" />
+                    </Border>
+                </Border>
+                <Border
+                    Margin="0,41,0,0"
+                    BackgroundColor="#AA8DD3"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+
+                    <Border
+                        Margin="2,2,3,3"
+                        BackgroundColor="{DynamicResource White}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Picker
+                            x:Name="GroupPicker"
+                            Margin="0,0,0,0"
+                            FontFamily="InterSemiBold"
+                            FontSize="18"
+                            HeightRequest="40"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding Groups}"
+                            SelectedItem="{Binding SelectedGroup}"
+                            TextColor="{DynamicResource PanelColor}"
+                            ZIndex="10" />
+                    </Border>
+                </Border>
+
+                <Border
+                    Margin="0,184,0,0"
+                    BackgroundColor="#E7E1FF"
+                    HeightRequest="50"
                     HorizontalOptions="Center"
-                    ItemType="Home"
-                    VerticalOptions="Center"
+                    StrokeThickness="0"
                     WidthRequest="300">
-                    <Label
-                        FontFamily="InterSemiBold"
-                        FontSize="25"
-                        Text="Подтвердить" />
-                </ui:NavigationItemComponent>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Button
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding GoToHomeCommand}"
+                        FontFamily="InterMedium"
+                        FontSize="20"
+                        Text="Подтвердить"
+                        TextColor="{DynamicResource PanelColor}" />
+                </Border>
             </VerticalStackLayout>
         </Grid>
     </VerticalStackLayout>

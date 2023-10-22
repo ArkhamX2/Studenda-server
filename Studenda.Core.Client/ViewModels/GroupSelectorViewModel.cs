@@ -28,6 +28,16 @@ namespace Studenda.Core.Client.ViewModels
         [ObservableProperty]
         private Department selectedDepartment = new Department();
 
+        [RelayCommand]
+        async private void GoToHome(Group group)
+        {
+            var navigationParameter = new Dictionary<string, object>
+            {
+                {"group",group }
+            };
+            await Shell.Current.GoToAsync($"//{nameof(HomeView)}", navigationParameter);
+        }
+
         public GroupSelectorViewModel()
         {
 
