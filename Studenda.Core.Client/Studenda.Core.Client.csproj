@@ -70,6 +70,9 @@
         <Compile Update="Components\UI\Wrappers\ScheduleComponentWrapper.xaml.cs">
           <DependentUpon>ScheduleComponentWrapper.xaml</DependentUpon>
         </Compile>
+        <Compile Update="Resources\Styles\Theme\CalendarCarouselDayNumbarButtonTheme.xaml.cs">
+          <DependentUpon>CalendarCarouselDayNumbarButtonTheme.xaml</DependentUpon>
+        </Compile>
         <Compile Update="Views\ChoseRoleView.xaml.cs">
             <DependentUpon>ChoseRoleView.xaml</DependentUpon>
         </Compile>
@@ -124,7 +127,7 @@
         <MauiXaml Update="Components\UI\SubjectComponent.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
-        <MauiXaml Update="Resources\Styles\Theme\CalendarCarouselDayNumbarTheme.xaml">
+        <MauiXaml Update="Resources\Styles\Theme\CalendarCarouselDayNumbarButtonTheme.xaml">
             <Generator>MSBuild:Compile</Generator>
         </MauiXaml>
         <MauiXaml Update="Resources\Styles\Theme\CalendarCarouselDayTitleTheme.xaml">

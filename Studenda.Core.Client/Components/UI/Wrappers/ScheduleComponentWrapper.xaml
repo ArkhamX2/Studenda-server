@@ -4,7 +4,7 @@
              x:Class="Studenda.Core.Client.Components.UI.Wrappers.ScheduleComponentWrapper"
              xmlns:ui="clr-namespace:Studenda.Core.Client.Components.UI"
              xmlns:vm="clr-namespace:Studenda.Core.Client.ViewModels">
-    <ScrollView BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ScheduleViewModel, Mode=OneTime}">
+    <ScrollView x:Name="ScheduleScrollView" BindingContext="{Binding Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}, Path=ScheduleViewModel, Mode=OneTime}">
         <ui:ScheduleComponent Schedule="{Binding ScheduleList}" />
     </ScrollView>
 </ContentView>

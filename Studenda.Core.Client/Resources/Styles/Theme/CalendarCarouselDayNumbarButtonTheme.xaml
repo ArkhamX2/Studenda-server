@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary
-    x:Class="Studenda.Core.Client.Resources.Styles.Theme.CalendarCarouselDayNumbarTheme"
+    x:Class="Studenda.Core.Client.Resources.Styles.Theme.CalendarCarouselDayNumbarButtonTheme"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-    <Style x:Key="CalendarCarouselDayNumbarTheme" TargetType="{x:Type Label}">
+    <Style x:Key="CalendarCarouselDayNumbarButtonTheme" TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="30" />
         <Setter Property="FontFamily" Value="InterRegular" />
         <Setter Property="TextColor" Value="{DynamicResource ButtonColor}" />
-        <Setter Property="VerticalTextAlignment" Value="Center" />
-        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <!--<Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />-->
     </Style>
 </ResourceDictionary>

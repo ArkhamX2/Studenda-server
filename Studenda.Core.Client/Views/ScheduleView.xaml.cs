@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Messaging;
+using Studenda.Core.Client.Utils;
 using Studenda.Core.Client.ViewModels;
 
 namespace Studenda.Core.Client.Views;
@@ -21,6 +23,17 @@ public partial class ScheduleView : ContentPage
     {
         InitializeComponent();
         BindingContext = ViewModel;
+        WeakReferenceMessenger.Default.Register<ScheduleView, ReloadScheduleMessenger>(
+this,
+async (recipient, message) =>
+{
+    await recipient.Dispatcher.DispatchAsync(
+        async () =>
+        {
+            loaded = false;
+            recipient.OnAppearing();
+        });
+});
     }
     private void BurgerMenu_Clicked(object sender, EventArgs e)
     {
@@ -33,7 +46,6 @@ public partial class ScheduleView : ContentPage
         Task.Run(
             async () =>
             {
-
                 loaded = true;
                 await MainThread.InvokeOnMainThreadAsync(async () => 
                 await Schedule.LoadViewAsync());
@@ -41,7 +53,7 @@ public partial class ScheduleView : ContentPage
     }
 
     private void Button_Clicked(object sender, EventArgs e)
-    {
+    {        
         loaded = false;
         OnAppearing();
     }

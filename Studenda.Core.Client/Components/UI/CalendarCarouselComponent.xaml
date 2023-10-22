@@ -24,6 +24,7 @@
             <Grid>
                 <HorizontalStackLayout HorizontalOptions="Center">
                     <ImageButton
+                        x:Name="LeftArrow"
                     Grid.Column="0"
                     Margin="0,0,5,0"
                     Aspect="Center"
@@ -32,73 +33,80 @@
                     HorizontalOptions="Start"
                     Source="left_arrow.png"
                     VerticalOptions="Center"
-                    WidthRequest="13" />
+                    WidthRequest="13" 
+                        Clicked="LeftArrow_Clicked"/>
                 <HorizontalStackLayout
                     Grid.Column="1"
                     HorizontalOptions="Center"
                     VerticalOptions="Center">
 
                     <VerticalStackLayout Margin="0,0,12,0" WidthRequest="40">
-                        <Label
-                            x:Name="FirstDate"
-                            Style="{StaticResource CalendarCarouselDayNumbarTheme}"
-                            Text="1" />
-                        <Label
+                            <Button x:Name="FirstDate"
+                                    Margin="-10"
+                                    Text="1"
+                                    Style="{StaticResource CalendarCarouselDayNumbarButtonTheme}"
+                                    Clicked="FirstDate_Clicked"/>
+                            <Label
                             x:Name="FirstDateWeekDay"
                             Style="{StaticResource CalendarCarouselDayTitleTheme}"
                             Text="ПН" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Margin="0,0,12,0" WidthRequest="40">
-                        <Label
-                            x:Name="SecondDate"
-                            Style="{StaticResource CalendarCarouselDayNumbarTheme}"
-                            Text="2" />
-                        <Label
+                            <Button x:Name="SecondDate"
+                                    Margin="-10"
+                                    Text="2"
+                                    Style="{StaticResource CalendarCarouselDayNumbarButtonTheme}"
+                                    Clicked="SecondDate_Clicked"/>
+                            <Label
                             x:Name="SecondDateWeekDay"
                             Style="{StaticResource CalendarCarouselDayTitleTheme}"
                             Text="ВТ" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Margin="0,0,12,0" WidthRequest="40">
-                        <Label
-                            x:Name="ThirdDate"
-                            Style="{StaticResource CalendarCarouselDayNumbarTheme}"
-                            Text="3" />
-                        <Label
+                            <Button x:Name="ThirdDate"
+                                    Margin="-10"
+                                    Text="3"
+                                    Style="{StaticResource CalendarCarouselDayNumbarButtonTheme}"
+                                    Clicked="ThirdDate_Clicked"/>
+                            <Label
                             x:Name="ThirdDateWeekDay"
                             Style="{StaticResource CalendarCarouselDayTitleTheme}"
                             Text="СР" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Margin="0,0,12,0" WidthRequest="40">
-                        <Label
-                            x:Name="FourthDate"
-                            Style="{StaticResource CalendarCarouselDayNumbarTheme}"
-                            Text="4" />
-                        <Label
+                            <Button x:Name="FourthDate"
+                                    Margin="-10"
+                                    Text="4"
+                                    Style="{StaticResource CalendarCarouselDayNumbarButtonTheme}"
+                                    Clicked="FourthDate_Clicked"/>
+                            <Label
                             x:Name="FourthDateWeekDay"
                             Style="{StaticResource CalendarCarouselDayTitleTheme}"
                             Text="ЧТ" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Margin="0,0,12,0" WidthRequest="40">
-                        <Label
-                            x:Name="FifthDate"
-                            Style="{StaticResource CalendarCarouselDayNumbarTheme}"
-                            Text="5" />
-                        <Label
+                            <Button x:Name="FifthDate"
+                                    Margin="-10"
+                                    Text="5"
+                                    Style="{StaticResource CalendarCarouselDayNumbarButtonTheme}"
+                                    Clicked="FifthDate_Clicked"/>
+                            <Label
                             x:Name="FifthDateWeekDay"
                             Style="{StaticResource CalendarCarouselDayTitleTheme}"
                             Text="ПТ" />
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Margin="0,0,0,0" WidthRequest="40">
-                        <Label
-                            x:Name="SixthDate"
-                            Style="{StaticResource CalendarCarouselDayNumbarTheme}"
-                            Text="6" />
-                        <Label
+                            <Button x:Name="SixthDate"
+                                    Margin="-10"
+                                    Text="6"
+                                    Style="{StaticResource CalendarCarouselDayNumbarButtonTheme}"
+                                    Clicked="SixthDate_Clicked"/>
+                            <Label
                             x:Name="SixthDateWeekDay"
                             Style="{StaticResource CalendarCarouselDayTitleTheme}"
                             Text="СБ" />
@@ -107,6 +115,7 @@
                 </HorizontalStackLayout>
 
                 <ImageButton
+                    x:Name="RightArrow"
                     Margin="5,0,0,0"
                     Aspect="Center"
                     BackgroundColor="Transparent"
@@ -114,7 +123,8 @@
                     HorizontalOptions="End"
                     Source="right_arrow.png"
                     VerticalOptions="Center"
-                    WidthRequest="13" />
+                    WidthRequest="13"
+                    Clicked="RightArrow_Clicked"/>
                 </HorizontalStackLayout>
                 
             </Grid>

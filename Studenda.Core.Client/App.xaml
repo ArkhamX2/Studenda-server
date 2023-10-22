@@ -19,7 +19,7 @@
                 <ResourceDictionary Source="Resources/Styles/Theme/ProfileBorderTheme.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Theme/DayLabelTheme.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Theme/SubjectLabelTheme.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Theme/CalendarCarouselDayNumbarTheme.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Theme/CalendarCarouselDayNumbarButtonTheme.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Theme/CalendarCarouselDayTitleTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
