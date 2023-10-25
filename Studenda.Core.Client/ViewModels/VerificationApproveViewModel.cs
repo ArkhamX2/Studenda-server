@@ -40,7 +40,7 @@ namespace Studenda.Core.Client.ViewModels
         {
             try
             {
-                SecurityResponse loginResponse = await loginRepository.Login("test@test.ru","test","student");
+                SecurityResponse loginResponse = await loginRepository.Login("test2@test.ru","Test-22222","admin");
 
                 if (loginResponse != null)
                 {
