@@ -30,12 +30,20 @@ public static class DataSerializer
     }
 
     /// <summary>
-    ///     Получить настройки сериализации.
+    ///     Конфигурация.
     /// </summary>
-    /// <returns>Настройки сериализации.</returns>
-    private static JsonSerializerSettings GetConfiguration() => new()
+    private static JsonSerializerSettings? Configuration { get; set; }
+
+    /// <summary>
+    ///     Получить конфигурацию.
+    /// </summary>
+    /// <returns>Конфигурация.</returns>
+    private static JsonSerializerSettings GetConfiguration()
     {
-        PreserveReferencesHandling = PreserveReferencesHandling.All,
-        DefaultValueHandling = DefaultValueHandling.Ignore
-    };
+        return Configuration ??= new JsonSerializerSettings
+        {
+            PreserveReferencesHandling = PreserveReferencesHandling.All,
+            DefaultValueHandling = DefaultValueHandling.Ignore
+        };
+    }
 }
