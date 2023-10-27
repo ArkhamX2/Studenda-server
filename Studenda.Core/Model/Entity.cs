@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Data.Util;
 
 namespace Studenda.Core.Model;
 
@@ -19,7 +20,7 @@ public abstract class Entity
     /// <returns>Массив байтов.</returns>
     private static IEnumerable<byte> ComputeDataHash(Entity entity)
     {
-        var json = Newtonsoft.Json.JsonConvert.SerializeObject(entity);
+        var json = DataSerializer.Serialize(entity);
         var bytes = Encoding.UTF8.GetBytes(json);
 
         return MD5.HashData(bytes);
