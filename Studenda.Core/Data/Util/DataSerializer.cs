@@ -15,7 +15,7 @@ public static class DataSerializer
     /// <returns>Строка JSON.</returns>
     public static string Serialize(object? rawData)
     {
-        return JsonConvert.SerializeObject(rawData, GetConfiguration());
+        return JsonConvert.SerializeObject(rawData, Configuration);
     }
 
     /// <summary>
@@ -26,24 +26,15 @@ public static class DataSerializer
     /// <returns>Объект указанного выходного типа данных.</returns>
     public static T? Deserialize<T>([StringSyntax("Json")] string serializedData)
     {
-        return JsonConvert.DeserializeObject<T>(serializedData, GetConfiguration());
+        return JsonConvert.DeserializeObject<T>(serializedData, Configuration);
     }
 
     /// <summary>
     ///     Конфигурация.
     /// </summary>
-    private static JsonSerializerSettings? Configuration { get; set; }
-
-    /// <summary>
-    ///     Получить конфигурацию.
-    /// </summary>
-    /// <returns>Конфигурация.</returns>
-    private static JsonSerializerSettings GetConfiguration()
+    private static JsonSerializerSettings Configuration { get; } = new()
     {
-        return Configuration ??= new JsonSerializerSettings
-        {
-            PreserveReferencesHandling = PreserveReferencesHandling.All,
-            DefaultValueHandling = DefaultValueHandling.Ignore
-        };
-    }
+        PreserveReferencesHandling = PreserveReferencesHandling.All,
+        DefaultValueHandling = DefaultValueHandling.Ignore
+    };
 }
