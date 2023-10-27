@@ -26,11 +26,20 @@ async (recipient, message) =>
         async () =>
         {
             int scroll = 0;
-            for (int i=0; i< message.Value; i++)
+            if (message.Value < 6)
             {
-                scroll += Schedule[i].SubjectList.Count*74+70;
+                for (int i = 0; i < message.Value; i++)
+                {
+                    try
+                    {
+                        scroll += Schedule[i].SubjectList.Count * 74 + 70;
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+                }
             }
-
             WeakReferenceMessenger.Default.Send(new SubjectListCountMessenger(scroll)); ;
         });
 });

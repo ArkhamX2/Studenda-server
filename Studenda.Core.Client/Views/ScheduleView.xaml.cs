@@ -38,7 +38,15 @@ public partial class ScheduleView : ContentPage
                 loaded = true;
                 await MainThread.InvokeOnMainThreadAsync(async () => 
                 await Schedule.LoadViewAsync());
-            });
+                while (true)
+                {
+                    if (Schedule.HasLazyViewLoaded)
+                    {
+                        WeakReferenceMessenger.Default.Send(new DayPressedMessenger(((int)DateTime.Now.DayOfWeek) - 1));
+                        break;
+                    }
+                }
+            });        
     }
 
     private void Button_Clicked(object sender, EventArgs e)
