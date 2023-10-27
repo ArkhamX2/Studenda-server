@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Common;
 

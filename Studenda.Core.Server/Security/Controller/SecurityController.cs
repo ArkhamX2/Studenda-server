@@ -1,12 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Transfer.Security;
+using Studenda.Core.Data.Util;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Service;
@@ -87,20 +86,12 @@ public class SecurityController : ControllerBase
             return Unauthorized();
         }
 
-        var options = new JsonSerializerOptions
-        {
-            ReferenceHandler = ReferenceHandler.Preserve,
-            WriteIndented = true
-        };
-
-        var value = new SecurityResponse
+        return Ok(DataSerializer.Serialize(new SecurityResponse
         {
             User = user,
             Token = accessToken,
             RefreshToken = account.RefreshToken
-        };
-
-        return Ok(JsonSerializer.Serialize(value, options));
+        }));
     }
 
     [AllowAnonymous]
