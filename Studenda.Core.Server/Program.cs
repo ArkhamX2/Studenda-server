@@ -76,6 +76,13 @@ serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJ
         IssuerSigningKey = JwtManager.GetSymmetricSecurityKey()
     };
 });
+serviceCollection.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 5;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+});
 
 var application = applicationBuilder.Build();
 
