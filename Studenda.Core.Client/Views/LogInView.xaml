@@ -25,13 +25,15 @@
             HeightRequest="225"
             HorizontalOptions="Center"
             WidthRequest="225" />
-        
+
         <Button
             Grid.Row="1"
             BackgroundColor="{DynamicResource ButtonColor}"
             Command="{Binding VerificationCommand}"
             HeightRequest="58"
             Style="{StaticResource AppButton}"
+            FontSize="23"
+            FontFamily="InterSemiBold"
             Text="Войти"
             WidthRequest="344" />
 
@@ -40,10 +42,11 @@
             BorderColor="{DynamicResource ButtonColor}"
             BorderWidth="0"
             Command="{Binding GuestCommand}"
-            HeightRequest="24"
+            HeightRequest="60"
             Style="{StaticResource TextButton}"
+            FontSize="20"
             Text="Войти как гость"
-            WidthRequest="200" />
+            WidthRequest="210" />
 
     </Grid>
 </ContentPage>

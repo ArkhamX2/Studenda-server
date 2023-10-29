@@ -40,7 +40,8 @@
                         <Label
                             FontFamily="InterSemiBold"
                             FontSize="25"
-                            Text="Вход" />
+                            Text="Вход"
+                            TextColor="{DynamicResource White}" />
                     </ui:NavigationItemComponent>
                 </Grid>
             </ui:NavigationBarComponent>
@@ -59,13 +60,16 @@
                     TextColor="{StaticResource ForegroundColor}" />
 
                 <Border
-                    Margin="0,23,0,0"
+                    Margin="0,20,0,0"
                     HorizontalOptions="Start"
                     Style="{StaticResource SignEntryBorderTheme}">
                     <ui:StudendaEntry
+                        Margin="5,0,5,0"
+                        BackgroundColor="Transparent"
+                        FontAttributes="None"
                         MaxLength="32"
-                        Placeholder="Почта"
-                        WidthRequest="380" />
+                        Placeholder="E-mail"
+                        WidthRequest="370" />
                 </Border>
 
                 <Button
@@ -74,7 +78,8 @@
                     BackgroundColor="{DynamicResource SubButtonColor}"
                     BorderWidth="0"
                     Command="{Binding SignInCommand}"
-                    HeightRequest="24"
+                    FontFamily="InterMedium"
+                    HeightRequest="50"
                     HorizontalOptions="Center"
                     Style="{StaticResource AppButton}"
                     Text="Получить код"

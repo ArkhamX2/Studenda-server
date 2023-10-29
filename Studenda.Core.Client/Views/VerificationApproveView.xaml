@@ -43,7 +43,8 @@
                         <Label
                             FontFamily="InterSemiBold"
                             FontSize="25"
-                            Text="Вход" />
+                            Text="Вход"
+                            TextColor="{DynamicResource White}"/>
                     </ui:NavigationItemComponent>
                 </Grid>
             </ui:NavigationBarComponent>
