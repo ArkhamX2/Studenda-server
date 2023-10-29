@@ -93,12 +93,14 @@ public partial class CalendarCarouselComponent : ContentView
 
     private void LeftArrow_Clicked(object sender, EventArgs e)
     {
+        WeakReferenceMessenger.Default.Send(new Messenger(5));
         datenow = datenow.AddDays(-7);
         CalculateDates();
     }
 
     private void RightArrow_Clicked(object sender, EventArgs e)
     {
+        WeakReferenceMessenger.Default.Send(new Messenger(5));
         datenow = datenow.AddDays(7);
         CalculateDates();
     }

@@ -8,23 +8,24 @@
         x:Name="ScheduleListView"
         Margin="0,0,0,10"
         Direction="Column"
-        IsEnabled="False">
+        IsEnabled="False"
+        CompressedLayout.IsHeadless="True">
         <BindableLayout.ItemTemplate>
             <DataTemplate>
-                <ui:ScheduleDayComponent WeekDayTitle="{Binding DayTitle}">
+                <ui:ScheduleDayComponent WeekDayTitle="{Binding DayTitle, Mode=OneTime}">
                     <CollectionView
                         HorizontalScrollBarVisibility="Never"
                         IsEnabled="False"
-                        ItemsSource="{Binding SubjectList}"
+                        ItemsSource="{Binding SubjectList, Mode=OneTime}"
                         SelectionMode="None"
                         VerticalScrollBarVisibility="Never">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <ui:SubjectComponent
-                                    SubjectPlace="{Binding Place}"
-                                    SubjectTimeEnd="{Binding Time}"
-                                    SubjectTimeStart="{Binding Time}"
-                                    SubjectTitle="{Binding Title}" />
+                                    SubjectPlace="{Binding Place, Mode=OneTime}"
+                                    SubjectTimeEnd="{Binding Time, Mode=OneTime}"
+                                    SubjectTimeStart="{Binding Time, Mode=OneTime}"
+                                    SubjectTitle="{Binding Title, Mode=OneTime}" />
 
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

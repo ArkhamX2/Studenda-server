@@ -19,4 +19,10 @@ namespace Studenda.Core.Client.Utils
         {
         }
     }
+    public class Messenger : ValueChangedMessage<int>
+    {
+        public Messenger(int count) : base(count)
+        {
+        }
+    }
 }

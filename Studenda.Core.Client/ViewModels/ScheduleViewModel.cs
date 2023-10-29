@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Studenda.Core.Client.Utils;
 using Studenda.Core.Client.Views;
 using Studenda.Core.Model.Common;
 
@@ -81,7 +83,7 @@ namespace Studenda.Core.Client.ViewModels
         {
             TypeOfWeek = WeekType.Blue;
             ViewType = ScheduleViewType.Calendar;
-            Schedule = new WeekSchedule(
+            WeekSchedule weekScheduleBlue = new WeekSchedule(
                 new List<DaySchedule>()
                 {
                     new DaySchedule("Понедельник",new List<Subject>()
@@ -121,7 +123,47 @@ namespace Studenda.Core.Client.ViewModels
                     ),
                 }
                 , TypeOfWeek);
-      
+
+            WeekSchedule weekScheduleRed = new WeekSchedule(
+    new List<DaySchedule>()
+    {
+                    new DaySchedule("Понедельник",new List<Subject>()
+                    {
+                        new Subject("8.30","Ерунда","вц-303"),
+                        new Subject("8.30","Ерунда","вц-303"),
+                    }),
+
+                    new DaySchedule("Среда",new List<Subject>()
+                    {
+                        new Subject("8.30","Математика","вц-303"),
+                    }),
+                    new DaySchedule("Четверг",new List<Subject>()
+                    {
+                        new Subject("8.30","Ерунда","вц-303"),
+                        new Subject("8.30","Ерунда","вц-303"),
+                    }),
+                    new DaySchedule("Пятница",new List<Subject>()
+                    {
+                        new Subject("8.30","Вторник","вц-303"),
+                        new Subject("8.30","Вторник","вц-303"),
+                        new Subject("8.30","Вторник","вц-303"),
+                        new Subject("8.30","Вторник","вц-303"),
+                        new Subject("8.30","Вторник","вц-303"),
+                        new Subject("8.30","Вторник","вц-303"),
+                    }),
+                    new DaySchedule("Суббота",new List<Subject>()
+                    {
+                        new Subject("8.30","Математика","вц-303"),
+                        new Subject("8.30","Среда","вц-303"),
+                        new Subject("8.30","Среда","вц-303"),
+                        new Subject("8.30","Математика","вц-303"),
+                    }
+                    ),
+    }
+    , TypeOfWeek);
+
+            Schedule = weekScheduleBlue;
+
             ScheduleList = Schedule.ScheduleList;
             CurrentDaySubjectList = ScheduleList[0].SubjectList;
             GroupList = new List<Group>()
@@ -131,6 +173,36 @@ namespace Studenda.Core.Client.ViewModels
                new Group() { Name = "Б.ПИН.РИС 22.06" },
             };
             SelectedGroup = GroupList[0];
+
+            WeakReferenceMessenger.Default.Register<ScheduleViewModel, Messenger>(
+            this,
+            async (recipient, message) =>
+            {
+                if (Schedule== weekScheduleBlue)
+                    Schedule = weekScheduleRed;
+                else
+                    Schedule = weekScheduleBlue;
+                try
+                {
+                    ScheduleList = Schedule.ScheduleList;
+                }
+                catch (Exception ex)
+                {
+                    ScheduleList = null;
+                }
+                
+            });
+
+            //Task.Run(
+            //async () =>
+            //{
+            //    while (true)
+            //    {
+            //        Thread.Sleep(1000);
+            //        GC.Collect();
+            //    }
+            //});
+
         }
 
         [RelayCommand]
