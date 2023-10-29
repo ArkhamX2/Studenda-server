@@ -1,0 +1,60 @@
+
+        .mainBackground {
+        margin-top: 42px;
+        background-color: whitesmoke;
+        width: 100%;
+        height: 100%;}
+        .elementBox {
+        display: flex;
+        padding: 7px;
+        font-size: 16;}
+        .imageBox {
+        display: inline-flex;
+        vertical-align: central;}
+        .timeContainer, .subjectContainer, .roomContainer{
+        display: inline-flex;
+        padding: 5px;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        }
+        .timeContainer {
+                flex-direction: column;
+                justify-content: flex-start;
+        }
+        .subjectContainer{
+                margin-left: 10px;
+                width: 90%;
+                align-items: center;
+        }
+        .roomContainer{
+                margin-left: 10px;
+                align-items: center;
+        }
+        .dayBox {
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                border-radius: 10px;
+                font-family: sans-serif;
+                margin: 10px 15px 5px 15px;
+                padding: 5px;
+        }
+        .text{
+                display: flex;
+        }
+        .buttonBox{
+                margin-left: 15px;
+                border-bottom: 2px solid gray;
+                width: 98%;
+        }
+        .dayButton{
+                font-size: 18;
+                font-weight: bold 1;
+                background-color: transparent;
+                border: none;
+                margin-top: 12px;
+        }
+        * {
+        margin: 0;
+        padding: 0;
+        color: darkblue;}
