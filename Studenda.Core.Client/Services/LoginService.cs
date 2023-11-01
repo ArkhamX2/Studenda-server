@@ -30,7 +30,6 @@ namespace Studenda.Core.Client.Services
         public async Task<SecurityResponse> Login(string email, string password, string roleName)
         {
             var client = new HttpClient();
-            var user = new SecurityResponse();
 
             string url = "http://88.210.3.137/api/security/";
             client.BaseAddress = new Uri(url);
@@ -48,7 +47,7 @@ namespace Studenda.Core.Client.Services
 
             using HttpResponseMessage loginResponse = await client.PostAsJsonAsync(
                 "login",
-                new LoginRequest 
+                new LoginRequest
                 {
                     Email = email,
                     Password = password,
@@ -59,7 +58,7 @@ namespace Studenda.Core.Client.Services
             {
                 var jsonResponse = await loginResponse.Content.ReadAsStringAsync();
                 string content = loginResponse.Content.ReadAsStringAsync().Result;
-                user = JsonConvert.DeserializeObject<SecurityResponse>(content);
+                var user = JsonConvert.DeserializeObject<SecurityResponse>(content);
 
                 return await Task.FromResult(user);
             }
