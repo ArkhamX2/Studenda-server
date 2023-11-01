@@ -25,6 +25,11 @@ public class Subject : Identity
     #region Configuration
 
     /// <summary>
+    ///     Максимальная длина поля <see cref="Classroom" />.
+    /// </summary>
+    public const int ClassroomLengthMax = 32;
+
+    /// <summary>
     ///     Максимальная длина поля <see cref="Description" />.
     /// </summary>
     public const int DescriptionLengthMax = 256;
@@ -63,6 +68,11 @@ public class Subject : Identity
     ///     Статус необходимости наличия значения в поле <see cref="GroupId" />.
     /// </summary>
     public const bool IsGroupIdRequired = true;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="Classroom" />.
+    /// </summary>
+    public const bool IsClassroomRequired = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Description" />.
@@ -123,6 +133,10 @@ public class Subject : Identity
                 .WithMany(group => group.StaticSchedules)
                 .HasForeignKey(subject => subject.GroupId)
                 .IsRequired();
+
+            builder.Property(subject => subject.Classroom)
+                .HasMaxLength(ClassroomLengthMax)
+                .IsRequired(IsClassroomRequired);
 
             builder.Property(subject => subject.Description)
                 .HasMaxLength(DescriptionLengthMax)
@@ -186,6 +200,12 @@ public class Subject : Identity
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     /// </summary>
     public int GroupId { get; set; }
+
+    /// <summary>
+    ///     Кабинет.
+    ///     Необязательное поле.
+    /// </summary>
+    public string? Classroom { get; set; }
 
     /// <summary>
     ///     Описание.

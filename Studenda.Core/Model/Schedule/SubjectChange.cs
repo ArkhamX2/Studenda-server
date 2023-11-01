@@ -24,6 +24,11 @@ public class SubjectChange : Identity
     #region Configuration
 
     /// <summary>
+    ///     Максимальная длина поля <see cref="Classroom" />.
+    /// </summary>
+    public const int ClassroomLengthMax = 32;
+
+    /// <summary>
     ///     Максимальная длина поля <see cref="Description" />.
     /// </summary>
     public const int DescriptionLengthMax = 256;
@@ -47,6 +52,11 @@ public class SubjectChange : Identity
     ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
     /// </summary>
     public const bool IsUserIdRequired = false;
+
+    /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="Classroom" />.
+    /// </summary>
+    public const bool IsClassroomRequired = false;
 
     /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Description" />.
@@ -93,6 +103,10 @@ public class SubjectChange : Identity
                 .HasForeignKey(change => change.UserId)
                 .IsRequired(IsUserIdRequired);
 
+            builder.Property(subject => subject.Classroom)
+                .HasMaxLength(ClassroomLengthMax)
+                .IsRequired(IsClassroomRequired);
+
             builder.Property(change => change.Description)
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
@@ -137,6 +151,12 @@ public class SubjectChange : Identity
     ///     Необязательное поле.
     /// </summary>
     public int? UserId { get; set; }
+
+    /// <summary>
+    ///     Кабинет.
+    ///     Необязательное поле.
+    /// </summary>
+    public string? Classroom { get; set; }
 
     /// <summary>
     ///     Описание.
