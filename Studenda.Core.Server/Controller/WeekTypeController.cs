@@ -20,7 +20,7 @@ namespace Studenda.Core.Server.Controller
 
         [Route("get")]
         [HttpGet]
-        public ActionResult<List<WeekType>> GetAllDepartments()
+        public ActionResult<List<WeekType>> GetAllWeekTypes()
         {
             var weektype = DataContext.WeekTypes.ToList();
             return weektype;
@@ -28,7 +28,7 @@ namespace Studenda.Core.Server.Controller
 
         [Route("get/{id:int}")]
         [HttpGet]
-        public ActionResult<WeekType> GetDepartmentById(int id)
+        public ActionResult<WeekType> GetWeekTypeById(int id)
         {
             var weektype = DataContext.WeekTypes.FirstOrDefault(x => x.Id == id)!;
             return weektype;
