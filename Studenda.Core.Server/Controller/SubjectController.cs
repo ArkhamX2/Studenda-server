@@ -1,102 +1,101 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Data;
 using Studenda.Core.Model.Schedule;
 
-namespace Studenda.Core.Server.Controller
+namespace Studenda.Core.Server.Controller;
+
+[Route("subjects")]
+[ApiController]
+public class SubjectController : ControllerBase
 {
-    [Route("subjects")]
-    [ApiController]
-    public class SubjectController : ControllerBase
+    public SubjectController(DataContext dataContext, IConfiguration configuration)
     {
-        public DataContext DataContext { get; }
-        public IConfiguration Connfiguration { get; }
+        DataContext = dataContext;
+        Connfiguration = configuration;
+    }
 
-        public SubjectController(DataContext dataContext, IConfiguration configuration)
+    private DataContext DataContext { get; }
+    private IConfiguration Connfiguration { get; }
+
+    [Route("post")]
+    [HttpPost]
+    public IActionResult PostSubjects([FromBody] List<Subject> subjects)
+    {
+        try
         {
-            DataContext = dataContext;
-            Connfiguration = configuration;
+            DataContext.Subjects.AddRange(subjects);
+            DataContext.SaveChanges();
+            return Ok();
         }
-        [Route("post")]
-        [HttpPost]
-        public IActionResult PostSubjects([FromBody] List<Subject> subjects)
+        catch (Exception ex)
         {
-            try
-            {
-                DataContext.Subjects.AddRange(subjects);
-                DataContext.SaveChanges();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest(ex.Message);
         }
-        [Route("update")]
-        [HttpPut]
-        public IActionResult UpdateSubjects([FromBody] List<Subject> subjects)
+    }
+
+    [Route("update")]
+    [HttpPut]
+    public IActionResult UpdateSubjects([FromBody] List<Subject> subjects)
+    {
+        try
         {
-            try
+            foreach (var subject in subjects)
             {
-                foreach (var subject in subjects)
+                var Subject = DataContext.Subjects.FirstOrDefault(x => x.Id == subject.Id);
+                if (Subject != null)
                 {
-                    var Subject = DataContext.Subjects.FirstOrDefault(x => x.Id == subject.Id);
-                    if (Subject != null)
-                    {
-                        DataContext.Subjects.Update(Subject);
-                    }
-                    else
-                    {
-                        DataContext.Subjects.Add(Subject!);
-                    }
+                    DataContext.Subjects.Update(Subject);
                 }
-                DataContext.SaveChanges();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [Route("delete/{id}")]
-        [HttpDelete]
-        public IActionResult DeleteSubjects([FromBody] List<Subject> subjects)
-        {
-            try
-            {
-                foreach(var subject in subjects)
+                else
                 {
-                    var Subject = DataContext.Subjects.FirstOrDefault(x=>x.Id==subject.Id);
-                    if(Subject != null)
-                    {
-                        DataContext.Subjects.Remove(Subject);
-                    }
+                    DataContext.Subjects.Add(Subject!);
                 }
-                DataContext.SaveChanges();
-                return Ok();
             }
-            catch (Exception ex)
+
+            DataContext.SaveChanges();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [Route("delete/{id}")]
+    [HttpDelete]
+    public IActionResult DeleteSubjects([FromBody] List<Subject> subjects)
+    {
+        try
+        {
+            foreach(var subject in subjects)
             {
-                return BadRequest(ex.Message);
+                var Subject = DataContext.Subjects.FirstOrDefault(x=>x.Id==subject.Id);
+                if(Subject != null)
+                {
+                    DataContext.Subjects.Remove(Subject);
+                }
             }
+
+            DataContext.SaveChanges();
+            return Ok();
         }
-        [Route("student/get/{groupId}")]
-        [HttpGet]
-        public ActionResult<List<Subject>> GetScheduleToStudent(int groupId, [FromBody] int WeekType)
+        catch (Exception ex)
         {
-            List<Subject> subjects = DataContext.Subjects.Where(x => x.Group.Id == groupId && x.WeekType.Index == WeekType).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
-            return subjects;
+            return BadRequest(ex.Message);
         }
-        [Route("teacher/id/{Id}")]
-        [HttpGet]
-        public ActionResult<List<Subject>> GetScheduleToTeacher(int Id, [FromBody] int WeekType)
-        {
-            List<Subject> subjects = DataContext.Subjects.Where(x => x.User!.Id == Id && x.WeekType.Index == WeekType).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
-            return subjects;
-        }
+    }
 
+    [Route("student/get/{groupId:int}")]
+    [HttpGet]
+    public ActionResult<List<Subject>> GetScheduleToStudent(int groupId, [FromBody] int weekType)
+    {
+        return DataContext.Subjects.Where(x => x.Group.Id == groupId && x.WeekType.Index == weekType).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
+    }
 
-
-
+    [Route("teacher/id/{id:int}")]
+    [HttpGet]
+    public ActionResult<List<Subject>> GetScheduleToTeacher(int id, [FromBody] int weekType)
+    {
+        return DataContext.Subjects.Where(x => x.User!.Id == id && x.WeekType.Index == weekType).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
     }
 }

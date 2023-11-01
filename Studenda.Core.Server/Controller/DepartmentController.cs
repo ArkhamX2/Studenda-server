@@ -1,99 +1,105 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Data;
 using Studenda.Core.Model.Common;
-using Studenda.Core.Model.Schedule;
 
-namespace Studenda.Core.Server.Controller
+namespace Studenda.Core.Server.Controller;
+
+[Route("department")]
+[ApiController]
+public class DepartmentController : ControllerBase
 {
-    [Route("department")]
-    [ApiController]
-    public class DepartmentController : ControllerBase
+    public DepartmentController(DataContext dataContext, IConfiguration configuration)
     {
-        public DataContext DataContext { get; }
-        public IConfiguration Connfiguration { get; }
+        DataContext = dataContext;
+        Configuration = configuration;
+    }
 
-        public DepartmentController(DataContext dataContext, IConfiguration configuration)
+    private DataContext DataContext { get; }
+    private IConfiguration Configuration { get; }
+
+    [Route("get")]
+    [HttpGet]
+    public ActionResult<List<Department>> GetAllDepartments()
+    {
+        var departments = DataContext.Departments.ToList();
+        return departments;
+    }
+
+    [Route("get/{id:int}")]
+    [HttpGet]
+    public ActionResult<Department> GetDepartmentById(int id)
+    {
+        var department = DataContext.Departments.FirstOrDefault(x => x.Id == id)!;
+        return department;
+    }
+
+    [Route("post")]
+    [HttpPost]
+    public IActionResult PostSubjects([FromBody] List<Department> subjects)
+    {
+        try
         {
-            DataContext = dataContext;
-            Connfiguration = configuration;
+            DataContext.Departments.AddRange(subjects);
+            DataContext.SaveChanges();
+            return Ok();
         }
-        [Route("get")]
-        [HttpGet]
-        public ActionResult<List<Department>> GetAllDepartments()
+        catch (Exception ex)
         {
-            var departments = DataContext.Departments.ToList();
-            return departments;
+            return BadRequest(ex.Message);
         }
-        [Route("get/{id}")]
-        [HttpGet]
-        public ActionResult<Department> GetDepartmentById(int id)
+    }
+
+    [Route("update")]
+    [HttpPut]
+    public IActionResult UpdateSubjects([FromBody] List<Department> subjects)
+    {
+        try
         {
-            var department = DataContext.Departments.FirstOrDefault(x => x.Id == id)!;
-            return department;
-        }
-        [Route("post")]
-        [HttpPost]
-        public IActionResult PostSubjects([FromBody] List<Department> subjects)
-        {
-            try
+            foreach (var subject in subjects)
             {
-                DataContext.Departments.AddRange(subjects);
-                DataContext.SaveChanges();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [Route("update")]
-        [HttpPut]
-        public IActionResult UpdateSubjects([FromBody] List<Department> subjects)
-        {
-            try
-            {
-                foreach (var subject in subjects)
+                var department = DataContext.Departments.FirstOrDefault(x => x.Id == subject.Id);
+
+                if (department != null)
                 {
-                    var Subject = DataContext.Departments.FirstOrDefault(x => x.Id == subject.Id);
-                    if (Subject != null)
-                    {
-                        DataContext.Departments.Update(Subject);
-                    }
-                    else
-                    {
-                        DataContext.Departments.Add(Subject!);
-                    }
+                    DataContext.Departments.Update(department);
                 }
-                DataContext.SaveChanges();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [Route("delete/{id}")]
-        [HttpDelete]
-        public IActionResult DeleteSubjects([FromBody] List<Department> subjects)
-        {
-            try
-            {
-                foreach (var subject in subjects)
+                else
                 {
-                    var Subject = DataContext.Departments.FirstOrDefault(x => x.Id == subject.Id);
-                    if (Subject != null)
-                    {
-                        DataContext.Departments.Remove(Subject);
-                    }
+                    DataContext.Departments.Add(department!);
                 }
-                DataContext.SaveChanges();
-                return Ok();
             }
-            catch (Exception ex)
+
+            DataContext.SaveChanges();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [Route("delete")]
+    [HttpDelete]
+    public IActionResult DeleteSubjects([FromBody] List<Department> subjects)
+    {
+        try
+        {
+            foreach (var subject in subjects)
             {
-                return BadRequest(ex.Message);
+                var department = DataContext.Departments.FirstOrDefault(x => x.Id == subject.Id);
+
+                if (department != null)
+                {
+                    DataContext.Departments.Remove(department);
+                }
             }
+
+            DataContext.SaveChanges();
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
         }
     }
 }

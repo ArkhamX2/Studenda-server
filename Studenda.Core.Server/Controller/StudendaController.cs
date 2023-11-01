@@ -1,74 +1,69 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Studenda.Core.Data;
 using Studenda.Core.Model.Common;
 using Studenda.Core.Model.Schedule;
 
-namespace Studenda.Core.Server.Controller
+namespace Studenda.Core.Server.Controller;
+
+[Route("studenda/api")]
+[ApiController]
+public class StudendaController
 {
-    [Route("studenda/api")]
-    [ApiController]
-    public class StudendaController
+    public StudendaController(DataContext dataContext, IConfiguration configuration)
     {
-        public DataContext DataContext { get; }
-        public IConfiguration Connfiguration { get; }
+        DataContext = dataContext;
+        Connfiguration = configuration;
+    }
 
-        public StudendaController(DataContext dataContext, IConfiguration configuration)
-        {
-            DataContext = dataContext;
-            Connfiguration = configuration;
-        }
-        [Route("departments")]
-        [HttpGet]
-        public ActionResult<List<Department>> GetAllDepartments()
-        {
-            var departments = DataContext.Departments.ToList();
-            return departments;
-        }
-        [Route("courses")]
-        [HttpGet]
-        public ActionResult<List<Course>> GetAllCourses()
-        {
-            var Courses = DataContext.Courses.ToList();
-            return Courses;
-        }
+    private DataContext DataContext { get; }
+    private IConfiguration Connfiguration { get; }
 
-        [HttpGet]
-        public ActionResult<List<Group>> GetAllGroups()
-        {
-            var Groups = DataContext.Groups.ToList();
-            return Groups;
-        }
-        [Route("department/{id}")]
-        [HttpGet]
-        public ActionResult<Department> GetDepartmentById(int id)
-        {
-            var department = DataContext.Departments.FirstOrDefault(x => x.Id == id);
-            return department;
-        }
-        [Route("course/{id}")]
-        [HttpGet]
-        public ActionResult<Course> GetCourseById(int id)
-        {
-            var Course = DataContext.Courses.FirstOrDefault(x => x.Id == id);
-            return Course;
-        }
-        [Route("group/{id}")]
-        [HttpGet]
-        public ActionResult<Group> GetGroupById(int id)
-        {
-            var Group = DataContext.Groups.FirstOrDefault(x => x.Id == id);
-            return Group;
-        }
-        [Route("schedule")]
-        [HttpGet]
-        public ActionResult<List<Subject>> GetSchedule([FromBody] Group group, [FromBody] int WeekType)
-        {
-            List<Subject> subjects = DataContext.Subjects.Where(x => x.Group == group && x.WeekType.Index == WeekType).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
-            return subjects;
-        }
+    [Route("departments")]
+    [HttpGet]
+    public ActionResult<List<Department>> GetAllDepartments()
+    {
+        return DataContext.Departments.ToList();
+    }
 
+    [Route("courses")]
+    [HttpGet]
+    public ActionResult<List<Course>> GetAllCourses()
+    {
+        return DataContext.Courses.ToList();
+    }
+
+    [Route("groups")]
+    [HttpGet]
+    public ActionResult<List<Group>> GetAllGroups()
+    {
+        return DataContext.Groups.ToList();
+    }
+
+    [Route("department/{id:int}")]
+    [HttpGet]
+    public ActionResult<Department?> GetDepartmentById(int id)
+    {
+        return DataContext.Departments.FirstOrDefault(x => x.Id == id);
+    }
+
+    [Route("course/{id:int}")]
+    [HttpGet]
+    public ActionResult<Course?> GetCourseById(int id)
+    {
+        return DataContext.Courses.FirstOrDefault(x => x.Id == id);
+    }
+
+    [Route("group/{id:int}")]
+    [HttpGet]
+    public ActionResult<Group?> GetGroupById(int id)
+    {
+        return DataContext.Groups.FirstOrDefault(x => x.Id == id);
+    }
+
+    [Route("schedule")]
+    [HttpGet]
+    public ActionResult<List<Subject>> GetSchedule([FromBody] Group group, [FromBody] int weekType)
+    {
+        return DataContext.Subjects.Where(x => x.Group == group && x.WeekType.Index == weekType).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
     }
 }
-
-
