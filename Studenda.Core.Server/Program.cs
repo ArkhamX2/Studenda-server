@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Configuration;
@@ -30,7 +31,7 @@ if (string.IsNullOrEmpty(defaultConnectionString) || string.IsNullOrEmpty(identi
 }
 
 // TODO: Конфигурация контекстов на основе конфигурации приложения.
-var dataConfiguration = new SqliteConfiguration(defaultConnectionString, isDebugMode);
+var dataConfiguration = new MysqlConfiguration(defaultConnectionString, ServerVersion.AutoDetect(defaultConnectionString), isDebugMode);
 var identityConfiguration = new SqliteConfiguration(identityConnectionString, isDebugMode);
 
 var applicationBuilder = WebApplication.CreateBuilder(args);
