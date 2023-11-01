@@ -35,7 +35,7 @@ public class DepartmentController : ControllerBase
 
     [Route("post")]
     [HttpPost]
-    public IActionResult PostSubjects([FromBody] List<Department> subjects)
+    public IActionResult PostSDepartments([FromBody] List<Department> subjects)
     {
         try
         {
@@ -51,7 +51,7 @@ public class DepartmentController : ControllerBase
 
     [Route("update")]
     [HttpPut]
-    public IActionResult UpdateSubjects([FromBody] List<Department> subjects)
+    public IActionResult UpdateDepartment([FromBody] List<Department> subjects)
     {
         try
         {
@@ -80,7 +80,7 @@ public class DepartmentController : ControllerBase
 
     [Route("delete")]
     [HttpDelete]
-    public IActionResult DeleteSubjects([FromBody] List<Department> subjects)
+    public IActionResult DeleteDepartment([FromBody] List<Department> subjects)
     {
         try
         {

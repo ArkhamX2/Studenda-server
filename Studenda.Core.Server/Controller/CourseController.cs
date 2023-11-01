@@ -19,7 +19,7 @@ namespace Studenda.Core.Server.Controller
         private IConfiguration Configuration { get; }
         [Route("get")]
         [HttpGet]
-        public ActionResult<List<Course>> GetAllDepartments()
+        public ActionResult<List<Course>> GetAllCourse()
         {
             var departments = DataContext.Courses.ToList();
             return departments;

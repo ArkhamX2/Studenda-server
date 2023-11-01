@@ -20,7 +20,7 @@ namespace Studenda.Core.Server.Controller
 
         [Route("get")]
         [HttpGet]
-        public ActionResult<List<Group>> GetAllDepartments()
+        public ActionResult<List<Group>> GetAllGroups()
         {
             var departments = DataContext.Groups.ToList();
             return departments;
@@ -28,7 +28,7 @@ namespace Studenda.Core.Server.Controller
 
         [Route("get/{id:int}")]
         [HttpGet]
-        public ActionResult<Group> GetDepartmentById(int id)
+        public ActionResult<Group> GetGroupById(int id)
         {
             var department = DataContext.Groups.FirstOrDefault(x => x.Id == id)!;
             return department;
@@ -36,7 +36,7 @@ namespace Studenda.Core.Server.Controller
 
         [Route("post")]
         [HttpPost]
-        public IActionResult PostSubjects([FromBody] List<Group> subjects)
+        public IActionResult PostGroups([FromBody] List<Group> subjects)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace Studenda.Core.Server.Controller
 
         [Route("update")]
         [HttpPut]
-        public IActionResult UpdateSubjects([FromBody] List<Group> subjects)
+        public IActionResult UpdateGroups([FromBody] List<Group> subjects)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace Studenda.Core.Server.Controller
 
         [Route("delete")]
         [HttpDelete]
-        public IActionResult DeleteSubjects([FromBody] List<Group> subjects)
+        public IActionResult DeleteGroups([FromBody] List<Group> subjects)
         {
             try
             {
