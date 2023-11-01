@@ -60,10 +60,10 @@ public class StudendaController
         return DataContext.Groups.FirstOrDefault(x => x.Id == id);
     }
 
-    [Route("schedule")]
+    [Route("schedule/{weekTypeIndex:int}")]
     [HttpGet]
-    public ActionResult<List<Subject>> GetSchedule([FromBody] Group group, [FromBody] int weekType)
+    public ActionResult<List<Subject>> GetSchedule(int weekTypeIndex, [FromBody] Group group)
     {
-        return DataContext.Subjects.Where(x => x.Group == group && x.WeekType.Index == weekType).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
+        return DataContext.Subjects.Where(x => x.Group == group && x.WeekType.Index == weekTypeIndex).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
     }
 }
