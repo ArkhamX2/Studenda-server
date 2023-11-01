@@ -85,16 +85,16 @@ public class SubjectController : ControllerBase
         }
     }
 
-    [Route("student/get/{groupId:int}")]
+    [Route("student/get/{groupId:int}/{weekType:int}")]
     [HttpGet]
-    public ActionResult<List<Subject>> GetScheduleToStudent(int groupId, [FromBody] int weekType)
+    public ActionResult<List<Subject>> GetScheduleToStudent(int groupId, int weekType)
     {
         return DataContext.Subjects.Where(x => x.Group.Id == groupId && x.WeekType.Index == weekType).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
     }
 
-    [Route("teacher/id/{id:int}")]
+    [Route("teacher/id/{id:int}/{weekType:int}")]
     [HttpGet]
-    public ActionResult<List<Subject>> GetScheduleToTeacher(int id, [FromBody] int weekType)
+    public ActionResult<List<Subject>> GetScheduleToTeacher(int id,int weekType)
     {
         return DataContext.Subjects.Where(x => x.User!.Id == id && x.WeekType.Index == weekType).OrderBy(x => x.DayPosition).ThenBy(x => x.SubjectPosition).ToList();
     }
