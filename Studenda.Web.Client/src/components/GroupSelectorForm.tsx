@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import LoginButton, { ButtonVariant } from './UI/button/LoginButton'
 
 const GroupSelectorForm: FC = () => {
 
@@ -22,7 +23,7 @@ const GroupSelectorForm: FC = () => {
                 <option value="2">Б.ПИН.РИС.21.06</option>
                 <option value="3">Б.ПИН.РИС.21.06</option>
               </select>    
-              <button style={{margin:'10px'}}>Подтвердить</button>           
+              <LoginButton variant={ButtonVariant.primary} text='Подтвердить'></LoginButton>           
         </div>
 
     )

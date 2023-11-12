@@ -1,0 +1,8 @@
+.LoginInput{
+	width: 270px;
+	padding: 8px;
+	font-size: 16;
+	border:2px solid lightgray;
+	border-radius: 5px;
+	margin: 2px;
+}
