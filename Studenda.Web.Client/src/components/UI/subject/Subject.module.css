@@ -19,6 +19,7 @@
         }
         .text{
                 display: flex;
+                text-wrap: wrap;
         }
         .elementBox{
                 display: flex;

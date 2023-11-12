@@ -1,14 +1,19 @@
 import { FC } from 'react'
 import LoginButton, { ButtonVariant } from './UI/button/LoginButton'
-import LoginInput from './UI/imput/LoginInput'
+import LoginInput, { TextAlign } from './UI/imput/LoginInput'
+import LoginLabel from './UI/label/LoginLabel'
 
 const EmailForm: FC = () => {
 
     return (
         <div style={{position:'absolute', left:'40%', top:'30%', display:'flex',flexDirection:'column',border:'2px solid lightgray',padding:'50px'}}>
-                <div style={{display:'flex', justifyContent:'center'}}>ваш.email@mail.com</div>
-                <p style={{justifyContent:'stretch'}}>На почту был отправлен код из N цифр. <br/>Введите в поле ниже код из письма:</p>
-                <LoginInput text='КОД'></LoginInput>
+                <LoginLabel text='ваш.email@mail.com' align={TextAlign.center}></LoginLabel>
+                <div style={{display:'flex', flexDirection:'column', alignSelf:'center'}}>
+                    <LoginLabel text='На почту был отправлен код из N цифр.'></LoginLabel>
+                    <LoginLabel text='Введите в поле ниже код из письма:'></LoginLabel>
+                </div>
+                
+                <LoginInput text='КОД' align={TextAlign.center}></LoginInput>
                 <LoginButton variant={ButtonVariant.primary} text='Подтвердить'></LoginButton>
                 <LoginButton variant={ButtonVariant.outlined} text='Получить код повторно'></LoginButton>
         </div>
