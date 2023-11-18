@@ -19,7 +19,7 @@ public class SubjectController : ControllerBase
 
     [Route("post")]
     [HttpPost]
-    public IActionResult PostSubjects([FromBody] List<Subject> subjects)
+    public IActionResult AddSubjects([FromBody] List<Subject> subjects)
     {
         try
         {
@@ -61,15 +61,15 @@ public class SubjectController : ControllerBase
         }
     }
 
-    [Route("delete/{id}")]
+    [Route("delete")]
     [HttpDelete]
-    public IActionResult DeleteSubjects([FromBody] List<Subject> subjects)
+    public IActionResult DeleteSubjects([FromBody] List<int> subjectsId)
     {
         try
         {
-            foreach(var subject in subjects)
+            foreach(var subjectId in subjectsId)
             {
-                var Subject = DataContext.Subjects.FirstOrDefault(x=>x.Id==subject.Id);
+                var Subject = DataContext.Subjects.FirstOrDefault(x=>x.Id==subjectId);
                 if(Subject != null)
                 {
                     DataContext.Subjects.Remove(Subject);
