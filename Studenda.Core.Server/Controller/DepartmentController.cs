@@ -21,8 +21,7 @@ public class DepartmentController : ControllerBase
     [HttpGet]
     public ActionResult<List<Department>> GetAllDepartments()
     {
-        var departments = DataContext.Departments.ToList();
-        return departments;
+        return DataContext.Departments.ToList();
     }
 
     [Route("get/{id:int}")]
@@ -55,11 +54,10 @@ public class DepartmentController : ControllerBase
     {
         try
         {
-            foreach (var subject in departments)
+            foreach (var department in departments)
             {
-                var department = DataContext.Departments.FirstOrDefault(x => x.Id == subject.Id);
 
-                if (department != null)
+                if (DataContext.Departments.Any(u=>u.Id==department.Id))
                 {
                     DataContext.Departments.Update(department);
                 }
@@ -80,13 +78,13 @@ public class DepartmentController : ControllerBase
 
     [Route("delete")]
     [HttpDelete]
-    public IActionResult DeleteDepartments([FromBody] List<Department> departments)
+    public IActionResult DeleteDepartments([FromBody] List<int> departmentsIds)
     {
         try
         {
-            foreach (var subject in departments)
+            foreach (var id in departmentsIds)
             {
-                var department = DataContext.Departments.FirstOrDefault(x => x.Id == subject.Id);
+                var department = DataContext.Departments.FirstOrDefault(x => x.Id == id);
 
                 if (department != null)
                 {
