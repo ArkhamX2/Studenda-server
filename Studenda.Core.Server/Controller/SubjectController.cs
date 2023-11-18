@@ -41,14 +41,13 @@ public class SubjectController : ControllerBase
         {
             foreach (var subject in subjects)
             {
-                var Subject = DataContext.Subjects.FirstOrDefault(x => x.Id == subject.Id);
-                if (Subject != null)
+                if (DataContext.Subjects.Any(u=>u.Id==subject.Id))
                 {
-                    DataContext.Subjects.Update(Subject);
+                    DataContext.Subjects.Update(subject);
                 }
                 else
                 {
-                    DataContext.Subjects.Add(Subject!);
+                    DataContext.Subjects.Add(subject!);
                 }
             }
 
