@@ -35,11 +35,11 @@ public class DepartmentController : ControllerBase
 
     [Route("post")]
     [HttpPost]
-    public IActionResult PostSDepartments([FromBody] List<Department> subjects)
+    public IActionResult AddSDepartments([FromBody] List<Department> departments)
     {
         try
         {
-            DataContext.Departments.AddRange(subjects);
+            DataContext.Departments.AddRange(departments);
             DataContext.SaveChanges();
             return Ok();
         }
@@ -51,11 +51,11 @@ public class DepartmentController : ControllerBase
 
     [Route("update")]
     [HttpPut]
-    public IActionResult UpdateDepartment([FromBody] List<Department> subjects)
+    public IActionResult UpdateDepartment([FromBody] List<Department> departments)
     {
         try
         {
-            foreach (var subject in subjects)
+            foreach (var subject in departments)
             {
                 var department = DataContext.Departments.FirstOrDefault(x => x.Id == subject.Id);
 
@@ -80,11 +80,11 @@ public class DepartmentController : ControllerBase
 
     [Route("delete")]
     [HttpDelete]
-    public IActionResult DeleteDepartment([FromBody] List<Department> subjects)
+    public IActionResult DeleteDepartments([FromBody] List<Department> departments)
     {
         try
         {
-            foreach (var subject in subjects)
+            foreach (var subject in departments)
             {
                 var department = DataContext.Departments.FirstOrDefault(x => x.Id == subject.Id);
 
