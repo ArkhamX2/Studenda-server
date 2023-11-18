@@ -7,7 +7,7 @@ const F1: FC = () => {
     return (
         <main>
         <div className='LoginBox'>
-                <div className="Logo"></div>
+                <div className="Logo" style={{margin:'20px'}}></div>
                 <LoginButton variant={ButtonVariant.primary} text='Войти'></LoginButton>
                 <LoginButton variant={ButtonVariant.outlined} text='Войти как гость'></LoginButton>
 	</div>
