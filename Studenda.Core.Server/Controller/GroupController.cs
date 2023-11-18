@@ -22,8 +22,7 @@ namespace Studenda.Core.Server.Controller
         [HttpGet]
         public ActionResult<List<Group>> GetGroups()
         {
-            var group = DataContext.Groups.ToList();
-            return group;
+            return DataContext.Groups.ToList();
         }
 
         [Route("get/{id:int}")]
@@ -56,11 +55,9 @@ namespace Studenda.Core.Server.Controller
         {
             try
             {
-                foreach (var subject in groups)
-                {
-                    var group = DataContext.Groups.FirstOrDefault(x => x.Id == subject.Id);
-
-                    if (group != null)
+                foreach (var group in groups)
+                {                   
+                    if (DataContext.Groups.Any(u=>u.Id==group.Id))
                     {
                         DataContext.Groups.Update(group);
                     }
