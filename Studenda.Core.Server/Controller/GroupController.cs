@@ -20,27 +20,27 @@ namespace Studenda.Core.Server.Controller
 
         [Route("get")]
         [HttpGet]
-        public ActionResult<List<Group>> GetAllGroups()
+        public ActionResult<List<Group>> GetGroups()
         {
-            var departments = DataContext.Groups.ToList();
-            return departments;
+            var group = DataContext.Groups.ToList();
+            return group;
         }
 
         [Route("get/{id:int}")]
         [HttpGet]
         public ActionResult<Group> GetGroupById(int id)
         {
-            var department = DataContext.Groups.FirstOrDefault(x => x.Id == id)!;
-            return department;
+            var group = DataContext.Groups.FirstOrDefault(x => x.Id == id)!;
+            return group;
         }
 
         [Route("post")]
         [HttpPost]
-        public IActionResult PostGroups([FromBody] List<Group> subjects)
+        public IActionResult AddGroups([FromBody] List<Group> groups)
         {
             try
             {
-                DataContext.Groups.AddRange(subjects.ToList());
+                DataContext.Groups.AddRange(groups.ToList());
                 DataContext.SaveChanges();
                 return Ok();
             }
@@ -52,21 +52,21 @@ namespace Studenda.Core.Server.Controller
 
         [Route("update")]
         [HttpPut]
-        public IActionResult UpdateGroups([FromBody] List<Group> subjects)
+        public IActionResult UpdateGroups([FromBody] List<Group> groups)
         {
             try
             {
-                foreach (var subject in subjects)
+                foreach (var subject in groups)
                 {
-                    var department = DataContext.Groups.FirstOrDefault(x => x.Id == subject.Id);
+                    var group = DataContext.Groups.FirstOrDefault(x => x.Id == subject.Id);
 
-                    if (department != null)
+                    if (group != null)
                     {
-                        DataContext.Groups.Update(department);
+                        DataContext.Groups.Update(group);
                     }
                     else
                     {
-                        DataContext.Groups.Add(department!);
+                        DataContext.Groups.Add(group!);
                     }
                 }
 
@@ -81,17 +81,17 @@ namespace Studenda.Core.Server.Controller
 
         [Route("delete")]
         [HttpDelete]
-        public IActionResult DeleteGroups([FromBody] List<Group> subjects)
+        public IActionResult DeleteGroups([FromBody] List<int> groupsId)
         {
             try
             {
-                foreach (var subject in subjects)
+                foreach (var id in groupsId)
                 {
-                    var department = DataContext.Groups.FirstOrDefault(x => x.Id == subject.Id);
+                    var group = DataContext.Groups.FirstOrDefault(x => x.Id == id);
 
-                    if (department != null)
+                    if (group != null)
                     {
-                        DataContext.Groups.Remove(department);
+                        DataContext.Groups.Remove(group);
                     }
                 }
 
