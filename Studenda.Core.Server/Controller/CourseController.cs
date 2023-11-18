@@ -54,11 +54,10 @@ namespace Studenda.Core.Server.Controller
         {
             try
             {
-                foreach (var subject in courses)
+                foreach (var course in courses)
                 {
-                    var course = DataContext.Courses.FirstOrDefault(x => x.Id == subject.Id);
 
-                    if (course != null)
+                    if (DataContext.Courses.Any(u=>u.Id==course.Id))
                     {
                         DataContext.Courses.Update(course);
                     }
