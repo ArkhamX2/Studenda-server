@@ -19,27 +19,26 @@ namespace Studenda.Core.Server.Controller
         private IConfiguration Configuration { get; }
         [Route("get")]
         [HttpGet]
-        public ActionResult<List<Course>> GetAllCourse()
+        public ActionResult<List<Course>> GetCourses()
         {
-            var departments = DataContext.Courses.ToList();
-            return departments;
+            return DataContext.Courses.ToList();
         }
 
         [Route("get/{id:int}")]
         [HttpGet]
-        public ActionResult<Course> GetDepartmentById(int id)
+        public ActionResult<Course> GetCourseById(int id)
         {
-            var department = DataContext.Courses.FirstOrDefault(x => x.Id == id)!;
-            return department;
+            var course = DataContext.Courses.FirstOrDefault(x => x.Id == id)!;
+            return course;
         }
 
         [Route("post")]
         [HttpPost]
-        public IActionResult PostSubjects([FromBody] List<Course> subjects)
+        public IActionResult AddCourses([FromBody] List<Course> courses)
         {
             try
             {
-                DataContext.Courses.AddRange(subjects);
+                DataContext.Courses.AddRange(courses);
                 DataContext.SaveChanges();
                 return Ok();
             }
@@ -51,21 +50,21 @@ namespace Studenda.Core.Server.Controller
 
         [Route("update")]
         [HttpPut]
-        public IActionResult UpdateSubjects([FromBody] List<Course> subjects)
+        public IActionResult UpdateCourses([FromBody] List<Course> courses)
         {
             try
             {
-                foreach (var subject in subjects)
+                foreach (var subject in courses)
                 {
-                    var department = DataContext.Courses.FirstOrDefault(x => x.Id == subject.Id);
+                    var course = DataContext.Courses.FirstOrDefault(x => x.Id == subject.Id);
 
-                    if (department != null)
+                    if (course != null)
                     {
-                        DataContext.Courses.Update(department);
+                        DataContext.Courses.Update(course);
                     }
                     else
                     {
-                        DataContext.Courses.Add(department!);
+                        DataContext.Courses.Add(course!);
                     }
                 }
 
@@ -80,17 +79,17 @@ namespace Studenda.Core.Server.Controller
 
         [Route("delete")]
         [HttpDelete]
-        public IActionResult DeleteSubjects([FromBody] List<Course> subjects)
+        public IActionResult DeleteCourses([FromBody] List<int> coursesId)
         {
             try
             {
-                foreach (var subject in subjects)
+                foreach (var id in coursesId)
                 {
-                    var department = DataContext.Courses.FirstOrDefault(x => x.Id == subject.Id);
+                    var course = DataContext.Courses.FirstOrDefault(x => x.Id == id);
 
-                    if (department != null)
+                    if (course != null)
                     {
-                        DataContext.Courses.Remove(department);
+                        DataContext.Courses.Remove(course);
                     }
                 }
 
