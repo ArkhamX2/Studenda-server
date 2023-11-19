@@ -6,6 +6,7 @@ using Studenda.Core.Data;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Server.Common.Data.Factory;
 using Studenda.Core.Server.Common.Middleware;
+using Studenda.Core.Server.Common.Service;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Data.Factory;
 using Studenda.Core.Server.Security.Service;
@@ -60,6 +61,7 @@ serviceCollection.AddIdentity<Account, IdentityRole>()
     .AddRoleManager<RoleManager<IdentityRole>>()
     .AddSignInManager<SignInManager<Account>>();
 
+serviceCollection.AddScoped<DataEntityService>();
 serviceCollection.AddControllers();
 serviceCollection.AddAuthorization();
 serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
