@@ -38,7 +38,7 @@ public class DataEntityService
         }
 
         var identity = dbSet.FirstOrDefault(identity => identity.Id == id);
-        List<TSource> result = new();
+        var result = new List<TSource>();
 
         if (identity != null)
         {

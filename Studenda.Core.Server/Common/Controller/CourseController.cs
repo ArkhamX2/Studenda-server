@@ -30,7 +30,7 @@ public class CourseController : ControllerBase
     ///     Если идентификатор не указан, возвращается список со всеми курсами.
     ///     Иначе возвращается список с одним курсом, либо пустой список.
     /// </summary>
-    /// <param name="id">Идентификатор (из параметра запроса).</param>
+    /// <param name="id">Идентификатор.</param>
     /// <returns>Результат операции со списком курсов.</returns>
     [HttpGet]
     public ActionResult<List<Course>> Get([FromQuery] int id)
