@@ -55,7 +55,7 @@ public class DataEntityService
     /// <param name="entities">Список моделей.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Статус операции.</returns>
-    public bool Post<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : Identity
+    public bool Set<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : Identity
     {
         if (entities.Count <= 0)
         {
@@ -74,7 +74,7 @@ public class DataEntityService
     /// <param name="ids">Список идентификаторов.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Статус операции.</returns>
-    public bool Delete<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
+    public bool Remove<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
     {
         if (ids.Count <= 0)
         {

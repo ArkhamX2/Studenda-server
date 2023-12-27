@@ -46,11 +46,11 @@ public class GroupController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<Group> entities)
     {
-        var status = DataEntityService.Post(DataEntityService.DataContext.Groups, entities);
+        var status = DataEntityService.Set(DataEntityService.DataContext.Groups, entities);
 
         if (!status)
         {
-            return BadRequest("No groups was saved!");
+            return BadRequest("No groups were saved!");
         }
 
         return Ok();
@@ -64,11 +64,11 @@ public class GroupController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Delete(DataEntityService.DataContext.Groups, ids);
+        var status = DataEntityService.Remove(DataEntityService.DataContext.Groups, ids);
 
         if (!status)
         {
-            return BadRequest("No groups was deleted!");
+            return BadRequest("No groups were deleted!");
         }
 
         return Ok();

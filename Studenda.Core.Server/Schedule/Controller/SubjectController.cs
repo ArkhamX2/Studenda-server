@@ -72,11 +72,11 @@ public class SubjectController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<Subject> entities)
     {
-        var status = SubjectService.Post(SubjectService.DataContext.Subjects, entities);
+        var status = SubjectService.Set(SubjectService.DataContext.Subjects, entities);
 
         if (!status)
         {
-            return BadRequest("No subjects was saved!");
+            return BadRequest("No subjects were saved!");
         }
 
         return Ok();
@@ -90,11 +90,11 @@ public class SubjectController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = SubjectService.Delete(SubjectService.DataContext.Subjects, ids);
+        var status = SubjectService.Remove(SubjectService.DataContext.Subjects, ids);
 
         if (!status)
         {
-            return BadRequest("No subjects was deleted!");
+            return BadRequest("No subjects were deleted!");
         }
 
         return Ok();

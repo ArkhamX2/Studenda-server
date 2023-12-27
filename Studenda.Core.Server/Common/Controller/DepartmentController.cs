@@ -46,11 +46,11 @@ public class DepartmentController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<Department> entities)
     {
-        var status = DataEntityService.Post(DataEntityService.DataContext.Departments, entities);
+        var status = DataEntityService.Set(DataEntityService.DataContext.Departments, entities);
 
         if (!status)
         {
-            return BadRequest("No departments was saved!");
+            return BadRequest("No departments were saved!");
         }
 
         return Ok();
@@ -64,11 +64,11 @@ public class DepartmentController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Delete(DataEntityService.DataContext.Departments, ids);
+        var status = DataEntityService.Remove(DataEntityService.DataContext.Departments, ids);
 
         if (!status)
         {
-            return BadRequest("No departments was deleted!");
+            return BadRequest("No departments were deleted!");
         }
 
         return Ok();

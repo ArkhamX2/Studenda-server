@@ -46,11 +46,11 @@ public class WeekTypeController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<WeekType> entities)
     {
-        var status = DataEntityService.Post(DataEntityService.DataContext.WeekTypes, entities);
+        var status = DataEntityService.Set(DataEntityService.DataContext.WeekTypes, entities);
 
         if (!status)
         {
-            return BadRequest("No week types was saved!");
+            return BadRequest("No week types were saved!");
         }
 
         return Ok();
@@ -64,11 +64,11 @@ public class WeekTypeController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Delete(DataEntityService.DataContext.WeekTypes, ids);
+        var status = DataEntityService.Remove(DataEntityService.DataContext.WeekTypes, ids);
 
         if (!status)
         {
-            return BadRequest("No week types was deleted!");
+            return BadRequest("No week types were deleted!");
         }
 
         return Ok();
