@@ -1,4 +1,4 @@
-﻿FROM bitnami/aspnet-core:8 AS base
+﻿FROM bitnami/aspnet-core:7 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
