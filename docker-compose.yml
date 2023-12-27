@@ -8,18 +8,21 @@
       - '80:80'
       - '443:443'
     depends_on:
-      database:
+      database_default:
+        condition: 'service_healthy'
+      database_identity:
         condition: 'service_healthy'
     environment:
-      ConnectionStrings__Default: 'Server=database;Port=3306;Database=studenda;Uid=arkham;Pwd=secret'
+      ConnectionStrings__Default: 'Server=database_default;Port=3306;Database=studenda_default;Uid=arkham;Pwd=secret'
+      ConnectionStrings__Identity: 'Server=database_identity;Port=3307;Database=studenda_identity;Uid=arkham;Pwd=secret'
     networks:
       - 'inner'
 
-  database:
-    container_name: 'database'
+  database_default:
+    container_name: 'database_default'
     image: 'mariadb:latest'
     environment:
-      MARIADB_DATABASE: 'studenda'
+      MARIADB_DATABASE: 'studenda_default'
       MARIADB_USER: 'arkham'
       MARIADB_PASSWORD: 'secret'
       MARIADB_ROOT_PASSWORD: 'verysecret'
@@ -32,12 +35,34 @@
     ports:
       - '3306:3306'
     volumes:
-      - 'data:/var/lib/mysql'
+      - 'studenda_data_default:/var/lib/mysql'
+    networks:
+      - 'inner'
+
+  database_identity:
+    container_name: 'database_identity'
+    image: 'mariadb:latest'
+    environment:
+      MARIADB_DATABASE: 'studenda_identity'
+      MARIADB_USER: 'arkham'
+      MARIADB_PASSWORD: 'secret'
+      MARIADB_ROOT_PASSWORD: 'verysecret'
+    healthcheck:
+      test: 'mariadb --password=$$MARIADB_ROOT_PASSWORD --execute "SHOW DATABASES;"'
+      start_period: '5s'
+      interval: '2s'
+      timeout: '10s'
+      retries: 10
+    ports:
+      - '3307:3306'
+    volumes:
+      - 'studenda_data_identity:/var/lib/mysql'
     networks:
       - 'inner'
 
 volumes:
-  data:
+  studenda_data_default:
+  studenda_data_identity:
 
 networks:
   inner:
