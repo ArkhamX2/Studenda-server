@@ -14,14 +14,14 @@ public class WeekTypeController : ControllerBase
     /// <summary>
     ///     Конструктор.
     /// </summary>
-    /// <param name="dataEntityService">Контекст данных.</param>
+    /// <param name="dataEntityService">Сервис моделей.</param>
     public WeekTypeController(DataEntityService dataEntityService)
     {
         DataEntityService = dataEntityService;
     }
 
     /// <summary>
-    ///     Контекст данных.
+    ///     Сервис моделей.
     /// </summary>
     private DataEntityService DataEntityService { get; }
 
@@ -35,7 +35,7 @@ public class WeekTypeController : ControllerBase
     [HttpGet]
     public ActionResult<List<WeekType>> Get([FromQuery] int id)
     {
-        return DataEntityService.HandleGet(DataEntityService.DataContext.WeekTypes, id);
+        return DataEntityService.Get(DataEntityService.DataContext.WeekTypes, id);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class WeekTypeController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<WeekType> entities)
     {
-        var status = DataEntityService.HandlePost(DataEntityService.DataContext.WeekTypes, entities);
+        var status = DataEntityService.Post(DataEntityService.DataContext.WeekTypes, entities);
 
         if (!status)
         {
@@ -64,7 +64,7 @@ public class WeekTypeController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.HandleDelete(DataEntityService.DataContext.WeekTypes, ids);
+        var status = DataEntityService.Delete(DataEntityService.DataContext.WeekTypes, ids);
 
         if (!status)
         {

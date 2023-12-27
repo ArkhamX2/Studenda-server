@@ -14,14 +14,14 @@ public class DepartmentController : ControllerBase
     /// <summary>
     ///     Конструктор.
     /// </summary>
-    /// <param name="dataEntityService">Контекст данных.</param>
+    /// <param name="dataEntityService">Сервис моделей.</param>
     public DepartmentController(DataEntityService dataEntityService)
     {
         DataEntityService = dataEntityService;
     }
 
     /// <summary>
-    ///     Контекст данных.
+    ///     Сервис моделей.
     /// </summary>
     private DataEntityService DataEntityService { get; }
 
@@ -35,7 +35,7 @@ public class DepartmentController : ControllerBase
     [HttpGet]
     public ActionResult<List<Department>> Get([FromQuery] int id)
     {
-        return DataEntityService.HandleGet(DataEntityService.DataContext.Departments, id);
+        return DataEntityService.Get(DataEntityService.DataContext.Departments, id);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class DepartmentController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<Department> entities)
     {
-        var status = DataEntityService.HandlePost(DataEntityService.DataContext.Departments, entities);
+        var status = DataEntityService.Post(DataEntityService.DataContext.Departments, entities);
 
         if (!status)
         {
@@ -64,7 +64,7 @@ public class DepartmentController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.HandleDelete(DataEntityService.DataContext.Departments, ids);
+        var status = DataEntityService.Delete(DataEntityService.DataContext.Departments, ids);
 
         if (!status)
         {

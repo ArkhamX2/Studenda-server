@@ -30,7 +30,7 @@ public class DataEntityService
     /// <param name="id">Идентификатор.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Модель.</returns>
-    public static List<TSource> HandleGet<TSource>(DbSet<TSource> dbSet, int id) where TSource : Identity
+    public List<TSource> Get<TSource>(DbSet<TSource> dbSet, int id) where TSource : Identity
     {
         if (id <= 0)
         {
@@ -55,7 +55,7 @@ public class DataEntityService
     /// <param name="entities">Список моделей.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Статус операции.</returns>
-    public bool HandlePost<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : Identity
+    public bool Post<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : Identity
     {
         if (entities.Count <= 0)
         {
@@ -74,7 +74,7 @@ public class DataEntityService
     /// <param name="ids">Список идентификаторов.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Статус операции.</returns>
-    public bool HandleDelete<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
+    public bool Delete<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
     {
         if (ids.Count <= 0)
         {

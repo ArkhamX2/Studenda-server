@@ -14,14 +14,14 @@ public class CourseController : ControllerBase
     /// <summary>
     ///     Конструктор.
     /// </summary>
-    /// <param name="dataEntityService">Контекст данных.</param>
+    /// <param name="dataEntityService">Сервис моделей.</param>
     public CourseController(DataEntityService dataEntityService)
     {
         DataEntityService = dataEntityService;
     }
 
     /// <summary>
-    ///     Контекст данных.
+    ///     Сервис моделей.
     /// </summary>
     private DataEntityService DataEntityService { get; }
 
@@ -35,7 +35,7 @@ public class CourseController : ControllerBase
     [HttpGet]
     public ActionResult<List<Course>> Get([FromQuery] int id)
     {
-        return DataEntityService.HandleGet(DataEntityService.DataContext.Courses, id);
+        return DataEntityService.Get(DataEntityService.DataContext.Courses, id);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class CourseController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<Course> entities)
     {
-        var status = DataEntityService.HandlePost(DataEntityService.DataContext.Courses, entities);
+        var status = DataEntityService.Post(DataEntityService.DataContext.Courses, entities);
 
         if (!status)
         {
@@ -64,7 +64,7 @@ public class CourseController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.HandleDelete(DataEntityService.DataContext.Courses, ids);
+        var status = DataEntityService.Delete(DataEntityService.DataContext.Courses, ids);
 
         if (!status)
         {

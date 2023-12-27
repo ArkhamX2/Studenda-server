@@ -14,14 +14,14 @@ public class GroupController : ControllerBase
     /// <summary>
     ///     Конструктор.
     /// </summary>
-    /// <param name="dataEntityService">Контекст данных.</param>
+    /// <param name="dataEntityService">Сервис моделей.</param>
     public GroupController(DataEntityService dataEntityService)
     {
         DataEntityService = dataEntityService;
     }
 
     /// <summary>
-    ///     Контекст данных.
+    ///     Сервис моделей.
     /// </summary>
     private DataEntityService DataEntityService { get; }
 
@@ -35,7 +35,7 @@ public class GroupController : ControllerBase
     [HttpGet]
     public ActionResult<List<Group>> Get([FromQuery] int id)
     {
-        return DataEntityService.HandleGet(DataEntityService.DataContext.Groups, id);
+        return DataEntityService.Get(DataEntityService.DataContext.Groups, id);
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class GroupController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<Group> entities)
     {
-        var status = DataEntityService.HandlePost(DataEntityService.DataContext.Groups, entities);
+        var status = DataEntityService.Post(DataEntityService.DataContext.Groups, entities);
 
         if (!status)
         {
@@ -64,7 +64,7 @@ public class GroupController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.HandleDelete(DataEntityService.DataContext.Groups, ids);
+        var status = DataEntityService.Delete(DataEntityService.DataContext.Groups, ids);
 
         if (!status)
         {

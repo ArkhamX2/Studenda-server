@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Model.Schedule;
-using Studenda.Core.Server.Common.Service;
+using Studenda.Core.Server.Schedule.Service;
 
 namespace Studenda.Core.Server.Schedule.Controller;
 
@@ -14,16 +14,16 @@ public class SubjectController : ControllerBase
     /// <summary>
     ///     Конструктор.
     /// </summary>
-    /// <param name="dataEntityService">Контекст данных.</param>
-    public SubjectController(DataEntityService dataEntityService)
+    /// <param name="subjectService">Сервис статичных занятий.</param>
+    public SubjectController(SubjectService subjectService)
     {
-        DataEntityService = dataEntityService;
+        SubjectService = subjectService;
     }
 
     /// <summary>
-    ///     Контекст данных.
+    ///     Сервис статичных занятий.
     /// </summary>
-    private DataEntityService DataEntityService { get; }
+    private SubjectService SubjectService { get; }
 
     /// <summary>
     ///     Получить список статичных занятий.
@@ -35,41 +35,33 @@ public class SubjectController : ControllerBase
     [HttpGet]
     public ActionResult<List<Subject>> Get([FromQuery] int id)
     {
-        return DataEntityService.HandleGet(DataEntityService.DataContext.Subjects, id);
+        return SubjectService.Get(SubjectService.DataContext.Subjects, id);
     }
 
     /// <summary>
     ///     Получить список статичных занятий по идентификатору группы.
     /// </summary>
     /// <param name="groupId">Идентификатор группы.</param>
-    /// <param name="weekType">Тип недели.</param>
+    /// <param name="weekTypeId">Тип недели.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
     [Route("group")]
-    public ActionResult<List<Subject>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekType)
+    public ActionResult<List<Subject>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekTypeId)
     {
-        return DataEntityService.DataContext.Subjects
-            .Where(subject => subject.Group.Id == groupId && subject.WeekType.Index == weekType)
-            .OrderBy(subject => subject.DayPosition.Index)
-            .ThenBy(subject => subject.SubjectPosition.Index)
-            .ToList();
+        return SubjectService.GetSubjectByGroup(groupId, weekTypeId);
     }
 
     /// <summary>
-    ///     Получить список статичных занятий по идентификатору преподавателя.
+    ///     Получить список статичных занятий по идентификатору пользователя.
     /// </summary>
-    /// <param name="teacherId">Идентификатор преподавателя.</param>
-    /// <param name="weekType">Тип недели.</param>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="weekTypeId">Тип недели.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
-    [Route("teacher")]
-    public ActionResult<List<Subject>> GetByTeacher([FromQuery] int teacherId, [FromQuery] int weekType)
+    [Route("user")]
+    public ActionResult<List<Subject>> GetByTeacher([FromQuery] int userId, [FromQuery] int weekTypeId)
     {
-        return DataEntityService.DataContext.Subjects
-            .Where(subject => subject.User!.Id == teacherId && subject.WeekType.Index == weekType)
-            .OrderBy(subject => subject.DayPosition.Index)
-            .ThenBy(subject => subject.SubjectPosition.Index)
-            .ToList();
+        return SubjectService.GetSubjectByGroup(userId, weekTypeId);
     }
 
     /// <summary>
@@ -80,7 +72,7 @@ public class SubjectController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<Subject> entities)
     {
-        var status = DataEntityService.HandlePost(DataEntityService.DataContext.Subjects, entities);
+        var status = SubjectService.Post(SubjectService.DataContext.Subjects, entities);
 
         if (!status)
         {
@@ -98,7 +90,7 @@ public class SubjectController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.HandleDelete(DataEntityService.DataContext.Subjects, ids);
+        var status = SubjectService.Delete(SubjectService.DataContext.Subjects, ids);
 
         if (!status)
         {
