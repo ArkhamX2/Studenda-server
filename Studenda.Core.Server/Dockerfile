@@ -1,9 +1,9 @@
-﻿FROM bitnami/aspnet-core:7 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM bitnami/dotnet-sdk:8 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["Studenda.Core.Server/Studenda.Core.Server.csproj", "Studenda.Core.Server/"]
 RUN dotnet restore "Studenda.Core.Server/Studenda.Core.Server.csproj"
