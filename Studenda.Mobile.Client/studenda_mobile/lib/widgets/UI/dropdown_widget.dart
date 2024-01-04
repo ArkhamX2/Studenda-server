@@ -6,7 +6,7 @@ class StudendaDropdown<T> extends StatefulWidget {
   final Function(T?) callback;
 
   const StudendaDropdown(
-      {super.key, required this.items,required this.model, required this.callback});
+      {super.key, required this.items,required this.model, required this.callback,});
 
   @override
   State<StudendaDropdown<T>> createState() => StudendaDropdownState<T>();

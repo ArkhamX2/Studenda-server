@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:studenda_mobile/widgets/group_selector/guest_group_selector.dart';
 import 'package:studenda_mobile/widgets/main/main_screen_widget.dart';
 
 void main() {
