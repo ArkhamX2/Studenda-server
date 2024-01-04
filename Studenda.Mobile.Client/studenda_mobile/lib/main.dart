@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studenda_mobile/widgets/auth/email_auth_widget.dart';
-import 'package:studenda_mobile/widgets/auth/main_auth_widget.dart';
-import 'package:studenda_mobile/widgets/auth/verification_auth_widget.dart';
-import 'package:studenda_mobile/widgets/group_selector/guest_group_selector.dart';
+import 'package:studenda_mobile/widgets/main/main_screen_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: const AppBarTheme(backgroundColor:  Color.fromARGB(255, 101, 59, 159)),
       ),
-      home: const GuestGroupSelectorWidget(),
+      home: const MainScreenWidget(),
     );
   }
 }

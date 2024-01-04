@@ -30,12 +30,12 @@ class _EmailAuthWidgetState extends State<EmailAuthWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 17),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
                 "Введите свой email:",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 56, 31, 118), fontSize: 20),
+                    color: Color.fromARGB(255, 56, 31, 118), fontSize: 20,),
               ),
               const SizedBox(
                 height: 23,

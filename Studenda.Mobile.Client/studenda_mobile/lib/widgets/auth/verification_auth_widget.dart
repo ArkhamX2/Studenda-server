@@ -30,7 +30,6 @@ class _VerificationAuthWidgetState extends State<VerificationAuthWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 17),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               //TODO: Брать введённую почту с прошлого экрана
               const Text(
@@ -48,7 +47,7 @@ class _VerificationAuthWidgetState extends State<VerificationAuthWidget> {
                 "На почту был отправлен код из N цифр. Введите в поле ниже код из письма:",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Color.fromARGB(255, 56, 31, 118), fontSize: 18),
+                    color: Color.fromARGB(255, 56, 31, 118), fontSize: 18,),
               ),
               const SizedBox(
                 height: 17,
@@ -61,7 +60,7 @@ class _VerificationAuthWidgetState extends State<VerificationAuthWidget> {
               const Text(
                 "Повторно код можно получить через",
                 style: TextStyle(
-                    color: Color.fromARGB(160, 101, 59, 159), fontSize: 20),
+                    color: Color.fromARGB(160, 101, 59, 159), fontSize: 20,),
               ),
               const SizedBox(
                 height: 23,

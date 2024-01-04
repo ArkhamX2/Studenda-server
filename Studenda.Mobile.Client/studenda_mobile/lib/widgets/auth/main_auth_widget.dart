@@ -66,7 +66,7 @@ class _MainAuthWidgetState extends State<MainAuthWidget> {
               child: const Text(
                 "Войти как гость",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 56, 31, 118), fontSize: 20),
+                    color: Color.fromARGB(255, 56, 31, 118), fontSize: 20,),
               ),
             ),
           ],
