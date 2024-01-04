@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:studenda_mobile/model/schedule/subject.dart';
+import 'package:studenda_mobile/widgets/UI/button_widget.dart';
+
+final List<Subject> schedule = <Subject>[
+  Subject(0,"Математика","ВЦ-315"),
+  Subject(1,"Физкультура","ВЦ-315"),
+  Subject(2,"Базы данных","ВЦ-315"),
+  Subject(3,"Экономика","ВЦ-315"),
+];
 
 class MainScreenWidget extends StatefulWidget {
   const MainScreenWidget({super.key});
@@ -8,6 +17,8 @@ class MainScreenWidget extends StatefulWidget {
 }
 
 class _MainScreenWidgetState extends State<MainScreenWidget> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,28 +46,12 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const _ScheduleItemWidget(),
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  minimumSize: const MaterialStatePropertyAll(Size(300, 50)),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                  ),
-                  backgroundColor: const MaterialStatePropertyAll(
-                    Color.fromARGB(255, 231, 225, 255),
-                  ),
-                ),
-                child: const Text(
-                  "Подтвердить",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 101, 59, 159),
-                    fontSize: 23,
-                  ),
-                ),
+              Column(
+                children: schedule.map((element) => _ScheduleItemWidget(subject: element)).toList(),
               ),
+
+              
+              StudendaButton(title: "Подтвердить", event: (){}),
             ],
           ),
         ),
@@ -66,7 +61,16 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
 }
 
 class _ScheduleItemWidget extends StatelessWidget {
-  const _ScheduleItemWidget();
+  static const List<String> lessonTimes = [
+    "8:30\n10:05",
+    "10:15\n11:50",
+    "12:15\n13:50",
+    "14:00\n15:35",
+    "15:45\n17:20",
+    "17:30\n19:05",
+  ];
+  final Subject subject;
+  const _ScheduleItemWidget({required this.subject});
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +79,10 @@ class _ScheduleItemWidget extends StatelessWidget {
       child: IntrinsicHeight(
         child: Row(
           children: [
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text("8:30"),
-                Text("10:15"),
+                Text(lessonTimes[subject.dayPosition], textAlign: TextAlign.right),
               ],
             ),
             const VerticalDivider(
@@ -97,11 +100,11 @@ class _ScheduleItemWidget extends StatelessWidget {
                     color: const Color.fromARGB(60, 0, 0, 0),
                   ),
                 ),
-                child: const Row(
+                child:Row(
                   children: [
-                    Expanded(child: Center(child: Text("Ц-150"))),
-                    Text("Ц-150"),
-                    SizedBox(
+                    Expanded(child: Center(child: Text(subject.name))),
+                    Text(subject.place),
+                    const SizedBox(
                       width: 14,
                     ),
                   ],
