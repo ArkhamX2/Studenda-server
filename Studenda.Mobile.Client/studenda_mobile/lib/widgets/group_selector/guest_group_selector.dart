@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:studenda_mobile/model/course.dart';
-import 'package:studenda_mobile/model/department.dart';
-import 'package:studenda_mobile/model/group.dart';
+import 'package:studenda_mobile/model/common/course.dart';
+import 'package:studenda_mobile/model/common/department.dart';
+import 'package:studenda_mobile/model/common/group.dart';
+import 'package:studenda_mobile/widgets/UI/button_widget.dart';
+import 'package:studenda_mobile/widgets/UI/dropdown_widget.dart';
 
 final List<Department> departments = [
   Department("ФИТ"),
@@ -9,6 +11,7 @@ final List<Department> departments = [
   Department("ФУСК"),
   Department("МШФ"),
 ];
+
 final List<Course> courses = [
   Course(0,"1 курс", departments[0]),
   Course(1,"2 курс", departments[0]),
@@ -27,6 +30,7 @@ final List<Course> courses = [
   Course(14,"3 курс", departments[3]),
   Course(15,"4 курс", departments[3]),
 ];
+
 final List<Group> groups = [
   Group("PIN2107", departments[0], courses[2]),
   Group("PIN2106", departments[0], courses[1]),
@@ -70,69 +74,10 @@ class _GuestGroupSelectorWidgetState extends State<GuestGroupSelectorWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DropdownButton(
-                value: departmentsDropdownValue,
-                items: departments.map((Department value) {
-                  return DropdownMenuItem<String>(
-                    value: value.name,
-                    child: Text(value.name),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    departmentsDropdownValue = value!;
-                  });
-                },
-              ),
-              DropdownButton(
-                value: coursesDropdownValue,
-                items: courses.map((Course value) {
-                  return DropdownMenuItem<String>(
-                    value: value.id.toString(),
-                    child: Text(value.name),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    coursesDropdownValue = value!;
-                  });
-                },
-              ),
-              DropdownButton(
-                value: groupsDropdownValue,
-                items: groups.map<DropdownMenuItem<String>>((Group value) {
-                  return DropdownMenuItem<String>(
-                    value: value.name,
-                    child: Text(value.name),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    groupsDropdownValue = value!;
-                  });
-                },
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  minimumSize: const MaterialStatePropertyAll(Size(300, 50)),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                  ),
-                  backgroundColor: const MaterialStatePropertyAll(
-                    Color.fromARGB(255, 231, 225, 255),
-                  ),
-                ),
-                child: const Text(
-                  "Подтвердить",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 101, 59, 159),
-                    fontSize: 23,
-                  ),
-                ),
-              ),
+              StudendaDropdown(items: departments, model: departments[0], callback: (element){}),
+              StudendaDropdown(items: courses, model: courses[0], callback: (element){}),
+              StudendaDropdown(items: groups, model: groups[0], callback: (element){}),
+              StudendaButton(title: "Подтвердить", event: (){}),
             ],
           ),
         ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:studenda_mobile/resourses/colors.dart';
+import 'package:studenda_mobile/widgets/UI/button_widget.dart';
 
 class VerificationAuthWidget extends StatefulWidget {
   const VerificationAuthWidget({super.key});
@@ -35,7 +37,7 @@ class _VerificationAuthWidgetState extends State<VerificationAuthWidget> {
               const Text(
                 "Тут должна быть почта",
                 style: TextStyle(
-                  color: Color.fromARGB(255, 56, 31, 118),
+                  color: mainForegroundColor,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -47,7 +49,7 @@ class _VerificationAuthWidgetState extends State<VerificationAuthWidget> {
                 "На почту был отправлен код из N цифр. Введите в поле ниже код из письма:",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Color.fromARGB(255, 56, 31, 118), fontSize: 18,),
+                    color: mainForegroundColor, fontSize: 18,),
               ),
               const SizedBox(
                 height: 17,
@@ -65,51 +67,12 @@ class _VerificationAuthWidgetState extends State<VerificationAuthWidget> {
               const SizedBox(
                 height: 23,
               ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  minimumSize: const MaterialStatePropertyAll(Size(300, 50)),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                  ),
-                  backgroundColor: const MaterialStatePropertyAll(
-                    Color.fromARGB(255, 231, 225, 255),
-                  ),
-                ),
-                child: const Text(
-                  "Получить код повторно",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 101, 59, 159),
-                    fontSize: 23,
-                  ),
-                ),
-              ),
+              
+              StudendaButton(title: "Получить код повторно", event: (){}),
               const SizedBox(
                 height: 17,
               ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  minimumSize: const MaterialStatePropertyAll(Size(300, 50)),
-                  shape: MaterialStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                  ),
-                  backgroundColor: const MaterialStatePropertyAll(
-                    Color.fromARGB(255, 231, 225, 255),
-                  ),
-                ),
-                child: const Text(
-                  "Подтвердить",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 101, 59, 159),
-                    fontSize: 23,
-                  ),
-                ),
-              ),
+              StudendaButton(title: "Подтвердить", event: (){}),
             ],
           ),
         ),

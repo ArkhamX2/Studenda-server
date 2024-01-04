@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:studenda_mobile/resourses/colors.dart';
+import 'package:studenda_mobile/widgets/UI/button_widget.dart';
 
 class MainAuthWidget extends StatefulWidget {
   const MainAuthWidget({super.key});
@@ -8,67 +10,28 @@ class MainAuthWidget extends StatefulWidget {
 }
 
 class _MainAuthWidgetState extends State<MainAuthWidget> {
-  final buttonTextStyle =
-      const TextStyle(color: Color.fromARGB(255, 56, 31, 118), fontSize: 40);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 228, 225, 248),
+      backgroundColor: mainAuthBackgroundColor,
       body: Container(
         alignment: AlignmentDirectional.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "СТУДЕНДА",
-              style: buttonTextStyle,
+              style: TextStyle(color: mainForegroundColor, fontSize: 40),
             ),
             const SizedBox(
               height: 40,
             ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(9),
-                  ),
-                ),
-                backgroundColor: const MaterialStatePropertyAll(
-                  Color.fromARGB(255, 56, 31, 118),
-                ),
-              ),
-              child: const Text(
-                "Войти",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 23,
-                ),
-              ),
-            ),
+            StudendaButton(title: "Войти", event: (){}),
             const SizedBox(
               height: 34,
             ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ButtonStyle(
-                shape: MaterialStatePropertyAll(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(9),
-                  ),
-                ),
-                backgroundColor: const MaterialStatePropertyAll(
-                  Colors.transparent,
-                ),
-                elevation: const MaterialStatePropertyAll(0),
-              ),
-              child: const Text(
-                "Войти как гость",
-                style: TextStyle(
-                    color: Color.fromARGB(255, 56, 31, 118), fontSize: 20,),
-              ),
-            ),
+            StudendaButton(title: "Войти как гость", event: (){}),
           ],
         ),
       ),

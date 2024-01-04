@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studenda_mobile/widgets/group_selector/guest_group_selector.dart';
 import 'package:studenda_mobile/widgets/main/main_screen_widget.dart';
 
 void main() {
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Studenda',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(backgroundColor:  Color.fromARGB(255, 101, 59, 159)),
+        
       ),
       home: const MainScreenWidget(),
     );

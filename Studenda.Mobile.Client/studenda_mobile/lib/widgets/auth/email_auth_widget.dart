@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:studenda_mobile/resourses/colors.dart';
+import 'package:studenda_mobile/widgets/UI/button_widget.dart';
 
 class EmailAuthWidget extends StatefulWidget {
   const EmailAuthWidget({super.key});
@@ -11,7 +13,7 @@ class _EmailAuthWidgetState extends State<EmailAuthWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 240, 241, 245),
+      backgroundColor: mainBackgroundColor,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.chevron_left_sharp),
@@ -35,7 +37,7 @@ class _EmailAuthWidgetState extends State<EmailAuthWidget> {
               const Text(
                 "Введите свой email:",
                 style: TextStyle(
-                    color: Color.fromARGB(255, 56, 31, 118), fontSize: 20,),
+                    color: mainForegroundColor, fontSize: 20,),
               ),
               const SizedBox(
                 height: 23,
@@ -45,28 +47,8 @@ class _EmailAuthWidgetState extends State<EmailAuthWidget> {
                 height: 23,
               ),
               Center(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    minimumSize: const MaterialStatePropertyAll(Size(300, 50)),
-                    shape: MaterialStatePropertyAll(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                    ),
-                    backgroundColor: const MaterialStatePropertyAll(
-                      Color.fromARGB(255, 231, 225, 255),
-                    ),
-                  ),
-                  child: const Text(
-                    "Получить код",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 101, 59, 159),
-                      fontSize: 23,
-                    ),
-                  ),
+                child: StudendaButton(title: "Подтвердить", event: () {}),
                 ),
-              ),
               const SizedBox(
                 height: 34,
               ),
