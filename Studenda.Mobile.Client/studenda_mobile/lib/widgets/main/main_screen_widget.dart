@@ -15,13 +15,13 @@ final List<Subject> schedule = <Subject>[
 
 final List<StudendaNotification> notifications = <StudendaNotification>[
   StudendaNotification(
-      title: "Текст уведомления", description: "", date: "23.04 17:00"),
+      title: "Текст уведомления", description: "", date: "23.04 17:00",),
   StudendaNotification(
-      title: "Текст уведомления", description: "", date: "23.04 17:00"),
+      title: "Текст уведомления", description: "", date: "23.04 17:00",),
   StudendaNotification(
-      title: "Текст уведомления", description: "", date: "23.04 17:00"),
+      title: "Текст уведомления", description: "", date: "23.04 17:00",),
   StudendaNotification(
-      title: "Текст уведомления", description: "", date: "23.04 17:00"),
+      title: "Текст уведомления", description: "", date: "23.04 17:00",),
 ];
 
 class MainScreenWidget extends StatefulWidget {
@@ -100,5 +100,3 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     );
   }
 }
-
-

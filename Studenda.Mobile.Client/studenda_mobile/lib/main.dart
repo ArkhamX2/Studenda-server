@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studenda_mobile/widgets/main/main_screen_widget.dart';
+import 'package:studenda_mobile/widgets/schedule/schedule_screen_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(backgroundColor:  Color.fromARGB(255, 101, 59, 159)),
         
       ),
-      home: const MainScreenWidget(),
+      home: const ScheduleScreenWidget(),
     );
   }
 }

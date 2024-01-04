@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studenda_mobile/model/schedule/subject.dart';
 import 'package:studenda_mobile/resourses/colors.dart';
-import 'package:studenda_mobile/widgets/schedule/day_position_values.dart';
+import 'package:studenda_mobile/widgets/schedule/position_values.dart';
 
 class ScheduleItemWidget extends StatelessWidget {
   final Subject subject;

@@ -6,3 +6,12 @@ const List<String> dayPositionValues = [
   "15:45\n17:20",
   "17:30\n19:05",
 ];
+
+const List<String> weekPositionValues = [
+  "пн",
+  "вт",
+  "ср",
+  "чт",
+  "пт",
+  "сб",
+];
