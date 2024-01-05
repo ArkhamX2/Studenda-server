@@ -15,3 +15,12 @@ const List<String> weekPositionValues = [
   "пт",
   "сб",
 ];
+
+const List<String> weekPositionFullValues = [
+  "Понедельник",
+  "Вторник",
+  "Среда",
+  "Четверг",
+  "Пятница",
+  "Суббота",
+];

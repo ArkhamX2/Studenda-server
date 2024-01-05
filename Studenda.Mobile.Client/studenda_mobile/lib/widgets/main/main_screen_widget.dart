@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studenda_mobile/model/common/notification.dart';
 import 'package:studenda_mobile/model/schedule/subject.dart';
-import 'package:studenda_mobile/resourses/colors.dart';
+import 'package:studenda_mobile/resources/colors.dart';
 import 'package:studenda_mobile/widgets/notification/notification_consts.dart';
 import 'package:studenda_mobile/widgets/notification/notification_list_widget.dart';
 import 'package:studenda_mobile/widgets/schedule/day_schedule_widget.dart';
@@ -70,7 +70,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                 ),
               ),
               const SizedBox(height: 20),
-              DayScheduleWidget(subjects: schedule),
+              DayScheduleWidget(dayTitle: "Сегодня",subjects: schedule, isTitleRequired: false),
               const SizedBox(height: 25),
               const Text(
                 "Уведомления",

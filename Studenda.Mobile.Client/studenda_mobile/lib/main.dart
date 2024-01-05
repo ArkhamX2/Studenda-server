@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Studenda',
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(backgroundColor:  Color.fromARGB(255, 101, 59, 159)),
-        
+        appBarTheme: const AppBarTheme(backgroundColor:  Color.fromARGB(255, 101, 59, 159), ),
+        fontFamily: 'Inter',
       ),
       home: const ScheduleScreenWidget(),
     );

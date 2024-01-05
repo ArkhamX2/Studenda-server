@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studenda_mobile/resourses/colors.dart';
+import 'package:studenda_mobile/resources/colors.dart';
 
 class StudendaButton extends StatelessWidget {
   final String title;

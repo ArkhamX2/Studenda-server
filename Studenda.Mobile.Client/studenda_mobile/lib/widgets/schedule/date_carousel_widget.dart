@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:studenda_mobile/resourses/colors.dart';
+import 'package:studenda_mobile/resources/colors.dart';
 import 'package:studenda_mobile/widgets/schedule/position_values.dart';
 
 class DateCarouselWidget extends StatelessWidget {

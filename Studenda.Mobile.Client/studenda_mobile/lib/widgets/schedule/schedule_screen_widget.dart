@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:studenda_mobile/model/schedule/Management/day_schedule.dart';
 import 'package:studenda_mobile/model/schedule/subject.dart';
 import 'package:studenda_mobile/widgets/schedule/date_carousel_widget.dart';
+import 'package:studenda_mobile/widgets/schedule/week_schedule_widget.dart';
 
 final List<DaySchedule> schedule = <DaySchedule>[
   DaySchedule(0, <Subject>[
@@ -71,17 +72,19 @@ class _ScheduleScreenWidgetState extends State<ScheduleScreenWidget> {
           ),
         ],
       ),
-      body:SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 17),
-              DateCarouselWidget(dates: dates),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(14.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 17),
+            DateCarouselWidget(dates: dates),
+            const SizedBox(height: 10),
+            Expanded(
+              child: SingleChildScrollView(
+                  child: WeekScheduleWidget(schedule: schedule),),
+            ),
+          ],
         ),
       ),
     );

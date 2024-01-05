@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studenda_mobile/model/common/notification.dart';
-import 'package:studenda_mobile/resourses/colors.dart';
+import 'package:studenda_mobile/resources/colors.dart';
 
 class NotificationItemWidget extends StatelessWidget {
   final StudendaNotification notification;
