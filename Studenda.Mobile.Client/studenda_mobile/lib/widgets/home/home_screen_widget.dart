@@ -24,33 +24,30 @@ final List<StudendaNotification> notifications = <StudendaNotification>[
       title: "Текст уведомления", description: "", date: "23.04 17:00",),
 ];
 
-class MainScreenWidget extends StatefulWidget {
-  const MainScreenWidget({super.key});
+class HomeScreenWidget extends StatefulWidget {
+  const HomeScreenWidget({super.key});
 
   @override
-  State<MainScreenWidget> createState() => _MainScreenWidgetState();
+  State<HomeScreenWidget> createState() => _HomeScreenWidgetState();
 }
 
-class _MainScreenWidgetState extends State<MainScreenWidget> {
+class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 240, 241, 245),
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left_sharp),
-          onPressed: () => {},
-        ),
         titleSpacing: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         title: const Text(
           'Главная',
           style: TextStyle(color: Colors.white, fontSize: 25),
         ),
         actions: [
           IconButton(
-            onPressed: () => {},
-            icon: const Icon(Icons.notifications),
+            onPressed: () => {Navigator.of(context).pushReplacementNamed('/notification')},
+            icon: const Icon(Icons.notifications, color: Colors.white,),
           ),
         ],
       ),
@@ -69,7 +66,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 20),
               DayScheduleWidget(dayTitle: "Сегодня",subjects: schedule, isTitleRequired: false),
               const SizedBox(height: 25),
               const Text(

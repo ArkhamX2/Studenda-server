@@ -22,7 +22,7 @@ class DayScheduleWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _DayTitleWidget(dayTitle: dayTitle, isRequired: isTitleRequired),
-          SizedBox(height: 17,),
+          const SizedBox(height: 17,),
           Container(
             decoration: BoxDecoration(
               border: Border.all(

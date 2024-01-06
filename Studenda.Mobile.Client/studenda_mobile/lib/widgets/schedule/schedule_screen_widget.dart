@@ -60,6 +60,7 @@ class _ScheduleScreenWidgetState extends State<ScheduleScreenWidget> {
       backgroundColor: const Color.fromARGB(255, 240, 241, 245),
       appBar: AppBar(
         titleSpacing: 0,
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: const Text(
           'Главная',
@@ -67,7 +68,7 @@ class _ScheduleScreenWidgetState extends State<ScheduleScreenWidget> {
         ),
         actions: [
           IconButton(
-            onPressed: () => {},
+            onPressed: () => {Navigator.of(context).pushReplacementNamed('/notification')},
             icon: const Icon(Icons.notifications, color: Colors.white),
           ),
         ],

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:studenda_mobile/widgets/auth/main_auth_widget.dart';
+import 'package:studenda_mobile/widgets/home/home_screen_widget.dart';
+import 'package:studenda_mobile/widgets/journal/journal_screen_widget.dart';
+import 'package:studenda_mobile/widgets/navigation/main_navigator_widget.dart';
+import 'package:studenda_mobile/widgets/notification/notification_screen_widget.dart';
 import 'package:studenda_mobile/widgets/schedule/schedule_screen_widget.dart';
 
 void main() {
@@ -17,7 +22,17 @@ class MyApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(backgroundColor:  Color.fromARGB(255, 101, 59, 159), ),
         fontFamily: 'Inter',
       ),
-      home: const ScheduleScreenWidget(),
+      home: const MainNavigatorWidget(),
+
+      routes: {
+        '/auth': (context) => MainAuthWidget(),
+        '/main_nav': (context) => MainNavigatorWidget(),
+        '/home': (context) => HomeScreenWidget(),
+        '/schedule': (context) => ScheduleScreenWidget(),
+        '/journal': (context) => JournalScreenWidget(),
+        '/notification': (context) => NotificationScreenWidget(),
+      },
+      initialRoute: '/main_nav',
     );
   }
 }
