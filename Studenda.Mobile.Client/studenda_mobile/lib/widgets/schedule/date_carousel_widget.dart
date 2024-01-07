@@ -5,9 +5,13 @@ import 'package:studenda_mobile/widgets/schedule/position_values.dart';
 
 class DateCarouselWidget extends StatelessWidget {
   final List<String> dates;
+  
+  final Function(int) onDateTap;
+  final Function() onPrevTap;
+  final Function() onNextTap;
 
   const DateCarouselWidget({
-    super.key, required this.dates,
+    super.key, required this.dates, required this.onDateTap, required this.onPrevTap, required this.onNextTap,
   });
 
   @override
@@ -29,7 +33,7 @@ class DateCarouselWidget extends StatelessWidget {
               Icons.chevron_left_outlined,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: onPrevTap,
           ),
           Expanded(
             child: Row(
@@ -39,9 +43,12 @@ class DateCarouselWidget extends StatelessWidget {
                   .map(
                     (key, value) => MapEntry(
                       key,
-                      _DateCarouselItemWidget(
-                        day: key,
-                        date: value,
+                      GestureDetector(
+                        onTap: (){onDateTap(key);},
+                        child: _DateCarouselItemWidget(
+                          day: key,
+                          date: value,
+                        ),
                       ),
                     ),
                   )
@@ -54,7 +61,7 @@ class DateCarouselWidget extends StatelessWidget {
               Icons.chevron_right_outlined,
               color: Colors.white,
             ),
-            onPressed: () {},
+            onPressed: onNextTap,
           ),
         ],
       ),

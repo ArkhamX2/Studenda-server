@@ -3,6 +3,7 @@ import 'package:studenda_mobile/model/schedule/subject.dart';
 import 'package:studenda_mobile/resources/colors.dart';
 import 'package:studenda_mobile/widgets/schedule/position_values.dart';
 
+//По нажатию на элемент выводить имя преподавателя ниже
 class ScheduleItemWidget extends StatelessWidget {
   final Subject subject;
   const ScheduleItemWidget({required this.subject});

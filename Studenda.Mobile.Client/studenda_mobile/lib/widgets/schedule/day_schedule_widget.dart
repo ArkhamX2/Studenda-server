@@ -9,6 +9,7 @@ class DayScheduleWidget extends StatelessWidget {
   final bool isTitleRequired;
 
   const DayScheduleWidget({
+    super.key,
     required this.dayTitle,
     required this.subjects,
     required this.isTitleRequired,

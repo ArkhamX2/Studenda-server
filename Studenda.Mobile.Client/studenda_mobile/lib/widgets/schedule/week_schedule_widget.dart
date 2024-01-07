@@ -5,13 +5,31 @@ import 'package:studenda_mobile/widgets/schedule/position_values.dart';
 
 class WeekScheduleWidget extends StatelessWidget {
   final List<DaySchedule> schedule;
-
-  const WeekScheduleWidget({super.key, required this.schedule});
+  final List<GlobalKey<State<StatefulWidget>>> keys;
+  const WeekScheduleWidget({
+    super.key,
+    required this.schedule,
+    required this.keys,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: schedule.map((element) => DayScheduleWidget(dayTitle: weekPositionFullValues[element.weekPosition], subjects: element.subjects, isTitleRequired: true)).toList(),
+      children: schedule
+          .asMap()
+          .map(
+            (key, element) => MapEntry(
+              key,
+              DayScheduleWidget(
+                key: keys[key],
+                dayTitle: weekPositionFullValues[element.weekPosition],
+                subjects: element.subjects,
+                isTitleRequired: true,
+              ),
+            ),
+          )
+          .values
+          .toList(),
     );
   }
 }
