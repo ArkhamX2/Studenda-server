@@ -47,6 +47,8 @@ final List<String> dates = <String>[
   "25",
 ];
 
+//
+
 class ScheduleScreenWidget extends StatefulWidget {
   const ScheduleScreenWidget({super.key});
 
@@ -60,6 +62,8 @@ class _ScheduleScreenWidgetState extends State<ScheduleScreenWidget> {
     (index) => GlobalObjectKey(schedule[index].weekPosition),
   );
 
+//TODO: сделать чтобы кнопки влево вправо меняли неделю
+//TODO: сделать чтобы вместо "главная бросало на выбор группы"
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +89,6 @@ class _ScheduleScreenWidgetState extends State<ScheduleScreenWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 17),
-            //TODO: добавить возможность прокрутки скрола до нужного дня
             DateCarouselWidget(
               dates: dates,
               onDateTap: (int index) {

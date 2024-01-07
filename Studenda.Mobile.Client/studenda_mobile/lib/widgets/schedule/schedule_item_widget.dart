@@ -29,7 +29,7 @@ class _ScheduleItemWidgetState extends State<ScheduleItemWidget> {
           ),
         ),
         AnimatedSize(
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           child: isVisible
               ? _TeacherSubjectInfoRowWidget(
                   widget: widget,

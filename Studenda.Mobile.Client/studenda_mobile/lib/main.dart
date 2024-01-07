@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studenda_mobile/widgets/auth/main_auth_widget.dart';
 import 'package:studenda_mobile/widgets/home/home_screen_widget.dart';
-import 'package:studenda_mobile/widgets/journal/journal_screen_widget.dart';
+import 'package:studenda_mobile/widgets/journal/journal_main_screen_widget.dart';
 import 'package:studenda_mobile/widgets/navigation/main_navigator_widget.dart';
 import 'package:studenda_mobile/widgets/notification/notification_screen_widget.dart';
 import 'package:studenda_mobile/widgets/schedule/schedule_screen_widget.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         '/main_nav': (context) => const MainNavigatorWidget(),
         '/home': (context) => const HomeScreenWidget(),
         '/schedule': (context) => const ScheduleScreenWidget(),
-        '/journal': (context) => const JournalScreenWidget(),
+        '/journal': (context) => const JournalMainScreenWidget(),
         '/notification': (context) => const NotificationScreenWidget(),
       },
       initialRoute: '/auth',
