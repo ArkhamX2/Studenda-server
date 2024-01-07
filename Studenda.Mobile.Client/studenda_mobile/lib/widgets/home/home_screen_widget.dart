@@ -7,10 +7,10 @@ import 'package:studenda_mobile/widgets/notification/notification_list_widget.da
 import 'package:studenda_mobile/widgets/schedule/day_schedule_widget.dart';
 
 final List<Subject> schedule = <Subject>[
-  Subject(0, "Математика", "ВЦ-315"),
-  Subject(1, "Физкультура", "ВЦ-315"),
-  Subject(2, "Базы данных", "ВЦ-315"),
-  Subject(3, "Экономика", "ВЦ-315"),
+  Subject(0, "Математика", "ВЦ-315", "QWERTY"),
+  Subject(1, "Физкультура", "ВЦ-315", "QWERTY"),
+  Subject(2, "Базы данных", "ВЦ-315", "QWERTY"),
+  Subject(3, "Экономика", "ВЦ-315", "QWERTY"),
 ];
 
 final List<StudendaNotification> notifications = <StudendaNotification>[
