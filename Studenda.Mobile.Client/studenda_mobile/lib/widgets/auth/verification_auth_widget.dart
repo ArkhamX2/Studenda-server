@@ -106,9 +106,9 @@ class _VerificationAuthWidgetState extends State<VerificationAuthWidget> {
                 StudendaButton(title: "Подтвердить", event: () {
                   final form = formKey.currentState!;
                   if(form.validate()){
-                    final code = controller.text;
 
                     //TODO: Отправить код на сервер
+                    //final code = controller.text;
 
                     Navigator.of(context).pushReplacementNamed('/main_nav');
                   }
