@@ -25,14 +25,14 @@ class MyApp extends StatelessWidget {
       home: const MainNavigatorWidget(),
 
       routes: {
-        '/auth': (context) => MainAuthWidget(),
-        '/main_nav': (context) => MainNavigatorWidget(),
-        '/home': (context) => HomeScreenWidget(),
-        '/schedule': (context) => ScheduleScreenWidget(),
-        '/journal': (context) => JournalScreenWidget(),
-        '/notification': (context) => NotificationScreenWidget(),
+        '/auth': (context) => const MainAuthWidget(),
+        '/main_nav': (context) => const MainNavigatorWidget(),
+        '/home': (context) => const HomeScreenWidget(),
+        '/schedule': (context) => const ScheduleScreenWidget(),
+        '/journal': (context) => const JournalScreenWidget(),
+        '/notification': (context) => const NotificationScreenWidget(),
       },
-      initialRoute: '/main_nav',
+      initialRoute: '/auth',
     );
   }
 }

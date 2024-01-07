@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:studenda_mobile/resources/colors.dart';
 import 'package:studenda_mobile/widgets/UI/button_widget.dart';
+import 'package:studenda_mobile/widgets/auth/email_auth_widget.dart';
+import 'package:studenda_mobile/widgets/group_selector/guest_group_selector.dart';
 
 class MainAuthWidget extends StatefulWidget {
   const MainAuthWidget({super.key});
@@ -10,7 +12,6 @@ class MainAuthWidget extends StatefulWidget {
 }
 
 class _MainAuthWidgetState extends State<MainAuthWidget> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,11 +28,29 @@ class _MainAuthWidgetState extends State<MainAuthWidget> {
             const SizedBox(
               height: 40,
             ),
-            StudendaButton(title: "Войти", event: (){}),
+            StudendaButton(
+              title: "Войти",
+              event: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (context) => const EmailAuthWidget(),
+                  ),
+                );
+              },
+            ),
             const SizedBox(
               height: 34,
             ),
-            StudendaButton(title: "Войти как гость", event: (){}),
+            StudendaButton(
+              title: "Войти как гость",
+              event: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (context) => const GuestGroupSelectorWidget(),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

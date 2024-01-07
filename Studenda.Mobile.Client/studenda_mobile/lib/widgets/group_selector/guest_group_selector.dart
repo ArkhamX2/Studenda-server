@@ -57,8 +57,9 @@ class _GuestGroupSelectorWidgetState extends State<GuestGroupSelectorWidget> {
       backgroundColor: const Color.fromARGB(255, 240, 241, 245),
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.chevron_left_sharp),
-          onPressed: () => {},
+          icon: const Icon(Icons.chevron_left_sharp,
+          color: Colors.white,),
+          onPressed: () => {Navigator.of(context).pop()},
         ),
         titleSpacing: 0,
         centerTitle: true,

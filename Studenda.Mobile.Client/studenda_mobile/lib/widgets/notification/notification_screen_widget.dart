@@ -72,7 +72,7 @@ class _NotificationScreenWidgetState extends State<NotificationScreenWidget> {
         leading: IconButton(
           icon: const Icon(Icons.chevron_left_sharp),
           color: Colors.white,
-          onPressed: () => {Navigator.of(context).pushReplacementNamed('/main_nav')},
+          onPressed: () => {Navigator.of(context).pop()},
         ),
         titleSpacing: 0,
         centerTitle: true,

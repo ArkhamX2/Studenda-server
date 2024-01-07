@@ -68,7 +68,7 @@ class _ScheduleScreenWidgetState extends State<ScheduleScreenWidget> {
         ),
         actions: [
           IconButton(
-            onPressed: () => {Navigator.of(context).pushReplacementNamed('/notification')},
+            onPressed: () => {Navigator.of(context).pushNamed('/notification')},
             icon: const Icon(Icons.notifications, color: Colors.white),
           ),
         ],
