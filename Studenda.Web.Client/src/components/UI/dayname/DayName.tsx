@@ -6,13 +6,15 @@ export enum ButtonVariant {
         primary='primary'
       }
       interface daynameProps {
-              text?: string;
+              text1?: string;
+              text2?: string;
               children?: React.ReactChild | React.ReactNode;
               onClick?: ()=> void;
       }
 
 const DayName: FC<daynameProps> = ({
-        text, 
+        text1, 
+        text2,
         onClick,
         children
 
@@ -20,7 +22,7 @@ const DayName: FC<daynameProps> = ({
 
     return (
         <div className={classes.buttonBox}>
-                <button className={classes.dayButton} onClick={onClick}> Понедельник {text} </button>
+                <button className={classes.dayButton} onClick={onClick}> {text1} {text2} </button>
                 {children}
         </div>
     )

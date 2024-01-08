@@ -9,26 +9,26 @@ const ScheduleForm: FC = () => {
                 <div className="mainBackground">
                         <div style={{display: 'flex', flexDirection: 'column'}}>
                                 <div style={{display: 'flex', flexDirection: 'row'}}>
-                                        <DayName>
+                                        <DayName text1='Понедельник'>
                                                 <Day/>
                                         </DayName>
-                                        <DayName>
-                                                <Day/>
-                                        </DayName>
-                                </div>
-                                <div style={{display: 'flex', flexDirection: 'row'}}>
-                                        <DayName>
-                                                <Day/>
-                                        </DayName>
-                                        <DayName>
+                                        <DayName text1='Понедельник'>
                                                 <Day/>
                                         </DayName>
                                 </div>
                                 <div style={{display: 'flex', flexDirection: 'row'}}>
-                                        <DayName>
+                                        <DayName text1='Понедельник'>
                                                 <Day/>
                                         </DayName>
-                                        <DayName>
+                                        <DayName text1='Понедельник'> 
+                                                <Day/>
+                                        </DayName>
+                                </div>
+                                <div style={{display: 'flex', flexDirection: 'row'}}>
+                                        <DayName text1='Понедельник'>
+                                                <Day/>
+                                        </DayName>
+                                        <DayName text1='Понедельник'>
                                                 <Day/>
                                         </DayName>
                                         
