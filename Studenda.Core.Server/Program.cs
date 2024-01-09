@@ -39,7 +39,7 @@ if (string.IsNullOrEmpty(identityConnectionString))
 
 // TODO: Конфигурация контекстов на основе конфигурации приложения.
 var dataConfiguration = new MysqlConfiguration(defaultConnectionString, ServerVersion.AutoDetect(defaultConnectionString), isDebugMode);
-var identityConfiguration = new MysqlConfiguration(defaultConnectionString, ServerVersion.AutoDetect(defaultConnectionString), isDebugMode);
+var identityConfiguration = new MysqlConfiguration(identityConnectionString, ServerVersion.AutoDetect(identityConnectionString), isDebugMode);
 
 // Сервисы.
 
