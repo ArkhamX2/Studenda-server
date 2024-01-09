@@ -14,7 +14,7 @@
         condition: 'service_healthy'
     environment:
       ConnectionStrings__Default: 'Server=database_default;Port=3306;Database=studenda_default;Uid=arkham;Pwd=secret'
-      ConnectionStrings__Identity: 'Server=database_identity;Port=3307;Database=studenda_identity;Uid=arkham;Pwd=secret'
+      ConnectionStrings__Identity: 'Server=database_identity;Port=3306;Database=studenda_identity;Uid=arkham;Pwd=secret'
     networks:
       - 'inner'
 
