@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:studenda_mobile/widgets/auth/main_auth_widget.dart';
-import 'package:studenda_mobile/widgets/home/home_screen_widget.dart';
-import 'package:studenda_mobile/widgets/journal/journal_main_screen_widget.dart';
-import 'package:studenda_mobile/widgets/navigation/main_navigator_widget.dart';
-import 'package:studenda_mobile/widgets/notification/notification_screen_widget.dart';
-import 'package:studenda_mobile/widgets/schedule/schedule_screen_widget.dart';
+import 'package:studenda_mobile/feature/auth/presentation/widgets/main_auth_widget.dart';
+import 'package:studenda_mobile/feature/home/presentation/widgets/home_screen_widget.dart';
+import 'package:studenda_mobile/feature/journal/presentation/widgets/journal_main_screen_widget.dart';
+import 'package:studenda_mobile/feature/navigation/presentation/widgets/main_navigator_widget.dart';
+import 'package:studenda_mobile/feature/notification/presentation/widgets/notification_screen_widget.dart';
+import 'package:studenda_mobile/feature/schedule/presentation/widgets/schedule_screen_widget.dart';
 
 void main() {
   runApp(const MyApp());

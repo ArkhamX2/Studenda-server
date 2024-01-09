@@ -1,7 +1,7 @@
-import 'package:studenda_mobile/model/schedule/subject.dart';
+import 'package:studenda_mobile/feature/schedule/domain/entities/subject_entity.dart';
 
 class DaySchedule {
   final int weekPosition;
-  final List<Subject> subjects;
+  final List<SubjectEntity> subjects;
   DaySchedule(this.weekPosition,this.subjects);
 }
