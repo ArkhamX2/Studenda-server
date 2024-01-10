@@ -8,17 +8,12 @@ part of 'role_model.dart';
 
 _$RoleModelImpl _$$RoleModelImplFromJson(Map<String, dynamic> json) =>
     _$RoleModelImpl(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      permissionLinks: (json['permissionLinks'] as List<dynamic>)
-          .map((e) =>
-              RolePermissionLinkModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      id: json['Id'] as int,
+      name: json['Name'] as String,
     );
 
 Map<String, dynamic> _$$RoleModelImplToJson(_$RoleModelImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'permissionLinks': instance.permissionLinks,
+      'Id': instance.id,
+      'Name': instance.name,
     };

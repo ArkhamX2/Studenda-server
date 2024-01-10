@@ -23,12 +23,12 @@ class AuthRepositoryImpl implements AuthRepository{
         //TODO: localdatasource cache
         return Right(remoteAuth);
       } on ServerException{
-        return Left(ServerFailure());
+        return Left(ServerFailure(message: "Ошибка сервера"));
       }
     } else{
       //TODO: get data from cache
     }
-    return Left(AuthFailure());
+    return Left(AuthFailure(message: "Ошибка авторизации"));
   }
   
 }

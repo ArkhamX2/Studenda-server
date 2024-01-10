@@ -20,7 +20,9 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
+  @JsonKey(name: 'Id')
   int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Role')
   RoleModel get role => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +36,8 @@ abstract class $UserModelCopyWith<$Res> {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) then) =
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
-  $Res call({int id, RoleModel role});
+  $Res call(
+      {@JsonKey(name: 'Id') int id, @JsonKey(name: 'Role') RoleModel role});
 
   $RoleModelCopyWith<$Res> get role;
 }
@@ -84,7 +87,8 @@ abstract class _$$UserModelImplCopyWith<$Res>
       __$$UserModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, RoleModel role});
+  $Res call(
+      {@JsonKey(name: 'Id') int id, @JsonKey(name: 'Role') RoleModel role});
 
   @override
   $RoleModelCopyWith<$Res> get role;
@@ -120,14 +124,18 @@ class __$$UserModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$UserModelImpl implements _UserModel {
-  const _$UserModelImpl({required this.id, required this.role});
+  const _$UserModelImpl(
+      {@JsonKey(name: 'Id') required this.id,
+      @JsonKey(name: 'Role') required this.role});
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
 
   @override
+  @JsonKey(name: 'Id')
   final int id;
   @override
+  @JsonKey(name: 'Role')
   final RoleModel role;
 
   @override
@@ -164,14 +172,17 @@ class _$UserModelImpl implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {required final int id, required final RoleModel role}) = _$UserModelImpl;
+      {@JsonKey(name: 'Id') required final int id,
+      @JsonKey(name: 'Role') required final RoleModel role}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'Id')
   int get id;
   @override
+  @JsonKey(name: 'Role')
   RoleModel get role;
   @override
   @JsonKey(ignore: true)

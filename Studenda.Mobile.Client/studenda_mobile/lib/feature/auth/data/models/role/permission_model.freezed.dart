@@ -20,7 +20,9 @@ PermissionModel _$PermissionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PermissionModel {
+  @JsonKey(name: 'Id')
   int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Name')
   String get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +37,7 @@ abstract class $PermissionModelCopyWith<$Res> {
           PermissionModel value, $Res Function(PermissionModel) then) =
       _$PermissionModelCopyWithImpl<$Res, PermissionModel>;
   @useResult
-  $Res call({int id, String name});
+  $Res call({@JsonKey(name: 'Id') int id, @JsonKey(name: 'Name') String name});
 }
 
 /// @nodoc
@@ -75,7 +77,7 @@ abstract class _$$PermissionModelImplCopyWith<$Res>
       __$$PermissionModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String name});
+  $Res call({@JsonKey(name: 'Id') int id, @JsonKey(name: 'Name') String name});
 }
 
 /// @nodoc
@@ -108,14 +110,18 @@ class __$$PermissionModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$PermissionModelImpl implements _PermissionModel {
-  const _$PermissionModelImpl({required this.id, required this.name});
+  const _$PermissionModelImpl(
+      {@JsonKey(name: 'Id') required this.id,
+      @JsonKey(name: 'Name') required this.name});
 
   factory _$PermissionModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$PermissionModelImplFromJson(json);
 
   @override
+  @JsonKey(name: 'Id')
   final int id;
   @override
+  @JsonKey(name: 'Name')
   final String name;
 
   @override
@@ -153,15 +159,18 @@ class _$PermissionModelImpl implements _PermissionModel {
 
 abstract class _PermissionModel implements PermissionModel {
   const factory _PermissionModel(
-      {required final int id,
-      required final String name}) = _$PermissionModelImpl;
+          {@JsonKey(name: 'Id') required final int id,
+          @JsonKey(name: 'Name') required final String name}) =
+      _$PermissionModelImpl;
 
   factory _PermissionModel.fromJson(Map<String, dynamic> json) =
       _$PermissionModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'Id')
   int get id;
   @override
+  @JsonKey(name: 'Name')
   String get name;
   @override
   @JsonKey(ignore: true)

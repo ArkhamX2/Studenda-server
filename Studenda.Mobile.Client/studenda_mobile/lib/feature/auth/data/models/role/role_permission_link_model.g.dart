@@ -9,16 +9,16 @@ part of 'role_permission_link_model.dart';
 _$RolePermisisonLinkModelImpl _$$RolePermisisonLinkModelImplFromJson(
         Map<String, dynamic> json) =>
     _$RolePermisisonLinkModelImpl(
-      id: json['id'] as int,
-      roleId: json['roleId'] as int,
+      id: json['Id'] as int,
+      roleId: json['RoleId'] as int,
       permissionId: PermissionModel.fromJson(
-          json['permissionId'] as Map<String, dynamic>),
+          json['PermissionId'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$RolePermisisonLinkModelImplToJson(
         _$RolePermisisonLinkModelImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'roleId': instance.roleId,
-      'permissionId': instance.permissionId,
+      'Id': instance.id,
+      'RoleId': instance.roleId,
+      'PermissionId': instance.permissionId,
     };

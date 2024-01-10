@@ -4,12 +4,11 @@ import 'package:studenda_mobile/feature/auth/data/models/role/role_permission_li
 part 'role_model.freezed.dart';
 part 'role_model.g.dart';
 
-@freezed
+@Freezed(makeCollectionsUnmodifiable: false)
 class RoleModel with _$RoleModel{
   const factory RoleModel({
-    required int id,
-    required String name,
-    required List<RolePermissionLinkModel> permissionLinks,
+    @JsonKey(name: 'Id') required int id,
+    @JsonKey(name: 'Name') required String name,
   }) = _RoleModel;
   
   factory RoleModel.fromJson(Map<String,dynamic> json) => _$RoleModelFromJson(json);

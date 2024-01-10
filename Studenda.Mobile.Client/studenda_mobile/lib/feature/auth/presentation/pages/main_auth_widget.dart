@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:studenda_mobile/core/presentation/guest_group_selector.dart';
-import 'package:studenda_mobile/feature/auth/presentation/widgets/email_auth_widget.dart';
+import 'package:studenda_mobile/feature/auth/presentation/pages/email_auth_widget.dart';
 import 'package:studenda_mobile/resources/UI/button_widget.dart';
 import 'package:studenda_mobile/resources/colors.dart';
 

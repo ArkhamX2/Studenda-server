@@ -1,6 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:studenda_mobile/feature/auth/presentation/widgets/verification_auth_widget.dart';
+import 'package:studenda_mobile/feature/auth/presentation/pages/verification_auth_widget.dart';
 import 'package:studenda_mobile/resources/UI/button_widget.dart';
 import 'package:studenda_mobile/resources/colors.dart';
 
@@ -66,6 +66,7 @@ class _EmailAuthWidgetState extends State<EmailAuthWidget> {
                   child: StudendaButton(
                     title: "Подтвердить",
                     event: () {
+                      //TODO: Get the code
                       final form = formKey.currentState!;
                       if (form.validate()) {
                         final email = _emailTextController.text;

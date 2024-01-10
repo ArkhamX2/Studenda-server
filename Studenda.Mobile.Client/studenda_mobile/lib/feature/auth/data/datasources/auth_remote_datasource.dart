@@ -15,18 +15,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<SecurityResponseModel> auth(SecurityRequestModel request) async {
-    final response = await client.post(
+    try {
+      final response = await client.post(
         Uri.parse('http://88.210.3.137/api/security/login'),
-        body: request,
+        body: json.encode(request.toJson()),
         headers: {
-          'Content-Type': 'application/json',
-        });
-
-    if (response.statusCode == 200) {
-      return SecurityResponseModel.fromJson(
-          json.decode(response.body) as Map<String, dynamic>);
-    } else {
-      throw ServerException();
+          'Content-type':'application/json; charset=UTF-8',
+        }
+      );
+      if (response.statusCode == 200) {
+        
+        final decoded = json.decode(response.body) as Map<String, dynamic>;
+        final responseModel = SecurityResponseModel.fromJson(decoded);
+        return responseModel;
+      } else {
+        throw ServerException();
+      }
+    } catch (e) {
+      print(e);
     }
+    throw ServerException();
   }
 }

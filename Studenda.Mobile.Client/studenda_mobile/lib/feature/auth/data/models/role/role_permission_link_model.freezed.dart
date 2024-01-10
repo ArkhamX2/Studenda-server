@@ -21,8 +21,11 @@ RolePermissionLinkModel _$RolePermissionLinkModelFromJson(
 
 /// @nodoc
 mixin _$RolePermissionLinkModel {
+  @JsonKey(name: 'Id')
   int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'RoleId')
   int get roleId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'PermissionId')
   PermissionModel get permissionId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +40,10 @@ abstract class $RolePermissionLinkModelCopyWith<$Res> {
           $Res Function(RolePermissionLinkModel) then) =
       _$RolePermissionLinkModelCopyWithImpl<$Res, RolePermissionLinkModel>;
   @useResult
-  $Res call({int id, int roleId, PermissionModel permissionId});
+  $Res call(
+      {@JsonKey(name: 'Id') int id,
+      @JsonKey(name: 'RoleId') int roleId,
+      @JsonKey(name: 'PermissionId') PermissionModel permissionId});
 
   $PermissionModelCopyWith<$Res> get permissionId;
 }
@@ -94,7 +100,10 @@ abstract class _$$RolePermisisonLinkModelImplCopyWith<$Res>
       __$$RolePermisisonLinkModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, int roleId, PermissionModel permissionId});
+  $Res call(
+      {@JsonKey(name: 'Id') int id,
+      @JsonKey(name: 'RoleId') int roleId,
+      @JsonKey(name: 'PermissionId') PermissionModel permissionId});
 
   @override
   $PermissionModelCopyWith<$Res> get permissionId;
@@ -138,16 +147,21 @@ class __$$RolePermisisonLinkModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RolePermisisonLinkModelImpl implements _RolePermisisonLinkModel {
   const _$RolePermisisonLinkModelImpl(
-      {required this.id, required this.roleId, required this.permissionId});
+      {@JsonKey(name: 'Id') required this.id,
+      @JsonKey(name: 'RoleId') required this.roleId,
+      @JsonKey(name: 'PermissionId') required this.permissionId});
 
   factory _$RolePermisisonLinkModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RolePermisisonLinkModelImplFromJson(json);
 
   @override
+  @JsonKey(name: 'Id')
   final int id;
   @override
+  @JsonKey(name: 'RoleId')
   final int roleId;
   @override
+  @JsonKey(name: 'PermissionId')
   final PermissionModel permissionId;
 
   @override
@@ -187,8 +201,9 @@ class _$RolePermisisonLinkModelImpl implements _RolePermisisonLinkModel {
 
 abstract class _RolePermisisonLinkModel implements RolePermissionLinkModel {
   const factory _RolePermisisonLinkModel(
-          {required final int id,
-          required final int roleId,
+          {@JsonKey(name: 'Id') required final int id,
+          @JsonKey(name: 'RoleId') required final int roleId,
+          @JsonKey(name: 'PermissionId')
           required final PermissionModel permissionId}) =
       _$RolePermisisonLinkModelImpl;
 
@@ -196,10 +211,13 @@ abstract class _RolePermisisonLinkModel implements RolePermissionLinkModel {
       _$RolePermisisonLinkModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'Id')
   int get id;
   @override
+  @JsonKey(name: 'RoleId')
   int get roleId;
   @override
+  @JsonKey(name: 'PermissionId')
   PermissionModel get permissionId;
   @override
   @JsonKey(ignore: true)

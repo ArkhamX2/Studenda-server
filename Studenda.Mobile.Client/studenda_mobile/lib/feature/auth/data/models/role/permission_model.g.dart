@@ -9,13 +9,13 @@ part of 'permission_model.dart';
 _$PermissionModelImpl _$$PermissionModelImplFromJson(
         Map<String, dynamic> json) =>
     _$PermissionModelImpl(
-      id: json['id'] as int,
-      name: json['name'] as String,
+      id: json['Id'] as int,
+      name: json['Name'] as String,
     );
 
 Map<String, dynamic> _$$PermissionModelImplToJson(
         _$PermissionModelImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
+      'Id': instance.id,
+      'Name': instance.name,
     };

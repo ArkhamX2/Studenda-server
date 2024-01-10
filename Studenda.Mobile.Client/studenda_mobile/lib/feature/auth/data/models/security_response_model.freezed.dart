@@ -21,8 +21,11 @@ SecurityResponseModel _$SecurityResponseModelFromJson(
 
 /// @nodoc
 mixin _$SecurityResponseModel {
+  @JsonKey(name: 'User')
   UserModel get user => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Token')
   String get token => throw _privateConstructorUsedError;
+  @JsonKey(name: 'RefreshToken')
   String get refreshToken => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +40,10 @@ abstract class $SecurityResponseModelCopyWith<$Res> {
           $Res Function(SecurityResponseModel) then) =
       _$SecurityResponseModelCopyWithImpl<$Res, SecurityResponseModel>;
   @useResult
-  $Res call({UserModel user, String token, String refreshToken});
+  $Res call(
+      {@JsonKey(name: 'User') UserModel user,
+      @JsonKey(name: 'Token') String token,
+      @JsonKey(name: 'RefreshToken') String refreshToken});
 
   $UserModelCopyWith<$Res> get user;
 }
@@ -94,7 +100,10 @@ abstract class _$$SecurityResponseModelImplCopyWith<$Res>
       __$$SecurityResponseModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({UserModel user, String token, String refreshToken});
+  $Res call(
+      {@JsonKey(name: 'User') UserModel user,
+      @JsonKey(name: 'Token') String token,
+      @JsonKey(name: 'RefreshToken') String refreshToken});
 
   @override
   $UserModelCopyWith<$Res> get user;
@@ -137,16 +146,21 @@ class __$$SecurityResponseModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SecurityResponseModelImpl implements _SecurityResponseModel {
   const _$SecurityResponseModelImpl(
-      {required this.user, required this.token, required this.refreshToken});
+      {@JsonKey(name: 'User') required this.user,
+      @JsonKey(name: 'Token') required this.token,
+      @JsonKey(name: 'RefreshToken') required this.refreshToken});
 
   factory _$SecurityResponseModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SecurityResponseModelImplFromJson(json);
 
   @override
+  @JsonKey(name: 'User')
   final UserModel user;
   @override
+  @JsonKey(name: 'Token')
   final String token;
   @override
+  @JsonKey(name: 'RefreshToken')
   final String refreshToken;
 
   @override
@@ -186,18 +200,22 @@ class _$SecurityResponseModelImpl implements _SecurityResponseModel {
 
 abstract class _SecurityResponseModel implements SecurityResponseModel {
   const factory _SecurityResponseModel(
-      {required final UserModel user,
-      required final String token,
-      required final String refreshToken}) = _$SecurityResponseModelImpl;
+          {@JsonKey(name: 'User') required final UserModel user,
+          @JsonKey(name: 'Token') required final String token,
+          @JsonKey(name: 'RefreshToken') required final String refreshToken}) =
+      _$SecurityResponseModelImpl;
 
   factory _SecurityResponseModel.fromJson(Map<String, dynamic> json) =
       _$SecurityResponseModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'User')
   UserModel get user;
   @override
+  @JsonKey(name: 'Token')
   String get token;
   @override
+  @JsonKey(name: 'RefreshToken')
   String get refreshToken;
   @override
   @JsonKey(ignore: true)

@@ -20,10 +20,10 @@ RoleModel _$RoleModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RoleModel {
+  @JsonKey(name: 'Id')
   int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Name')
   String get name => throw _privateConstructorUsedError;
-  List<RolePermissionLinkModel> get permissionLinks =>
-      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,8 +36,7 @@ abstract class $RoleModelCopyWith<$Res> {
   factory $RoleModelCopyWith(RoleModel value, $Res Function(RoleModel) then) =
       _$RoleModelCopyWithImpl<$Res, RoleModel>;
   @useResult
-  $Res call(
-      {int id, String name, List<RolePermissionLinkModel> permissionLinks});
+  $Res call({@JsonKey(name: 'Id') int id, @JsonKey(name: 'Name') String name});
 }
 
 /// @nodoc
@@ -55,7 +54,6 @@ class _$RoleModelCopyWithImpl<$Res, $Val extends RoleModel>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? permissionLinks = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -66,10 +64,6 @@ class _$RoleModelCopyWithImpl<$Res, $Val extends RoleModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      permissionLinks: null == permissionLinks
-          ? _value.permissionLinks
-          : permissionLinks // ignore: cast_nullable_to_non_nullable
-              as List<RolePermissionLinkModel>,
     ) as $Val);
   }
 }
@@ -82,8 +76,7 @@ abstract class _$$RoleModelImplCopyWith<$Res>
       __$$RoleModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {int id, String name, List<RolePermissionLinkModel> permissionLinks});
+  $Res call({@JsonKey(name: 'Id') int id, @JsonKey(name: 'Name') String name});
 }
 
 /// @nodoc
@@ -99,7 +92,6 @@ class __$$RoleModelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? permissionLinks = null,
   }) {
     return _then(_$RoleModelImpl(
       id: null == id
@@ -110,10 +102,6 @@ class __$$RoleModelImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      permissionLinks: null == permissionLinks
-          ? _value._permissionLinks
-          : permissionLinks // ignore: cast_nullable_to_non_nullable
-              as List<RolePermissionLinkModel>,
     ));
   }
 }
@@ -122,29 +110,22 @@ class __$$RoleModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RoleModelImpl implements _RoleModel {
   const _$RoleModelImpl(
-      {required this.id,
-      required this.name,
-      required final List<RolePermissionLinkModel> permissionLinks})
-      : _permissionLinks = permissionLinks;
+      {@JsonKey(name: 'Id') required this.id,
+      @JsonKey(name: 'Name') required this.name});
 
   factory _$RoleModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RoleModelImplFromJson(json);
 
   @override
+  @JsonKey(name: 'Id')
   final int id;
   @override
+  @JsonKey(name: 'Name')
   final String name;
-  final List<RolePermissionLinkModel> _permissionLinks;
-  @override
-  List<RolePermissionLinkModel> get permissionLinks {
-    if (_permissionLinks is EqualUnmodifiableListView) return _permissionLinks;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_permissionLinks);
-  }
 
   @override
   String toString() {
-    return 'RoleModel(id: $id, name: $name, permissionLinks: $permissionLinks)';
+    return 'RoleModel(id: $id, name: $name)';
   }
 
   @override
@@ -153,15 +134,12 @@ class _$RoleModelImpl implements _RoleModel {
         (other.runtimeType == runtimeType &&
             other is _$RoleModelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality()
-                .equals(other._permissionLinks, _permissionLinks));
+            (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name,
-      const DeepCollectionEquality().hash(_permissionLinks));
+  int get hashCode => Object.hash(runtimeType, id, name);
 
   @JsonKey(ignore: true)
   @override
@@ -179,20 +157,18 @@ class _$RoleModelImpl implements _RoleModel {
 
 abstract class _RoleModel implements RoleModel {
   const factory _RoleModel(
-          {required final int id,
-          required final String name,
-          required final List<RolePermissionLinkModel> permissionLinks}) =
-      _$RoleModelImpl;
+      {@JsonKey(name: 'Id') required final int id,
+      @JsonKey(name: 'Name') required final String name}) = _$RoleModelImpl;
 
   factory _RoleModel.fromJson(Map<String, dynamic> json) =
       _$RoleModelImpl.fromJson;
 
   @override
+  @JsonKey(name: 'Id')
   int get id;
   @override
+  @JsonKey(name: 'Name')
   String get name;
-  @override
-  List<RolePermissionLinkModel> get permissionLinks;
   @override
   @JsonKey(ignore: true)
   _$$RoleModelImplCopyWith<_$RoleModelImpl> get copyWith =>
