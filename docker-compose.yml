@@ -60,16 +60,6 @@
     networks:
       - 'inner'
 
-  web.client:
-    image: 'studenda.web.client'
-    build:
-      context: '.'
-      dockerfile: 'Studenda.Web.Client/Dockerfile'
-    ports:
-      - '8080:8080'
-    depends_on:
-      - 'core.server'
-
 volumes:
   studenda_data_default:
   studenda_data_identity:
