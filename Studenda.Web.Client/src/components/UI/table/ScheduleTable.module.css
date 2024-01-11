@@ -1,0 +1,23 @@
+table {
+        border: 2px solid black;
+        padding: 5px;
+        margin: 10px;
+        border-collapse: collapse;
+
+        
+}
+td {
+        border: 2px solid Black;
+        margin: 5px;
+        padding: 5px;
+        width: 200px;
+        height: 100px;
+}
+.Row1 {
+        height: 75px;
+
+}
+
+.Column1 {
+        width: 75px;
+}

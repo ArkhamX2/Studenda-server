@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import classes from './LoginInput.module.css'
 export enum TextAlign {
-  right='right',
+  left='left',
   center='center'
 }
 
@@ -16,7 +16,7 @@ const LoginInput: FC<inputProps> =
   }) => {
 
   return (
-       <input placeholder={text} className={classes.LoginInput}  style={{display: 'flex', textAlign: align===TextAlign.right  ? 'right' : 'center'}}></input>
+       <input placeholder={text} className={classes.LoginInput}  style={{display: 'flex', textAlign: align===TextAlign.left  ? 'left' : 'center'}}></input>
   )
 }
 

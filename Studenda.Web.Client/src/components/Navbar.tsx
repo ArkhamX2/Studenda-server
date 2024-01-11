@@ -12,6 +12,7 @@ const Navbar: FC = () => {
                <a style={{margin:'10px', border:'2px solid lightgray',padding:'5px'}} href='/journal'>Journal</a>
                <a style={{margin:'10px', border:'2px solid lightgray',padding:'5px'}} href='/homework'>Homework</a>
                <a style={{margin:'10px', border:'2px solid lightgray',padding:'5px'}} href='/attendance'>Attendence</a>
+               <a style={{margin:'10px', border:'2px solid lightgray',padding:'5px'}} href='/admin'>Admin</a>
         </div>
 
     )

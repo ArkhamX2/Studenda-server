@@ -1,4 +1,5 @@
 import F1 from "../components/F1"
+import Admin from "../pages/adminpage"
 import Attendance from "../pages/attendancepage"
 import Email from "../pages/emailpage"
 import GroupSelector from "../pages/groupselectorpage"
@@ -20,5 +21,6 @@ export const publicRoutes = [
     {path: '/journal', element: Journal},
     {path: '/homework', element: Homework},
     {path: '/attendance', element: Attendance},
+    {path: '/admin', element: Admin},
     
 ]
