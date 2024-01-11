@@ -63,7 +63,6 @@ class _VerificationAuthWidgetState extends State<VerificationAuthWidget> {
 
 class _BodyWidget extends StatelessWidget {
   const _BodyWidget({
-    super.key,
     required this.formKey,
     required this.widget,
     required this.controller,

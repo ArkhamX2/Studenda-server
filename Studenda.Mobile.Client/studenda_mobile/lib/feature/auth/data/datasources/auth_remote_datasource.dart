@@ -21,7 +21,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         body: json.encode(request.toJson()),
         headers: {
           'Content-type':'application/json; charset=UTF-8',
-        }
+        },
       );
       if (response.statusCode == 200) {
         

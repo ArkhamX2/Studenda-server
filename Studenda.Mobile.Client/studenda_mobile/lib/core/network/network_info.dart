@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 abstract class NetworkInfo {
   Future<bool> get isConnected;
@@ -43,8 +42,8 @@ class NetworkConnectivity {
   final _controller = StreamController.broadcast();
   Stream get myStream => _controller.stream;
   // 1.
-  void initialise() async {
-    ConnectivityResult result = await _networkConnectivity.checkConnectivity();
+  Future<void> initialise() async {
+    final ConnectivityResult result = await _networkConnectivity.checkConnectivity();
     _checkStatus(result);
     _networkConnectivity.onConnectivityChanged.listen((result) {
       print(result);
@@ -53,7 +52,7 @@ class NetworkConnectivity {
   }
 
 // 2.
-  void _checkStatus(ConnectivityResult result) async {
+  Future<void> _checkStatus(ConnectivityResult result) async {
     bool isOnline = false;
     try {
       final result = await InternetAddress.lookup('example.com');

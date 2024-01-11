@@ -1,7 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:studenda_mobile/core/network/network_info.dart';
 import 'package:studenda_mobile/feature/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:studenda_mobile/feature/auth/data/repositories/auth_repository_impl.dart';

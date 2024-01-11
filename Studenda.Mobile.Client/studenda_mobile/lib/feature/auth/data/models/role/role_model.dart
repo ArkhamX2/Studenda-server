@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:studenda_mobile/feature/auth/data/models/role/role_permission_link_model.dart';
 
 part 'role_model.freezed.dart';
 part 'role_model.g.dart';
