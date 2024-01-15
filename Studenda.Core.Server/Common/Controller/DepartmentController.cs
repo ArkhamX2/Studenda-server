@@ -7,7 +7,7 @@ namespace Studenda.Core.Server.Common.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Department" />.
 /// </summary>
-[Route("department")]
+[Route("api/department")]
 [ApiController]
 public class DepartmentController : ControllerBase
 {
