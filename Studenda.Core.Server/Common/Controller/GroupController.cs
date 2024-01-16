@@ -7,7 +7,7 @@ namespace Studenda.Core.Server.Common.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Group" />.
 /// </summary>
-[Route("group")]
+[Route("api/group")]
 [ApiController]
 public class GroupController : ControllerBase
 {
