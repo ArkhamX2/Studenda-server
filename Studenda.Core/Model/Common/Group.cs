@@ -122,20 +122,20 @@ public class Group : Identity
     /// <summary>
     ///     Связанный объект <see cref="Common.Course" />.
     /// </summary>
-    public Course? Course { get; set; } = null!;
+    public Course? Course { get; set; } 
 
     /// <summary>
     ///     Связанный объект <see cref="Common.Department" />.
     /// </summary>
-    public Department? Department { get; set; } = null!;
+    public Department? Department { get; set; } 
 
     /// <summary>
     ///     Связанные объекты <see cref="User" />.
     /// </summary>
-    public List<User> Users { get; set; } = null!;
+    public List<User> Users { get; set; } = new List<User>();
 
     /// <summary>
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<Subject> StaticSchedules { get; set; } = null!;
+    public List<Subject> StaticSchedules { get; set; } = new List<Subject>();
 }

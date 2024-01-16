@@ -218,22 +218,22 @@ public class Subject : Identity
     /// <summary>
     ///     Связанный объект <see cref="Management.Discipline" />.
     /// </summary>
-    public Discipline? Discipline { get; set; } = null!;
+    public Discipline? Discipline { get; set; } 
 
     /// <summary>
     ///     Связанный объект <see cref="Management.SubjectPosition" />.
     /// </summary>
-    public SubjectPosition? SubjectPosition { get; set; } = null!;
+    public SubjectPosition? SubjectPosition { get; set; } 
 
     /// <summary>
     ///     Связанный объект <see cref="Management.DayPosition" />.
     /// </summary>
-    public DayPosition? DayPosition { get; set; } = null!;
+    public DayPosition? DayPosition { get; set; } 
 
     /// <summary>
     ///     Связанный объект <see cref="Management.WeekType" />.
     /// </summary>
-    public WeekType? WeekType { get; set; } = null!;
+    public WeekType? WeekType { get; set; } 
 
     /// <summary>
     ///     Связанный объект <see cref="Management.SubjectType" />.
@@ -248,10 +248,10 @@ public class Subject : Identity
     /// <summary>
     ///     Связанный объект <see cref="Common.Group" />.
     /// </summary>
-    public Group? Group { get; set; } = null!;
+    public Group? Group { get; set; } 
 
     /// <summary>
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
-    public List<SubjectChange> ScheduleChanges { get; set; } = null!;
+    public List<SubjectChange> ScheduleChanges { get; set; } = new List<SubjectChange>();
 }
