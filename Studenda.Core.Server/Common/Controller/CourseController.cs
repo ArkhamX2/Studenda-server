@@ -7,7 +7,7 @@ namespace Studenda.Core.Server.Common.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Course" />.
 /// </summary>
-[Route("course")]
+[Route("api/course")]
 [ApiController]
 public class CourseController : ControllerBase
 {
