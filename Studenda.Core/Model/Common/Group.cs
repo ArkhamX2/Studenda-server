@@ -122,12 +122,12 @@ public class Group : Identity
     /// <summary>
     ///     Связанный объект <see cref="Common.Course" />.
     /// </summary>
-    public Course Course { get; set; } = null!;
+    public Course? Course { get; set; } = null!;
 
     /// <summary>
     ///     Связанный объект <see cref="Common.Department" />.
     /// </summary>
-    public Department Department { get; set; } = null!;
+    public Department? Department { get; set; } = null!;
 
     /// <summary>
     ///     Связанные объекты <see cref="User" />.
