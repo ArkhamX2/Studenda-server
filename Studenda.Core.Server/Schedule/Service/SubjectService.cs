@@ -1,5 +1,6 @@
 using Studenda.Core.Data;
 using Studenda.Core.Model.Schedule;
+using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Server.Common.Service;
 
 namespace Studenda.Core.Server.Schedule.Service;
@@ -56,5 +57,19 @@ public class SubjectService : DataEntityService
             .OrderBy(subject => subject.DayPosition.Index)
             .ThenBy(subject => subject.SubjectPosition.Index)
             .ToList();
+    }
+    public void GetFullSubject(List<Subject> subjects)
+    {
+        foreach(Subject subject in subjects)
+        {
+            subject.Discipline=DataContext.Disciplines.FirstOrDefault(discipline => discipline.Id==subject.DisciplineId);
+            subject.SubjectPosition=DataContext.SubjectPositions.FirstOrDefault(subjectPosition => subjectPosition.Id == subject.SubjectPositionId);
+            subject.DayPosition=DataContext.DayPositions.FirstOrDefault(dayPosition=>dayPosition.Id==subject.DayPositionId);
+            subject.WeekType=DataContext.WeekTypes.FirstOrDefault(weekType=>weekType.Id==subject.WeekTypeId);
+            subject.SubjectType=DataContext.SubjectTypes.FirstOrDefault(subjectType=>subjectType.Id== subject.SubjectTypeId);
+            subject.User=DataContext.Users.FirstOrDefault(user => user.Id==subject.UserId);
+            subject.Group=DataContext.Groups.FirstOrDefault(group => group.Id==subject.GroupId);
+            subject.ScheduleChanges=DataContext.SubjectChanges.Where(subjectChange=>subjectChange.StaticScheduleId==subject.Id).ToList();
+        }
     }
 }
