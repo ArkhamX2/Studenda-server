@@ -35,7 +35,15 @@ public class GroupController : ControllerBase
     [HttpGet]
     public ActionResult<List<Group>> Get([FromQuery] int id)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Groups, id);
+        var groups= DataEntityService.Get(DataEntityService.DataContext.Groups, id);
+        foreach (var group in groups)
+        {
+            group.Course=DataEntityService.DataContext.Courses.FirstOrDefault(course => group.CourseId==course.Id);
+            group.Department=DataEntityService.DataContext.Departments.FirstOrDefault(department => group.DepartmentId==department.Id);
+            group.Users=DataEntityService.DataContext.Users.Where(user=>user.GroupId==group.Id).ToList();
+            group.StaticSchedules=DataEntityService.DataContext.Subjects.Where(subject=>subject.GroupId==group.Id).ToList();
+        }
+        return groups;
     }
 
     /// <summary>
