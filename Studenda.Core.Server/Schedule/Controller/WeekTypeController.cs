@@ -35,7 +35,12 @@ public class WeekTypeController : ControllerBase
     [HttpGet]
     public ActionResult<List<WeekType>> Get([FromQuery] int id)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.WeekTypes, id);
+        var weektypes= DataEntityService.Get(DataEntityService.DataContext.WeekTypes, id);
+        foreach (var weektype in weektypes)
+        {
+            weektype.StaticSchedules=DataEntityService.DataContext.Subjects.Where(subject => subject.WeekTypeId==weektype.Id).ToList();
+        }
+        return weektypes;
     }
 
     /// <summary>
