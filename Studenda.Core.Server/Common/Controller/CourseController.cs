@@ -35,7 +35,12 @@ public class CourseController : ControllerBase
     [HttpGet]
     public ActionResult<List<Course>> Get([FromQuery] int id)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Courses, id);
+        var courses= DataEntityService.Get(DataEntityService.DataContext.Courses, id);
+        foreach(var course in courses)
+        {
+            course.Groups=DataEntityService.DataContext.Groups.Where(Group => Group.CourseId == course.Id).ToList();
+        }
+        return courses;
     }
 
     /// <summary>
