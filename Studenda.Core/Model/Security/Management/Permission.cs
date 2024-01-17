@@ -81,12 +81,12 @@ public class Permission : Identity
     /// <summary>
     ///     Название.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 
     #endregion
 
     /// <summary>
     ///     Связанные объекты <see cref="RolePermissionLink" />.
     /// </summary>
-    public List<RolePermissionLink> RolePermissionLinks { get; set; } = null!;
+    public List<RolePermissionLink> RolePermissionLinks { get; set; } = new();
 }

@@ -105,17 +105,17 @@ public class Group : Identity
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Common.Course" />.
     /// </summary>
-    public int CourseId { get; set; }
+    public int? CourseId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Common.Department" />.
     /// </summary>
-    public int DepartmentId { get; set; }
+    public int? DepartmentId { get; set; }
 
     /// <summary>
     ///     Название.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 
     #endregion
 
@@ -132,10 +132,10 @@ public class Group : Identity
     /// <summary>
     ///     Связанные объекты <see cref="User" />.
     /// </summary>
-    public List<User> Users { get; set; } = new List<User>();
+    public List<User> Users { get; set; } = new();
 
     /// <summary>
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<Subject> StaticSchedules { get; set; } = new List<Subject>();
+    public List<Subject> StaticSchedules { get; set; } = new();
 }

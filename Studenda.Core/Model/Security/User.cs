@@ -153,7 +153,7 @@ public class User : Identity
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.Role" />.
     /// </summary>
-    public int RoleId { get; set; }
+    public int? RoleId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.
@@ -190,7 +190,7 @@ public class User : Identity
     /// <summary>
     ///     Связанный объект <see cref="Management.Role" />.
     /// </summary>
-    public Role Role { get; set; } = null!;
+    public Role? Role { get; set; }
 
     /// <summary>
     ///     Связанный объект <see cref="Common.Group" />.
@@ -200,15 +200,15 @@ public class User : Identity
     /// <summary>
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<Subject> Subjects { get; set; } = null!;
+    public List<Subject> Subjects { get; set; } = new();
 
     /// <summary>
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
-    public List<SubjectChange> SubjectChanges { get; set; } = null!;
+    public List<SubjectChange> SubjectChanges { get; set; } = new();
 
     /// <summary>
     ///     Связанные объекты <see cref="Discipline" />.
     /// </summary>
-    public List<Discipline> Disciplines { get; set; } = null!;
+    public List<Discipline> Disciplines { get; set; } = new();
 }

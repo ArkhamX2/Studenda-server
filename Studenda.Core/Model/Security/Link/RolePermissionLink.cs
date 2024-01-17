@@ -86,22 +86,22 @@ public class RolePermissionLink : Entity
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.Role" />.
     /// </summary>
-    public int RoleId { get; set; }
+    public int? RoleId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.Permission" />.
     /// </summary>
-    public int PermissionId { get; set; }
+    public int? PermissionId { get; set; }
 
     #endregion
 
     /// <summary>
     ///     Связанный объект <see cref="Management.Role" />.
     /// </summary>
-    public Role Role { get; set; } = null!;
+    public Role? Role { get; set; }
 
     /// <summary>
     ///     Связанный объект <see cref="Management.Permission" />.
     /// </summary>
-    public Permission Permission { get; set; } = null!;
+    public Permission? Permission { get; set; }
 }

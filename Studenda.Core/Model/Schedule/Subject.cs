@@ -167,22 +167,22 @@ public class Subject : Identity
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.Discipline" />.
     /// </summary>
-    public int DisciplineId { get; set; }
+    public int? DisciplineId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.SubjectPosition" />.
     /// </summary>
-    public int SubjectPositionId { get; set; }
+    public int? SubjectPositionId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.DayPosition" />.
     /// </summary>
-    public int DayPositionId { get; set; }
+    public int? DayPositionId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.WeekType" />.
     /// </summary>
-    public int WeekTypeId { get; set; }
+    public int? WeekTypeId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.SubjectType" />.
@@ -199,7 +199,7 @@ public class Subject : Identity
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     /// </summary>
-    public int GroupId { get; set; }
+    public int? GroupId { get; set; }
 
     /// <summary>
     ///     Кабинет.
@@ -253,5 +253,5 @@ public class Subject : Identity
     /// <summary>
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
-    public List<SubjectChange> ScheduleChanges { get; set; } = new List<SubjectChange>();
+    public List<SubjectChange> ScheduleChanges { get; set; } = new();
 }

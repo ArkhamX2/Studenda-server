@@ -88,7 +88,7 @@ public class Course : Identity
     ///     Градация.
     ///     Числовое представление для операций сравнения.
     /// </summary>
-    public int Grade { get; set; }
+    public required int Grade { get; set; }
 
     /// <summary>
     ///     Название.
@@ -101,5 +101,5 @@ public class Course : Identity
     /// <summary>
     ///     Связанные объекты <see cref="Group" />.
     /// </summary>
-    public List<Group> Groups { get; set; } = new List<Group>();
+    public List<Group> Groups { get; set; } = new();
 }

@@ -108,12 +108,12 @@ public class Discipline : Identity
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Security.User" />.
     /// </summary>
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 
     /// <summary>
     ///     Название.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 
     /// <summary>
     ///     Описание.
@@ -126,15 +126,15 @@ public class Discipline : Identity
     /// <summary>
     ///     Связанный объект <see cref="Security.User" />.
     /// </summary>
-    public User User { get; set; } = null!;
+    public User? User { get; set; }
 
     /// <summary>
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<Subject> Subjects { get; set; } = null!;
+    public List<Subject> Subjects { get; set; } = new();
 
     /// <summary>
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
-    public List<SubjectChange> SubjectChanges { get; set; } = null!;
+    public List<SubjectChange> SubjectChanges { get; set; } = new();
 }

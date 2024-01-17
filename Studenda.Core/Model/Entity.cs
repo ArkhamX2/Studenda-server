@@ -81,10 +81,12 @@ public abstract class Entity
         {
             builder.Property(entity => entity.CreatedAt)
                 .HasColumnType(ContextConfiguration.DateTimeType)
-                .HasDefaultValueSql(ContextConfiguration.DateTimeValueCurrent);
+                .HasDefaultValueSql(ContextConfiguration.DateTimeValueCurrent)
+                .IsRequired();
 
             builder.Property(entity => entity.UpdatedAt)
-                .HasColumnType(ContextConfiguration.DateTimeType);
+                .HasColumnType(ContextConfiguration.DateTimeType)
+                .IsRequired(IsUpdatedAtRequired);
         }
     }
 
@@ -105,7 +107,7 @@ public abstract class Entity
     /// <summary>
     ///     Дата создания.
     /// </summary>
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     /// <summary>
     ///     Дата обновления.
