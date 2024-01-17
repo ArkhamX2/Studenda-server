@@ -10,15 +10,15 @@ public class SecurityResponse
     /// <summary>
     ///     Объект <see cref="Model.Security.User" />.
     /// </summary>
-    public User User { get; init; } = null!;
+    public required User User { get; init; }
 
     /// <summary>
     ///     Токен.
     /// </summary>
-    public string Token { get; set; } = null!;
+    public required string Token { get; set; }
 
     /// <summary>
     ///     Токен обновления.
     /// </summary>
-    public string RefreshToken { get; set; } = null!;
+    public required string RefreshToken { get; set; }
 }

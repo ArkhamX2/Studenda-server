@@ -79,12 +79,12 @@ public class Department : Identity
     /// <summary>
     ///     Название.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 
     #endregion
 
     /// <summary>
     ///     Связанные объекты <see cref="Group" />.
     /// </summary>
-    public List<Group> Groups { get; set; } = new List<Group>();
+    public List<Group> Groups { get; set; } = new();
 }

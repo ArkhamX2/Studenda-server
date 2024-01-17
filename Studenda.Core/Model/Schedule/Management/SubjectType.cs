@@ -98,22 +98,22 @@ public class SubjectType : Identity
     /// <summary>
     ///     Название.
     /// </summary>
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
 
     /// <summary>
     ///     Статус оцениваемости.
     /// </summary>
-    public bool IsScorable { get; set; }
+    public required bool IsScorable { get; set; }
 
     #endregion
 
     /// <summary>
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<Subject> Subjects { get; set; } = null!;
+    public List<Subject> Subjects { get; set; } = new();
 
     /// <summary>
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
-    public List<SubjectChange> SubjectChanges { get; set; } = null!;
+    public List<SubjectChange> SubjectChanges { get; set; } = new();
 }

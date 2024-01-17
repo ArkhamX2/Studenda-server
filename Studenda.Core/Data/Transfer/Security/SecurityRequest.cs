@@ -8,15 +8,15 @@ public class SecurityRequest
     /// <summary>
     ///     Почта.
     /// </summary>
-    public string Email { get; init; } = null!;
+    public required string Email { get; init; }
 
     /// <summary>
     ///     Пароль.
     /// </summary>
-    public string Password { get; init; } = null!;
+    public required string Password { get; init; }
 
     /// <summary>
     ///     Название роли.
     /// </summary>
-    public string RoleName { get; init; } = null!;
+    public required string RoleName { get; init; }
 }

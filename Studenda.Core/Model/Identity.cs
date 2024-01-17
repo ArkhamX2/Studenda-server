@@ -8,5 +8,5 @@ public class Identity : Entity
     /// <summary>
     ///     Идентификатор.
     /// </summary>
-    public int Id { get; set; }
+    public int? Id { get; set; }
 }

@@ -115,7 +115,7 @@ public class SubjectPosition : Identity
     /// <summary>
     ///     Индекс в учебном дне.
     /// </summary>
-    public int Index { get; set; }
+    public required int Index { get; set; }
 
     /// <summary>
     ///     Обозначение начала.
@@ -140,5 +140,5 @@ public class SubjectPosition : Identity
     /// <summary>
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<Subject> StaticSchedules { get; set; } = null!;
+    public List<Subject> StaticSchedules { get; set; } = new();
 }

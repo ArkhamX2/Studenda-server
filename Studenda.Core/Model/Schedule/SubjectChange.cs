@@ -132,7 +132,7 @@ public class SubjectChange : Identity
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Subject" />.
     /// </summary>
-    public int StaticScheduleId { get; set; }
+    public int? StaticScheduleId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Management.Discipline" />.
@@ -169,7 +169,7 @@ public class SubjectChange : Identity
     /// <summary>
     ///     Связанный объект <see cref="Subject" />.
     /// </summary>
-    public Subject Subject { get; set; } = null!;
+    public Subject? Subject { get; set; }
 
     /// <summary>
     ///     Связанный объект <see cref="Management.Discipline" />.

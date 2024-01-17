@@ -35,7 +35,7 @@
     ports:
       - '3306:3306'
     volumes:
-      - 'studenda_data_default:/var/lib/mysql'
+      - 'data_default:/var/lib/mysql'
     networks:
       - 'inner'
 
@@ -56,13 +56,13 @@
     ports:
       - '3307:3306'
     volumes:
-      - 'studenda_data_identity:/var/lib/mysql'
+      - 'data_identity:/var/lib/mysql'
     networks:
       - 'inner'
 
 volumes:
-  studenda_data_default:
-  studenda_data_identity:
+  data_default:
+  data_identity:
 
 networks:
   inner:

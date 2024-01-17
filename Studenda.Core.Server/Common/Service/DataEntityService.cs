@@ -81,7 +81,8 @@ public class DataEntityService
             return false;
         }
 
-        dbSet.RemoveRange(dbSet.Where(identity => ids.Contains(identity.Id)));
+        dbSet.RemoveRange(dbSet.Where(
+            identity => ids.Contains(identity.Id.GetValueOrDefault())));
 
         return DataContext.SaveChanges() > 0;
     }
