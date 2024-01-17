@@ -32,11 +32,14 @@ public class SubjectService : DataEntityService
             return Get(DataContext.Subjects, 0);
         }
 
-        return DataContext.Subjects
+        var subjects= DataContext.Subjects
             .Where(subject => subject.Group.Id == groupId && subject.WeekType.Index == weekType)
             .OrderBy(subject => subject.DayPosition.Index)
             .ThenBy(subject => subject.SubjectPosition.Index)
             .ToList();
+        GetFullSubjects(subjects);
+        return subjects;
+
     }
 
     /// <summary>
@@ -52,13 +55,15 @@ public class SubjectService : DataEntityService
             return Get(DataContext.Subjects, 0);
         }
 
-        return DataContext.Subjects
+        var subjects= DataContext.Subjects
             .Where(subject => subject.User != null && subject.User.Id == userId && subject.WeekType.Index == weekType)
             .OrderBy(subject => subject.DayPosition.Index)
             .ThenBy(subject => subject.SubjectPosition.Index)
             .ToList();
+        GetFullSubjects(subjects);
+        return subjects;
     }
-    public void GetFullSubject(List<Subject> subjects)
+    public void GetFullSubjects(List<Subject> subjects)
     {
         foreach(Subject subject in subjects)
         {
