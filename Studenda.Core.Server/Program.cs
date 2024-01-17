@@ -95,6 +95,17 @@ serviceCollection.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
 });
 
+serviceCollection.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
 // Приложение.
 
 var application = applicationBuilder.Build();
@@ -103,4 +114,5 @@ application.UseMiddleware<ExceptionHandler>();
 application.UseAuthentication();
 application.UseAuthorization();
 application.MapControllers();
+application.UseCors();
 application.Run();
