@@ -35,7 +35,12 @@ public class DepartmentController : ControllerBase
     [HttpGet]
     public ActionResult<List<Department>> Get([FromQuery] int id)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Departments, id);
+        var departments= DataEntityService.Get(DataEntityService.DataContext.Departments, id);
+        foreach (var department in departments)
+        {
+            department.Groups=DataEntityService.DataContext.Groups.Where(Group => Group.DepartmentId == department.Id).ToList();
+        }
+        return departments;
     }
 
     /// <summary>
