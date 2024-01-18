@@ -33,9 +33,9 @@ public class SubjectController : ControllerBase
     /// <param name="id">Идентификатор.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
-    public ActionResult<List<Subject>> Get([FromQuery] int id)
+    public ActionResult<List<Subject>> Get([FromBody] List<int> ids)
     {
-        return SubjectService.Get(SubjectService.DataContext.Subjects, id);
+        return SubjectService.Get(SubjectService.DataContext.Subjects, ids);
     }
 
     /// <summary>
