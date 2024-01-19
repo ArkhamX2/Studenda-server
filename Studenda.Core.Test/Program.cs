@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using Studenda.Core.Data;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;

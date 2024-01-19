@@ -32,31 +32,40 @@ public class WeekTypeService : DataEntityService
     /// <summary>
     ///     Получить текущий тип недели.
     /// </summary>
-    /// <param name="year">Год.</param>
     /// <returns>Тип недели или ничего.</returns>
-    public WeekType? GetCurrent(int year)
+    public WeekType? GetCurrent()
     {
-        var startOfAcademicYear = new DateTime(year, AcademicYearStartMonth, AcademicYearStartDay);
+        var today = DateTime.Now;
+        var startOfAcademicYear = new DateTime(today.Year, AcademicYearStartMonth, AcademicYearStartDay);
 
-        if (DateTime.Now < startOfAcademicYear)
+        if (today < startOfAcademicYear)
         {
-            // Используем прошлый год.
             startOfAcademicYear = startOfAcademicYear.AddYears(-1);
         }
 
-        var calendar = CultureInfo.CurrentCulture.Calendar;
-        var currentWeekNumber = calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-        var startWeekNumber = calendar.GetWeekOfYear(startOfAcademicYear, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
-        var currentWeek = currentWeekNumber - startWeekNumber + 1;
+        // Первый понедельник начала учебного года
+        while (startOfAcademicYear.DayOfWeek != DayOfWeek.Monday)
+        {
+            startOfAcademicYear = startOfAcademicYear.AddDays(1);
+        }
 
+        // Понедельник текущей недели
+        var currentMonday = today;
+
+        while (currentMonday.DayOfWeek != DayOfWeek.Monday)
+        {
+            currentMonday = currentMonday.AddDays(-1);
+        }
+
+        var weeksPassed = Math.Ceiling((currentMonday - startOfAcademicYear).TotalDays / 7) + 1;
         var maxIndex = DataContext.WeekTypes.Max(type => type.Index);
-        var circularIndex = currentWeek % maxIndex;
+        var circularIndex = (int)weeksPassed % maxIndex;
 
         if (circularIndex == 0)
         {
             circularIndex = maxIndex;
         }
-
+        
         return DataContext.WeekTypes.FirstOrDefault(type => type.Index == circularIndex);
     }
 

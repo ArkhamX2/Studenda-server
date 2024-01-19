@@ -28,18 +28,17 @@ public class WeekTypeController : ControllerBase
     /// <summary>
     ///     Получить текущий тип недели.
     /// </summary>
-    /// <param name="year">Год.</param>
     /// <returns>Результат операции с типом недели или пустой результат.</returns>
-    [HttpGet("current/{year:int}")]
-    public ActionResult<WeekType?> GetCurrent([FromQuery] int year)
+    [HttpGet("current")]
+    public ActionResult<WeekType?> GetCurrent()
     {
-        return WeekTypeService.GetCurrent(year);
+        return WeekTypeService.GetCurrent();
     }
 
     /// <summary>
     ///     Получить список типов недель.
     ///     Если идентификаторы не указаны, возвращается список со всеми типами недель.
-    ///     Иначе возвращается список с типами недель.
+    ///     Иначе возвращается список с указанными типами недель.
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком типов недель.</returns>
