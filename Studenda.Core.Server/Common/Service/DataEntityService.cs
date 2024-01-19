@@ -55,7 +55,7 @@ public class DataEntityService
     /// <param name="entities">Список моделей.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Статус операции.</returns>
-    public virtual bool Set<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : Identity
+    public bool Set<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : Identity
     {
         if (entities.Count <= 0)
         {
