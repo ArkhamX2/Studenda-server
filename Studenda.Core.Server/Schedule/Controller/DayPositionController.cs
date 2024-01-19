@@ -22,5 +22,29 @@ namespace Studenda.Core.Server.Schedule.Controller
         {
             return DataEntityService.Get(DataEntityService.DataContext.DayPositions, ids);
         }
+        [HttpPost]
+        public IActionResult Post([FromBody] List<DayPosition> entities)
+        {
+            var status = DataEntityService.Set(DataEntityService.DataContext.DayPositions, entities);
+
+            if (!status)
+            {
+                return BadRequest("No week types were saved!");
+            }
+
+            return Ok();
+        }
+        [HttpDelete]
+        public IActionResult Delete([FromBody] List<int> ids)
+        {
+            var status = DataEntityService.Remove(DataEntityService.DataContext.DayPositions, ids);
+
+            if (!status)
+            {
+                return BadRequest("No week types were deleted!");
+            }
+
+            return Ok();
+        }
     }
 }
