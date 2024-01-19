@@ -80,12 +80,12 @@ public class WeekTypeService : DataEntityService
 
             if (minIndex - maxIndex > 1)
             {
-                return false;
+                throw new ArgumentException("Indexes must be sequential!");
             }
         }
         else if (minIndex != WeekType.StartIndex)
         {
-            return false;
+            throw new ArgumentException($"Indexes must start from {WeekType.StartIndex}!");
         }
 
         return base.Set(DataContext.WeekTypes, weekTypes);
