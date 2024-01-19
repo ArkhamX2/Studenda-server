@@ -36,7 +36,7 @@ public class WeekTypeService : DataEntityService
     /// <returns>Тип недели или ничего.</returns>
     public WeekType? GetCurrent(int year)
     {
-        var startOfAcademicYear = new DateTime(DateTime.Now.Year, AcademicYearStartMonth, AcademicYearStartDay);
+        var startOfAcademicYear = new DateTime(year, AcademicYearStartMonth, AcademicYearStartDay);
 
         if (DateTime.Now < startOfAcademicYear)
         {
