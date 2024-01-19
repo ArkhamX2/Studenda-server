@@ -61,15 +61,6 @@ public class WeekTypeService : DataEntityService
     }
 
     /// <summary>
-    ///     Получить список типов недели, отсортированных по индексу.
-    /// </summary>
-    /// <returns>Список типов недели.</returns>
-    public List<WeekType> GetOrderedByIndex()
-    {
-        return DataContext.WeekTypes.OrderBy(type => type.Index).ToList();
-    }
-
-    /// <summary>
     ///     Задать список типов недели.
     /// </summary>
     /// <param name="weekTypes">Список типов недели.</param>
@@ -98,5 +89,32 @@ public class WeekTypeService : DataEntityService
         }
 
         return base.Set(DataContext.WeekTypes, weekTypes);
+    }
+
+    /// <summary>
+    ///     Удалить список типов недели.
+    ///     Происходит переиндексация типов недель.
+    /// </summary>
+    /// <param name="ids">Список идентификаторов.</param>
+    /// <returns>Статус операции.</returns>
+    public bool Remove(List<int> ids)
+    {
+        if (!base.Remove(DataContext.WeekTypes, ids))
+        {
+            return false;
+        }
+
+        var remainingWeekTypes = DataContext.WeekTypes.OrderBy(type => type.Index).ToList();
+
+        // Обновление индексов
+        for (var i = 0; i < remainingWeekTypes.Count; i++)
+        {
+            remainingWeekTypes[i].Index = i;
+        }
+
+        DataContext.WeekTypes.UpdateRange(remainingWeekTypes);
+        DataContext.SaveChanges();
+
+        return true;
     }
 }
