@@ -40,6 +40,7 @@ public class WeekTypeService : DataEntityService
 
         if (DateTime.Now < startOfAcademicYear)
         {
+            // Используем прошлый год.
             startOfAcademicYear = startOfAcademicYear.AddYears(-1);
         }
 
@@ -91,7 +92,7 @@ public class WeekTypeService : DataEntityService
                 return false;
             }
         }
-        else if (minIndex != 0)
+        else if (minIndex != WeekType.StartIndex)
         {
             return false;
         }
