@@ -87,9 +87,16 @@ public class WeekTypeService : DataEntityService
             return false;
         }
 
-        var maxIndex = DataContext.WeekTypes.Max(type => type.Index);
+        if (DataContext.WeekTypes.Any())
+        {
+            var maxIndex = DataContext.WeekTypes.Max(type => type.Index);
 
-        if (weekTypes.Min(type => type.Index) - maxIndex > 1)
+            if (weekTypes.Min(type => type.Index) - maxIndex > 1)
+            {
+                return false;
+            }
+        }
+        else if (weekTypes.Min(type => type.Index) != 0)
         {
             return false;
         }
