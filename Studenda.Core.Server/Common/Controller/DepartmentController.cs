@@ -33,9 +33,9 @@ public class DepartmentController : ControllerBase
     /// <param name="id">Идентификатор.</param>
     /// <returns>Результат операции со списком факультетов.</returns>
     [HttpGet]
-    public ActionResult<List<Department>> Get([FromQuery] int id)
+    public ActionResult<List<Department>> Get([FromBody] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Departments, id);
+        return DataEntityService.Get(DataEntityService.DataContext.Departments, ids);
     }
 
     /// <summary>

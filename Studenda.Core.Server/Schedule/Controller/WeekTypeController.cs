@@ -33,9 +33,9 @@ public class WeekTypeController : ControllerBase
     /// <param name="id">Идентификатор.</param>
     /// <returns>Результат операции со списком типов недель.</returns>
     [HttpGet]
-    public ActionResult<List<WeekType>> Get([FromQuery] int id)
+    public ActionResult<List<WeekType>> Get([FromBody] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.WeekTypes, id);
+        return DataEntityService.Get(DataEntityService.DataContext.WeekTypes, ids);
     }
 
     /// <summary>

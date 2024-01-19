@@ -33,9 +33,9 @@ public class GroupController : ControllerBase
     /// <param name="id">Идентификатор.</param>
     /// <returns>Результат операции со списком групп.</returns>
     [HttpGet]
-    public ActionResult<List<Group>> Get([FromQuery] int id)
+    public ActionResult<List<Group>> Get([FromQuery] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Groups, id);
+        return DataEntityService.Get(DataEntityService.DataContext.Groups, ids);
     }
 
     /// <summary>

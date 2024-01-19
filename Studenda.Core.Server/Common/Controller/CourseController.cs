@@ -33,9 +33,9 @@ public class CourseController : ControllerBase
     /// <param name="id">Идентификатор.</param>
     /// <returns>Результат операции со списком курсов.</returns>
     [HttpGet]
-    public ActionResult<List<Course>> Get([FromQuery] int id)
+    public ActionResult<List<Course>> Get([FromBody] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Courses, id);
+        return DataEntityService.Get(DataEntityService.DataContext.Courses, ids);
     }
 
     /// <summary>
