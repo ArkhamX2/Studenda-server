@@ -11,7 +11,7 @@ public class SubjectPosition : Identity
     /// <summary>
     ///     Начальное значение индекса.
     /// </summary>
-    public const int StartIndex = 0;
+    public const int StartIndex = 1;
 
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
