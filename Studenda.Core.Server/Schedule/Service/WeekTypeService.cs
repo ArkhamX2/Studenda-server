@@ -96,6 +96,15 @@ public class WeekTypeService : DataEntityService
             throw new ArgumentException($"Indexes must start from {WeekType.StartIndex}!");
         }
 
+        var indexes = weekTypes.Select(type => type.Index).ToList();
+        var weekTypesToRemove = DataContext.WeekTypes.Where(type => indexes.Contains(type.Index)).ToList();
+
+        if (weekTypesToRemove.Any())
+        {
+            DataContext.WeekTypes.RemoveRange(weekTypesToRemove);
+            DataContext.SaveChanges();
+        }
+
         return base.Set(DataContext.WeekTypes, weekTypes);
     }
 
