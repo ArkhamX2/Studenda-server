@@ -83,5 +83,4 @@ public class WeekTypeController : ControllerBase
 
         return Ok();
     }
-
 }

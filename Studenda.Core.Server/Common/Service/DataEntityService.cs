@@ -24,42 +24,6 @@ public class DataEntityService
     internal DataContext DataContext { get; }
 
     /// <summary>
-    ///     Получить все модели.
-    /// </summary>
-    /// <param name="dbSet">Набор объектов <see cref="DbSet{TEntity}" />.</param>
-    /// <typeparam name="TSource">Тип модели.</typeparam>
-    /// <returns>Список моделей.</returns>
-    public List<TSource> GetAll<TSource>(IEnumerable<TSource> dbSet) where TSource : Identity
-    {
-        return dbSet.ToList();
-    }
-
-    /// <summary>
-    ///     Получить модель по ее идентификатору.
-    /// </summary>
-    /// <param name="dbSet">Набор объектов <see cref="DbSet{TEntity}" />.</param>
-    /// <param name="id">Идентификатор.</param>
-    /// <typeparam name="TSource">Тип модели.</typeparam>
-    /// <returns>Модель.</returns>
-    public List<TSource> Get<TSource>(DbSet<TSource> dbSet, int id) where TSource : Identity
-    {
-        if (id <= 0)
-        {
-            return dbSet.ToList();
-        }
-
-        var identity = dbSet.FirstOrDefault(identity => identity.Id == id);
-        var result = new List<TSource>();
-
-        if (identity != null)
-        {
-            result.Add(identity);
-        }
-
-        return result;
-    }
-
-    /// <summary>
     ///     Получить модели по списку идентификаторов.
     /// </summary>
     /// <param name="dbSet">Набор объектов <see cref="DbSet{TEntity}" />.</param>
