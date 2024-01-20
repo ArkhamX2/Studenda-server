@@ -70,6 +70,7 @@ serviceCollection.AddIdentity<Account, IdentityRole>()
 
 serviceCollection.AddScoped<DataEntityService>();
 serviceCollection.AddScoped<SubjectService>();
+serviceCollection.AddScoped<WeekTypeService>();
 serviceCollection.AddControllers();
 serviceCollection.AddAuthorization();
 serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

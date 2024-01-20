@@ -27,15 +27,15 @@ public class DepartmentController : ControllerBase
 
     /// <summary>
     ///     Получить список факультетов.
-    ///     Если идентификатор не указан, возвращается список со всеми факультетами.
-    ///     Иначе возвращается список с одним факультетом, либо пустой список.
+    ///     Если идентификаторы не указаны, возвращается список со всеми факультетами.
+    ///     Иначе возвращается список со списком факультетом, либо пустой список.
     /// </summary>
-    /// <param name="id">Идентификатор.</param>
+    /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком факультетов.</returns>
     [HttpGet]
-    public ActionResult<List<Department>> Get([FromQuery] int id)
+    public ActionResult<List<Department>> Get([FromBody] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Departments, id);
+        return DataEntityService.Get(DataEntityService.DataContext.Departments, ids);
     }
 
     /// <summary>

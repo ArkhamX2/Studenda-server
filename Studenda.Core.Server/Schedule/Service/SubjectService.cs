@@ -5,7 +5,7 @@ using Studenda.Core.Server.Common.Service;
 namespace Studenda.Core.Server.Schedule.Service;
 
 /// <summary>
-///     Сервис для работы со статичными расписаниями.
+///     Сервис для работы с <see cref="Subject" />.
 /// </summary>
 public class SubjectService : DataEntityService
 {

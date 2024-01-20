@@ -27,15 +27,15 @@ public class CourseController : ControllerBase
 
     /// <summary>
     ///     Получить список курсов.
-    ///     Если идентификатор не указан, возвращается список со всеми курсами.
-    ///     Иначе возвращается список с одним курсом, либо пустой список.
+    ///     Если идентификаторы не указаны, возвращается список со всеми курсами.
+    ///     Иначе возвращается список с указанными курсами, либо пустой список.
     /// </summary>
-    /// <param name="id">Идентификатор.</param>
+    /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком курсов.</returns>
     [HttpGet]
-    public ActionResult<List<Course>> Get([FromQuery] int id)
+    public ActionResult<List<Course>> Get([FromBody] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Courses, id);
+        return DataEntityService.Get(DataEntityService.DataContext.Courses, ids);
     }
 
     /// <summary>

@@ -27,15 +27,15 @@ public class GroupController : ControllerBase
 
     /// <summary>
     ///     Получить список групп.
-    ///     Если идентификатор не указан, возвращается список со всеми группами.
-    ///     Иначе возвращается список с одной группой, либо пустой список.
+    ///     Если идентификаторы не указаны, возвращается список со всеми группами.
+    ///     Иначе возвращается список с указанными группами, либо пустой список.
     /// </summary>
-    /// <param name="id">Идентификатор.</param>
+    /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком групп.</returns>
     [HttpGet]
-    public ActionResult<List<Group>> Get([FromQuery] int id)
+    public ActionResult<List<Group>> Get([FromQuery] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Groups, id);
+        return DataEntityService.Get(DataEntityService.DataContext.Groups, ids);
     }
 
     /// <summary>

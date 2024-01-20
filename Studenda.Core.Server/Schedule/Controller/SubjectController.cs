@@ -7,7 +7,7 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Subject" />.
 /// </summary>
-[Route("api/subject")]
+[Route("api/schedule/subject")]
 [ApiController]
 public class SubjectController : ControllerBase
 {
@@ -33,9 +33,9 @@ public class SubjectController : ControllerBase
     /// <param name="id">Идентификатор.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
-    public ActionResult<List<Subject>> Get([FromQuery] int id)
+    public ActionResult<List<Subject>> Get([FromBody] List<int> ids)
     {
-        return SubjectService.Get(SubjectService.DataContext.Subjects, id);
+        return SubjectService.Get(SubjectService.DataContext.Subjects, ids);
     }
 
     /// <summary>
