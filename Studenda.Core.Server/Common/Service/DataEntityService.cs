@@ -54,7 +54,27 @@ public class DataEntityService
             return false;
         }
 
-        dbSet.UpdateRange(entities);
+        var newEntities = entities.Where(entity => !entity.Id.HasValue).ToList();
+        var oldEntities = entities.Where(entity => entity.Id.HasValue).ToList();
+
+        var oldIds = oldEntities.Select(entity => entity.Id.GetValueOrDefault()).ToList();
+        var oldIdsInDb = dbSet
+            .Where(entity => oldIds.Contains(entity.Id.GetValueOrDefault()))
+            .Select(entity => entity.Id.GetValueOrDefault()).ToList();
+        var oldIdsNotInDb = oldIds.Except(oldIdsInDb).ToList();
+
+        newEntities.AddRange(oldEntities.Where(entity => oldIdsNotInDb.Contains(entity.Id.GetValueOrDefault())));
+        oldEntities.RemoveAll(entity => oldIdsNotInDb.Contains(entity.Id.GetValueOrDefault()));
+
+        if (newEntities.Any())
+        {
+            dbSet.AddRange(newEntities);
+        }
+
+        if (oldEntities.Any())
+        {
+            dbSet.UpdateRange(oldEntities);
+        }
 
         return DataContext.SaveChanges() > 0;
     }

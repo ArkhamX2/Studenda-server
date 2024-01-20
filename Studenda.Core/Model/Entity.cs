@@ -82,6 +82,7 @@ public abstract class Entity
             builder.Property(entity => entity.CreatedAt)
                 .HasColumnType(ContextConfiguration.DateTimeType)
                 .HasDefaultValueSql(ContextConfiguration.DateTimeValueCurrent)
+                .ValueGeneratedOnAddOrUpdate()
                 .IsRequired();
 
             builder.Property(entity => entity.UpdatedAt)
