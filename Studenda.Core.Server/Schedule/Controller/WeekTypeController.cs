@@ -7,7 +7,7 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="WeekType" />.
 /// </summary>
-[Route("api/week-type")]
+[Route("api/schedule/week-type")]
 [ApiController]
 public class WeekTypeController : ControllerBase
 {

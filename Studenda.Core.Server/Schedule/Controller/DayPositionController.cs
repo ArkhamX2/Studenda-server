@@ -7,7 +7,7 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="DayPosition" />.
 /// </summary>
-[Route("api/day-position")]
+[Route("api/schedule/day-position")]
 [ApiController]
 public class DayPositionController : ControllerBase
 {

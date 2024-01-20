@@ -7,7 +7,7 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Discipline" />.
 /// </summary>
-[Route("api/discipline")]
+[Route("api/schedule/discipline")]
 [ApiController]
 public class DisciplineController : ControllerBase
 {
