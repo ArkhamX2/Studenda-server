@@ -28,7 +28,7 @@ public class SubjectService : DataEntityService
     {
         if (groupId <= 0 || weekType <= 0)
         {
-            return Get(DataContext.Subjects, 0);
+            throw new ArgumentException("Invalid arguments!");
         }
 
         return DataContext.Subjects
@@ -48,7 +48,7 @@ public class SubjectService : DataEntityService
     {
         if (userId <= 0 || weekType <= 0)
         {
-            return Get(DataContext.Subjects, 0);
+            throw new ArgumentException("Invalid arguments!");
         }
 
         return DataContext.Subjects
