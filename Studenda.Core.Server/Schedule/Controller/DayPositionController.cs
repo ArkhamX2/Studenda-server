@@ -26,6 +26,16 @@ public class DayPositionController : ControllerBase
     private DataEntityService DataEntityService { get; }
 
     /// <summary>
+    ///     Получить список всех позиций учебного дня.
+    /// </summary>
+    /// <returns>Результат операции со списком позиций.</returns>
+    [HttpGet("all")]
+    public ActionResult<List<DayPosition>> GetAll()
+    {
+        return DataEntityService.Get(DataEntityService.DataContext.DayPositions, new List<int>());
+    }
+
+    /// <summary>
     ///     Получить список позиций учебного дня.
     ///     Если идентификаторы не указаны, возвращается список со всеми позициями.
     ///     Иначе возвращается список с указанными позициями, либо пустой список.

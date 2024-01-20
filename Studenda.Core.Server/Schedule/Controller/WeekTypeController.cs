@@ -36,6 +36,16 @@ public class WeekTypeController : ControllerBase
     }
 
     /// <summary>
+    ///     Получить список всех типов недель.
+    /// </summary>
+    /// <returns>Результат операции со списком типов.</returns>
+    [HttpGet("all")]
+    public ActionResult<List<WeekType>> GetAll()
+    {
+        return WeekTypeService.Get(WeekTypeService.DataContext.WeekTypes, new List<int>());
+    }
+
+    /// <summary>
     ///     Получить список типов недель.
     ///     Если идентификаторы не указаны, возвращается список со всеми типами недель.
     ///     Иначе возвращается список с указанными типами недель.
@@ -43,7 +53,7 @@ public class WeekTypeController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком типов недель.</returns>
     [HttpGet]
-    public ActionResult<List<WeekType>> Get([FromBody] List<int> ids)
+    public ActionResult<List<WeekType>> Get([FromQuery] List<int> ids)
     {
         return WeekTypeService.Get(WeekTypeService.DataContext.WeekTypes, ids);
     }

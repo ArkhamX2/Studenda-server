@@ -26,6 +26,16 @@ public class CourseController : ControllerBase
     private DataEntityService DataEntityService { get; }
 
     /// <summary>
+    ///     Получить список всех курсов.
+    /// </summary>
+    /// <returns>Результат операции со списком курсов.</returns>
+    [HttpGet("all")]
+    public ActionResult<List<Course>> GetAll()
+    {
+        return DataEntityService.Get(DataEntityService.DataContext.Courses, new List<int>());
+    }
+
+    /// <summary>
     ///     Получить список курсов.
     ///     Если идентификаторы не указаны, возвращается список со всеми курсами.
     ///     Иначе возвращается список с указанными курсами, либо пустой список.
@@ -33,7 +43,7 @@ public class CourseController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком курсов.</returns>
     [HttpGet]
-    public ActionResult<List<Course>> Get([FromBody] List<int> ids)
+    public ActionResult<List<Course>> Get([FromQuery] List<int> ids)
     {
         return DataEntityService.Get(DataEntityService.DataContext.Courses, ids);
     }

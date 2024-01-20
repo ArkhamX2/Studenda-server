@@ -26,6 +26,16 @@ public class SubjectTypeController : ControllerBase
     private DataEntityService DataEntityService { get; }
 
     /// <summary>
+    ///     Получить список всех типов занятия.
+    /// </summary>
+    /// <returns>Результат операции со списком типов.</returns>
+    [HttpGet("all")]
+    public ActionResult<List<SubjectType>> GetAll()
+    {
+        return DataEntityService.Get(DataEntityService.DataContext.SubjectTypes, new List<int>());
+    }
+
+    /// <summary>
     ///     Получить список типов занятия.
     ///     Если идентификаторы не указаны, возвращается список со всеми типами.
     ///     Иначе возвращается список с указанными типами, либо пустой список.

@@ -26,6 +26,16 @@ public class DisciplineController : ControllerBase
     private DataEntityService DataEntityService { get; }
 
     /// <summary>
+    ///     Получить список всех дисциплин.
+    /// </summary>
+    /// <returns>Результат операции со списком дисциплин.</returns>
+    [HttpGet("all")]
+    public ActionResult<List<Discipline>> GetAll()
+    {
+        return DataEntityService.Get(DataEntityService.DataContext.Disciplines, new List<int>());
+    }
+
+    /// <summary>
     ///     Получить список дисциплин.
     ///     Если идентификаторы не указаны, возвращается список со всеми дисциплинами.
     ///     Иначе возвращается список с указанными дисциплинами, либо пустой список.

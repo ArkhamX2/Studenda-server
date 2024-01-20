@@ -26,6 +26,16 @@ public class GroupController : ControllerBase
     private DataEntityService DataEntityService { get; }
 
     /// <summary>
+    ///     Получить список всех групп.
+    /// </summary>
+    /// <returns>Результат операции со списком групп.</returns>
+    [HttpGet("all")]
+    public ActionResult<List<Group>> GetAll()
+    {
+        return DataEntityService.Get(DataEntityService.DataContext.Groups, new List<int>());
+    }
+
+    /// <summary>
     ///     Получить список групп.
     ///     Если идентификаторы не указаны, возвращается список со всеми группами.
     ///     Иначе возвращается список с указанными группами, либо пустой список.

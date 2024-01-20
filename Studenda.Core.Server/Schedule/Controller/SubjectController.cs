@@ -26,6 +26,16 @@ public class SubjectController : ControllerBase
     private SubjectService SubjectService { get; }
 
     /// <summary>
+    ///     Получить список всех статичных занятий.
+    /// </summary>
+    /// <returns>Результат операции со списком занятий.</returns>
+    [HttpGet("all")]
+    public ActionResult<List<Subject>> GetAll()
+    {
+        return SubjectService.Get(SubjectService.DataContext.Subjects, new List<int>());
+    }
+
+    /// <summary>
     ///     Получить список статичных занятий.
     ///     Если идентификаторы не указаны, возвращается список со всеми занятиями.
     ///     Иначе возвращается список с указанными занятиями, либо пустой список.
@@ -33,7 +43,7 @@ public class SubjectController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком занятий.</returns>
     [HttpGet]
-    public ActionResult<List<Subject>> Get([FromBody] List<int> ids)
+    public ActionResult<List<Subject>> Get([FromQuery] List<int> ids)
     {
         return SubjectService.Get(SubjectService.DataContext.Subjects, ids);
     }

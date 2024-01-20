@@ -26,6 +26,16 @@ public class SubjectPositionController : ControllerBase
     private DataEntityService DataEntityService { get; }
 
     /// <summary>
+    ///     Получить список всех позиций занятия.
+    /// </summary>
+    /// <returns>Результат операции со списком позиций.</returns>
+    [HttpGet("all")]
+    public ActionResult<List<SubjectPosition>> GetAll()
+    {
+        return DataEntityService.Get(DataEntityService.DataContext.SubjectPositions, new List<int>());
+    }
+
+    /// <summary>
     ///     Получить список позиций занятия.
     ///     Если идентификаторы не указаны, возвращается список со всеми позициями.
     ///     Иначе возвращается список с указанными позициями, либо пустой список.
