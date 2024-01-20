@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Model.Schedule.Management;
-using Studenda.Core.Server.Common.Service;
+using Studenda.Core.Server.Schedule.Service;
 
 namespace Studenda.Core.Server.Schedule.Controller;
 
@@ -14,28 +14,38 @@ public class WeekTypeController : ControllerBase
     /// <summary>
     ///     Конструктор.
     /// </summary>
-    /// <param name="dataEntityService">Сервис моделей.</param>
-    public WeekTypeController(DataEntityService dataEntityService)
+    /// <param name="weekTypeService">Сервис типов недель.</param>
+    public WeekTypeController(WeekTypeService weekTypeService)
     {
-        DataEntityService = dataEntityService;
+        WeekTypeService = weekTypeService;
     }
 
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; }
+    private WeekTypeService WeekTypeService { get; }
+
+    /// <summary>
+    ///     Получить текущий тип недели.
+    /// </summary>
+    /// <returns>Результат операции с типом недели или пустой результат.</returns>
+    [HttpGet("current")]
+    public ActionResult<WeekType?> GetCurrent()
+    {
+        return WeekTypeService.GetCurrent();
+    }
 
     /// <summary>
     ///     Получить список типов недель.
-    ///     Если идентификатор не указан, возвращается список со всеми типами недель.
-    ///     Иначе возвращается список с одним типом недели, либо пустой список.
+    ///     Если идентификаторы не указаны, возвращается список со всеми типами недель.
+    ///     Иначе возвращается список с указанными типами недель.
     /// </summary>
-    /// <param name="id">Идентификатор.</param>
+    /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком типов недель.</returns>
     [HttpGet]
     public ActionResult<List<WeekType>> Get([FromBody] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.WeekTypes, ids);
+        return WeekTypeService.Get(WeekTypeService.DataContext.WeekTypes, ids);
     }
 
     /// <summary>
@@ -46,7 +56,7 @@ public class WeekTypeController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] List<WeekType> entities)
     {
-        var status = DataEntityService.Set(DataEntityService.DataContext.WeekTypes, entities);
+        var status = WeekTypeService.Set(entities);
 
         if (!status)
         {
@@ -64,7 +74,7 @@ public class WeekTypeController : ControllerBase
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Remove(DataEntityService.DataContext.WeekTypes, ids);
+        var status = WeekTypeService.Remove(ids);
 
         if (!status)
         {
