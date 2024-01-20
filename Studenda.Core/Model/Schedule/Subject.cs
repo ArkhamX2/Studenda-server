@@ -70,6 +70,11 @@ public class Subject : Identity
     public const bool IsGroupIdRequired = true;
 
     /// <summary>
+    ///     Статус необходимости наличия значения в поле <see cref="AcademicYear" />.
+    /// </summary>
+    public const bool IsAcademicYearRequired = true;
+
+    /// <summary>
     ///     Статус необходимости наличия значения в поле <see cref="Classroom" />.
     /// </summary>
     public const bool IsClassroomRequired = false;
@@ -132,6 +137,9 @@ public class Subject : Identity
             builder.HasOne(subject => subject.Group)
                 .WithMany(group => group.StaticSchedules)
                 .HasForeignKey(subject => subject.GroupId)
+                .IsRequired();
+
+            builder.Property(subject => subject.AcademicYear)
                 .IsRequired();
 
             builder.Property(subject => subject.Classroom)
@@ -200,6 +208,11 @@ public class Subject : Identity
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     /// </summary>
     public int? GroupId { get; set; }
+
+    /// <summary>
+    ///     Учебный год.
+    /// </summary>
+    public required int AcademicYear { get; set; }
 
     /// <summary>
     ///     Кабинет.

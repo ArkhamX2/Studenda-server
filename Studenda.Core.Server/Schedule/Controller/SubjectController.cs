@@ -27,11 +27,11 @@ public class SubjectController : ControllerBase
 
     /// <summary>
     ///     Получить список статичных занятий.
-    ///     Если идентификатор не указан, возвращается список со всеми статичными занятиями.
-    ///     Иначе возвращается список с одним статичным занятием, либо пустой список.
+    ///     Если идентификаторы не указаны, возвращается список со всеми занятиями.
+    ///     Иначе возвращается список с указанными занятиями, либо пустой список.
     /// </summary>
-    /// <param name="id">Идентификатор.</param>
-    /// <returns>Результат операции со списком статичных занятий.</returns>
+    /// <param name="ids">Список идентификаторов.</param>
+    /// <returns>Результат операции со списком занятий.</returns>
     [HttpGet]
     public ActionResult<List<Subject>> Get([FromBody] List<int> ids)
     {
@@ -43,12 +43,13 @@ public class SubjectController : ControllerBase
     /// </summary>
     /// <param name="groupId">Идентификатор группы.</param>
     /// <param name="weekTypeId">Тип недели.</param>
+    /// <param name="year">Учебный год.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
     [Route("group")]
-    public ActionResult<List<Subject>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekTypeId)
+    public ActionResult<List<Subject>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekTypeId, [FromQuery] int year)
     {
-        return SubjectService.GetSubjectByGroup(groupId, weekTypeId);
+        return SubjectService.GetSubjectByGroup(groupId, weekTypeId, year);
     }
 
     /// <summary>
@@ -56,12 +57,13 @@ public class SubjectController : ControllerBase
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="weekTypeId">Тип недели.</param>
+    /// <param name="year">Учебный год.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
     [Route("user")]
-    public ActionResult<List<Subject>> GetByUser([FromQuery] int userId, [FromQuery] int weekTypeId)
+    public ActionResult<List<Subject>> GetByUser([FromQuery] int userId, [FromQuery] int weekTypeId, [FromQuery] int year)
     {
-        return SubjectService.GetSubjectByUser(userId, weekTypeId);
+        return SubjectService.GetSubjectByUser(userId, weekTypeId, year);
     }
 
     /// <summary>
