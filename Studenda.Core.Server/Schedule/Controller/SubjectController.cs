@@ -57,9 +57,9 @@ public class SubjectController : ControllerBase
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
     [Route("group")]
-    public ActionResult<List<Subject>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekTypeId, [FromQuery] int year)
+    public ActionResult<List<Subject>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekTypeIndex, [FromQuery] int year)
     {
-        return SubjectService.GetSubjectByGroup(groupId, weekTypeId, year);
+        return SubjectService.GetSubjectByGroup(groupId, weekTypeIndex, year);
     }
 
     /// <summary>
