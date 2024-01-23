@@ -71,9 +71,9 @@ public class SubjectController : ControllerBase
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
     [Route("user")]
-    public ActionResult<List<Subject>> GetByUser([FromQuery] int userId, [FromQuery] int weekTypeId, [FromQuery] int year)
+    public ActionResult<List<Subject>> GetByUser([FromQuery] int userId, [FromQuery] int weekTypeIndex, [FromQuery] int year)
     {
-        return SubjectService.GetSubjectByUser(userId, weekTypeId, year);
+        return SubjectService.GetSubjectByUser(userId, weekTypeIndex, year);
     }
 
     /// <summary>
