@@ -52,7 +52,7 @@ public class SubjectController : ControllerBase
     ///     Получить список статичных занятий по идентификатору группы.
     /// </summary>
     /// <param name="groupId">Идентификатор группы.</param>
-    /// <param name="weekTypeId">Тип недели.</param>
+    /// <param name="weekTypeId">Идентификатор типа недели.</param>
     /// <param name="year">Учебный год.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
@@ -66,7 +66,7 @@ public class SubjectController : ControllerBase
     ///     Получить список статичных занятий по идентификатору пользователя.
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
-    /// <param name="weekTypeId">Тип недели.</param>
+    /// <param name="weekTypeId">Идентификатор типа недели.</param>
     /// <param name="year">Учебный год.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
