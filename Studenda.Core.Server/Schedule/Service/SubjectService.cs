@@ -7,6 +7,7 @@ namespace Studenda.Core.Server.Schedule.Service;
 /// <summary>
 ///     Сервис для работы с <see cref="Subject" />.
 /// </summary>
+///
 public class SubjectService : DataEntityService
 {
     /// <summary>

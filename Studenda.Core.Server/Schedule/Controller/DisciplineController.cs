@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Server.Common.Service;
@@ -9,6 +10,7 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// </summary>
 [Route("api/schedule/discipline")]
 [ApiController]
+[Authorize]
 public class DisciplineController : ControllerBase
 {
     /// <summary>

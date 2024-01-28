@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Server.Common.Service;
 
@@ -9,6 +10,7 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// </summary>
 [Route("api/schedule/day-position")]
 [ApiController]
+
 public class DayPositionController : ControllerBase
 {
     /// <summary>
@@ -29,6 +31,8 @@ public class DayPositionController : ControllerBase
     ///     Получить список всех позиций учебного дня.
     /// </summary>
     /// <returns>Результат операции со списком позиций.</returns>
+    /// 
+    [Authorize]
     [HttpGet("all")]
     public ActionResult<List<DayPosition>> GetAll()
     {
@@ -43,6 +47,7 @@ public class DayPositionController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком позиций.</returns>
     [HttpGet]
+    [Authorize]
     public ActionResult<List<DayPosition>> Get([FromQuery] List<int> ids)
     {
         return DataEntityService.Get(DataEntityService.DataContext.DayPositions, ids);
@@ -54,6 +59,7 @@ public class DayPositionController : ControllerBase
     /// <param name="entities">Список позиций.</param>
     /// <returns>Результат операции.</returns>
     [HttpPost]
+    [Authorize]
     public IActionResult Post([FromBody] List<DayPosition> entities)
     {
         var status = DataEntityService.Set(DataEntityService.DataContext.DayPositions, entities);
@@ -72,6 +78,7 @@ public class DayPositionController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
     [HttpDelete]
+    [Authorize]
     public IActionResult Delete([FromBody] List<int> ids)
     {
         var status = DataEntityService.Remove(DataEntityService.DataContext.DayPositions, ids);

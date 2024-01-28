@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Server.Common.Service;
 
@@ -9,6 +10,7 @@ namespace Studenda.Core.Server.Security.Controller;
 /// </summary>
 [Route("api/security/user")]
 [ApiController]
+[Authorize]
 public class UserController : ControllerBase
 {
     /// <summary>

@@ -71,7 +71,7 @@ public class SecurityController : ControllerBase
 
         account.RefreshToken = Configuration.GenerateRefreshToken();
         account.RefreshTokenExpiryTime =
-            DateTime.UtcNow.AddDays(Configuration.GetSection("Jwt:RefreshTokenValidityInDays").Get<int>());
+            DateTime.UtcNow.AddDays(4000);
 
         await IdentityContext.SaveChangesAsync();
 
