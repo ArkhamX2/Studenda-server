@@ -73,8 +73,11 @@ serviceCollection.AddScoped<SubjectService>();
 serviceCollection.AddScoped<WeekTypeService>();
 serviceCollection.AddControllers();
 serviceCollection.AddAuthorization();
-serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
+serviceCollection.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
     // TODO: Вынести в отдельный класс ближе к конфигурациям.
     options.TokenValidationParameters = new TokenValidationParameters
     {
