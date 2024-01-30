@@ -10,7 +10,6 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// </summary>
 [Route("api/schedule/discipline")]
 [ApiController]
-[Authorize]
 public class DisciplineController : ControllerBase
 {
     /// <summary>
@@ -55,6 +54,7 @@ public class DisciplineController : ControllerBase
     /// </summary>
     /// <param name="entities">Список дисциплин.</param>
     /// <returns>Результат операции.</returns>
+    [Authorize]
     [HttpPost]
     public IActionResult Post([FromBody] List<Discipline> entities)
     {
@@ -73,6 +73,7 @@ public class DisciplineController : ControllerBase
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
+    [Authorize]
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {

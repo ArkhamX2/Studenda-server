@@ -40,7 +40,6 @@ public class SecurityController : ControllerBase
     private UserManager<Account> UserManager { get; }
     private RoleManager<IdentityRole> RoleManager { get; }
 
-    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<SecurityResponse>> Login([FromBody] LoginRequest request)
     {
@@ -94,7 +93,6 @@ public class SecurityController : ControllerBase
         }));
     }
 
-    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult<SecurityResponse>> Register([FromBody] RegisterRequest request)
     {
@@ -198,51 +196,5 @@ public class SecurityController : ControllerBase
             accessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
             refreshToken = newRefreshToken
         });
-    }
-
-    [Authorize]
-    [HttpPost]
-    [Route("token/revoke/{accountName}")]
-    public async Task<IActionResult> RevokeToken(string accountName)
-    {
-        var account = await UserManager.FindByNameAsync(accountName);
-
-        if (account == null)
-        {
-            return BadRequest("Invalid account name");
-        }
-
-        account.RefreshToken = null;
-
-        await UserManager.UpdateAsync(account);
-
-        return Ok();
-    }
-
-    [Authorize]
-    [HttpPost]
-    [Route("token/revoke")]
-    public async Task<IActionResult> RevokeAllTokens()
-    {
-        var accountList = UserManager.Users.ToList();
-
-        foreach (var account in accountList)
-        {
-            account.RefreshToken = null;
-
-            // TODO: очень ресурсозатратно. доработать.
-            await UserManager.UpdateAsync(account);
-        }
-
-        return Ok();
-    }
-
-    [HttpGet]
-    [Route("test")]
-    public async Task Test()
-    {
-        Response.ContentType = "text/html;charset=utf-8";
-
-        await Response.WriteAsync("<h2>Hello METANIT.COM</h2>");
     }
 }

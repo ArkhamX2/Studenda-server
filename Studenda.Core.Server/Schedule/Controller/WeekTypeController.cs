@@ -10,7 +10,6 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// </summary>
 [Route("api/schedule/week-type")]
 [ApiController]
-[Authorize]
 public class WeekTypeController : ControllerBase
 {
     /// <summary>
@@ -65,6 +64,7 @@ public class WeekTypeController : ControllerBase
     /// </summary>
     /// <param name="entities">Список типов недель.</param>
     /// <returns>Результат операции.</returns>
+    [Authorize]
     [HttpPost]
     public IActionResult Post([FromBody] List<WeekType> entities)
     {
@@ -83,6 +83,7 @@ public class WeekTypeController : ControllerBase
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
+    [Authorize]
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
