@@ -23,19 +23,19 @@ public class SubjectService : DataEntityService
     ///     Получить список статичных занятий по идентификатору группы.
     /// </summary>
     /// <param name="groupId">Идентификатор группы.</param>
-    /// <param name="weekType">Идентификатор типа недели.</param>
+    /// <param name="weekTypeId">Идентификатор типа недели.</param>
     /// <param name="year">Учебный год.</param>
     /// <returns>Список статичных занятий.</returns>
-    public List<Subject> GetSubjectByGroup(int groupId, int weekType, int year)
+    public List<Subject> GetSubjectByGroup(int groupId, int weekTypeId, int year)
     {
-        if (groupId <= 0 || weekType <= 0)
+        if (groupId <= 0 || weekTypeId <= 0)
         {
             throw new ArgumentException("Invalid arguments!");
         }
 
         return DataContext.Subjects
             .Where(subject => subject.Group.Id == groupId
-                              && subject.WeekType.Index == weekType
+                              && subject.WeekType.Id == weekTypeId
                               && subject.AcademicYear == year)
             .OrderBy(subject => subject.CreatedAt)
             .ThenBy(subject => subject.DayPosition.Index)
@@ -47,19 +47,19 @@ public class SubjectService : DataEntityService
     ///     Получить список статичных занятий по идентификатору пользователя.
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
-    /// <param name="weekType">Идентификатор типа недели.</param>
+    /// <param name="weekTypeId">Идентификатор типа недели.</param>
     /// <param name="year">Учебный год.</param>
     /// <returns>Список статичных занятий.</returns>
-    public List<Subject> GetSubjectByUser(int userId, int weekType, int year)
+    public List<Subject> GetSubjectByUser(int userId, int weekTypeId, int year)
     {
-        if (userId <= 0 || weekType <= 0)
+        if (userId <= 0 || weekTypeId <= 0)
         {
             throw new ArgumentException("Invalid arguments!");
         }
 
         return DataContext.Subjects
             .Where(subject => subject.User.Id == userId
-                              && subject.WeekType.Index == weekType
+                              && subject.WeekType.Id == weekTypeId
                               && subject.AcademicYear == year)
             .OrderBy(subject => subject.CreatedAt)
             .ThenBy(subject => subject.DayPosition.Index)
