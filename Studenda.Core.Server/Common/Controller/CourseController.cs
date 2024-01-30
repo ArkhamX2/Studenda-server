@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Model.Common;
 using Studenda.Core.Server.Common.Service;
 
@@ -53,6 +54,7 @@ public class CourseController : ControllerBase
     /// </summary>
     /// <param name="entities">Список курсов.</param>
     /// <returns>Результат операции.</returns>
+    [Authorize]
     [HttpPost]
     public IActionResult Post([FromBody] List<Course> entities)
     {
@@ -71,6 +73,7 @@ public class CourseController : ControllerBase
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
+    [Authorize]
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {

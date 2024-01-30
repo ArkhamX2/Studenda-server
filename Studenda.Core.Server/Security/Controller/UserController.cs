@@ -10,7 +10,6 @@ namespace Studenda.Core.Server.Security.Controller;
 /// </summary>
 [Route("api/security/user")]
 [ApiController]
-[Authorize]
 public class UserController : ControllerBase
 {
     /// <summary>
@@ -55,6 +54,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="entities">Список пользователей.</param>
     /// <returns>Результат операции.</returns>
+    [Authorize]
     [HttpPost]
     public IActionResult Post([FromBody] List<User> entities)
     {
@@ -73,6 +73,7 @@ public class UserController : ControllerBase
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
+    [Authorize]
     [HttpDelete]
     public IActionResult Delete([FromBody] List<int> ids)
     {
