@@ -5,8 +5,7 @@
       context: '.'
       dockerfile: 'Studenda.Core.Server/Dockerfile'
     ports:
-      - '80:80'
-      - '443:443'
+      - '80:8080'
     depends_on:
       database_default:
         condition: 'service_healthy'
