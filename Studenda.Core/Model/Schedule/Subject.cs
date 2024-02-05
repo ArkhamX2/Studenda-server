@@ -266,5 +266,5 @@ public class Subject : Identity
     /// <summary>
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
-    public List<SubjectChange> ScheduleChanges { get; set; } = new();
+    public List<SubjectChange> ScheduleChanges { get; set; } = [];
 }

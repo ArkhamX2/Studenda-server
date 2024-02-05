@@ -27,16 +27,6 @@ public class DayPositionController : ControllerBase
     private DataEntityService DataEntityService { get; }
 
     /// <summary>
-    ///     Получить список всех позиций учебного дня.
-    /// </summary>
-    /// <returns>Результат операции со списком позиций.</returns>
-    [HttpGet("all")]
-    public ActionResult<List<DayPosition>> GetAll()
-    {
-        return DataEntityService.Get(DataEntityService.DataContext.DayPositions, new List<int>());
-    }
-
-    /// <summary>
     ///     Получить список позиций учебного дня.
     ///     Если идентификаторы не указаны, возвращается список со всеми позициями.
     ///     Иначе возвращается список с указанными позициями, либо пустой список.
@@ -44,9 +34,9 @@ public class DayPositionController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком позиций.</returns>
     [HttpGet]
-    public ActionResult<List<DayPosition>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<DayPosition>>> Get([FromQuery] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.DayPositions, ids);
+        return await DataEntityService.Get(DataEntityService.DataContext.DayPositions, ids);
     }
 
     /// <summary>
@@ -56,9 +46,9 @@ public class DayPositionController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public IActionResult Post([FromBody] List<DayPosition> entities)
+    public async Task<IActionResult> Post([FromBody] List<DayPosition> entities)
     {
-        var status = DataEntityService.Set(DataEntityService.DataContext.DayPositions, entities);
+        var status = await DataEntityService.Set(DataEntityService.DataContext.DayPositions, entities);
 
         if (!status)
         {
@@ -75,9 +65,9 @@ public class DayPositionController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpDelete]
-    public IActionResult Delete([FromBody] List<int> ids)
+    public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Remove(DataEntityService.DataContext.DayPositions, ids);
+        var status = await DataEntityService.Remove(DataEntityService.DataContext.DayPositions, ids);
 
         if (!status)
         {

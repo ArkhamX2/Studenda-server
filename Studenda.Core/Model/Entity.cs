@@ -1,9 +1,6 @@
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Data.Util;
 
 namespace Studenda.Core.Model;
 
@@ -13,19 +10,6 @@ namespace Studenda.Core.Model;
 /// </summary>
 public abstract class Entity
 {
-    /// <summary>
-    ///     Вычислить массив байтов хеш-суммы.
-    /// </summary>
-    /// <param name="entity">Модель стандартного объекта.</param>
-    /// <returns>Массив байтов.</returns>
-    private static IEnumerable<byte> ComputeDataHash(Entity entity)
-    {
-        var json = DataSerializer.Serialize(entity);
-        var bytes = Encoding.UTF8.GetBytes(json);
-
-        return MD5.HashData(bytes);
-    }
-
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
      *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
@@ -116,24 +100,4 @@ public abstract class Entity
     public DateTime? UpdatedAt { get; set; }
 
     #endregion
-
-    /// <summary>
-    ///     Вычислить и получить массив байтов хеш-суммы.
-    /// </summary>
-    /// <returns>Массив байтов хеш-суммы.</returns>
-    public IEnumerable<byte> GetDataHash() => ComputeDataHash(this);
-
-    /// <summary>
-    ///     Сравнить хеш-сумму модели с указанным массивом байтов.
-    /// </summary>
-    /// <param name="dataHash">Массив байтов хеш-суммы.</param>
-    /// <returns>Статус сравнения.</returns>
-    public bool CompareWith(IEnumerable<byte> dataHash) => dataHash.SequenceEqual(GetDataHash());
-
-    /// <summary>
-    ///     Сравнить хеш-суммы с указанной моделью.
-    /// </summary>
-    /// <param name="entity">Модель стандартного объекта.</param>
-    /// <returns>Статус сравнения.</returns>
-    public bool CompareWith(Entity entity) => CompareWith(ComputeDataHash(entity));
 }

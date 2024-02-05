@@ -91,10 +91,10 @@ public class Role : Identity
     /// <summary>
     ///     Связанные объекты <see cref="User" />.
     /// </summary>
-    public List<User> Users { get; set; } = new();
+    public List<User> Users { get; set; } = [];
 
     /// <summary>
     ///     Связанные объекты <see cref="RolePermissionLink" />.
     /// </summary>
-    public List<RolePermissionLink> RolePermissionLinks { get; set; } = new();
+    public List<RolePermissionLink> RolePermissionLinks { get; set; } = [];
 }

@@ -30,14 +30,14 @@ public class DataEntityService
     /// <param name="ids">Список идентификаторов.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Список моделей.</returns>
-    public List<TSource> Get<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
+    public async Task<List<TSource>> Get<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
     {
         if (ids.Count <= 0)
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
 
-        return dbSet.Where(identity => ids.Contains(identity.Id.GetValueOrDefault())).ToList();
+        return await dbSet.Where(identity => ids.Contains(identity.Id.GetValueOrDefault())).ToListAsync();
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public class DataEntityService
     /// <param name="entities">Список моделей.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Статус операции.</returns>
-    public bool Set<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : Identity
+    public async Task<bool> Set<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : Identity
     {
         if (entities.Count <= 0)
         {
@@ -68,7 +68,7 @@ public class DataEntityService
 
         if (newEntities.Any())
         {
-            dbSet.AddRange(newEntities);
+            await dbSet.AddRangeAsync(newEntities);
         }
 
         if (oldEntities.Any())
@@ -76,7 +76,7 @@ public class DataEntityService
             dbSet.UpdateRange(oldEntities);
         }
 
-        return DataContext.SaveChanges() > 0;
+        return await DataContext.SaveChangesAsync() > 0;
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public class DataEntityService
     /// <param name="ids">Список идентификаторов.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Статус операции.</returns>
-    public bool Remove<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
+    public async Task<bool> Remove<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
     {
         if (ids.Count <= 0)
         {
@@ -96,6 +96,6 @@ public class DataEntityService
         dbSet.RemoveRange(dbSet.Where(
             identity => ids.Contains(identity.Id.GetValueOrDefault())));
 
-        return DataContext.SaveChanges() > 0;
+        return await DataContext.SaveChangesAsync() > 0;
     }
 }

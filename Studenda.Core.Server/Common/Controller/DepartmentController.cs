@@ -27,16 +27,6 @@ public class DepartmentController : ControllerBase
     private DataEntityService DataEntityService { get; }
 
     /// <summary>
-    ///     Получить список всех факультетов.
-    /// </summary>
-    /// <returns>Результат операции со списком факультетов.</returns>
-    [HttpGet("all")]
-    public ActionResult<List<Department>> GetAll()
-    {
-        return DataEntityService.Get(DataEntityService.DataContext.Departments, new List<int>());
-    }
-
-    /// <summary>
     ///     Получить список факультетов.
     ///     Если идентификаторы не указаны, возвращается список со всеми факультетами.
     ///     Иначе возвращается список со списком факультетом, либо пустой список.
@@ -44,9 +34,9 @@ public class DepartmentController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком факультетов.</returns>
     [HttpGet]
-    public ActionResult<List<Department>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<Department>>> Get([FromQuery] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Departments, ids);
+        return await DataEntityService.Get(DataEntityService.DataContext.Departments, ids);
     }
 
     /// <summary>
@@ -56,9 +46,9 @@ public class DepartmentController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public IActionResult Post([FromBody] List<Department> entities)
+    public async Task<IActionResult> Post([FromBody] List<Department> entities)
     {
-        var status = DataEntityService.Set(DataEntityService.DataContext.Departments, entities);
+        var status = await DataEntityService.Set(DataEntityService.DataContext.Departments, entities);
 
         if (!status)
         {
@@ -75,9 +65,9 @@ public class DepartmentController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpDelete]
-    public IActionResult Delete([FromBody] List<int> ids)
+    public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Remove(DataEntityService.DataContext.Departments, ids);
+        var status = await DataEntityService.Remove(DataEntityService.DataContext.Departments, ids);
 
         if (!status)
         {

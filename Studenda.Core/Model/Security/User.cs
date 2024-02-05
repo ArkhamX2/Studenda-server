@@ -200,15 +200,15 @@ public class User : Identity
     /// <summary>
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<Subject> Subjects { get; set; } = new();
+    public List<Subject> Subjects { get; set; } = [];
 
     /// <summary>
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
-    public List<SubjectChange> SubjectChanges { get; set; } = new();
+    public List<SubjectChange> SubjectChanges { get; set; } = [];
 
     /// <summary>
     ///     Связанные объекты <see cref="Discipline" />.
     /// </summary>
-    public List<Discipline> Disciplines { get; set; } = new();
+    public List<Discipline> Disciplines { get; set; } = [];
 }

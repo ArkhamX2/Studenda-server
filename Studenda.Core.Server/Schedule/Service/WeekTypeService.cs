@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Studenda.Core.Data;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Server.Common.Service;
@@ -32,7 +33,7 @@ public class WeekTypeService : DataEntityService
     ///     Получить текущий тип недели.
     /// </summary>
     /// <returns>Тип недели или ничего.</returns>
-    public WeekType? GetCurrent()
+    public async Task<WeekType?> GetCurrent()
     {
         var today = DateTime.Now;
         var startOfAcademicYear = new DateTime(today.Year, AcademicYearStartMonth, AcademicYearStartDay);
@@ -57,15 +58,15 @@ public class WeekTypeService : DataEntityService
         }
 
         var weeksPassed = Math.Ceiling((currentMonday - startOfAcademicYear).TotalDays / 7) + 1;
-        var maxIndex = DataContext.WeekTypes.Max(type => type.Index);
+        var maxIndex = await DataContext.WeekTypes.MaxAsync(type => type.Index);
         var circularIndex = (int)weeksPassed % maxIndex;
 
         if (circularIndex == 0)
         {
             circularIndex = maxIndex;
         }
-        
-        return DataContext.WeekTypes.FirstOrDefault(type => type.Index == circularIndex);
+
+        return await DataContext.WeekTypes.FirstOrDefaultAsync(type => type.Index == circularIndex);
     }
 
     /// <summary>
@@ -73,7 +74,7 @@ public class WeekTypeService : DataEntityService
     /// </summary>
     /// <param name="weekTypes">Список типов недели.</param>
     /// <returns>Статус операции.</returns>
-    public bool Set(List<WeekType> weekTypes)
+    public async Task<bool> Set(List<WeekType> weekTypes)
     {
         if (weekTypes.Count <= 0)
         {
@@ -82,9 +83,9 @@ public class WeekTypeService : DataEntityService
 
         var minIndex = weekTypes.Min(type => type.Index);
 
-        if (DataContext.WeekTypes.Any())
+        if (await DataContext.WeekTypes.AnyAsync())
         {
-            var maxIndex = DataContext.WeekTypes.Max(type => type.Index);
+            var maxIndex = await DataContext.WeekTypes.MaxAsync(type => type.Index);
 
             if (minIndex - maxIndex > 1)
             {
@@ -97,7 +98,7 @@ public class WeekTypeService : DataEntityService
         }
 
         var indexes = weekTypes.Select(type => type.Index).ToList();
-        var weekTypesToRemove = DataContext.WeekTypes.Where(type => indexes.Contains(type.Index)).ToList();
+        var weekTypesToRemove = await DataContext.WeekTypes.Where(type => indexes.Contains(type.Index)).ToListAsync();
 
         if (weekTypesToRemove.Any())
         {
@@ -105,7 +106,7 @@ public class WeekTypeService : DataEntityService
             DataContext.SaveChanges();
         }
 
-        return base.Set(DataContext.WeekTypes, weekTypes);
+        return await base.Set(DataContext.WeekTypes, weekTypes);
     }
 
     /// <summary>
@@ -114,14 +115,16 @@ public class WeekTypeService : DataEntityService
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Статус операции.</returns>
-    public bool Remove(List<int> ids)
+    public async Task<bool> Remove(List<int> ids)
     {
-        if (!base.Remove(DataContext.WeekTypes, ids))
+        var baseResult = await base.Remove(DataContext.WeekTypes, ids);
+
+        if (!baseResult)
         {
             return false;
         }
 
-        var remainingWeekTypes = DataContext.WeekTypes.OrderBy(type => type.Index).ToList();
+        var remainingWeekTypes = await DataContext.WeekTypes.OrderBy(type => type.Index).ToListAsync();
 
         // Обновление индексов
         for (var i = 0; i < remainingWeekTypes.Count; i++)
@@ -130,7 +133,7 @@ public class WeekTypeService : DataEntityService
         }
 
         DataContext.WeekTypes.UpdateRange(remainingWeekTypes);
-        DataContext.SaveChanges();
+        await DataContext.SaveChangesAsync();
 
         return true;
     }

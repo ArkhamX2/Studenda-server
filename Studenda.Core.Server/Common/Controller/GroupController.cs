@@ -27,16 +27,6 @@ public class GroupController : ControllerBase
     private DataEntityService DataEntityService { get; }
 
     /// <summary>
-    ///     Получить список всех групп.
-    /// </summary>
-    /// <returns>Результат операции со списком групп.</returns>
-    [HttpGet("all")]
-    public ActionResult<List<Group>> GetAll()
-    {
-        return DataEntityService.Get(DataEntityService.DataContext.Groups, new List<int>());
-    }
-
-    /// <summary>
     ///     Получить список групп.
     ///     Если идентификаторы не указаны, возвращается список со всеми группами.
     ///     Иначе возвращается список с указанными группами, либо пустой список.
@@ -44,9 +34,9 @@ public class GroupController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком групп.</returns>
     [HttpGet]
-    public ActionResult<List<Group>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<Group>>> Get([FromQuery] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Groups, ids);
+        return await DataEntityService.Get(DataEntityService.DataContext.Groups, ids);
     }
 
     /// <summary>
@@ -56,9 +46,9 @@ public class GroupController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public IActionResult Post([FromBody] List<Group> entities)
+    public async Task<IActionResult> Post([FromBody] List<Group> entities)
     {
-        var status = DataEntityService.Set(DataEntityService.DataContext.Groups, entities);
+        var status = await DataEntityService.Set(DataEntityService.DataContext.Groups, entities);
 
         if (!status)
         {
@@ -75,9 +65,9 @@ public class GroupController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpDelete]
-    public IActionResult Delete([FromBody] List<int> ids)
+    public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Remove(DataEntityService.DataContext.Groups, ids);
+        var status = await DataEntityService.Remove(DataEntityService.DataContext.Groups, ids);
 
         if (!status)
         {

@@ -105,5 +105,5 @@ public class WeekType : Identity
     /// <summary>
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
-    public List<Subject> StaticSchedules { get; set; } = new();
+    public List<Subject> StaticSchedules { get; set; } = [];
 }
