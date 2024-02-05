@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Studenda.Core.Server.Security.Data;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Studenda.Core.Server.Security.Service;
@@ -26,19 +25,19 @@ public static class JwtManager
     /// </summary>
     private const string Key = "mysupersecret_secretkey!123";
 
-    public static IEnumerable<Claim> CreateClaims(this Account account, IEnumerable<IdentityRole> roles)
+    public static IEnumerable<Claim> CreateClaims(this IdentityUser identityUser, IEnumerable<IdentityRole> roles)
     {
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)),
-            new(ClaimTypes.NameIdentifier, account.Id),
+            new(ClaimTypes.NameIdentifier, identityUser.Id),
             new(ClaimTypes.Role, string.Join(" ", roles.Select(role => role.Name)))
         };
 
-        if (account.Email is not null)
+        if (identityUser.Email is not null)
         {
-            claims.Add(new Claim(ClaimTypes.Email, account.Email));
+            claims.Add(new Claim(ClaimTypes.Email, identityUser.Email));
         }
 
         return claims;

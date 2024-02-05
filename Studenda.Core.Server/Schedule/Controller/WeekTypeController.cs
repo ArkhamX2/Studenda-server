@@ -8,23 +8,15 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="WeekType" />.
 /// </summary>
+/// <param name="weekTypeService">Сервис типов недель.</param>
 [Route("api/schedule/week-type")]
 [ApiController]
-public class WeekTypeController : ControllerBase
+public class WeekTypeController(WeekTypeService weekTypeService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="weekTypeService">Сервис типов недель.</param>
-    public WeekTypeController(WeekTypeService weekTypeService)
-    {
-        WeekTypeService = weekTypeService;
-    }
-
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private WeekTypeService WeekTypeService { get; }
+    private WeekTypeService WeekTypeService { get; } = weekTypeService;
 
     /// <summary>
     ///     Получить текущий тип недели.

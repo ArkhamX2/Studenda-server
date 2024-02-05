@@ -8,23 +8,15 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Discipline" />.
 /// </summary>
+/// <param name="dataEntityService">Сервис моделей.</param>
 [Route("api/schedule/discipline")]
 [ApiController]
-public class DisciplineController : ControllerBase
+public class DisciplineController(DataEntityService dataEntityService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataEntityService">Сервис моделей.</param>
-    public DisciplineController(DataEntityService dataEntityService)
-    {
-        DataEntityService = dataEntityService;
-    }
-
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; }
+    private DataEntityService DataEntityService { get; } = dataEntityService;
 
     /// <summary>
     ///     Получить список дисциплин.

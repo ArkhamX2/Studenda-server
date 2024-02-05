@@ -8,7 +8,8 @@ namespace Studenda.Core.Server.Schedule.Service;
 /// <summary>
 ///     Сервис для работы с <see cref="WeekType" />.
 /// </summary>
-public class WeekTypeService : DataEntityService
+/// <param name="dataContext">Контекст данных.</param>
+public class WeekTypeService(DataContext dataContext) : DataEntityService(dataContext)
 {
     /// <summary>
     ///    Месяц начала учебного года.
@@ -19,15 +20,6 @@ public class WeekTypeService : DataEntityService
     ///     День начала учебного года.
     /// </summary>
     private const int AcademicYearStartDay = 1;
-
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataContext">Контекст данных.</param>
-    public WeekTypeService(DataContext dataContext) : base(dataContext)
-    {
-        // PASS.
-    }
 
     /// <summary>
     ///     Получить текущий тип недели.

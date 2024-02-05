@@ -8,18 +8,9 @@ namespace Studenda.Core.Server.Schedule.Service;
 /// <summary>
 ///     Сервис для работы с <see cref="Subject" />.
 /// </summary>
-///
-public class SubjectService : DataEntityService
+/// <param name="dataContext">Контекст данных.</param>
+public class SubjectService(DataContext dataContext) : DataEntityService(dataContext)
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataContext">Контекст данных.</param>
-    public SubjectService(DataContext dataContext) : base(dataContext)
-    {
-        // PASS.
-    }
-
     /// <summary>
     ///     Получить список статичных занятий по идентификатору группы.
     /// </summary>

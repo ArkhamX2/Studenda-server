@@ -6,7 +6,7 @@ using Studenda.Core.Data.Util;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Data.Transfer;
-using Studenda.Core.Server.Security.Service.Token;
+using Studenda.Core.Server.Security.Service;
 
 namespace Studenda.Core.Server.Security.Controller;
 
@@ -23,8 +23,8 @@ namespace Studenda.Core.Server.Security.Controller;
 public class SecurityController(
     DataContext dataContext,
     IdentityContext identityContext,
-    ITokenService tokenService,
-    UserManager<Account> userManager,
+    TokenService tokenService,
+    UserManager<IdentityUser> userManager,
     RoleManager<IdentityRole> roleManager) : ControllerBase
 {
     /// <summary>
@@ -40,12 +40,12 @@ public class SecurityController(
     /// <summary>
     ///     Сервис работы с токенами.
     /// </summary>
-    private ITokenService TokenService { get; } = tokenService;
+    private TokenService TokenService { get; } = tokenService;
 
     /// <summary>
     ///     Менеджер работы с пользователями.
     /// </summary>
-    private UserManager<Account> UserManager { get; } = userManager;
+    private UserManager<IdentityUser> UserManager { get; } = userManager;
 
     /// <summary>
     ///     Менеджер работы с ролями.
@@ -65,14 +65,14 @@ public class SecurityController(
             return BadRequest(request);
         }
 
-        var identityAccount = await UserManager.FindByEmailAsync(request.Email);
+        var identityUser = await UserManager.FindByEmailAsync(request.Email);
 
-        if (identityAccount is null)
+        if (identityUser is null)
         {
             return Unauthorized();
         }
 
-        if (!await UserManager.CheckPasswordAsync(identityAccount, request.Password))
+        if (!await UserManager.CheckPasswordAsync(identityUser, request.Password))
         {
             return Unauthorized();
         }
@@ -81,7 +81,7 @@ public class SecurityController(
             .Include(user => user.Role)
             .ThenInclude(role => role.RolePermissionLinks)
             .ThenInclude(link => link.Permission)
-            .FirstOrDefaultAsync(user => user.IdentityId == identityAccount.Id);
+            .FirstOrDefaultAsync(user => user.IdentityId == identityUser.Id);
 
         if (user is null)
         {
@@ -89,7 +89,7 @@ public class SecurityController(
         }
 
         var identityRoles = await IdentityContext.UserRoles
-            .Where(userRole => userRole.UserId == identityAccount.Id)
+            .Where(userRole => userRole.UserId == identityUser.Id)
             .Join(IdentityContext.Roles,
                 userRole => userRole.RoleId,
                 role => role.Id,
@@ -99,7 +99,7 @@ public class SecurityController(
         return Ok(DataSerializer.Serialize(new SecurityResponse
         {
             User = user,
-            Token = TokenService.CreateToken(identityAccount, identityRoles)
+            Token = TokenService.CreateToken(identityUser, identityRoles)
         }));
     }
 
@@ -124,13 +124,13 @@ public class SecurityController(
             throw new Exception($"Role '{request.RoleName}' does not exists!");
         }
 
-        var identityAccount = new Account
+        var internalUser = new IdentityUser
         {
             UserName = request.Email,
             Email = request.Email
         };
 
-        var result = await UserManager.CreateAsync(identityAccount, request.Password);
+        var result = await UserManager.CreateAsync(internalUser, request.Password);
 
         foreach (var error in result.Errors)
         {
@@ -142,9 +142,9 @@ public class SecurityController(
             return BadRequest(ModelState);
         }
 
-        var account = await IdentityContext.Users.FirstOrDefaultAsync(account => account.Email == request.Email);
+        var identityUser = await IdentityContext.Users.FirstOrDefaultAsync(identityUser => identityUser.Email == request.Email);
 
-        if (account is null)
+        if (identityUser is null)
         {
             throw new Exception("Internal error! Please try again.");
         }
@@ -155,11 +155,11 @@ public class SecurityController(
         };
 
         await RoleManager.CreateAsync(identityRole);
-        await UserManager.AddToRoleAsync(account, request.RoleName);
+        await UserManager.AddToRoleAsync(identityUser, request.RoleName);
         await DataContext.Users.AddAsync(new User
         {
             RoleId = role.Id,
-            IdentityId = account.Id
+            IdentityId = identityUser.Id
         });
 
         await DataContext.SaveChangesAsync();
@@ -168,7 +168,7 @@ public class SecurityController(
             .Include(user => user.Role)
             .ThenInclude(role => role.RolePermissionLinks)
             .ThenInclude(link => link.Permission)
-            .FirstOrDefaultAsync(user => user.IdentityId == identityAccount.Id);
+            .FirstOrDefaultAsync(user => user.IdentityId == identityUser.Id);
 
         if (user is null)
         {
@@ -176,7 +176,7 @@ public class SecurityController(
         }
 
         var identityRoles = await IdentityContext.UserRoles
-            .Where(userRole => userRole.UserId == identityAccount.Id)
+            .Where(userRole => userRole.UserId == identityUser.Id)
             .Join(IdentityContext.Roles,
                 userRole => userRole.RoleId,
                 role => role.Id,
@@ -186,7 +186,7 @@ public class SecurityController(
         return Ok(DataSerializer.Serialize(new SecurityResponse
         {
             User = user,
-            Token = TokenService.CreateToken(identityAccount, identityRoles)
+            Token = TokenService.CreateToken(identityUser, identityRoles)
         }));
     }
 }

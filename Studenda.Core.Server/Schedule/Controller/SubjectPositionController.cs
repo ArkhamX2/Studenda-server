@@ -8,23 +8,15 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="SubjectPosition" />.
 /// </summary>
+/// <param name="dataEntityService">Сервис моделей.</param>
 [Route("api/schedule/subject-position")]
 [ApiController]
-public class SubjectPositionController : ControllerBase
+public class SubjectPositionController(DataEntityService dataEntityService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataEntityService">Сервис моделей.</param>
-    public SubjectPositionController(DataEntityService dataEntityService)
-    {
-        DataEntityService = dataEntityService;
-    }
-
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; }
+    private DataEntityService DataEntityService { get; } = dataEntityService;
 
     /// <summary>
     ///     Получить список позиций занятия.

@@ -8,23 +8,15 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Subject" />.
 /// </summary>
+/// <param name="subjectService">Сервис статичных занятий.</param>
 [Route("api/schedule/subject")]
 [ApiController]
-public class SubjectController : ControllerBase
+public class SubjectController(SubjectService subjectService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="subjectService">Сервис статичных занятий.</param>
-    public SubjectController(SubjectService subjectService)
-    {
-        SubjectService = subjectService;
-    }
-
     /// <summary>
     ///     Сервис статичных занятий.
     /// </summary>
-    private SubjectService SubjectService { get; }
+    private SubjectService SubjectService { get; } = subjectService;
 
     /// <summary>
     ///     Получить список статичных занятий.

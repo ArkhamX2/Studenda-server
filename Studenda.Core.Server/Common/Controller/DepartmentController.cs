@@ -8,23 +8,15 @@ namespace Studenda.Core.Server.Common.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Department" />.
 /// </summary>
+/// <param name="dataEntityService">Сервис моделей.</param>
 [Route("api/department")]
 [ApiController]
-public class DepartmentController : ControllerBase
+public class DepartmentController(DataEntityService dataEntityService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataEntityService">Сервис моделей.</param>
-    public DepartmentController(DataEntityService dataEntityService)
-    {
-        DataEntityService = dataEntityService;
-    }
-
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; }
+    private DataEntityService DataEntityService { get; } = dataEntityService;
 
     /// <summary>
     ///     Получить список факультетов.

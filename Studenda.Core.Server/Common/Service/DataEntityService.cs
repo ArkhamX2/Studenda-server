@@ -7,21 +7,13 @@ namespace Studenda.Core.Server.Common.Service;
 /// <summary>
 ///     Сервис для работы с моделями.
 /// </summary>
-public class DataEntityService
+/// <param name="dataContext">Контекст данных.</param>
+public class DataEntityService(DataContext dataContext)
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataContext">Контекст данных.</param>
-    public DataEntityService(DataContext dataContext)
-    {
-        DataContext = dataContext;
-    }
-
     /// <summary>
     ///    Контекст данных.
     /// </summary>
-    internal DataContext DataContext { get; }
+    internal DataContext DataContext { get; } = dataContext;
 
     /// <summary>
     ///     Получить модели по списку идентификаторов.

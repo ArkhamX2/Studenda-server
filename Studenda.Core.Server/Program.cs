@@ -11,7 +11,6 @@ using Studenda.Core.Server.Schedule.Service;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Data.Factory;
 using Studenda.Core.Server.Security.Service;
-using Studenda.Core.Server.Security.Service.Token;
 
 #if DEBUG
 const bool isDebugMode = true;
@@ -61,12 +60,12 @@ serviceCollection.AddScoped<IdentityContext>(provider =>
     return factory!.CreateDataContext();
 });
 
-serviceCollection.AddScoped<ITokenService, TokenService>();
-serviceCollection.AddIdentity<Account, IdentityRole>()
+serviceCollection.AddScoped<TokenService>();
+serviceCollection.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<IdentityContext>()
-    .AddUserManager<UserManager<Account>>()
+    .AddUserManager<UserManager<IdentityUser>>()
     .AddRoleManager<RoleManager<IdentityRole>>()
-    .AddSignInManager<SignInManager<Account>>();
+    .AddSignInManager<SignInManager<IdentityUser>>();
 
 serviceCollection.AddScoped<DataEntityService>();
 serviceCollection.AddScoped<SubjectService>();

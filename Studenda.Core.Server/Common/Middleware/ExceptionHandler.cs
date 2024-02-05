@@ -1,13 +1,8 @@
 ﻿namespace Studenda.Core.Server.Common.Middleware;
 
-public class ExceptionHandler
+public class ExceptionHandler(RequestDelegate requestDelegate)
 {
-    public ExceptionHandler(RequestDelegate requestDelegate)
-    {
-        RequestDelegate = requestDelegate;
-    }
-
-    private RequestDelegate RequestDelegate { get; }
+    private RequestDelegate RequestDelegate { get; } = requestDelegate;
 
     public async Task InvokeAsync(HttpContext context)
     {
