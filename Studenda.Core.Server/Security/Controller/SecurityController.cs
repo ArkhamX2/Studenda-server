@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Studenda.Core.Data;
-using Studenda.Core.Data.Transfer.Security;
 using Studenda.Core.Data.Util;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Server.Security.Data;
+using Studenda.Core.Server.Security.Data.Transfer;
 using Studenda.Core.Server.Security.Service;
 using Studenda.Core.Server.Security.Service.Token;
 
@@ -153,47 +153,6 @@ public class SecurityController : ControllerBase
             Email = request.Email,
             Password = request.Password,
             RoleName = request.RoleName
-        });
-    }
-
-    [HttpPost]
-    [Route("token/refresh")]
-    public async Task<IActionResult> RefreshToken(TokenPair? tokenPair)
-    {
-        if (tokenPair is null)
-        {
-            return BadRequest("Invalid client request");
-        }
-
-        var accessToken = tokenPair.AccessToken;
-        var refreshToken = tokenPair.RefreshToken;
-        var principal = Configuration.GetPrincipalFromExpiredToken(accessToken);
-
-        if (principal == null)
-        {
-            return BadRequest("Invalid access token or refresh token");
-        }
-
-        // TODO: это не выглядит безопасным.
-        var account = await UserManager.FindByNameAsync(principal.Identity!.Name!);
-
-        if (account == null || account.RefreshToken != refreshToken ||
-            account.RefreshTokenExpiryTime <= DateTime.UtcNow)
-        {
-            return BadRequest("Invalid access token or refresh token");
-        }
-
-        var newAccessToken = Configuration.CreateToken(principal.Claims.ToList());
-        var newRefreshToken = Configuration.GenerateRefreshToken();
-
-        account.RefreshToken = newRefreshToken;
-
-        await UserManager.UpdateAsync(account);
-
-        return new ObjectResult(new
-        {
-            accessToken = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
-            refreshToken = newRefreshToken
         });
     }
 }

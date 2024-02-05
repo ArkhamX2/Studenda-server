@@ -1,6 +1,6 @@
 ﻿using Studenda.Core.Model.Security;
 
-namespace Studenda.Core.Data.Transfer.Security;
+namespace Studenda.Core.Server.Security.Data.Transfer;
 
 /// <summary>
 ///     Тело ответа модуля безопасности.
