@@ -16,9 +16,4 @@ public class SecurityResponse
     ///     Токен.
     /// </summary>
     public required string Token { get; set; }
-
-    /// <summary>
-    ///     Токен обновления.
-    /// </summary>
-    public required string RefreshToken { get; set; }
 }

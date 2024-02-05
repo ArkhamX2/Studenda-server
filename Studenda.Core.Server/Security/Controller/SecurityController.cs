@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Studenda.Core.Data;
@@ -7,38 +6,57 @@ using Studenda.Core.Data.Util;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Data.Transfer;
-using Studenda.Core.Server.Security.Service;
 using Studenda.Core.Server.Security.Service.Token;
 
 namespace Studenda.Core.Server.Security.Controller;
 
+/// <summary>
+///     Контроллер авторизации аккаунтов.
+/// </summary>
+/// <param name="dataContext">Сессия работы с базой данных.</param>
+/// <param name="identityContext">Сессия работы с базой данных безопасности.</param>
+/// <param name="tokenService">Сервис работы с токенами.</param>
+/// <param name="userManager">Менеджер работы с пользователями.</param>
+/// <param name="roleManager">Менеджер работы с ролями.</param>
 [Route("api/security")]
 [ApiController]
-public class SecurityController : ControllerBase
+public class SecurityController(
+    DataContext dataContext,
+    IdentityContext identityContext,
+    ITokenService tokenService,
+    UserManager<Account> userManager,
+    RoleManager<IdentityRole> roleManager) : ControllerBase
 {
-    public SecurityController(
-        IConfiguration configuration,
-        DataContext dataContext,
-        IdentityContext identityContext,
-        ITokenService tokenService,
-        UserManager<Account> userManager,
-        RoleManager<IdentityRole> roleManager)
-    {
-        Configuration = configuration;
-        DataContext = dataContext;
-        IdentityContext = identityContext;
-        TokenService = tokenService;
-        UserManager = userManager;
-        RoleManager = roleManager;
-    }
+    /// <summary>
+    ///     Сессия работы с базой данных.
+    /// </summary>
+    private DataContext DataContext { get; } = dataContext;
 
-    private IConfiguration Configuration { get; }
-    private DataContext DataContext { get; }
-    private IdentityContext IdentityContext { get; }
-    private ITokenService TokenService { get; }
-    private UserManager<Account> UserManager { get; }
-    private RoleManager<IdentityRole> RoleManager { get; }
+    /// <summary>
+    ///     Сессия работы с базой данных безопасности.
+    /// </summary>
+    private IdentityContext IdentityContext { get; } = identityContext;
 
+    /// <summary>
+    ///     Сервис работы с токенами.
+    /// </summary>
+    private ITokenService TokenService { get; } = tokenService;
+
+    /// <summary>
+    ///     Менеджер работы с пользователями.
+    /// </summary>
+    private UserManager<Account> UserManager { get; } = userManager;
+
+    /// <summary>
+    ///     Менеджер работы с ролями.
+    /// </summary>
+    private RoleManager<IdentityRole> RoleManager { get; } = roleManager;
+
+    /// <summary>
+    ///     Авторизация пользователя.
+    /// </summary>
+    /// <param name="request">Тело запроса авторизации.</param>
+    /// <returns>Тело ответа модуля безопасности.</returns>
     [HttpPost("login")]
     public async Task<ActionResult<SecurityResponse>> Login([FromBody] LoginRequest request)
     {
@@ -47,51 +65,50 @@ public class SecurityController : ControllerBase
             return BadRequest(request);
         }
 
-        var account = await UserManager.FindByEmailAsync(request.Email);
+        var identityAccount = await UserManager.FindByEmailAsync(request.Email);
 
-        if (account is null)
+        if (identityAccount is null)
         {
             return Unauthorized();
         }
 
-        if (!await UserManager.CheckPasswordAsync(account, request.Password))
+        if (!await UserManager.CheckPasswordAsync(identityAccount, request.Password))
         {
             return Unauthorized();
         }
-
-        var roleIds = await IdentityContext.UserRoles
-            .Where(userRole => userRole.UserId == account.Id)
-            .Select(userRole => userRole.RoleId)
-            .ToListAsync();
-
-        var roles = await IdentityContext.Roles.Where(role => roleIds.Contains(role.Id)).ToListAsync();
-        var accessToken = TokenService.CreateToken(account, roles);
-
-        account.RefreshToken = Configuration.GenerateRefreshToken();
-        account.RefreshTokenExpiryTime =
-            DateTime.UtcNow.AddDays(4000);
-
-        await IdentityContext.SaveChangesAsync();
 
         var user = await DataContext.Users
             .Include(user => user.Role)
             .ThenInclude(role => role.RolePermissionLinks)
             .ThenInclude(link => link.Permission)
-            .FirstOrDefaultAsync(user => user.IdentityId == account.Id);
+            .FirstOrDefaultAsync(user => user.IdentityId == identityAccount.Id);
 
         if (user is null)
         {
             return Unauthorized();
         }
 
+        var identityRoles = await IdentityContext.UserRoles
+            .Where(userRole => userRole.UserId == identityAccount.Id)
+            .Join(IdentityContext.Roles,
+                userRole => userRole.RoleId,
+                role => role.Id,
+                (userRole, role) => role)
+            .ToListAsync();
+
         return Ok(DataSerializer.Serialize(new SecurityResponse
         {
             User = user,
-            Token = accessToken,
-            RefreshToken = account.RefreshToken
+            Token = TokenService.CreateToken(identityAccount, identityRoles)
         }));
     }
 
+    /// <summary>
+    ///     Регистрация пользователя.
+    /// </summary>
+    /// <param name="request">Тело запроса регистрации.</param>
+    /// <returns>Тело ответа модуля безопасности.</returns>
+    /// <exception cref="Exception">При неудачной попытке создания пользователя.</exception>
     [HttpPost("register")]
     public async Task<ActionResult<SecurityResponse>> Register([FromBody] RegisterRequest request)
     {
@@ -107,13 +124,13 @@ public class SecurityController : ControllerBase
             throw new Exception($"Role '{request.RoleName}' does not exists!");
         }
 
-        var persistenceAccount = new Account
+        var identityAccount = new Account
         {
-            Email = request.Email,
-            UserName = request.Email
+            UserName = request.Email,
+            Email = request.Email
         };
 
-        var result = await UserManager.CreateAsync(persistenceAccount, request.Password);
+        var result = await UserManager.CreateAsync(identityAccount, request.Password);
 
         foreach (var error in result.Errors)
         {
@@ -147,12 +164,29 @@ public class SecurityController : ControllerBase
 
         await DataContext.SaveChangesAsync();
 
-        // TODO: Использовать сервис, а не перекладывать ответственность на контроллер.
-        return await Login(new LoginRequest
+        var user = await DataContext.Users
+            .Include(user => user.Role)
+            .ThenInclude(role => role.RolePermissionLinks)
+            .ThenInclude(link => link.Permission)
+            .FirstOrDefaultAsync(user => user.IdentityId == identityAccount.Id);
+
+        if (user is null)
         {
-            Email = request.Email,
-            Password = request.Password,
-            RoleName = request.RoleName
-        });
+            return Unauthorized();
+        }
+
+        var identityRoles = await IdentityContext.UserRoles
+            .Where(userRole => userRole.UserId == identityAccount.Id)
+            .Join(IdentityContext.Roles,
+                userRole => userRole.RoleId,
+                role => role.Id,
+                (userRole, role) => role)
+            .ToListAsync();
+
+        return Ok(DataSerializer.Serialize(new SecurityResponse
+        {
+            User = user,
+            Token = TokenService.CreateToken(identityAccount, identityRoles)
+        }));
     }
 }
