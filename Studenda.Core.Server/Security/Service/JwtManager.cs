@@ -25,19 +25,25 @@ public static class JwtManager
     /// </summary>
     private const string Key = "mysupersecret_secretkey!123";
 
-    public static IEnumerable<Claim> CreateClaims(this IdentityUser identityUser, IEnumerable<IdentityRole> roles)
+    public static IEnumerable<Claim> CreateClaims(this IdentityUser identityUser, IEnumerable<IdentityRole> identityRoles)
     {
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)),
-            new(ClaimTypes.NameIdentifier, identityUser.Id),
-            new(ClaimTypes.Role, string.Join(" ", roles.Select(role => role.Name)))
+            new(ClaimTypes.NameIdentifier, identityUser.Id)
         };
 
         if (identityUser.Email is not null)
         {
             claims.Add(new Claim(ClaimTypes.Email, identityUser.Email));
+        }
+
+        identityRoles = identityRoles.ToList();
+
+        if (identityRoles.Any())
+        {
+            claims.Add(new Claim(ClaimTypes.Role, string.Join(" ", identityRoles.Select(role => role.Name))));
         }
 
         return claims;
