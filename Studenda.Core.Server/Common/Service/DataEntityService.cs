@@ -50,9 +50,9 @@ public class DataEntityService(DataContext dataContext)
         var oldEntities = entities.Where(entity => entity.Id.HasValue).ToList();
 
         var oldIds = oldEntities.Select(entity => entity.Id.GetValueOrDefault()).ToList();
-        var oldIdsInDb = dbSet
+        var oldIdsInDb = await dbSet
             .Where(entity => oldIds.Contains(entity.Id.GetValueOrDefault()))
-            .Select(entity => entity.Id.GetValueOrDefault()).ToList();
+            .Select(entity => entity.Id.GetValueOrDefault()).ToListAsync();
         var oldIdsNotInDb = oldIds.Except(oldIdsInDb).ToList();
 
         newEntities.AddRange(oldEntities.Where(entity => oldIdsNotInDb.Contains(entity.Id.GetValueOrDefault())));
