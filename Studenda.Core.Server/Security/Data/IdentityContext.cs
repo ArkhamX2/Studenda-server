@@ -1,17 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Studenda.Core.Data.Configuration;
 
 namespace Studenda.Core.Server.Security.Data;
 
-public class IdentityContext : IdentityDbContext<Account>
+public class IdentityContext(ContextConfiguration configuration) : IdentityDbContext<IdentityUser>
 {
-    public IdentityContext(ContextConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
-    private ContextConfiguration Configuration { get; }
+    private ContextConfiguration Configuration { get; } = configuration;
 
     public bool TryInitialize()
     {

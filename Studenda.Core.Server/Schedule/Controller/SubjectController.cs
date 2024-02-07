@@ -8,33 +8,15 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Subject" />.
 /// </summary>
+/// <param name="subjectService">Сервис статичных занятий.</param>
 [Route("api/schedule/subject")]
 [ApiController]
-public class SubjectController : ControllerBase
+public class SubjectController(SubjectService subjectService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="subjectService">Сервис статичных занятий.</param>
-    public SubjectController(SubjectService subjectService)
-    {
-        SubjectService = subjectService;
-    }
-
     /// <summary>
     ///     Сервис статичных занятий.
     /// </summary>
-    private SubjectService SubjectService { get; }
-
-    /// <summary>
-    ///     Получить список всех статичных занятий.
-    /// </summary>
-    /// <returns>Результат операции со списком занятий.</returns>
-    [HttpGet("all")]
-    public ActionResult<List<Subject>> GetAll()
-    {
-        return SubjectService.Get(SubjectService.DataContext.Subjects, new List<int>());
-    }
+    private SubjectService SubjectService { get; } = subjectService;
 
     /// <summary>
     ///     Получить список статичных занятий.
@@ -44,9 +26,9 @@ public class SubjectController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком занятий.</returns>
     [HttpGet]
-    public ActionResult<List<Subject>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<Subject>>> Get([FromQuery] List<int> ids)
     {
-        return SubjectService.Get(SubjectService.DataContext.Subjects, ids);
+        return await SubjectService.Get(SubjectService.DataContext.Subjects, ids);
     }
 
     /// <summary>
@@ -58,9 +40,9 @@ public class SubjectController : ControllerBase
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
     [Route("group")]
-    public ActionResult<List<Subject>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekTypeId, [FromQuery] int year)
+    public async Task<ActionResult<List<Subject>>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekTypeId, [FromQuery] int year)
     {
-        return SubjectService.GetSubjectByGroup(groupId, weekTypeId, year);
+        return await SubjectService.GetSubjectByGroup(groupId, weekTypeId, year);
     }
 
     /// <summary>
@@ -72,9 +54,9 @@ public class SubjectController : ControllerBase
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
     [Route("user")]
-    public ActionResult<List<Subject>> GetByUser([FromQuery] int userId, [FromQuery] int weekTypeId, [FromQuery] int year)
+    public async Task<ActionResult<List<Subject>>> GetByUser([FromQuery] int userId, [FromQuery] int weekTypeId, [FromQuery] int year)
     {
-        return SubjectService.GetSubjectByUser(userId, weekTypeId, year);
+        return await SubjectService.GetSubjectByUser(userId, weekTypeId, year);
     }
 
     /// <summary>
@@ -84,9 +66,9 @@ public class SubjectController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public IActionResult Post([FromBody] List<Subject> entities)
+    public async Task<IActionResult> Post([FromBody] List<Subject> entities)
     {
-        var status = SubjectService.Set(SubjectService.DataContext.Subjects, entities);
+        var status = await SubjectService.Set(SubjectService.DataContext.Subjects, entities);
 
         if (!status)
         {
@@ -103,9 +85,9 @@ public class SubjectController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpDelete]
-    public IActionResult Delete([FromBody] List<int> ids)
+    public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = SubjectService.Remove(SubjectService.DataContext.Subjects, ids);
+        var status = await SubjectService.Remove(SubjectService.DataContext.Subjects, ids);
 
         if (!status)
         {

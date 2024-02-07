@@ -101,5 +101,5 @@ public class Course : Identity
     /// <summary>
     ///     Связанные объекты <see cref="Group" />.
     /// </summary>
-    public List<Group> Groups { get; set; } = new();
+    public List<Group> Groups { get; set; } = [];
 }

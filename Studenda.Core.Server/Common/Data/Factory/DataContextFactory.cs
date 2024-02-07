@@ -4,14 +4,9 @@ using Studenda.Core.Model.Security.Management;
 
 namespace Studenda.Core.Server.Common.Data.Factory;
 
-public class DataContextFactory : IContextFactory<DataContext>
+public class DataContextFactory(ContextConfiguration configuration) : IContextFactory<DataContext>
 {
-    public DataContextFactory(ContextConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
-    private ContextConfiguration Configuration { get; }
+    private ContextConfiguration Configuration { get; } = configuration;
 
     public DataContext CreateDataContext()
     {

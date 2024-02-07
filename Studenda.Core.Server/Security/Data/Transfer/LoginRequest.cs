@@ -1,4 +1,4 @@
-﻿namespace Studenda.Core.Data.Transfer.Security;
+﻿namespace Studenda.Core.Server.Security.Data.Transfer;
 
 /// <summary>
 ///     Тело запроса авторизации.

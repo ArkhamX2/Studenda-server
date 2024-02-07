@@ -8,33 +8,15 @@ namespace Studenda.Core.Server.Common.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Group" />.
 /// </summary>
+/// <param name="dataEntityService">Сервис моделей.</param>
 [Route("api/group")]
 [ApiController]
-public class GroupController : ControllerBase
+public class GroupController(DataEntityService dataEntityService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataEntityService">Сервис моделей.</param>
-    public GroupController(DataEntityService dataEntityService)
-    {
-        DataEntityService = dataEntityService;
-    }
-
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; }
-
-    /// <summary>
-    ///     Получить список всех групп.
-    /// </summary>
-    /// <returns>Результат операции со списком групп.</returns>
-    [HttpGet("all")]
-    public ActionResult<List<Group>> GetAll()
-    {
-        return DataEntityService.Get(DataEntityService.DataContext.Groups, new List<int>());
-    }
+    private DataEntityService DataEntityService { get; } = dataEntityService;
 
     /// <summary>
     ///     Получить список групп.
@@ -44,9 +26,9 @@ public class GroupController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком групп.</returns>
     [HttpGet]
-    public ActionResult<List<Group>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<Group>>> Get([FromQuery] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Groups, ids);
+        return await DataEntityService.Get(DataEntityService.DataContext.Groups, ids);
     }
 
     /// <summary>
@@ -56,9 +38,9 @@ public class GroupController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public IActionResult Post([FromBody] List<Group> entities)
+    public async Task<IActionResult> Post([FromBody] List<Group> entities)
     {
-        var status = DataEntityService.Set(DataEntityService.DataContext.Groups, entities);
+        var status = await DataEntityService.Set(DataEntityService.DataContext.Groups, entities);
 
         if (!status)
         {
@@ -75,9 +57,9 @@ public class GroupController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpDelete]
-    public IActionResult Delete([FromBody] List<int> ids)
+    public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Remove(DataEntityService.DataContext.Groups, ids);
+        var status = await DataEntityService.Remove(DataEntityService.DataContext.Groups, ids);
 
         if (!status)
         {

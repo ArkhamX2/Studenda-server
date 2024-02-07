@@ -8,33 +8,15 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="SubjectType" />.
 /// </summary>
+/// <param name="dataEntityService">Сервис моделей.</param>
 [Route("api/schedule/subject-type")]
 [ApiController]
-public class SubjectTypeController : ControllerBase
+public class SubjectTypeController(DataEntityService dataEntityService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataEntityService">Сервис моделей.</param>
-    public SubjectTypeController(DataEntityService dataEntityService)
-    {
-        DataEntityService = dataEntityService;
-    }
-
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; }
-
-    /// <summary>
-    ///     Получить список всех типов занятия.
-    /// </summary>
-    /// <returns>Результат операции со списком типов.</returns>
-    [HttpGet("all")]
-    public ActionResult<List<SubjectType>> GetAll()
-    {
-        return DataEntityService.Get(DataEntityService.DataContext.SubjectTypes, new List<int>());
-    }
+    private DataEntityService DataEntityService { get; } = dataEntityService;
 
     /// <summary>
     ///     Получить список типов занятия.
@@ -44,9 +26,9 @@ public class SubjectTypeController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком типов.</returns>
     [HttpGet]
-    public ActionResult<List<SubjectType>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<SubjectType>>> Get([FromQuery] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.SubjectTypes, ids);
+        return await DataEntityService.Get(DataEntityService.DataContext.SubjectTypes, ids);
     }
 
     /// <summary>
@@ -56,9 +38,9 @@ public class SubjectTypeController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public IActionResult Post([FromBody] List<SubjectType> entities)
+    public async Task<IActionResult> Post([FromBody] List<SubjectType> entities)
     {
-        var status = DataEntityService.Set(DataEntityService.DataContext.SubjectTypes, entities);
+        var status = await DataEntityService.Set(DataEntityService.DataContext.SubjectTypes, entities);
 
         if (!status)
         {
@@ -75,9 +57,9 @@ public class SubjectTypeController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpDelete]
-    public IActionResult Delete([FromBody] List<int> ids)
+    public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Remove(DataEntityService.DataContext.SubjectTypes, ids);
+        var status = await DataEntityService.Remove(DataEntityService.DataContext.SubjectTypes, ids);
 
         if (!status)
         {

@@ -1,6 +1,6 @@
 ﻿using Studenda.Core.Model.Security;
 
-namespace Studenda.Core.Data.Transfer.Security;
+namespace Studenda.Core.Server.Security.Data.Transfer;
 
 /// <summary>
 ///     Тело ответа модуля безопасности.
@@ -16,9 +16,4 @@ public class SecurityResponse
     ///     Токен.
     /// </summary>
     public required string Token { get; set; }
-
-    /// <summary>
-    ///     Токен обновления.
-    /// </summary>
-    public required string RefreshToken { get; set; }
 }

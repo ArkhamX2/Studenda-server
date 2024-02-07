@@ -88,5 +88,5 @@ public class Permission : Identity
     /// <summary>
     ///     Связанные объекты <see cref="RolePermissionLink" />.
     /// </summary>
-    public List<RolePermissionLink> RolePermissionLinks { get; set; } = new();
+    public List<RolePermissionLink> RolePermissionLinks { get; set; } = [];
 }

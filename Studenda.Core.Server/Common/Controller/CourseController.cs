@@ -8,33 +8,15 @@ namespace Studenda.Core.Server.Common.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Course" />.
 /// </summary>
+/// <param name="dataEntityService">Сервис моделей.</param>
 [Route("api/course")]
 [ApiController]
-public class CourseController : ControllerBase
+public class CourseController(DataEntityService dataEntityService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataEntityService">Сервис моделей.</param>
-    public CourseController(DataEntityService dataEntityService)
-    {
-        DataEntityService = dataEntityService;
-    }
-
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; }
-
-    /// <summary>
-    ///     Получить список всех курсов.
-    /// </summary>
-    /// <returns>Результат операции со списком курсов.</returns>
-    [HttpGet("all")]
-    public ActionResult<List<Course>> GetAll()
-    {
-        return DataEntityService.Get(DataEntityService.DataContext.Courses, new List<int>());
-    }
+    private DataEntityService DataEntityService { get; } = dataEntityService;
 
     /// <summary>
     ///     Получить список курсов.
@@ -44,9 +26,9 @@ public class CourseController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком курсов.</returns>
     [HttpGet]
-    public ActionResult<List<Course>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<Course>>> Get([FromQuery] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.Courses, ids);
+        return await DataEntityService.Get(DataEntityService.DataContext.Courses, ids);
     }
 
     /// <summary>
@@ -56,9 +38,9 @@ public class CourseController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public IActionResult Post([FromBody] List<Course> entities)
+    public async Task<IActionResult> Post([FromBody] List<Course> entities)
     {
-        var status = DataEntityService.Set(DataEntityService.DataContext.Courses, entities);
+        var status = await DataEntityService.Set(DataEntityService.DataContext.Courses, entities);
 
         if (!status)
         {
@@ -75,9 +57,9 @@ public class CourseController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpDelete]
-    public IActionResult Delete([FromBody] List<int> ids)
+    public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Remove(DataEntityService.DataContext.Courses, ids);
+        var status = await DataEntityService.Remove(DataEntityService.DataContext.Courses, ids);
 
         if (!status)
         {

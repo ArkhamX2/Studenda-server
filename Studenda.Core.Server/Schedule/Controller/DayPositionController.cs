@@ -8,33 +8,15 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="DayPosition" />.
 /// </summary>
+/// <param name="dataEntityService">Сервис моделей.</param>
 [Route("api/schedule/day-position")]
 [ApiController]
-public class DayPositionController : ControllerBase
+public class DayPositionController(DataEntityService dataEntityService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="dataEntityService">Сервис моделей.</param>
-    public DayPositionController(DataEntityService dataEntityService)
-    {
-        DataEntityService = dataEntityService;
-    }
-
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; }
-
-    /// <summary>
-    ///     Получить список всех позиций учебного дня.
-    /// </summary>
-    /// <returns>Результат операции со списком позиций.</returns>
-    [HttpGet("all")]
-    public ActionResult<List<DayPosition>> GetAll()
-    {
-        return DataEntityService.Get(DataEntityService.DataContext.DayPositions, new List<int>());
-    }
+    private DataEntityService DataEntityService { get; } = dataEntityService;
 
     /// <summary>
     ///     Получить список позиций учебного дня.
@@ -44,9 +26,9 @@ public class DayPositionController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком позиций.</returns>
     [HttpGet]
-    public ActionResult<List<DayPosition>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<DayPosition>>> Get([FromQuery] List<int> ids)
     {
-        return DataEntityService.Get(DataEntityService.DataContext.DayPositions, ids);
+        return await DataEntityService.Get(DataEntityService.DataContext.DayPositions, ids);
     }
 
     /// <summary>
@@ -56,9 +38,9 @@ public class DayPositionController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public IActionResult Post([FromBody] List<DayPosition> entities)
+    public async Task<IActionResult> Post([FromBody] List<DayPosition> entities)
     {
-        var status = DataEntityService.Set(DataEntityService.DataContext.DayPositions, entities);
+        var status = await DataEntityService.Set(DataEntityService.DataContext.DayPositions, entities);
 
         if (!status)
         {
@@ -75,9 +57,9 @@ public class DayPositionController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpDelete]
-    public IActionResult Delete([FromBody] List<int> ids)
+    public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = DataEntityService.Remove(DataEntityService.DataContext.DayPositions, ids);
+        var status = await DataEntityService.Remove(DataEntityService.DataContext.DayPositions, ids);
 
         if (!status)
         {

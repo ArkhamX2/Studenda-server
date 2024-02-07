@@ -8,42 +8,24 @@ namespace Studenda.Core.Server.Schedule.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="WeekType" />.
 /// </summary>
+/// <param name="weekTypeService">Сервис типов недель.</param>
 [Route("api/schedule/week-type")]
 [ApiController]
-public class WeekTypeController : ControllerBase
+public class WeekTypeController(WeekTypeService weekTypeService) : ControllerBase
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="weekTypeService">Сервис типов недель.</param>
-    public WeekTypeController(WeekTypeService weekTypeService)
-    {
-        WeekTypeService = weekTypeService;
-    }
-
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private WeekTypeService WeekTypeService { get; }
+    private WeekTypeService WeekTypeService { get; } = weekTypeService;
 
     /// <summary>
     ///     Получить текущий тип недели.
     /// </summary>
     /// <returns>Результат операции с типом недели или пустой результат.</returns>
     [HttpGet("current")]
-    public ActionResult<WeekType?> GetCurrent()
+    public async Task<ActionResult<WeekType?>> GetCurrent()
     {
-        return WeekTypeService.GetCurrent();
-    }
-
-    /// <summary>
-    ///     Получить список всех типов недель.
-    /// </summary>
-    /// <returns>Результат операции со списком типов.</returns>
-    [HttpGet("all")]
-    public ActionResult<List<WeekType>> GetAll()
-    {
-        return WeekTypeService.Get(WeekTypeService.DataContext.WeekTypes, new List<int>());
+        return await WeekTypeService.GetCurrent();
     }
 
     /// <summary>
@@ -54,9 +36,9 @@ public class WeekTypeController : ControllerBase
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком типов недель.</returns>
     [HttpGet]
-    public ActionResult<List<WeekType>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<WeekType>>> Get([FromQuery] List<int> ids)
     {
-        return WeekTypeService.Get(WeekTypeService.DataContext.WeekTypes, ids);
+        return await WeekTypeService.Get(WeekTypeService.DataContext.WeekTypes, ids);
     }
 
     /// <summary>
@@ -66,9 +48,9 @@ public class WeekTypeController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public IActionResult Post([FromBody] List<WeekType> entities)
+    public async Task<IActionResult> Post([FromBody] List<WeekType> entities)
     {
-        var status = WeekTypeService.Set(entities);
+        var status = await WeekTypeService.Set(entities);
 
         if (!status)
         {
@@ -85,9 +67,9 @@ public class WeekTypeController : ControllerBase
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpDelete]
-    public IActionResult Delete([FromBody] List<int> ids)
+    public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = WeekTypeService.Remove(ids);
+        var status = await WeekTypeService.Remove(ids);
 
         if (!status)
         {
