@@ -11,7 +11,7 @@ namespace Studenda.Core.Model.Schedule;
 ///     Статичное занятие на определенный день
 ///     для определенной группы.
 /// </summary>
-public class Subject : Identity
+public class Subject : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __

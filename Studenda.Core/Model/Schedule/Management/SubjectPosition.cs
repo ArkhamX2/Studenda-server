@@ -6,7 +6,7 @@ namespace Studenda.Core.Model.Schedule.Management;
 /// <summary>
 ///     Позиция занятия в учебном дне.
 /// </summary>
-public class SubjectPosition : Identity
+public class SubjectPosition : IdentifiableEntity
 {
     /// <summary>
     ///     Начальное значение индекса.

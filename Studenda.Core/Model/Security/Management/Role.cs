@@ -7,7 +7,7 @@ namespace Studenda.Core.Model.Security.Management;
 /// <summary>
 ///     Роль для <see cref="User" />.
 /// </summary>
-public class Role : Identity
+public class Role : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __

@@ -8,7 +8,7 @@ namespace Studenda.Core.Model.Journal;
 /// <summary>
 ///     Оценка.
 /// </summary>
-public class Assessment : Identity
+public class Assessment : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __

@@ -22,7 +22,7 @@ public class DataEntityService(DataContext dataContext)
     /// <param name="ids">Список идентификаторов.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Список моделей.</returns>
-    public async Task<List<TSource>> Get<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
+    public async Task<List<TSource>> Get<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : IdentifiableEntity
     {
         if (ids.Count <= 0)
         {
@@ -39,7 +39,7 @@ public class DataEntityService(DataContext dataContext)
     /// <param name="entities">Список моделей.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Статус операции.</returns>
-    public async Task<bool> Set<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : Identity
+    public async Task<bool> Set<TSource>(DbSet<TSource> dbSet, List<TSource> entities) where TSource : IdentifiableEntity
     {
         if (entities.Count <= 0)
         {
@@ -78,7 +78,7 @@ public class DataEntityService(DataContext dataContext)
     /// <param name="ids">Список идентификаторов.</param>
     /// <typeparam name="TSource">Тип модели.</typeparam>
     /// <returns>Статус операции.</returns>
-    public async Task<bool> Remove<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : Identity
+    public async Task<bool> Remove<TSource>(DbSet<TSource> dbSet, List<int> ids) where TSource : IdentifiableEntity
     {
         if (ids.Count <= 0)
         {

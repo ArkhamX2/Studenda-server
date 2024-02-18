@@ -6,7 +6,7 @@ namespace Studenda.Core.Model.Common;
 /// <summary>
 ///     Факультет.
 /// </summary>
-public class Department : Identity
+public class Department : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __

@@ -6,7 +6,7 @@ namespace Studenda.Core.Model.Schedule.Management;
 /// <summary>
 ///     Позиция учебного дня в учебной неделе.
 /// </summary>
-public class DayPosition : Identity
+public class DayPosition : IdentifiableEntity
 {
     /// <summary>
     ///     Начальное значение индекса.

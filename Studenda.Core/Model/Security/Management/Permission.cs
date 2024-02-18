@@ -8,7 +8,7 @@ namespace Studenda.Core.Model.Security.Management;
 ///     Разрешение для <see cref="Role" />.
 ///     Обозначает некоторый доступ к некоторой функции.
 /// </summary>
-public class Permission : Identity
+public class Permission : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __

@@ -6,7 +6,7 @@ namespace Studenda.Core.Model.Schedule.Management;
 /// <summary>
 ///     Тип учебной недели.
 /// </summary>
-public class WeekType : Identity
+public class WeekType : IdentifiableEntity
 {
     /// <summary>
     ///     Начальное значение индекса.

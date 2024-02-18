@@ -3,7 +3,7 @@ namespace Studenda.Core.Model;
 /// <summary>
 ///     Модель с уникальным идентификатором.
 /// </summary>
-public class Identity : Entity
+public class IdentifiableEntity : Entity
 {
     /// <summary>
     ///     Идентификатор.
