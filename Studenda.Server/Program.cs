@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Studenda.Server.Configuration;
 using Studenda.Server.Data;
-using Studenda.Server.Data.Configuration;
 using Studenda.Server.Data.Factory;
 using Studenda.Server.Middleware;
 using Studenda.Server.Model.Security;

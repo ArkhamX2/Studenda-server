@@ -29,72 +29,77 @@ public class ConfigurationRepository(IConfiguration configuration)
         return value;
     }
 
-    private string GetDefaultConnectionString()
-    {
-        var connectionString = Configuration.GetConnectionString("Default");
-
-        return HandleStringValue(connectionString, "Default connection string is null or empty!");
-    }
-
     public ContextConfiguration GetContextConfiguration(bool isDebugMode)
     {
-        var connectionString = GetDefaultConnectionString();
+        var connectionString = Configuration.GetConnectionString("Default");
         var connectionType = Configuration
             .GetSection("Data")
             .GetValue<string>("ConnectionType");
 
+        HandleStringValue(connectionString, "Default connection string is null or empty!");
         HandleStringValue(connectionType, "Connection type is null or empty!");
 
         return connectionType switch
         {
-            "Sqlite" => new SqliteConfiguration(connectionString, isDebugMode),
-            "Mysql" => new MysqlConfiguration(connectionString, ServerVersion.AutoDetect(connectionString),
+            "Sqlite" => new SqliteConfiguration(connectionString!, isDebugMode),
+            "Mysql" => new MysqlConfiguration(connectionString!, ServerVersion.AutoDetect(connectionString),
                 isDebugMode),
             _ => throw new Exception("Unknown connection type!")
         };
     }
 
-    private string GetTokenIssuer()
+    public string GetTokenIssuer()
     {
-        var issuer = Configuration
+        var result = Configuration
             .GetSection("Token")
             .GetValue<string>("Issuer");
 
-        return HandleStringValue(issuer, "Token issuer is null or empty!");
+        return HandleStringValue(result, "Token issuer is null or empty!");
     }
 
-    private string GetTokenAudience()
+    public string GetTokenAudience()
     {
-        var audience = Configuration
+        var result = Configuration
             .GetSection("Token")
             .GetValue<string>("Audience");
 
-        return HandleStringValue(audience, "Token audience is null or empty!");
+        return HandleStringValue(result, "Token audience is null or empty!");
     }
 
     private string GetTokenKey()
     {
-        var key = Configuration
+        var result = Configuration
             .GetSection("Token")
             .GetValue<string>("Key");
 
-        return HandleStringValue(key, "Token key is null or empty!");
+        return HandleStringValue(result, "Token key is null or empty!");
     }
 
     private int GetTokenClockSkew()
     {
-        var skew = Configuration
+        var result = Configuration
             .GetSection("Token")
-            .GetValue<int>("ClockSkew");
+            .GetValue<int>("ClockSkewMinutes");
 
-        return HandleIntValue(skew, "Token clock skew is invalid!");
+        return HandleIntValue(result, "Token clock skew is invalid!");
+    }
+
+    public int GetTokenLifetimeMinutes()
+    {
+        var result = Configuration
+            .GetSection("Token")
+            .GetValue<int>("LifetimeMinutes");
+
+        return HandleIntValue(result, "Token lifetime is invalid!");
+    }
+
+    public SymmetricSecurityKey GetTokenSecurityKey()
+    {
+        return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(GetTokenKey()));
     }
 
     public TokenValidationParameters GetTokenValidationParameters()
     {
-        var key = Encoding.UTF8.GetBytes(GetTokenKey());
-        var clockSkew = GetTokenClockSkew();
-
         return new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -103,8 +108,8 @@ public class ConfigurationRepository(IConfiguration configuration)
             ValidateIssuerSigningKey = true,
             ValidIssuer = GetTokenIssuer(),
             ValidAudience = GetTokenAudience(),
-            ClockSkew = TimeSpan.FromMinutes(clockSkew),
-            IssuerSigningKey = new SymmetricSecurityKey(key)
+            ClockSkew = TimeSpan.FromMinutes(GetTokenClockSkew()),
+            IssuerSigningKey = GetTokenSecurityKey()
         };
     }
 }
