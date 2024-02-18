@@ -44,7 +44,7 @@ public class AssessmentController(DataEntityService dataEntityService) : Control
 
         if (!status)
         {
-            return BadRequest("No assessment types were saved!");
+            return BadRequest("No assessments were saved!");
         }
 
         return Ok();
@@ -63,7 +63,7 @@ public class AssessmentController(DataEntityService dataEntityService) : Control
 
         if (!status)
         {
-            return BadRequest("No assessment types were deleted!");
+            return BadRequest("No assessments were deleted!");
         }
 
         return Ok();
