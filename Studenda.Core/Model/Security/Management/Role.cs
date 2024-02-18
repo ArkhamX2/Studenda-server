@@ -55,14 +55,6 @@ public class Role : Identity
                 .HasMaxLength(User.NameLengthMax)
                 .IsRequired();
 
-            builder.HasMany(role => role.Users)
-                .WithOne(user => user.Role)
-                .HasForeignKey(user => user.RoleId);
-
-            builder.HasMany(role => role.RolePermissionLinks)
-                .WithOne(link => link.Role)
-                .HasForeignKey(link => link.RoleId);
-
             base.Configure(builder);
         }
     }

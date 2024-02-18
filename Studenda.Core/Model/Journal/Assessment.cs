@@ -23,7 +23,7 @@ public class Assessment : Identity
     #region Configuration
 
     public const bool IsAssessmentTypeIdRequired = true;
-    public const bool IsSubjectIdRequired = true;
+    public const bool IsTaskIdRequired = true;
     public const bool IsValueRequired = true;
 
     /// <summary>
@@ -42,9 +42,9 @@ public class Assessment : Identity
                 .WithOne(type => type.Assessment)
                 .HasForeignKey<Assessment>(type => type.AssessmentTypeId);
 
-            builder.HasOne(assessment => assessment.Subject)
+            builder.HasOne(assessment => assessment.Task)
                 .WithMany(subject => subject.Assessments)
-                .HasForeignKey(assessment => assessment.SubjectId)
+                .HasForeignKey(assessment => assessment.TaskId)
                 .IsRequired();
 
             builder.Property(assessment => assessment.Value)
@@ -74,9 +74,9 @@ public class Assessment : Identity
     public required int AssessmentTypeId { get; set; }
 
     /// <summary>
-    ///     Идентификатор. TODO задание
+    ///     Идентификатор.
     /// </summary>
-    public required int SubjectId { get; set; }
+    public required int TaskId { get; set; }
 
     /// <summary>
     ///     Значение.
@@ -86,5 +86,5 @@ public class Assessment : Identity
     #endregion
 
     public AssessmentType? AssessmentType { get; set; }
-    public Subject? Subject { get; set; }
+    public Task? Task { get; set; }
 }

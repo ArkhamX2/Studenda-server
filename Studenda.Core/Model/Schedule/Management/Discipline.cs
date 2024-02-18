@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Security;
+using Task = Studenda.Core.Model.Journal.Task;
 
 namespace Studenda.Core.Model.Schedule.Management;
 
@@ -79,14 +80,6 @@ public class Discipline : Identity
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
 
-            builder.HasMany(discipline => discipline.Subjects)
-                .WithOne(subject => subject.Discipline)
-                .HasForeignKey(subject => subject.DisciplineId);
-
-            builder.HasMany(discipline => discipline.SubjectChanges)
-                .WithOne(change => change.Discipline)
-                .HasForeignKey(change => change.DisciplineId);
-
             base.Configure(builder);
         }
     }
@@ -137,4 +130,9 @@ public class Discipline : Identity
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
     public List<SubjectChange> SubjectChanges { get; set; } = [];
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Task" />.
+    /// </summary>
+    public List<Task> Tasks { get; set; } = [];
 }

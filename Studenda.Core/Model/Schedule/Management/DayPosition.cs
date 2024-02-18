@@ -67,10 +67,6 @@ public class DayPosition : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 
-            builder.HasMany(position => position.StaticSchedules)
-                .WithOne(schedule => schedule.DayPosition)
-                .HasForeignKey(schedule => schedule.DayPositionId);
-
             base.Configure(builder);
         }
     }

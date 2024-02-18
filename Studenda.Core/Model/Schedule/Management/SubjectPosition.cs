@@ -95,10 +95,6 @@ public class SubjectPosition : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 
-            builder.HasMany(position => position.StaticSchedules)
-                .WithOne(schedule => schedule.SubjectPosition)
-                .HasForeignKey(schedule => schedule.SubjectPositionId);
-
             base.Configure(builder);
         }
     }

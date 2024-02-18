@@ -56,10 +56,6 @@ public class Permission : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.HasMany(permission => permission.RolePermissionLinks)
-                .WithOne(link => link.Permission)
-                .HasForeignKey(link => link.PermissionId);
-
             base.Configure(builder);
         }
     }

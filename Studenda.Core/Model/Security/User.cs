@@ -5,6 +5,7 @@ using Studenda.Core.Model.Journal;
 using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security.Management;
+using Task = Studenda.Core.Model.Journal.Task;
 
 namespace Studenda.Core.Model.Security;
 
@@ -121,22 +122,6 @@ public class User : Identity
                 .HasMaxLength(PatronymicLengthMax)
                 .IsRequired(IsPatronymicRequired);
 
-            builder.HasMany(user => user.Subjects)
-                .WithOne(subject => subject.User)
-                .HasForeignKey(subject => subject.UserId);
-
-            builder.HasMany(user => user.SubjectChanges)
-                .WithOne(change => change.User)
-                .HasForeignKey(change => change.UserId);
-
-            builder.HasMany(user => user.Disciplines)
-                .WithOne(discipline => discipline.User)
-                .HasForeignKey(discipline => discipline.UserId);
-
-            builder.HasMany(user => user.Absences)
-                .WithOne(absence => absence.User)
-                .HasForeignKey(absence => absence.UserId);
-
             base.Configure(builder);
         }
     }
@@ -221,4 +206,9 @@ public class User : Identity
     ///     Связанные объекты <see cref="Absence" />.
     /// </summary>
     public List<Absence> Absences { get; set; } = [];
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Task" />.
+    /// </summary>
+    public List<Task> Tasks { get; set; } = [];
 }

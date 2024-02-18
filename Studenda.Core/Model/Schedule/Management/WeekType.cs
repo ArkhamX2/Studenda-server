@@ -67,10 +67,6 @@ public class WeekType : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 
-            builder.HasMany(type => type.StaticSchedules)
-                .WithOne(schedule => schedule.WeekType)
-                .HasForeignKey(schedule => schedule.WeekTypeId);
-
             base.Configure(builder);
         }
     }

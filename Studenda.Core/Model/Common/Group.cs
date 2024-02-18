@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Security;
+using Task = Studenda.Core.Model.Journal.Task;
 
 namespace Studenda.Core.Model.Common;
 
@@ -62,10 +63,6 @@ public class Group : Identity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<Group> builder)
         {
-            builder.Property(group => group.Name)
-                .HasMaxLength(NameLengthMax)
-                .IsRequired();
-
             builder.HasOne(group => group.Course)
                 .WithMany(course => course.Groups)
                 .HasForeignKey(group => group.CourseId)
@@ -76,13 +73,9 @@ public class Group : Identity
                 .HasForeignKey(group => group.DepartmentId)
                 .IsRequired();
 
-            builder.HasMany(group => group.Users)
-                .WithOne(user => user.Group)
-                .HasForeignKey(course => course.GroupId);
-
-            builder.HasMany(group => group.StaticSchedules)
-                .WithOne(schedule => schedule.Group)
-                .HasForeignKey(schedule => schedule.GroupId);
+            builder.Property(group => group.Name)
+                .HasMaxLength(NameLengthMax)
+                .IsRequired();
 
             base.Configure(builder);
         }
@@ -138,4 +131,9 @@ public class Group : Identity
     ///     Связанные объекты <see cref="Subject" />.
     /// </summary>
     public List<Subject> StaticSchedules { get; set; } = [];
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Task" />.
+    /// </summary>
+    public List<Task> Tasks { get; set; } = [];
 }

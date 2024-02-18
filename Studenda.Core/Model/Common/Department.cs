@@ -54,10 +54,6 @@ public class Department : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.HasMany(department => department.Groups)
-                .WithOne(group => group.Department)
-                .HasForeignKey(group => group.DepartmentId);
-
             base.Configure(builder);
         }
     }

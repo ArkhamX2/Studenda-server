@@ -62,10 +62,6 @@ public class Course : Identity
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 
-            builder.HasMany(course => course.Groups)
-                .WithOne(group => group.Course)
-                .HasForeignKey(group => group.CourseId);
-
             base.Configure(builder);
         }
     }

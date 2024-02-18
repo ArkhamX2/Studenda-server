@@ -47,10 +47,6 @@ public class AssessmentType : Identity
             builder.Property(type => type.MaxValue)
                 .IsRequired();
 
-            builder.HasOne(type => type.Assessment)
-                .WithOne(assessment => assessment.AssessmentType)
-                .HasForeignKey<Assessment>(assessment => assessment.AssessmentTypeId);
-
             base.Configure(builder);
         }
     }

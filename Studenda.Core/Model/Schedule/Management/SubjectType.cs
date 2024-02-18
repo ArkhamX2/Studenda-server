@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Task = Studenda.Core.Model.Journal.Task;
 
 namespace Studenda.Core.Model.Schedule.Management;
 
@@ -69,14 +70,6 @@ public class SubjectType : Identity
                 .HasDefaultValue(false)
                 .IsRequired();
 
-            builder.HasMany(type => type.Subjects)
-                .WithOne(subject => subject.SubjectType)
-                .HasForeignKey(subject => subject.SubjectTypeId);
-
-            builder.HasMany(type => type.SubjectChanges)
-                .WithOne(change => change.SubjectType)
-                .HasForeignKey(change => change.SubjectTypeId);
-
             base.Configure(builder);
         }
     }
@@ -116,4 +109,9 @@ public class SubjectType : Identity
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
     public List<SubjectChange> SubjectChanges { get; set; } = [];
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Task" />.
+    /// </summary>
+    public List<Task> Tasks { get; set; } = [];
 }
