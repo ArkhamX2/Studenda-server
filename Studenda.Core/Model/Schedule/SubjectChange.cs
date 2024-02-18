@@ -23,60 +23,21 @@ public class SubjectChange : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Classroom" />.
-    /// </summary>
     public const int ClassroomLengthMax = 32;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Description" />.
-    /// </summary>
     public const int DescriptionLengthMax = 256;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="StaticScheduleId" />.
-    /// </summary>
     public const bool IsStaticScheduleIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="DisciplineId" />.
-    /// </summary>
     public const bool IsDisciplineIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="SubjectTypeId" />.
-    /// </summary>
     public const bool IsSubjectTypeIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
-    /// </summary>
     public const bool IsUserIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Classroom" />.
-    /// </summary>
     public const bool IsClassroomRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Description" />.
-    /// </summary>
     public const bool IsDescriptionRequired = false;
 
     /// <summary>
     ///     Конфигурация модели <see cref="SubjectChange" />.
     /// </summary>
-    internal class Configuration : Configuration<SubjectChange>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<SubjectChange>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -166,23 +127,8 @@ public class SubjectChange : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанный объект <see cref="Subject" />.
-    /// </summary>
     public Subject? Subject { get; set; }
-
-    /// <summary>
-    ///     Связанный объект <see cref="Management.Discipline" />.
-    /// </summary>
     public Discipline? Discipline { get; set; }
-
-    /// <summary>
-    ///     Связанный объект <see cref="Management.SubjectType" />.
-    /// </summary>
     public SubjectType? SubjectType { get; set; }
-
-    /// <summary>
-    ///     Связанный объект <see cref="Security.User" />.
-    /// </summary>
     public User? User { get; set; }
 }

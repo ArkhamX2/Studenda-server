@@ -20,30 +20,15 @@ public class Department : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 128;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="Department" />.
     /// </summary>
-    internal class Configuration : Configuration<Department>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Department>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -79,8 +64,5 @@ public class Department : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанные объекты <see cref="Group" />.
-    /// </summary>
     public List<Group> Groups { get; set; } = [];
 }

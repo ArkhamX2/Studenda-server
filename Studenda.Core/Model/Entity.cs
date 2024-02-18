@@ -22,14 +22,7 @@ public abstract class Entity
 
     #region Configuration
 
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="CreatedAt" />.
-    /// </summary>
     private const bool IsCreatedAtRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="UpdatedAt" />.
-    /// </summary>
     private const bool IsUpdatedAtRequired = false;
 
     /// <summary>
@@ -38,24 +31,17 @@ public abstract class Entity
     ///     включая биндинг полей под данные,
     ///     создание зависимостей и маппинг в базе данных.
     /// </summary>
+    /// <param name="configuration">Конфигурация базы данных.</param>
     /// <typeparam name="T">
     ///     <see cref="Entity" />
     /// </typeparam>
-    internal abstract class Configuration<T> : IEntityTypeConfiguration<T> where T : Entity
+    internal abstract class Configuration<T>(ContextConfiguration configuration) : IEntityTypeConfiguration<T>
+        where T : Entity
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        protected Configuration(ContextConfiguration configuration)
-        {
-            ContextConfiguration = configuration;
-        }
-
         /// <summary>
         ///     Конфигурация базы данных.
         /// </summary>
-        private ContextConfiguration ContextConfiguration { get; }
+        private ContextConfiguration ContextConfiguration { get; } = configuration;
 
         /// <summary>
         ///     Задать конфигурацию для модели.

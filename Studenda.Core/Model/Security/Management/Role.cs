@@ -21,30 +21,15 @@ public class Role : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 128;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="User" />.
     /// </summary>
-    internal class Configuration : Configuration<Role>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Role>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -80,13 +65,6 @@ public class Role : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанные объекты <see cref="User" />.
-    /// </summary>
     public List<User> Users { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="RolePermissionLink" />.
-    /// </summary>
     public List<RolePermissionLink> RolePermissionLinks { get; set; } = [];
 }

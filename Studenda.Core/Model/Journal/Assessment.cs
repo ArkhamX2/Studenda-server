@@ -69,12 +69,12 @@ public class Assessment : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор.
+    ///     Идентификатор связанного объекта <see cref="Management.AssessmentType" />.
     /// </summary>
     public required int AssessmentTypeId { get; set; }
 
     /// <summary>
-    ///     Идентификатор.
+    ///     Идентификатор связанного объекта <see cref="Journal.Task" />.
     /// </summary>
     public required int TaskId { get; set; }
 

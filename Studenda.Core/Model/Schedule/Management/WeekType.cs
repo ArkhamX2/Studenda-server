@@ -25,35 +25,16 @@ public class WeekType : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 64;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Index" />.
-    /// </summary>
     public const bool IsIndexRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = false;
 
     /// <summary>
     ///     Конфигурация модели <see cref="WeekType" />.
     /// </summary>
-    internal class Configuration : Configuration<WeekType>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<WeekType>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -98,8 +79,5 @@ public class WeekType : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанные объекты <see cref="Subject" />.
-    /// </summary>
     public List<Subject> StaticSchedules { get; set; } = [];
 }

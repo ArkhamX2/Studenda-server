@@ -23,40 +23,17 @@ public class Group : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 128;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="CourseId" />.
-    /// </summary>
     public const bool IsCourseIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="DepartmentId" />.
-    /// </summary>
     public const bool IsDepartmentIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="Group" />.
     /// </summary>
-    internal class Configuration : Configuration<Group>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Group>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -112,28 +89,9 @@ public class Group : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанный объект <see cref="Common.Course" />.
-    /// </summary>
     public Course? Course { get; set; } 
-
-    /// <summary>
-    ///     Связанный объект <see cref="Common.Department" />.
-    /// </summary>
     public Department? Department { get; set; } 
-
-    /// <summary>
-    ///     Связанные объекты <see cref="User" />.
-    /// </summary>
     public List<User> Users { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Subject" />.
-    /// </summary>
     public List<Subject> StaticSchedules { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Task" />.
-    /// </summary>
     public List<Task> Tasks { get; set; } = [];
 }

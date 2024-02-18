@@ -66,12 +66,12 @@ public class Absence : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор.
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
     /// </summary>
     public required int UserId { get; set; }
 
     /// <summary>
-    ///     Идентификатор.
+    ///     Идентификатор связанного объекта <see cref="Schedule.Subject" />.
     /// </summary>
     public required int SubjectId { get; set; }
 

@@ -26,70 +26,23 @@ public class User : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="IdentityId" />.
-    /// </summary>
     public const int IdentityIdLengthMax = 128;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 32;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Surname" />.
-    /// </summary>
     public const int SurnameLengthMax = 32;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Patronymic" />.
-    /// </summary>
     public const int PatronymicLengthMax = 32;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="IdentityId" />.
-    /// </summary>
     public const bool IsIdentityIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="RoleId" />.
-    /// </summary>
     public const bool IsRoleIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="GroupId" />.
-    /// </summary>
     public const bool IsGroupIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Surname" />.
-    /// </summary>
     public const bool IsSurnameRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Patronymic" />.
-    /// </summary>
     public const bool IsPatronymicRequired = false;
 
     /// <summary>
     ///     Конфигурация модели <see cref="User" />.
     /// </summary>
-    internal class Configuration : Configuration<User>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<User>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -177,38 +130,11 @@ public class User : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанный объект <see cref="Management.Role" />.
-    /// </summary>
     public Role? Role { get; set; }
-
-    /// <summary>
-    ///     Связанный объект <see cref="Common.Group" />.
-    /// </summary>
     public Group? Group { get; set; }
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Subject" />.
-    /// </summary>
     public List<Subject> Subjects { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="SubjectChange" />.
-    /// </summary>
     public List<SubjectChange> SubjectChanges { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Discipline" />.
-    /// </summary>
     public List<Discipline> Disciplines { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Absence" />.
-    /// </summary>
     public List<Absence> Absences { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Task" />.
-    /// </summary>
     public List<Task> Tasks { get; set; } = [];
 }

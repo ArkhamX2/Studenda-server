@@ -1,7 +1,7 @@
 namespace Studenda.Core.Model;
 
 /// <summary>
-///     Модель <see cref="Entity" /> с уникальным идентификатором.
+///     Модель с уникальным идентификатором.
 /// </summary>
 public class Identity : Entity
 {

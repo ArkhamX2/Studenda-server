@@ -22,40 +22,17 @@ public class SubjectType : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 32;
-
-    /// <summary>
-    ///     Значение по умолчанию для поля <see cref="IsScorable" />.
-    /// </summary>
     public const bool IsScorableDefaultValue = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="IsScorable" />.
-    /// </summary>
     public const bool IsScorableRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="SubjectType" />.
     /// </summary>
-    internal class Configuration : Configuration<SubjectType>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<SubjectType>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -100,18 +77,7 @@ public class SubjectType : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанные объекты <see cref="Subject" />.
-    /// </summary>
     public List<Subject> Subjects { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="SubjectChange" />.
-    /// </summary>
     public List<SubjectChange> SubjectChanges { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Task" />.
-    /// </summary>
     public List<Task> Tasks { get; set; } = [];
 }

@@ -91,22 +91,22 @@ public class Task : Identity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор.
+    ///     Идентификатор связанного объекта <see cref="Schedule.Management.Discipline" />.
     /// </summary>
     public required int DisciplineId { get; set; }
 
     /// <summary>
-    ///     Идентификатор.
+    ///     Идентификатор связанного объекта <see cref="Schedule.Management.SubjectType" />.
     /// </summary>
     public required int SubjectTypeId { get; set; }
 
     /// <summary>
-    ///     Идентификатор.
+    ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     /// </summary>
     public required int GroupId { get; set; }
 
     /// <summary>
-    ///     Идентификатор.
+    ///     Идентификатор связанного объекта <see cref="Security.User" />.
     /// </summary>
     public required int UserId { get; set; }
 
