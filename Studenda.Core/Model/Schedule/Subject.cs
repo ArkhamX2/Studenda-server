@@ -159,6 +159,10 @@ public class Subject : Identity
                 .WithOne(assessment => assessment.Subject)
                 .HasForeignKey(assessment => assessment.SubjectId);
 
+            builder.HasMany(subject => subject.Absences)
+                .WithOne(absence => absence.Subject)
+                .HasForeignKey(absence => absence.SubjectId);
+
             base.Configure(builder);
         }
     }
@@ -277,4 +281,9 @@ public class Subject : Identity
     ///     Связанные объекты <see cref="Assessment" />.
     /// </summary>
     public List<Assessment> Assessments { get; set; } = [];
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Absence" />.
+    /// </summary>
+    public List<Absence> Absences { get; set; } = [];
 }

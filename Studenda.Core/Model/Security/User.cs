@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Journal;
 using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security.Management;
@@ -132,6 +133,10 @@ public class User : Identity
                 .WithOne(discipline => discipline.User)
                 .HasForeignKey(discipline => discipline.UserId);
 
+            builder.HasMany(user => user.Absences)
+                .WithOne(absence => absence.User)
+                .HasForeignKey(absence => absence.UserId);
+
             base.Configure(builder);
         }
     }
@@ -211,4 +216,9 @@ public class User : Identity
     ///     Связанные объекты <see cref="Discipline" />.
     /// </summary>
     public List<Discipline> Disciplines { get; set; } = [];
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Absence" />.
+    /// </summary>
+    public List<Absence> Absences { get; set; } = [];
 }

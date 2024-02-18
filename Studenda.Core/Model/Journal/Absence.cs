@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Journal.Management;
 using Studenda.Core.Model.Schedule;
+using Studenda.Core.Model.Security;
 
 namespace Studenda.Core.Model.Journal;
 
 /// <summary>
-///     Оценка.
+///     Прогул.
 /// </summary>
-public class Assessment : Identity
+public class Absence : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -22,32 +22,29 @@ public class Assessment : Identity
 
     #region Configuration
 
-    public const bool IsAssessmentTypeIdRequired = true;
+    public const bool IsUserIdRequired = true;
     public const bool IsSubjectIdRequired = true;
-    public const bool IsValueRequired = true;
 
     /// <summary>
     ///     Конфигурация модели.
     /// </summary>
     /// <param name="configuration">Конфигурация базы данных.</param>
-    internal class Configuration(ContextConfiguration configuration) : Configuration<Assessment>(configuration)
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Absence>(configuration)
     {
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Assessment> builder)
+        public override void Configure(EntityTypeBuilder<Absence> builder)
         {
-            builder.HasOne(assessment => assessment.AssessmentType)
-                .WithOne(type => type.Assessment)
-                .HasForeignKey<Assessment>(type => type.AssessmentTypeId);
-
-            builder.HasOne(assessment => assessment.Subject)
-                .WithMany(subject => subject.Assessments)
-                .HasForeignKey(assessment => assessment.SubjectId)
+            builder.HasOne(absence => absence.Subject)
+                .WithMany(subject => subject.Absences)
+                .HasForeignKey(absence => absence.SubjectId)
                 .IsRequired();
 
-            builder.Property(assessment => assessment.Value)
+            builder.HasOne(absence => absence.User)
+                .WithMany(user => user.Absences)
+                .HasForeignKey(absence => absence.UserId)
                 .IsRequired();
 
             base.Configure(builder);
@@ -71,20 +68,15 @@ public class Assessment : Identity
     /// <summary>
     ///     Идентификатор.
     /// </summary>
-    public required int AssessmentTypeId { get; set; }
+    public required int UserId { get; set; }
 
     /// <summary>
-    ///     Идентификатор. TODO задание
+    ///     Идентификатор.
     /// </summary>
     public required int SubjectId { get; set; }
 
-    /// <summary>
-    ///     Значение.
-    /// </summary>
-    public required int Value { get; set; }
-
     #endregion
 
-    public AssessmentType? AssessmentType { get; set; }
+    public User? User { get; set; }
     public Subject? Subject { get; set; }
 }
