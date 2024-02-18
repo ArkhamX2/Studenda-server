@@ -1,12 +1,14 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Journal.Management;
+using Studenda.Core.Model.Schedule;
 
-namespace Studenda.Core.Model.Journal.Management;
+namespace Studenda.Core.Model.Journal;
 
 /// <summary>
-///     Тип оценивания.
+///     Оценка.
 /// </summary>
-public class AssessmentType : Identity
+public class Assessment : Identity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -20,36 +22,33 @@ public class AssessmentType : Identity
 
     #region Configuration
 
-    public const int NameLengthMax = 32;
-    public const bool IsNameRequired = true;
-    public const bool IsMinValueRequired = true;
-    public const bool IsMaxValueRequired = true;
+    public const bool IsAssessmentTypeIdRequired = true;
+    public const bool IsSubjectIdRequired = true;
+    public const bool IsValueRequired = true;
 
     /// <summary>
     ///     Конфигурация модели.
     /// </summary>
     /// <param name="configuration">Конфигурация базы данных.</param>
-    internal class Configuration(ContextConfiguration configuration) : Configuration<AssessmentType>(configuration)
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Assessment>(configuration)
     {
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<AssessmentType> builder)
+        public override void Configure(EntityTypeBuilder<Assessment> builder)
         {
-            builder.Property(type => type.Name)
-                .HasMaxLength(NameLengthMax)
+            builder.HasOne(assessment => assessment.AssessmentType)
+                .WithOne(type => type.Assessment)
+                .HasForeignKey<Assessment>(type => type.AssessmentTypeId);
+
+            builder.HasOne(assessment => assessment.Subject)
+                .WithMany(subject => subject.Assessments)
+                .HasForeignKey(assessment => assessment.SubjectId)
                 .IsRequired();
 
-            builder.Property(type => type.MinValue)
+            builder.Property(assessment => assessment.Value)
                 .IsRequired();
-
-            builder.Property(type => type.MaxValue)
-                .IsRequired();
-
-            builder.HasOne(type => type.Assessment)
-                .WithOne(assessment => assessment.AssessmentType)
-                .HasForeignKey<Assessment>(assessment => assessment.AssessmentTypeId);
 
             base.Configure(builder);
         }
@@ -70,21 +69,22 @@ public class AssessmentType : Identity
     #region Entity
 
     /// <summary>
-    ///     Название.
+    ///     Идентификатор.
     /// </summary>
-    public required string Name { get; set; }
+    public required int AssessmentTypeId { get; set; }
 
     /// <summary>
-    ///     Минимальное значение оценки.
+    ///     Идентификатор.
     /// </summary>
-    public required int MinValue { get; set; }
+    public required int SubjectId { get; set; }
 
     /// <summary>
-    ///     Максимальное значение оценки.
+    ///     Значение.
     /// </summary>
-    public required int MaxValue { get; set; }
+    public required int Value { get; set; }
 
     #endregion
 
-    public Assessment? Assessment { get; set; }
+    public AssessmentType? AssessmentType { get; set; }
+    public Subject? Subject { get; set; }
 }

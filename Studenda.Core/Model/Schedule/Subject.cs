@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Journal;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security;
 
@@ -154,6 +155,10 @@ public class Subject : Identity
                 .WithOne(change => change.Subject)
                 .HasForeignKey(change => change.StaticScheduleId);
 
+            builder.HasMany(subject => subject.Assessments)
+                .WithOne(assessment => assessment.Subject)
+                .HasForeignKey(assessment => assessment.SubjectId);
+
             base.Configure(builder);
         }
     }
@@ -231,22 +236,22 @@ public class Subject : Identity
     /// <summary>
     ///     Связанный объект <see cref="Management.Discipline" />.
     /// </summary>
-    public Discipline? Discipline { get; set; } 
+    public Discipline? Discipline { get; set; }
 
     /// <summary>
     ///     Связанный объект <see cref="Management.SubjectPosition" />.
     /// </summary>
-    public SubjectPosition? SubjectPosition { get; set; } 
+    public SubjectPosition? SubjectPosition { get; set; }
 
     /// <summary>
     ///     Связанный объект <see cref="Management.DayPosition" />.
     /// </summary>
-    public DayPosition? DayPosition { get; set; } 
+    public DayPosition? DayPosition { get; set; }
 
     /// <summary>
     ///     Связанный объект <see cref="Management.WeekType" />.
     /// </summary>
-    public WeekType? WeekType { get; set; } 
+    public WeekType? WeekType { get; set; }
 
     /// <summary>
     ///     Связанный объект <see cref="Management.SubjectType" />.
@@ -261,10 +266,15 @@ public class Subject : Identity
     /// <summary>
     ///     Связанный объект <see cref="Common.Group" />.
     /// </summary>
-    public Group? Group { get; set; } 
+    public Group? Group { get; set; }
 
     /// <summary>
     ///     Связанные объекты <see cref="SubjectChange" />.
     /// </summary>
     public List<SubjectChange> ScheduleChanges { get; set; } = [];
+
+    /// <summary>
+    ///     Связанные объекты <see cref="Assessment" />.
+    /// </summary>
+    public List<Assessment> Assessments { get; set; } = [];
 }
