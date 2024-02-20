@@ -78,15 +78,16 @@ serviceCollection.AddAuthentication(options => {
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options => {
     // TODO: Вынести в отдельный класс ближе к конфигурациям.
+    options.IncludeErrorDetails = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
+        ClockSkew = TimeSpan.Zero,
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = JwtManager.Issuer,
         ValidAudience = JwtManager.Audience,
-        ClockSkew = TimeSpan.FromMinutes(2),
         IssuerSigningKey = JwtManager.GetSymmetricSecurityKey()
     };
 });
