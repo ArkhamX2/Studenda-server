@@ -13,7 +13,7 @@ public static class JwtManager
     public const string Audience = "MyAuthClient";
     private const string Key = "v89h3bh89vh9ve8hc89nv98nn899cnccn998ev80vi809jberh89b";
     private const string JwtRegisteredClaimNamesSub = "rbveer3h535nn3n35nyny5umbbt";
-    private const int ExpirationMinutes = 60;
+    private const int ExpirationMinutes = 60 * 24;
 
     public static IEnumerable<Claim> CreateClaims(this IdentityUser identityUser, IEnumerable<IdentityRole> identityRoles)
     {
@@ -53,7 +53,7 @@ public static class JwtManager
         }
     }
 
-    public static JwtSecurityToken CreateJwtToken(this IEnumerable<Claim> claims, IConfiguration configuration)
+    public static JwtSecurityToken CreateJwtToken(this IEnumerable<Claim> claims)
     {
         var key = GetSymmetricSecurityKey();
 

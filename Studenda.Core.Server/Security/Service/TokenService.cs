@@ -9,7 +9,7 @@ public class TokenService(IConfiguration configuration)
 
     public string CreateToken(IdentityUser identityUser, IEnumerable<IdentityRole> roles)
     {
-        var token = identityUser.CreateClaims(roles).CreateJwtToken(Configuration);
+        var token = identityUser.CreateClaims(roles).CreateJwtToken();
         var tokenHandler = new JwtSecurityTokenHandler();
 
         return tokenHandler.WriteToken(token);
