@@ -24,6 +24,7 @@ public static class JwtManager
     ///     ключ
     /// </summary>
     private const string Key = "mysupersecret_secretkey!123";
+    private const int Expire=50;
 
     public static IEnumerable<Claim> CreateClaims(this IdentityUser identityUser, IEnumerable<IdentityRole> identityRoles)
     {
@@ -50,15 +51,14 @@ public static class JwtManager
     }
 
     public static JwtSecurityToken CreateJwtToken(this IEnumerable<Claim> claims, IConfiguration configuration)
-    {
-        var expire = configuration.GetSection("Jwt:Expire").Get<int>();
+    {        
         var key = GetSymmetricSecurityKey();
 
         return new JwtSecurityToken(
             Issuer,
             Audience,
             claims,
-            expires: DateTime.UtcNow.AddMinutes(expire),
+            expires: DateTime.UtcNow.AddMonths(Expire),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
     }
 
