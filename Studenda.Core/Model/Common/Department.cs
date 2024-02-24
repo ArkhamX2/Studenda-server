@@ -6,7 +6,7 @@ namespace Studenda.Core.Model.Common;
 /// <summary>
 ///     Факультет.
 /// </summary>
-public class Department : Identity
+public class Department : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -20,30 +20,15 @@ public class Department : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 128;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="Department" />.
     /// </summary>
-    internal class Configuration : Configuration<Department>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Department>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -53,10 +38,6 @@ public class Department : Identity
             builder.Property(department => department.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
-
-            builder.HasMany(department => department.Groups)
-                .WithOne(group => group.Department)
-                .HasForeignKey(group => group.DepartmentId);
 
             base.Configure(builder);
         }
@@ -83,8 +64,5 @@ public class Department : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанные объекты <see cref="Group" />.
-    /// </summary>
     public List<Group> Groups { get; set; } = [];
 }

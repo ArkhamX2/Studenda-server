@@ -7,7 +7,7 @@ namespace Studenda.Core.Model.Security.Management;
 /// <summary>
 ///     Роль для <see cref="User" />.
 /// </summary>
-public class Role : Identity
+public class Role : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -21,30 +21,15 @@ public class Role : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 128;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="User" />.
     /// </summary>
-    internal class Configuration : Configuration<Role>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Role>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -54,14 +39,6 @@ public class Role : Identity
             builder.Property(role => role.Name)
                 .HasMaxLength(User.NameLengthMax)
                 .IsRequired();
-
-            builder.HasMany(role => role.Users)
-                .WithOne(user => user.Role)
-                .HasForeignKey(user => user.RoleId);
-
-            builder.HasMany(role => role.RolePermissionLinks)
-                .WithOne(link => link.Role)
-                .HasForeignKey(link => link.RoleId);
 
             base.Configure(builder);
         }
@@ -88,13 +65,6 @@ public class Role : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанные объекты <see cref="User" />.
-    /// </summary>
     public List<User> Users { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="RolePermissionLink" />.
-    /// </summary>
     public List<RolePermissionLink> RolePermissionLinks { get; set; } = [];
 }

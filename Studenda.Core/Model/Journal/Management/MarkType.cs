@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
-using Studenda.Core.Model.Schedule;
-using Studenda.Core.Model.Security;
 
-namespace Studenda.Core.Model.Common;
+namespace Studenda.Core.Model.Journal.Management;
 
 /// <summary>
-///     Группа.
+///     Тип оценивания.
 /// </summary>
-public class Group : IdentifiableEntity
+public class MarkType : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -22,35 +20,31 @@ public class Group : IdentifiableEntity
 
     #region Configuration
 
-    public const int NameLengthMax = 128;
-    public const bool IsCourseIdRequired = true;
-    public const bool IsDepartmentIdRequired = true;
+    public const int NameLengthMax = 32;
     public const bool IsNameRequired = true;
+    public const bool IsMinValueRequired = true;
+    public const bool IsMaxValueRequired = true;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="Group" />.
+    ///     Конфигурация модели.
     /// </summary>
     /// <param name="configuration">Конфигурация базы данных.</param>
-    internal class Configuration(ContextConfiguration configuration) : Configuration<Group>(configuration)
+    internal class Configuration(ContextConfiguration configuration) : Configuration<MarkType>(configuration)
     {
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Group> builder)
+        public override void Configure(EntityTypeBuilder<MarkType> builder)
         {
-            builder.HasOne(group => group.Course)
-                .WithMany(course => course.Groups)
-                .HasForeignKey(group => group.CourseId)
-                .IsRequired();
-
-            builder.HasOne(group => group.Department)
-                .WithMany(department => department.Groups)
-                .HasForeignKey(group => group.DepartmentId)
-                .IsRequired();
-
-            builder.Property(group => group.Name)
+            builder.Property(type => type.Name)
                 .HasMaxLength(NameLengthMax)
+                .IsRequired();
+
+            builder.Property(type => type.MinValue)
+                .IsRequired();
+
+            builder.Property(type => type.MaxValue)
                 .IsRequired();
 
             base.Configure(builder);
@@ -72,24 +66,21 @@ public class Group : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Course" />.
-    /// </summary>
-    public int? CourseId { get; set; }
-
-    /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Department" />.
-    /// </summary>
-    public int? DepartmentId { get; set; }
-
-    /// <summary>
     ///     Название.
     /// </summary>
     public required string Name { get; set; }
 
+    /// <summary>
+    ///     Минимальное значение оценки.
+    /// </summary>
+    public required int MinValue { get; set; }
+
+    /// <summary>
+    ///     Максимальное значение оценки.
+    /// </summary>
+    public required int MaxValue { get; set; }
+
     #endregion
 
-    public Course? Course { get; set; } 
-    public Department? Department { get; set; } 
-    public List<User> Users { get; set; } = [];
-    public List<Subject> StaticSchedules { get; set; } = [];
+    public Mark? Mark { get; set; }
 }

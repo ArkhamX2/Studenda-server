@@ -18,7 +18,7 @@ public class SubjectService(DataContext dataContext) : DataEntityService(dataCon
     /// <param name="weekTypeId">Идентификатор типа недели.</param>
     /// <param name="year">Учебный год.</param>
     /// <returns>Список статичных занятий.</returns>
-    public async Task<List<Subject>> GetSubjectByGroup(int groupId, int weekTypeId, int year)
+    public async Task<List<Subject>> GetByGroup(int groupId, int weekTypeId, int year)
     {
         if (groupId <= 0 || weekTypeId <= 0)
         {
@@ -26,12 +26,12 @@ public class SubjectService(DataContext dataContext) : DataEntityService(dataCon
         }
 
         return await DataContext.Subjects
-            .Where(subject => subject.Group.Id == groupId
-                              && subject.WeekType.Id == weekTypeId
+            .Where(subject => subject.GroupId == groupId
+                              && subject.WeekTypeId == weekTypeId
                               && subject.AcademicYear == year)
             .OrderBy(subject => subject.CreatedAt)
-            .ThenBy(subject => subject.DayPosition.Index)
-            .ThenBy(subject => subject.SubjectPosition.Index)
+            .ThenBy(subject => subject.DayPosition!.Index)
+            .ThenBy(subject => subject.SubjectPosition!.Index)
             .ToListAsync();
     }
 
@@ -42,7 +42,7 @@ public class SubjectService(DataContext dataContext) : DataEntityService(dataCon
     /// <param name="weekTypeId">Идентификатор типа недели.</param>
     /// <param name="year">Учебный год.</param>
     /// <returns>Список статичных занятий.</returns>
-    public async Task<List<Subject>> GetSubjectByUser(int userId, int weekTypeId, int year)
+    public async Task<List<Subject>> GetByUser(int userId, int weekTypeId, int year)
     {
         if (userId <= 0 || weekTypeId <= 0)
         {
@@ -50,12 +50,12 @@ public class SubjectService(DataContext dataContext) : DataEntityService(dataCon
         }
 
         return await DataContext.Subjects
-            .Where(subject => subject.User.Id == userId
-                              && subject.WeekType.Id == weekTypeId
+            .Where(subject => subject.UserId == userId
+                              && subject.WeekTypeId == weekTypeId
                               && subject.AcademicYear == year)
             .OrderBy(subject => subject.CreatedAt)
-            .ThenBy(subject => subject.DayPosition.Index)
-            .ThenBy(subject => subject.SubjectPosition.Index)
+            .ThenBy(subject => subject.DayPosition!.Index)
+            .ThenBy(subject => subject.SubjectPosition!.Index)
             .ToListAsync();
     }
 }

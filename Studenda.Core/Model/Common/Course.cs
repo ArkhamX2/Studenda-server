@@ -6,7 +6,7 @@ namespace Studenda.Core.Model.Common;
 /// <summary>
 ///     Курс.
 /// </summary>
-public class Course : Identity
+public class Course : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -20,35 +20,16 @@ public class Course : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 32;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Grade" />.
-    /// </summary>
     public const bool IsGradeRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = false;
 
     /// <summary>
     ///     Конфигурация модели <see cref="Course" />.
     /// </summary>
-    internal class Configuration : Configuration<Course>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Course>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -61,10 +42,6 @@ public class Course : Identity
             builder.Property(course => course.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
-
-            builder.HasMany(course => course.Groups)
-                .WithOne(group => group.Course)
-                .HasForeignKey(group => group.CourseId);
 
             base.Configure(builder);
         }
@@ -98,8 +75,5 @@ public class Course : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанные объекты <see cref="Group" />.
-    /// </summary>
     public List<Group> Groups { get; set; } = [];
 }

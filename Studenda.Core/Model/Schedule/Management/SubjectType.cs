@@ -1,13 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Task = Studenda.Core.Model.Journal.Task;
 
 namespace Studenda.Core.Model.Schedule.Management;
 
 /// <summary>
 ///     Тип занятия.
 /// </summary>
-public class SubjectType : Identity
+public class SubjectType : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -21,40 +21,15 @@ public class SubjectType : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 32;
-
-    /// <summary>
-    ///     Значение по умолчанию для поля <see cref="IsScorable" />.
-    /// </summary>
-    public const bool IsScorableDefaultValue = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="IsScorable" />.
-    /// </summary>
-    public const bool IsScorableRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="SubjectType" />.
     /// </summary>
-    internal class Configuration : Configuration<SubjectType>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<SubjectType>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -64,18 +39,6 @@ public class SubjectType : Identity
             builder.Property(type => type.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
-
-            builder.Property(type => type.IsScorable)
-                .HasDefaultValue(false)
-                .IsRequired();
-
-            builder.HasMany(type => type.Subjects)
-                .WithOne(subject => subject.SubjectType)
-                .HasForeignKey(subject => subject.SubjectTypeId);
-
-            builder.HasMany(type => type.SubjectChanges)
-                .WithOne(change => change.SubjectType)
-                .HasForeignKey(change => change.SubjectTypeId);
 
             base.Configure(builder);
         }
@@ -100,20 +63,9 @@ public class SubjectType : Identity
     /// </summary>
     public required string Name { get; set; }
 
-    /// <summary>
-    ///     Статус оцениваемости.
-    /// </summary>
-    public required bool IsScorable { get; set; }
-
     #endregion
 
-    /// <summary>
-    ///     Связанные объекты <see cref="Subject" />.
-    /// </summary>
     public List<Subject> Subjects { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="SubjectChange" />.
-    /// </summary>
     public List<SubjectChange> SubjectChanges { get; set; } = [];
+    public List<Task> Tasks { get; set; } = [];
 }

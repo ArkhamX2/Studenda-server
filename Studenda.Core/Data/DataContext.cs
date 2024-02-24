@@ -3,11 +3,14 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Journal;
+using Studenda.Core.Model.Journal.Management;
 using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security;
 using Studenda.Core.Model.Security.Link;
 using Studenda.Core.Model.Security.Management;
+using Task = Studenda.Core.Model.Journal.Task;
 
 namespace Studenda.Core.Data;
 
@@ -24,90 +27,34 @@ namespace Studenda.Core.Data;
 ///     Объекты вставляются со статусом Unchanged.
 ///     При коммите изменений ничего не произойдет.
 /// </summary>
-public class DataContext : DbContext
+/// <param name="configuration">Конфигурация базы данных.</param>
+public class DataContext(ContextConfiguration configuration) : DbContext
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="configuration">Конфигурация базы данных.</param>
-    public DataContext(ContextConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
     /// <summary>
     ///     Конфигурация базы данных.
     /// </summary>
-    private ContextConfiguration Configuration { get; }
+    private ContextConfiguration Configuration { get; } = configuration;
 
-    /// <summary>
-    ///     Набор объектов <see cref="User" />.
-    /// </summary>
-    public DbSet<User> Users => Set<User>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="Role" />.
-    /// </summary>
-    public DbSet<Role> Roles => Set<Role>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="Permission" />.
-    /// </summary>
-    public DbSet<Permission> Permissions => Set<Permission>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="Department" />.
-    /// </summary>
     public DbSet<Department> Departments => Set<Department>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="Course" />.
-    /// </summary>
     public DbSet<Course> Courses => Set<Course>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="Group" />.
-    /// </summary>
     public DbSet<Group> Groups => Set<Group>();
 
-    /// <summary>
-    ///     Набор объектов <see cref="SubjectPosition" />.
-    /// </summary>
     public DbSet<SubjectPosition> SubjectPositions => Set<SubjectPosition>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="DayPosition" />.
-    /// </summary>
     public DbSet<DayPosition> DayPositions => Set<DayPosition>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="WeekType" />.
-    /// </summary>
     public DbSet<WeekType> WeekTypes => Set<WeekType>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="Discipline" />.
-    /// </summary>
     public DbSet<Discipline> Disciplines => Set<Discipline>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="SubjectType" />.
-    /// </summary>
     public DbSet<SubjectType> SubjectTypes => Set<SubjectType>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="Subject" />.
-    /// </summary>
     public DbSet<Subject> Subjects => Set<Subject>();
-
-    /// <summary>
-    ///     Набор объектов <see cref="SubjectChange" />.
-    /// </summary>
     public DbSet<SubjectChange> SubjectChanges => Set<SubjectChange>();
 
-    /// <summary>
-    ///     Набор объектов <see cref="RolePermissionLink" />.
-    /// </summary>
+    public DbSet<Task> Tasks => Set<Task>();
+    public DbSet<Absence> Absences => Set<Absence>();
+    public DbSet<Mark> Marks => Set<Mark>();
+    public DbSet<MarkType> MarkTypes => Set<MarkType>();
+
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RolePermissionLink> RolePermissionLinks => Set<RolePermissionLink>();
 
     /// <summary>
@@ -162,11 +109,6 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new Course.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Group.Configuration(Configuration));
 
-        // Безопасность.
-        modelBuilder.ApplyConfiguration(new User.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Role.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Permission.Configuration(Configuration));
-
         // Расписание.
         modelBuilder.ApplyConfiguration(new SubjectPosition.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new DayPosition.Configuration(Configuration));
@@ -176,7 +118,16 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new Subject.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new SubjectChange.Configuration(Configuration));
 
-        // Связующие таблицы.
+        // Журнал.
+        modelBuilder.ApplyConfiguration(new Task.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Absence.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Mark.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new MarkType.Configuration(Configuration));
+
+        // Безопасность.
+        modelBuilder.ApplyConfiguration(new User.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Role.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Permission.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new RolePermissionLink.Configuration(Configuration));
 
         base.OnModelCreating(modelBuilder);

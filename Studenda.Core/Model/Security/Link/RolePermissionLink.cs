@@ -21,30 +21,15 @@ public class RolePermissionLink : Entity
 
     #region Configuration
 
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="RoleId" />.
-    /// </summary>
     public const bool IsRoleIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="PermissionId" />.
-    /// </summary>
     public const bool IsPermissionIdRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="RolePermissionLink" />.
     /// </summary>
-    internal class Configuration : Configuration<RolePermissionLink>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<RolePermissionLink>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -95,13 +80,6 @@ public class RolePermissionLink : Entity
 
     #endregion
 
-    /// <summary>
-    ///     Связанный объект <see cref="Management.Role" />.
-    /// </summary>
     public Role? Role { get; set; }
-
-    /// <summary>
-    ///     Связанный объект <see cref="Management.Permission" />.
-    /// </summary>
     public Permission? Permission { get; set; }
 }

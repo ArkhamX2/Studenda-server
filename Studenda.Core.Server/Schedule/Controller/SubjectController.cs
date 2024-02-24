@@ -42,7 +42,7 @@ public class SubjectController(SubjectService subjectService) : ControllerBase
     [Route("group")]
     public async Task<ActionResult<List<Subject>>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekTypeId, [FromQuery] int year)
     {
-        return await SubjectService.GetSubjectByGroup(groupId, weekTypeId, year);
+        return await SubjectService.GetByGroup(groupId, weekTypeId, year);
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class SubjectController(SubjectService subjectService) : ControllerBase
     [Route("user")]
     public async Task<ActionResult<List<Subject>>> GetByUser([FromQuery] int userId, [FromQuery] int weekTypeId, [FromQuery] int year)
     {
-        return await SubjectService.GetSubjectByUser(userId, weekTypeId, year);
+        return await SubjectService.GetByUser(userId, weekTypeId, year);
     }
 
     /// <summary>

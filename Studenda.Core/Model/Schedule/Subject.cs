@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Journal;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security;
 
@@ -10,7 +11,7 @@ namespace Studenda.Core.Model.Schedule;
 ///     Статичное занятие на определенный день
 ///     для определенной группы.
 /// </summary>
-public class Subject : Identity
+public class Subject : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -24,80 +25,25 @@ public class Subject : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Classroom" />.
-    /// </summary>
     public const int ClassroomLengthMax = 32;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Description" />.
-    /// </summary>
     public const int DescriptionLengthMax = 256;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="DisciplineId" />.
-    /// </summary>
     public const bool IsDisciplineIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="SubjectPositionId" />.
-    /// </summary>
     public const bool IsSubjectPositionIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="DayPositionId" />.
-    /// </summary>
     public const bool IsDayPositionIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="WeekTypeId" />.
-    /// </summary>
     public const bool IsWeekTypeIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="SubjectTypeId" />.
-    /// </summary>
     public const bool IsSubjectTypeIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="UserId" />.
-    /// </summary>
     public const bool IsUserIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="GroupId" />.
-    /// </summary>
     public const bool IsGroupIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="AcademicYear" />.
-    /// </summary>
     public const bool IsAcademicYearRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Classroom" />.
-    /// </summary>
     public const bool IsClassroomRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Description" />.
-    /// </summary>
     public const bool IsDescriptionRequired = false;
 
     /// <summary>
     ///     Конфигурация модели <see cref="Subject" />.
     /// </summary>
-    internal class Configuration : Configuration<Subject>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Subject>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -149,10 +95,6 @@ public class Subject : Identity
             builder.Property(subject => subject.Description)
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
-
-            builder.HasMany(subject => subject.ScheduleChanges)
-                .WithOne(change => change.Subject)
-                .HasForeignKey(change => change.StaticScheduleId);
 
             base.Configure(builder);
         }
@@ -228,43 +170,13 @@ public class Subject : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанный объект <see cref="Management.Discipline" />.
-    /// </summary>
-    public Discipline? Discipline { get; set; } 
-
-    /// <summary>
-    ///     Связанный объект <see cref="Management.SubjectPosition" />.
-    /// </summary>
-    public SubjectPosition? SubjectPosition { get; set; } 
-
-    /// <summary>
-    ///     Связанный объект <see cref="Management.DayPosition" />.
-    /// </summary>
-    public DayPosition? DayPosition { get; set; } 
-
-    /// <summary>
-    ///     Связанный объект <see cref="Management.WeekType" />.
-    /// </summary>
-    public WeekType? WeekType { get; set; } 
-
-    /// <summary>
-    ///     Связанный объект <see cref="Management.SubjectType" />.
-    /// </summary>
+    public Discipline? Discipline { get; set; }
+    public SubjectPosition? SubjectPosition { get; set; }
+    public DayPosition? DayPosition { get; set; }
+    public WeekType? WeekType { get; set; }
     public SubjectType? SubjectType { get; set; }
-
-    /// <summary>
-    ///     Связанный объект <see cref="Security.User" />.
-    /// </summary>
     public User? User { get; set; }
-
-    /// <summary>
-    ///     Связанный объект <see cref="Common.Group" />.
-    /// </summary>
-    public Group? Group { get; set; } 
-
-    /// <summary>
-    ///     Связанные объекты <see cref="SubjectChange" />.
-    /// </summary>
+    public Group? Group { get; set; }
     public List<SubjectChange> ScheduleChanges { get; set; } = [];
+    public List<Absence> Absences { get; set; } = [];
 }

@@ -8,7 +8,7 @@ namespace Studenda.Core.Model.Security.Management;
 ///     Разрешение для <see cref="Role" />.
 ///     Обозначает некоторый доступ к некоторой функции.
 /// </summary>
-public class Permission : Identity
+public class Permission : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -22,30 +22,15 @@ public class Permission : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 128;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="Permission" />.
     /// </summary>
-    internal class Configuration : Configuration<Permission>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Permission>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -55,10 +40,6 @@ public class Permission : Identity
             builder.Property(permission => permission.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
-
-            builder.HasMany(permission => permission.RolePermissionLinks)
-                .WithOne(link => link.Permission)
-                .HasForeignKey(link => link.PermissionId);
 
             base.Configure(builder);
         }
@@ -85,8 +66,5 @@ public class Permission : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанные объекты <see cref="RolePermissionLink" />.
-    /// </summary>
     public List<RolePermissionLink> RolePermissionLinks { get; set; } = [];
 }

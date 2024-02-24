@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
@@ -10,55 +9,59 @@ namespace Studenda.Core.Server.Security.Service;
 
 public static class JwtManager
 {
-    /// <summary>
-    ///     издатель токена
-    /// </summary>
     public const string Issuer = "MyAuthServer";
-
-    /// <summary>
-    ///     потребитель токена
-    /// </summary>
     public const string Audience = "MyAuthClient";
-
-    /// <summary>
-    ///     ключ
-    /// </summary>
-    private const string Key = "mysupersecret_secretkey!123";
+    private const string Key = "v89h3bh89vh9ve8hc89nv98nn899cnccn998ev80vi809jberh89b";
+    private const string JwtRegisteredClaimNamesSub = "rbveer3h535nn3n35nyny5umbbt";
+    private const int ExpirationMinutes = 60 * 24;
 
     public static IEnumerable<Claim> CreateClaims(this IdentityUser identityUser, IEnumerable<IdentityRole> identityRoles)
     {
-        var claims = new List<Claim>
+        try
         {
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)),
-            new(ClaimTypes.NameIdentifier, identityUser.Id)
-        };
+            var claims = new List<Claim>
+            {
+                new(JwtRegisteredClaimNames.Sub, JwtRegisteredClaimNamesSub),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
+                new(ClaimTypes.NameIdentifier, identityUser.Id)
+            };
 
-        if (identityUser.Email is not null)
-        {
-            claims.Add(new Claim(ClaimTypes.Email, identityUser.Email));
+            if (identityUser.UserName is not null)
+            {
+                claims.Add(new Claim(ClaimTypes.Name, identityUser.UserName));
+            }
+
+            if (identityUser.Email is not null)
+            {
+                claims.Add(new Claim(ClaimTypes.Email, identityUser.Email));
+            }
+
+            identityRoles = identityRoles.ToList();
+
+            if (identityRoles.Any())
+            {
+                claims.Add(new Claim(ClaimTypes.Role, string.Join(" ", identityRoles.Select(role => role.Name))));
+            }
+
+            return claims;
         }
-
-        identityRoles = identityRoles.ToList();
-
-        if (identityRoles.Any())
+        catch (Exception e)
         {
-            claims.Add(new Claim(ClaimTypes.Role, string.Join(" ", identityRoles.Select(role => role.Name))));
+            Console.WriteLine(e);
+            throw;
         }
-
-        return claims;
     }
 
-    public static JwtSecurityToken CreateJwtToken(this IEnumerable<Claim> claims, IConfiguration configuration)
+    public static JwtSecurityToken CreateJwtToken(this IEnumerable<Claim> claims)
     {
-        var expire = configuration.GetSection("Jwt:Expire").Get<int>();
         var key = GetSymmetricSecurityKey();
 
         return new JwtSecurityToken(
             Issuer,
             Audience,
             claims,
-            expires: DateTime.UtcNow.AddMinutes(expire),
+            expires: DateTime.UtcNow.AddMinutes(ExpirationMinutes),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
     }
 

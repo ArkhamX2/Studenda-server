@@ -1,16 +1,18 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Common;
+using Studenda.Core.Model.Journal;
 using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security.Management;
+using Task = Studenda.Core.Model.Journal.Task;
 
 namespace Studenda.Core.Model.Security;
 
 /// <summary>
 ///     Пользователь.
 /// </summary>
-public class User : Identity
+public class User : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -24,70 +26,23 @@ public class User : Identity
 
     #region Configuration
 
-    /// <summary>
-    ///     Максимальная длина поля <see cref="IdentityId" />.
-    /// </summary>
     public const int IdentityIdLengthMax = 128;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Name" />.
-    /// </summary>
     public const int NameLengthMax = 32;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Surname" />.
-    /// </summary>
     public const int SurnameLengthMax = 32;
-
-    /// <summary>
-    ///     Максимальная длина поля <see cref="Patronymic" />.
-    /// </summary>
     public const int PatronymicLengthMax = 32;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="IdentityId" />.
-    /// </summary>
     public const bool IsIdentityIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="RoleId" />.
-    /// </summary>
     public const bool IsRoleIdRequired = true;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="GroupId" />.
-    /// </summary>
     public const bool IsGroupIdRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Name" />.
-    /// </summary>
     public const bool IsNameRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Surname" />.
-    /// </summary>
     public const bool IsSurnameRequired = false;
-
-    /// <summary>
-    ///     Статус необходимости наличия значения в поле <see cref="Patronymic" />.
-    /// </summary>
     public const bool IsPatronymicRequired = false;
 
     /// <summary>
     ///     Конфигурация модели <see cref="User" />.
     /// </summary>
-    internal class Configuration : Configuration<User>
+    /// <param name="configuration">Конфигурация базы данных.</param>
+    internal class Configuration(ContextConfiguration configuration) : Configuration<User>(configuration)
     {
-        /// <summary>
-        ///     Конструктор.
-        /// </summary>
-        /// <param name="configuration">Конфигурация базы данных.</param>
-        public Configuration(ContextConfiguration configuration) : base(configuration)
-        {
-            // PASS.
-        }
-
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
@@ -119,18 +74,6 @@ public class User : Identity
             builder.Property(user => user.Patronymic)
                 .HasMaxLength(PatronymicLengthMax)
                 .IsRequired(IsPatronymicRequired);
-
-            builder.HasMany(user => user.Subjects)
-                .WithOne(subject => subject.User)
-                .HasForeignKey(subject => subject.UserId);
-
-            builder.HasMany(user => user.SubjectChanges)
-                .WithOne(change => change.User)
-                .HasForeignKey(change => change.UserId);
-
-            builder.HasMany(user => user.Disciplines)
-                .WithOne(discipline => discipline.User)
-                .HasForeignKey(discipline => discipline.UserId);
 
             base.Configure(builder);
         }
@@ -187,28 +130,12 @@ public class User : Identity
 
     #endregion
 
-    /// <summary>
-    ///     Связанный объект <see cref="Management.Role" />.
-    /// </summary>
     public Role? Role { get; set; }
-
-    /// <summary>
-    ///     Связанный объект <see cref="Common.Group" />.
-    /// </summary>
     public Group? Group { get; set; }
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Subject" />.
-    /// </summary>
     public List<Subject> Subjects { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="SubjectChange" />.
-    /// </summary>
     public List<SubjectChange> SubjectChanges { get; set; } = [];
-
-    /// <summary>
-    ///     Связанные объекты <see cref="Discipline" />.
-    /// </summary>
     public List<Discipline> Disciplines { get; set; } = [];
+    public List<Absence> Absences { get; set; } = [];
+    public List<Task> IssuedTasks { get; set; } = [];
+    public List<Task> AssignedTasks { get; set; } = [];
 }
