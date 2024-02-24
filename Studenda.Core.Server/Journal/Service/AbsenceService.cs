@@ -12,13 +12,13 @@ namespace Studenda.Core.Server.Journal.Service;
 public class AbsenceService(DataContext dataContext) : DataEntityService(dataContext)
 {
     /// <summary>
-    ///     Получить список прогулов по датам.
+    ///     Получить список прогулов по идентификатору пользователя.
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
     /// <param name="dates">Даты.</param>
     /// <returns>Список прогулов.</returns>
     /// <exception cref="ArgumentException">При некорректных аргументах.</exception>
-    public async Task<List<Absence>> GetByDate(int userId, List<DateTime> dates)
+    public async Task<List<Absence>> GetByUser(int userId, List<DateTime> dates)
     {
         if (userId <= 0)
         {

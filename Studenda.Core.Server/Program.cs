@@ -73,6 +73,7 @@ serviceCollection.AddScoped<SubjectService>();
 serviceCollection.AddScoped<WeekTypeService>();
 serviceCollection.AddScoped<MarkService>();
 serviceCollection.AddScoped<TaskService>();
+serviceCollection.AddScoped<AbsenceService>();
 serviceCollection.AddScoped<UserService>();
 serviceCollection.AddControllers();
 serviceCollection.AddAuthorization();
