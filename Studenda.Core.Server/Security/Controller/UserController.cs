@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Model.Security;
-using Studenda.Core.Server.Common.Service;
+using Studenda.Core.Server.Journal.Service;
 
 namespace Studenda.Core.Server.Security.Controller;
 
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="User" />.
 /// </summary>
-/// <param name="dataEntityService">Сервис моделей.</param>
+/// <param name="userService">Сервис моделей.</param>
 [Route("api/security/user")]
 [ApiController]
-public class UserController(DataEntityService dataEntityService) : ControllerBase
+public class UserController(UserService userService) : ControllerBase
 {
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; } = dataEntityService;
+    private UserService UserService { get; } = userService;
 
     /// <summary>
     ///     Получить список пользователей.
@@ -28,7 +28,17 @@ public class UserController(DataEntityService dataEntityService) : ControllerBas
     [HttpGet]
     public async Task<ActionResult<List<User>>> Get([FromQuery] List<int> ids)
     {
-        return await DataEntityService.Get(DataEntityService.DataContext.Users, ids);
+        return await UserService.Get(UserService.DataContext.Users, ids);
+    }
+
+    /// <summary>
+    ///     Получить список пользователей по идентификаторам групп.
+    /// </summary>
+    /// <param name="groupIds">Идентификаторы групп.</param>
+    /// <returns>Результат операции со списком пользователей.</returns>
+    public async Task<ActionResult<List<User>>> GetByGroup([FromQuery] List<int> groupIds)
+    {
+        return await UserService.GetByGroup(groupIds);
     }
 
     /// <summary>
@@ -40,7 +50,7 @@ public class UserController(DataEntityService dataEntityService) : ControllerBas
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<User> entities)
     {
-        var status = await DataEntityService.Set(DataEntityService.DataContext.Users, entities);
+        var status = await UserService.Set(UserService.DataContext.Users, entities);
 
         if (!status)
         {
@@ -59,7 +69,7 @@ public class UserController(DataEntityService dataEntityService) : ControllerBas
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = await DataEntityService.Remove(DataEntityService.DataContext.Users, ids);
+        var status = await UserService.Remove(UserService.DataContext.Users, ids);
 
         if (!status)
         {

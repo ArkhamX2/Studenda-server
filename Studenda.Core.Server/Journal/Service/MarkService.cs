@@ -12,7 +12,7 @@ namespace Studenda.Core.Server.Journal.Service;
 public class MarkService(DataContext dataContext) : DataEntityService(dataContext)
 {
     /// <summary>
-    ///     Получить список оценок.
+    ///     Получить список оценок по идентификаторам заданий.
     /// </summary>
     /// <param name="taskIds">Идентификаторы заданий.</param>
     /// <returns>Список оценок.</returns>
@@ -21,7 +21,7 @@ public class MarkService(DataContext dataContext) : DataEntityService(dataContex
     {
         if (taskIds.Count <= 0)
         {
-            throw new ArgumentException("Invalid arguments!");
+            throw new ArgumentException("Invalid task ids!");
         }
 
         return await DataContext.Marks
