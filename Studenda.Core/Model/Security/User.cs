@@ -136,5 +136,6 @@ public class User : IdentifiableEntity
     public List<SubjectChange> SubjectChanges { get; set; } = [];
     public List<Discipline> Disciplines { get; set; } = [];
     public List<Absence> Absences { get; set; } = [];
-    public List<Task> Tasks { get; set; } = [];
+    public List<Task> IssuedTasks { get; set; } = [];
+    public List<Task> AssignedTasks { get; set; } = [];
 }

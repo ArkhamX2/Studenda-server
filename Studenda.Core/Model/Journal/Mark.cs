@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
+using Studenda.Core.Model.Journal.Management;
 
-namespace Studenda.Core.Model.Journal.Management;
+namespace Studenda.Core.Model.Journal;
 
 /// <summary>
-///     Тип оценивания.
+///     Оценка.
 /// </summary>
-public class AssessmentType : IdentifiableEntity
+public class Mark : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -20,31 +21,32 @@ public class AssessmentType : IdentifiableEntity
 
     #region Configuration
 
-    public const int NameLengthMax = 32;
-    public const bool IsNameRequired = true;
-    public const bool IsMinValueRequired = true;
-    public const bool IsMaxValueRequired = true;
+    public const bool IsMarkTypeIdRequired = true;
+    public const bool IsTaskIdRequired = true;
+    public const bool IsValueRequired = true;
 
     /// <summary>
     ///     Конфигурация модели.
     /// </summary>
     /// <param name="configuration">Конфигурация базы данных.</param>
-    internal class Configuration(ContextConfiguration configuration) : Configuration<AssessmentType>(configuration)
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Mark>(configuration)
     {
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<AssessmentType> builder)
+        public override void Configure(EntityTypeBuilder<Mark> builder)
         {
-            builder.Property(type => type.Name)
-                .HasMaxLength(NameLengthMax)
+            builder.HasOne(mark => mark.MarkType)
+                .WithOne(type => type.Mark)
+                .HasForeignKey<Mark>(type => type.MarkTypeId);
+
+            builder.HasOne(mark => mark.Task)
+                .WithMany(task => task.Marks)
+                .HasForeignKey(mark => mark.TaskId)
                 .IsRequired();
 
-            builder.Property(type => type.MinValue)
-                .IsRequired();
-
-            builder.Property(type => type.MaxValue)
+            builder.Property(mark => mark.Value)
                 .IsRequired();
 
             base.Configure(builder);
@@ -66,21 +68,22 @@ public class AssessmentType : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Название.
+    ///     Идентификатор связанного объекта <see cref="Management.MarkType" />.
     /// </summary>
-    public required string Name { get; set; }
+    public required int MarkTypeId { get; set; }
 
     /// <summary>
-    ///     Минимальное значение оценки.
+    ///     Идентификатор связанного объекта <see cref="Journal.Task" />.
     /// </summary>
-    public required int MinValue { get; set; }
+    public required int TaskId { get; set; }
 
     /// <summary>
-    ///     Максимальное значение оценки.
+    ///     Значение.
     /// </summary>
-    public required int MaxValue { get; set; }
+    public required int Value { get; set; }
 
     #endregion
 
-    public Assessment? Assessment { get; set; }
+    public MarkType? MarkType { get; set; }
+    public Task? Task { get; set; }
 }

@@ -1,22 +1,22 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Model.Journal;
-using Studenda.Core.Server.Common.Service;
+using Studenda.Core.Server.Journal.Service;
 
 namespace Studenda.Core.Server.Journal.Controller;
 
 /// <summary>
-///     Контроллер для работы с объектами типа <see cref="Assessment" />.
+///     Контроллер для работы с объектами типа <see cref="Mark" />.
 /// </summary>
-/// <param name="dataEntityService">Сервис моделей.</param>
-[Route("api/journal/assessment")]
+/// <param name="markService">Сервис моделей.</param>
+[Route("api/journal/mark")]
 [ApiController]
-public class AssessmentController(DataEntityService dataEntityService) : ControllerBase
+public class MarkController(MarkService markService) : ControllerBase
 {
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; } = dataEntityService;
+    private MarkService MarkService { get; } = markService;
 
     /// <summary>
     ///     Получить список оценок.
@@ -26,9 +26,21 @@ public class AssessmentController(DataEntityService dataEntityService) : Control
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком оценок.</returns>
     [HttpGet]
-    public async Task<ActionResult<List<Assessment>>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<Mark>>> Get([FromQuery] List<int> ids)
     {
-        return await DataEntityService.Get(DataEntityService.DataContext.Assessments, ids);
+        return await MarkService.Get(MarkService.DataContext.Marks, ids);
+    }
+
+    /// <summary>
+    ///     Получить список оценок по идентификаторам заданий.
+    /// </summary>
+    /// <param name="taskIds">Идентификаторы заданий.</param>
+    /// <returns>Результат операции со списком оценок.</returns>
+    [HttpGet]
+    [Route("task")]
+    public async Task<ActionResult<List<Mark>>> GetByTask([FromQuery] List<int> taskIds)
+    {
+        return await MarkService.GetByTask(taskIds);
     }
 
     /// <summary>
@@ -38,13 +50,13 @@ public class AssessmentController(DataEntityService dataEntityService) : Control
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] List<Assessment> entities)
+    public async Task<IActionResult> Post([FromBody] List<Mark> entities)
     {
-        var status = await DataEntityService.Set(DataEntityService.DataContext.Assessments, entities);
+        var status = await MarkService.Set(MarkService.DataContext.Marks, entities);
 
         if (!status)
         {
-            return BadRequest("No assessments were saved!");
+            return BadRequest("No marks were saved!");
         }
 
         return Ok();
@@ -59,11 +71,11 @@ public class AssessmentController(DataEntityService dataEntityService) : Control
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = await DataEntityService.Remove(DataEntityService.DataContext.Assessments, ids);
+        var status = await MarkService.Remove(MarkService.DataContext.Marks, ids);
 
         if (!status)
         {
-            return BadRequest("No assessments were deleted!");
+            return BadRequest("No marks were deleted!");
         }
 
         return Ok();

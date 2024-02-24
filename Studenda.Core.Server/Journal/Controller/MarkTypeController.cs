@@ -6,12 +6,12 @@ using Studenda.Core.Server.Common.Service;
 namespace Studenda.Core.Server.Journal.Controller;
 
 /// <summary>
-///     Контроллер для работы с объектами типа <see cref="AssessmentType" />.
+///     Контроллер для работы с объектами типа <see cref="MarkType" />.
 /// </summary>
 /// <param name="dataEntityService">Сервис моделей.</param>
-[Route("api/journal/assessment-type")]
+[Route("api/journal/mark-type")]
 [ApiController]
-public class AssessmentTypeController(DataEntityService dataEntityService) : ControllerBase
+public class MarkTypeController(DataEntityService dataEntityService) : ControllerBase
 {
     /// <summary>
     ///     Сервис моделей.
@@ -26,9 +26,9 @@ public class AssessmentTypeController(DataEntityService dataEntityService) : Con
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции со списком типов оценивания.</returns>
     [HttpGet]
-    public async Task<ActionResult<List<AssessmentType>>> Get([FromQuery] List<int> ids)
+    public async Task<ActionResult<List<MarkType>>> Get([FromQuery] List<int> ids)
     {
-        return await DataEntityService.Get(DataEntityService.DataContext.AssessmentTypes, ids);
+        return await DataEntityService.Get(DataEntityService.DataContext.MarkTypes, ids);
     }
 
     /// <summary>
@@ -38,13 +38,13 @@ public class AssessmentTypeController(DataEntityService dataEntityService) : Con
     /// <returns>Результат операции.</returns>
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] List<AssessmentType> entities)
+    public async Task<IActionResult> Post([FromBody] List<MarkType> entities)
     {
-        var status = await DataEntityService.Set(DataEntityService.DataContext.AssessmentTypes, entities);
+        var status = await DataEntityService.Set(DataEntityService.DataContext.MarkTypes, entities);
 
         if (!status)
         {
-            return BadRequest("No assessment types were saved!");
+            return BadRequest("No mark types were saved!");
         }
 
         return Ok();
@@ -59,11 +59,11 @@ public class AssessmentTypeController(DataEntityService dataEntityService) : Con
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = await DataEntityService.Remove(DataEntityService.DataContext.AssessmentTypes, ids);
+        var status = await DataEntityService.Remove(DataEntityService.DataContext.MarkTypes, ids);
 
         if (!status)
         {
-            return BadRequest("No assessment types were deleted!");
+            return BadRequest("No mark types were deleted!");
         }
 
         return Ok();

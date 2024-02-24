@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Task = Studenda.Core.Model.Journal.Task;
@@ -23,9 +22,7 @@ public class SubjectType : IdentifiableEntity
     #region Configuration
 
     public const int NameLengthMax = 32;
-    public const bool IsScorableDefaultValue = false;
     public const bool IsNameRequired = true;
-    public const bool IsScorableRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="SubjectType" />.
@@ -41,10 +38,6 @@ public class SubjectType : IdentifiableEntity
         {
             builder.Property(type => type.Name)
                 .HasMaxLength(NameLengthMax)
-                .IsRequired();
-
-            builder.Property(type => type.IsScorable)
-                .HasDefaultValue(false)
                 .IsRequired();
 
             base.Configure(builder);
@@ -69,11 +62,6 @@ public class SubjectType : IdentifiableEntity
     ///     Название.
     /// </summary>
     public required string Name { get; set; }
-
-    /// <summary>
-    ///     Статус оцениваемости.
-    /// </summary>
-    public required bool IsScorable { get; set; }
 
     #endregion
 

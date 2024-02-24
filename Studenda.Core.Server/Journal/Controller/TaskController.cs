@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Studenda.Core.Server.Common.Service;
+using Studenda.Core.Server.Journal.Service;
 using Task = Studenda.Core.Model.Journal.Task;
 
 namespace Studenda.Core.Server.Journal.Controller;
@@ -8,15 +8,15 @@ namespace Studenda.Core.Server.Journal.Controller;
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Task" />.
 /// </summary>
-/// <param name="dataEntityService">Сервис моделей.</param>
+/// <param name="taskService">Сервис моделей.</param>
 [Route("api/journal/task")]
 [ApiController]
-public class TaskController(DataEntityService dataEntityService) : ControllerBase
+public class TaskController(TaskService taskService) : ControllerBase
 {
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private DataEntityService DataEntityService { get; } = dataEntityService;
+    private TaskService TaskService { get; } = taskService;
 
     /// <summary>
     ///     Получить список заданий.
@@ -28,7 +28,58 @@ public class TaskController(DataEntityService dataEntityService) : ControllerBas
     [HttpGet]
     public async Task<ActionResult<List<Task>>> Get([FromQuery] List<int> ids)
     {
-        return await DataEntityService.Get(DataEntityService.DataContext.Tasks, ids);
+        return await TaskService.Get(TaskService.DataContext.Tasks, ids);
+    }
+
+    /// <summary>
+    ///     Получить список заданий по идентификатору издателя.
+    /// </summary>
+    /// <param name="issuerUserId">Идентификатор издателя.</param>
+    /// <param name="groupIds">Идентификаторы групп.</param>
+    /// <param name="disciplineId">Идентификатор дисциплины или null.</param>
+    /// <param name="subjectTypeId">Идентификатор типа занятия или null.</param>
+    /// <param name="academicYear">Учебный год или null.</param>
+    /// <returns>Результат операции со списком заданий.</returns>
+    [HttpGet]
+    [Route("issuer")]
+    public async Task<ActionResult<List<Task>>> GetByIssuer(
+        [FromQuery] int issuerUserId,
+        [FromQuery] List<int> groupIds,
+        [FromQuery] int? disciplineId,
+        [FromQuery] int? subjectTypeId,
+        [FromQuery] int? academicYear
+    ) {
+        return await TaskService.GetByIssuer(
+            issuerUserId,
+            groupIds,
+            disciplineId,
+            subjectTypeId,
+            academicYear
+        );
+    }
+
+    /// <summary>
+    ///     Получить список заданий по идентификаторам исполнителей.
+    /// </summary>
+    /// <param name="assigneeUserIds">Идентификаторы исполнителей.</param>
+    /// <param name="disciplineId">Идентификатор дисциплины или null.</param>
+    /// <param name="subjectTypeId">Идентификатор типа занятия или null.</param>
+    /// <param name="academicYear">Учебный год или null.</param>
+    /// <returns>Результат операции со списком заданий.</returns>
+    [HttpGet]
+    [Route("assignee")]
+    public async Task<ActionResult<List<Task>>> GetByAssignee(
+        [FromQuery] List<int> assigneeUserIds,
+        [FromQuery] int? disciplineId,
+        [FromQuery] int? subjectTypeId,
+        [FromQuery] int? academicYear
+    ) {
+        return await TaskService.GetByAssignee(
+            assigneeUserIds,
+            disciplineId,
+            subjectTypeId,
+            academicYear
+        );
     }
 
     /// <summary>
@@ -40,7 +91,7 @@ public class TaskController(DataEntityService dataEntityService) : ControllerBas
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Task> entities)
     {
-        var status = await DataEntityService.Set(DataEntityService.DataContext.Tasks, entities);
+        var status = await TaskService.Set(TaskService.DataContext.Tasks, entities);
 
         if (!status)
         {
@@ -59,7 +110,7 @@ public class TaskController(DataEntityService dataEntityService) : ControllerBas
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = await DataEntityService.Remove(DataEntityService.DataContext.Tasks, ids);
+        var status = await TaskService.Remove(TaskService.DataContext.Tasks, ids);
 
         if (!status)
         {

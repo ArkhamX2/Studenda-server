@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Schedule;
 using Studenda.Core.Model.Security;
-using Task = Studenda.Core.Model.Journal.Task;
 
 namespace Studenda.Core.Model.Common;
 
@@ -93,5 +92,4 @@ public class Group : IdentifiableEntity
     public Department? Department { get; set; } 
     public List<User> Users { get; set; } = [];
     public List<Subject> StaticSchedules { get; set; } = [];
-    public List<Task> Tasks { get; set; } = [];
 }

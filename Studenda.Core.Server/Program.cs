@@ -7,6 +7,7 @@ using Studenda.Core.Data.Configuration;
 using Studenda.Core.Server.Common.Data.Factory;
 using Studenda.Core.Server.Common.Middleware;
 using Studenda.Core.Server.Common.Service;
+using Studenda.Core.Server.Journal.Service;
 using Studenda.Core.Server.Schedule.Service;
 using Studenda.Core.Server.Security.Data;
 using Studenda.Core.Server.Security.Data.Factory;
@@ -70,6 +71,8 @@ serviceCollection.AddIdentity<IdentityUser, IdentityRole>()
 serviceCollection.AddScoped<DataEntityService>();
 serviceCollection.AddScoped<SubjectService>();
 serviceCollection.AddScoped<WeekTypeService>();
+serviceCollection.AddScoped<MarkService>();
+serviceCollection.AddScoped<TaskService>();
 serviceCollection.AddControllers();
 serviceCollection.AddAuthorization();
 serviceCollection.AddAuthentication(options => {

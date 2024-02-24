@@ -25,6 +25,7 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+.idea/
 
 # content below from: https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
 # General

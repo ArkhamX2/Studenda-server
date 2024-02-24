@@ -41,7 +41,7 @@ public abstract class Entity
         /// <summary>
         ///     Конфигурация базы данных.
         /// </summary>
-        private ContextConfiguration ContextConfiguration { get; } = configuration;
+        protected ContextConfiguration ContextConfiguration { get; } = configuration;
 
         /// <summary>
         ///     Задать конфигурацию для модели.

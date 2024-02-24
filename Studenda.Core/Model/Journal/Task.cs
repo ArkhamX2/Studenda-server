@@ -1,8 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Core.Data.Configuration;
 using Studenda.Core.Model.Schedule.Management;
 using Studenda.Core.Model.Security;
-using Group = Studenda.Core.Model.Common.Group;
 
 namespace Studenda.Core.Model.Journal;
 
@@ -27,10 +27,11 @@ public class Task : IdentifiableEntity
     public const int DescriptionLengthMax = 256;
     public const bool IsDisciplineIdRequired = true;
     public const bool IsSubjectTypeIdRequired = true;
-    public const bool IsGroupIdRequired = true;
-    public const bool IsUserIdRequired = true;
+    public const bool IsIssuerUserIdRequired = true;
+    public const bool IsAssigneeUserIdRequired = true;
     public const bool IsNameRequired = true;
     public const bool IsDescriptionRequired = false;
+    public const bool IsEndsAtRequired = true;
 
     /// <summary>
     ///     Конфигурация модели.
@@ -54,23 +55,27 @@ public class Task : IdentifiableEntity
                 .HasForeignKey(task => task.SubjectTypeId)
                 .IsRequired();
 
-            builder.HasOne(task => task.Group)
-                .WithMany(group => group.Tasks)
-                .HasForeignKey(task => task.GroupId)
+            builder.HasOne(task => task.IssuerUser)
+                .WithMany(user => user.IssuedTasks)
+                .HasForeignKey(task => task.IssuerUserId)
                 .IsRequired();
 
-            builder.HasOne(task => task.User)
-                .WithMany(user => user.Tasks)
-                .HasForeignKey(task => task.UserId)
+            builder.HasOne(task => task.AssigneeUser)
+                .WithMany(user => user.AssignedTasks)
+                .HasForeignKey(task => task.AssigneeUserId)
                 .IsRequired();
 
-            builder.Property(user => user.Name)
+            builder.Property(task => task.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired();
 
-            builder.Property(user => user.Description)
+            builder.Property(task => task.Description)
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
+
+            builder.Property(task => task.EndsAt)
+                .HasColumnType(ContextConfiguration.DateTimeType)
+                .IsRequired();
 
             base.Configure(builder);
         }
@@ -91,24 +96,24 @@ public class Task : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Schedule.Management.Discipline" />.
+    ///     Идентификатор связанного объекта <see cref="Management.Discipline" />.
     /// </summary>
     public required int DisciplineId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Schedule.Management.SubjectType" />.
+    ///     Идентификатор связанного объекта <see cref="Management.SubjectType" />.
     /// </summary>
     public required int SubjectTypeId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Group" />.
+    ///     Идентификатор связанного объекта <see cref="User" />.
     /// </summary>
-    public required int GroupId { get; set; }
+    public required int IssuerUserId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Идентификатор связанного объекта <see cref="User" />.
     /// </summary>
-    public required int UserId { get; set; }
+    public required int AssigneeUserId { get; set; }
 
     /// <summary>
     ///     Название.
@@ -121,11 +126,16 @@ public class Task : IdentifiableEntity
     /// </summary>
     public string? Description { get; set; }
 
+    /// <summary>
+    ///     Дата закрытия.
+    /// </summary>
+    public DateTime? EndsAt { get; set; }
+
     #endregion
 
     public Discipline? Discipline { get; set; }
     public SubjectType? SubjectType { get; set; }
-    public Group? Group { get; set; }
-    public User? User { get; set; }
-    public List<Assessment> Assessments { get; set; } = [];
+    public User? IssuerUser { get; set; }
+    public User? AssigneeUser { get; set; }
+    public List<Mark> Marks { get; set; } = [];
 }

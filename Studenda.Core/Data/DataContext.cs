@@ -27,21 +27,13 @@ namespace Studenda.Core.Data;
 ///     Объекты вставляются со статусом Unchanged.
 ///     При коммите изменений ничего не произойдет.
 /// </summary>
-public class DataContext : DbContext
+/// <param name="configuration">Конфигурация базы данных.</param>
+public class DataContext(ContextConfiguration configuration) : DbContext
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="configuration">Конфигурация базы данных.</param>
-    public DataContext(ContextConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
     /// <summary>
     ///     Конфигурация базы данных.
     /// </summary>
-    private ContextConfiguration Configuration { get; }
+    private ContextConfiguration Configuration { get; } = configuration;
 
     public DbSet<Department> Departments => Set<Department>();
     public DbSet<Course> Courses => Set<Course>();
@@ -57,8 +49,8 @@ public class DataContext : DbContext
 
     public DbSet<Task> Tasks => Set<Task>();
     public DbSet<Absence> Absences => Set<Absence>();
-    public DbSet<Assessment> Assessments => Set<Assessment>();
-    public DbSet<AssessmentType> AssessmentTypes => Set<AssessmentType>();
+    public DbSet<Mark> Marks => Set<Mark>();
+    public DbSet<MarkType> MarkTypes => Set<MarkType>();
 
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
@@ -129,8 +121,8 @@ public class DataContext : DbContext
         // Журнал.
         modelBuilder.ApplyConfiguration(new Task.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Absence.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Assessment.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new AssessmentType.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Mark.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new MarkType.Configuration(Configuration));
 
         // Безопасность.
         modelBuilder.ApplyConfiguration(new User.Configuration(Configuration));
