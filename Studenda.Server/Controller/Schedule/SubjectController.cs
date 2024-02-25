@@ -40,23 +40,29 @@ public class SubjectController(SubjectService subjectService) : ControllerBase
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
     [Route("group")]
-    public async Task<ActionResult<List<Subject>>> GetByGroup([FromQuery] int groupId, [FromQuery] int weekTypeId, [FromQuery] int year)
-    {
+    public async Task<ActionResult<List<Subject>>> GetByGroup(
+        [FromQuery] int groupId,
+        [FromQuery] int weekTypeId,
+        [FromQuery] int year
+    ) {
         return await SubjectService.GetByGroup(groupId, weekTypeId, year);
     }
 
     /// <summary>
-    ///     Получить список статичных занятий по идентификатору пользователя.
+    ///     Получить список статичных занятий по идентификатору аккаунта.
     /// </summary>
-    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="accountId">Идентификатор аккаунта.</param>
     /// <param name="weekTypeId">Идентификатор типа недели.</param>
     /// <param name="year">Учебный год.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
     [Route("user")]
-    public async Task<ActionResult<List<Subject>>> GetByUser([FromQuery] int userId, [FromQuery] int weekTypeId, [FromQuery] int year)
-    {
-        return await SubjectService.GetByUser(userId, weekTypeId, year);
+    public async Task<ActionResult<List<Subject>>> GetByAccount(
+        [FromQuery] int accountId,
+        [FromQuery] int weekTypeId,
+        [FromQuery] int year
+    ) {
+        return await SubjectService.GetByAccount(accountId, weekTypeId, year);
     }
 
     /// <summary>

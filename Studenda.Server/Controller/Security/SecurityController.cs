@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Studenda.Server.Data;
 using Studenda.Server.Data.Transfer.Security;
 using Studenda.Server.Data.Util;
-using Studenda.Server.Model.Security;
+using Studenda.Server.Model.Common;
 using Studenda.Server.Service.Security;
 
 namespace Studenda.Server.Controller.Security;
@@ -76,9 +76,9 @@ public class SecurityController(
             return Unauthorized();
         }
 
-        var user = await DataContext.Users.FirstOrDefaultAsync(user => user.IdentityId == identityUser.Id);
+        var account = await DataContext.Accounts.FirstOrDefaultAsync(account => account.IdentityId == identityUser.Id);
 
-        if (user is null)
+        if (account is null)
         {
             return Unauthorized();
         }
@@ -93,7 +93,7 @@ public class SecurityController(
 
         return Ok(DataSerializer.Serialize(new SecurityResponse
         {
-            User = user,
+            User = account,
             Token = TokenService.CreateNewToken(identityUser, identityRoles)
         }));
     }
@@ -120,17 +120,18 @@ public class SecurityController(
 
         var result = await UserManager.CreateAsync(internalUser, request.Password);
 
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(error.Code, error.Description);
-        }
-
         if (!result.Succeeded)
         {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.Code, error.Description);
+            }
+
             return BadRequest(ModelState);
         }
 
-        var identityUser = await IdentityContext.Users.FirstOrDefaultAsync(identityUser => identityUser.Email == request.Email);
+        var identityUser = await IdentityContext.Users
+            .FirstOrDefaultAsync(identityUser => identityUser.Email == request.Email);
 
         if (identityUser is null)
         {
@@ -144,16 +145,16 @@ public class SecurityController(
 
         await RoleManager.CreateAsync(identityRole);
         await UserManager.AddToRoleAsync(identityUser, request.RoleName);
-        await DataContext.Users.AddAsync(new User
+        await DataContext.Accounts.AddAsync(new Account
         {
             IdentityId = identityUser.Id
         });
 
         await DataContext.SaveChangesAsync();
 
-        var user = await DataContext.Users.FirstOrDefaultAsync(user => user.IdentityId == identityUser.Id);
+        var account = await DataContext.Accounts.FirstOrDefaultAsync(account => account.IdentityId == identityUser.Id);
 
-        if (user is null)
+        if (account is null)
         {
             return Unauthorized();
         }
@@ -168,7 +169,7 @@ public class SecurityController(
 
         return Ok(DataSerializer.Serialize(new SecurityResponse
         {
-            User = user,
+            User = account,
             Token = TokenService.CreateNewToken(identityUser, identityRoles)
         }));
     }

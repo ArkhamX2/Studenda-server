@@ -32,9 +32,9 @@ public class TaskController(TaskService taskService) : ControllerBase
     }
 
     /// <summary>
-    ///     Получить список заданий по идентификатору издателя.
+    ///     Получить список заданий по идентификатору аккаунта издателя.
     /// </summary>
-    /// <param name="issuerUserId">Идентификатор издателя.</param>
+    /// <param name="issuerAccountId">Идентификатор аккаунта издателя.</param>
     /// <param name="groupIds">Идентификаторы групп.</param>
     /// <param name="disciplineId">Идентификатор дисциплины или null.</param>
     /// <param name="subjectTypeId">Идентификатор типа занятия или null.</param>
@@ -43,14 +43,14 @@ public class TaskController(TaskService taskService) : ControllerBase
     [HttpGet]
     [Route("issuer")]
     public async Task<ActionResult<List<Task>>> GetByIssuer(
-        [FromQuery] int issuerUserId,
+        [FromQuery] int issuerAccountId,
         [FromQuery] List<int> groupIds,
         [FromQuery] int? disciplineId,
         [FromQuery] int? subjectTypeId,
         [FromQuery] int? academicYear
     ) {
         return await TaskService.GetByIssuer(
-            issuerUserId,
+            issuerAccountId,
             groupIds,
             disciplineId,
             subjectTypeId,
@@ -59,9 +59,9 @@ public class TaskController(TaskService taskService) : ControllerBase
     }
 
     /// <summary>
-    ///     Получить список заданий по идентификаторам исполнителей.
+    ///     Получить список заданий по идентификаторам аккаунтов исполнителей.
     /// </summary>
-    /// <param name="assigneeUserIds">Идентификаторы исполнителей.</param>
+    /// <param name="assigneeAccountIds">Идентификаторы аккаунтов исполнителей.</param>
     /// <param name="disciplineId">Идентификатор дисциплины или null.</param>
     /// <param name="subjectTypeId">Идентификатор типа занятия или null.</param>
     /// <param name="academicYear">Учебный год или null.</param>
@@ -69,13 +69,13 @@ public class TaskController(TaskService taskService) : ControllerBase
     [HttpGet]
     [Route("assignee")]
     public async Task<ActionResult<List<Task>>> GetByAssignee(
-        [FromQuery] List<int> assigneeUserIds,
+        [FromQuery] List<int> assigneeAccountIds,
         [FromQuery] int? disciplineId,
         [FromQuery] int? subjectTypeId,
         [FromQuery] int? academicYear
     ) {
         return await TaskService.GetByAssignee(
-            assigneeUserIds,
+            assigneeAccountIds,
             disciplineId,
             subjectTypeId,
             academicYear

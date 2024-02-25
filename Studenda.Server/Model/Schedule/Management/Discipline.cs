@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
-using Studenda.Server.Model.Security;
+using Studenda.Server.Model.Common;
 using Task = Studenda.Server.Model.Journal.Task;
 
 namespace Studenda.Server.Model.Schedule.Management;
@@ -24,7 +24,7 @@ public class Discipline : IdentifiableEntity
 
     public const int NameLengthMax = 32;
     public const int DescriptionLengthMax = 32;
-    public const bool IsUserIdRequired = true;
+    public const bool IsAccountIdRequired = true;
     public const bool IsNameRequired = true;
     public const bool IsDescriptionRequired = false;
 
@@ -40,9 +40,9 @@ public class Discipline : IdentifiableEntity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<Discipline> builder)
         {
-            builder.HasOne(discipline => discipline.User)
-                .WithMany(user => user.Disciplines)
-                .HasForeignKey(discipline => discipline.UserId)
+            builder.HasOne(discipline => discipline.Account)
+                .WithMany(account => account.Disciplines)
+                .HasForeignKey(discipline => discipline.AccountId)
                 .IsRequired();
 
             builder.Property(discipline => discipline.Name)
@@ -72,9 +72,9 @@ public class Discipline : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Идентификатор связанного объекта <see cref="Common.Account" />.
     /// </summary>
-    public int? UserId { get; set; }
+    public int? AccountId { get; set; }
 
     /// <summary>
     ///     Название.
@@ -89,7 +89,7 @@ public class Discipline : IdentifiableEntity
 
     #endregion
 
-    public User? User { get; set; }
+    public Account? Account { get; set; }
     public List<Subject> Subjects { get; set; } = [];
     public List<SubjectChange> SubjectChanges { get; set; } = [];
     public List<Task> Tasks { get; set; } = [];

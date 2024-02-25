@@ -3,7 +3,6 @@ using Studenda.Server.Data.Configuration;
 using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Journal;
 using Studenda.Server.Model.Schedule.Management;
-using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Model.Schedule;
 
@@ -32,7 +31,7 @@ public class Subject : IdentifiableEntity
     public const bool IsDayPositionIdRequired = true;
     public const bool IsWeekTypeIdRequired = true;
     public const bool IsSubjectTypeIdRequired = false;
-    public const bool IsUserIdRequired = false;
+    public const bool IsAccountIdRequired = false;
     public const bool IsGroupIdRequired = true;
     public const bool IsAcademicYearRequired = true;
     public const bool IsClassroomRequired = false;
@@ -75,10 +74,10 @@ public class Subject : IdentifiableEntity
                 .HasForeignKey(subject => subject.SubjectTypeId)
                 .IsRequired(IsSubjectTypeIdRequired);
 
-            builder.HasOne(subject => subject.User)
-                .WithMany(user => user.Subjects)
-                .HasForeignKey(subject => subject.UserId)
-                .IsRequired(IsUserIdRequired);
+            builder.HasOne(subject => subject.Account)
+                .WithMany(account => account.Subjects)
+                .HasForeignKey(subject => subject.AccountId)
+                .IsRequired(IsAccountIdRequired);
 
             builder.HasOne(subject => subject.Group)
                 .WithMany(group => group.StaticSchedules)
@@ -141,10 +140,10 @@ public class Subject : IdentifiableEntity
     public int? SubjectTypeId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Идентификатор связанного объекта <see cref="Common.Account" />.
     ///     Необязательное поле.
     /// </summary>
-    public int? UserId { get; set; }
+    public int? AccountId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.
@@ -175,7 +174,7 @@ public class Subject : IdentifiableEntity
     public DayPosition? DayPosition { get; set; }
     public WeekType? WeekType { get; set; }
     public SubjectType? SubjectType { get; set; }
-    public User? User { get; set; }
+    public Account? Account { get; set; }
     public Group? Group { get; set; }
     public List<SubjectChange> ScheduleChanges { get; set; } = [];
     public List<Absence> Absences { get; set; } = [];

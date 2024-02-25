@@ -11,17 +11,17 @@ namespace Studenda.Server.Service.Journal;
 public class AbsenceService(DataContext dataContext) : DataEntityService(dataContext)
 {
     /// <summary>
-    ///     Получить список прогулов по идентификатору пользователя.
+    ///     Получить список прогулов по идентификатору аккаунта.
     /// </summary>
-    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="accountId">Идентификатор аккаунта.</param>
     /// <param name="dates">Даты.</param>
     /// <returns>Список прогулов.</returns>
     /// <exception cref="ArgumentException">При некорректных аргументах.</exception>
-    public async Task<List<Absence>> GetByUser(int userId, List<DateTime> dates)
+    public async Task<List<Absence>> GetByAccount(int accountId, List<DateTime> dates)
     {
-        if (userId <= 0)
+        if (accountId <= 0)
         {
-            throw new ArgumentException("Invalid user id!");
+            throw new ArgumentException("Invalid account id!");
         }
 
         if (dates.Count <= 0)
@@ -32,7 +32,7 @@ public class AbsenceService(DataContext dataContext) : DataEntityService(dataCon
         var datesHashSet = new HashSet<DateTime>(dates.Select(date => new DateTime(date.Year, date.Month, date.Day)));
 
         return await DataContext.Absences
-            .Where(absence => absence.UserId == userId
+            .Where(absence => absence.AccountId == accountId
                 && absence.CreatedAt.HasValue
                 && datesHashSet.Contains(absence.CreatedAt.Value.Date))
             .ToListAsync();
@@ -41,19 +41,19 @@ public class AbsenceService(DataContext dataContext) : DataEntityService(dataCon
     /// <summary>
     ///     Получить список прогулов по датам.
     /// </summary>
-    /// <param name="userIds">Идентификаторы пользователей.</param>
+    /// <param name="accountIds">Идентификаторы аккаунтов.</param>
     /// <param name="date">Дата.</param>
     /// <returns>Список прогулов.</returns>
-    /// <exception cref="ArgumentException">При пустом списке идентификаторов пользователей.</exception>
-    public async Task<List<Absence>> GetByDate(List<int> userIds, DateTime date)
+    /// <exception cref="ArgumentException">При пустом списке идентификаторов аккаунтов.</exception>
+    public async Task<List<Absence>> GetByDate(List<int> accountIds, DateTime date)
     {
-        if (userIds.Count <= 0)
+        if (accountIds.Count <= 0)
         {
             throw new ArgumentException("Invalid user ids!");
         }
 
         return await DataContext.Absences
-            .Where(absence => userIds.Contains(absence.UserId)
+            .Where(absence => accountIds.Contains(absence.AccountId)
                 && absence.CreatedAt.HasValue
                 && absence.CreatedAt.Value.Date == date.Date)
             .ToListAsync();

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
+using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Schedule.Management;
-using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Model.Journal;
 
@@ -27,8 +27,8 @@ public class Task : IdentifiableEntity
     public const int DescriptionLengthMax = 256;
     public const bool IsDisciplineIdRequired = true;
     public const bool IsSubjectTypeIdRequired = true;
-    public const bool IsIssuerUserIdRequired = true;
-    public const bool IsAssigneeUserIdRequired = true;
+    public const bool IsIssuerAccountIdRequired = true;
+    public const bool IsAssigneeAccountIdRequired = true;
     public const bool IsNameRequired = true;
     public const bool IsDescriptionRequired = false;
     public const bool IsEndsAtRequired = true;
@@ -55,14 +55,14 @@ public class Task : IdentifiableEntity
                 .HasForeignKey(task => task.SubjectTypeId)
                 .IsRequired();
 
-            builder.HasOne(task => task.IssuerUser)
-                .WithMany(user => user.IssuedTasks)
-                .HasForeignKey(task => task.IssuerUserId)
+            builder.HasOne(task => task.IssuerAccount)
+                .WithMany(account => account.IssuedTasks)
+                .HasForeignKey(task => task.IssuerAccountId)
                 .IsRequired();
 
-            builder.HasOne(task => task.AssigneeUser)
-                .WithMany(user => user.AssignedTasks)
-                .HasForeignKey(task => task.AssigneeUserId)
+            builder.HasOne(task => task.AssigneeAccount)
+                .WithMany(account => account.AssignedTasks)
+                .HasForeignKey(task => task.AssigneeAccountId)
                 .IsRequired();
 
             builder.Property(task => task.Name)
@@ -106,14 +106,14 @@ public class Task : IdentifiableEntity
     public required int SubjectTypeId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="User" />.
+    ///     Идентификатор связанного объекта <see cref="Account" />.
     /// </summary>
-    public required int IssuerUserId { get; set; }
+    public required int IssuerAccountId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="User" />.
+    ///     Идентификатор связанного объекта <see cref="Account" />.
     /// </summary>
-    public required int AssigneeUserId { get; set; }
+    public required int AssigneeAccountId { get; set; }
 
     /// <summary>
     ///     Название.
@@ -135,7 +135,7 @@ public class Task : IdentifiableEntity
 
     public Discipline? Discipline { get; set; }
     public SubjectType? SubjectType { get; set; }
-    public User? IssuerUser { get; set; }
-    public User? AssigneeUser { get; set; }
+    public Account? IssuerAccount { get; set; }
+    public Account? AssigneeAccount { get; set; }
     public List<Mark> Marks { get; set; } = [];
 }

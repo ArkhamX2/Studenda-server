@@ -43,7 +43,7 @@ serviceCollection.AddScoped<IdentityContext>(provider =>
 // Сервисы.
 
 serviceCollection.AddScoped<TokenService>();
-serviceCollection.AddScoped<UserService>();
+serviceCollection.AddScoped<AccountService>();
 serviceCollection.AddScoped<DataEntityService>();
 serviceCollection.AddScoped<SubjectService>();
 serviceCollection.AddScoped<WeekTypeService>();

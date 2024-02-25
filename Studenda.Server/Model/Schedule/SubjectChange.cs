@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
+using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Schedule.Management;
-using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Model.Schedule;
 
@@ -28,7 +28,7 @@ public class SubjectChange : IdentifiableEntity
     public const bool IsStaticScheduleIdRequired = true;
     public const bool IsDisciplineIdRequired = false;
     public const bool IsSubjectTypeIdRequired = false;
-    public const bool IsUserIdRequired = false;
+    public const bool IsAccountIdRequired = false;
     public const bool IsClassroomRequired = false;
     public const bool IsDescriptionRequired = false;
 
@@ -59,10 +59,10 @@ public class SubjectChange : IdentifiableEntity
                 .HasForeignKey(change => change.SubjectTypeId)
                 .IsRequired(IsSubjectTypeIdRequired);
 
-            builder.HasOne(change => change.User)
-                .WithMany(user => user.SubjectChanges)
-                .HasForeignKey(change => change.UserId)
-                .IsRequired(IsUserIdRequired);
+            builder.HasOne(change => change.Account)
+                .WithMany(account => account.SubjectChanges)
+                .HasForeignKey(change => change.AccountId)
+                .IsRequired(IsAccountIdRequired);
 
             builder.Property(subject => subject.Classroom)
                 .HasMaxLength(ClassroomLengthMax)
@@ -108,10 +108,10 @@ public class SubjectChange : IdentifiableEntity
     public int? SubjectTypeId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Идентификатор связанного объекта <see cref="Common.Account" />.
     ///     Необязательное поле.
     /// </summary>
-    public int? UserId { get; set; }
+    public int? AccountId { get; set; }
 
     /// <summary>
     ///     Кабинет.
@@ -130,5 +130,5 @@ public class SubjectChange : IdentifiableEntity
     public Subject? Subject { get; set; }
     public Discipline? Discipline { get; set; }
     public SubjectType? SubjectType { get; set; }
-    public User? User { get; set; }
+    public Account? Account { get; set; }
 }

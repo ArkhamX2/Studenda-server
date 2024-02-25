@@ -37,19 +37,19 @@ public class SubjectService(DataContext dataContext) : DataEntityService(dataCon
     /// <summary>
     ///     Получить список статичных занятий по идентификатору пользователя.
     /// </summary>
-    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="accountId">Идентификатор пользователя.</param>
     /// <param name="weekTypeId">Идентификатор типа недели.</param>
     /// <param name="year">Учебный год.</param>
     /// <returns>Список статичных занятий.</returns>
-    public async Task<List<Subject>> GetByUser(int userId, int weekTypeId, int year)
+    public async Task<List<Subject>> GetByAccount(int accountId, int weekTypeId, int year)
     {
-        if (userId <= 0 || weekTypeId <= 0)
+        if (accountId <= 0 || weekTypeId <= 0)
         {
             throw new ArgumentException("Invalid arguments!");
         }
 
         return await DataContext.Subjects
-            .Where(subject => subject.UserId == userId
+            .Where(subject => subject.AccountId == accountId
                               && subject.WeekTypeId == weekTypeId
                               && subject.AcademicYear == year)
             .OrderBy(subject => subject.CreatedAt)

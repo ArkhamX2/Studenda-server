@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
+using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Schedule;
-using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Model.Journal;
 
@@ -22,7 +22,7 @@ public class Absence : IdentifiableEntity
 
     #region Configuration
 
-    public const bool IsUserIdRequired = true;
+    public const bool IsAccountIdRequired = true;
     public const bool IsSubjectIdRequired = true;
 
     /// <summary>
@@ -42,9 +42,9 @@ public class Absence : IdentifiableEntity
                 .HasForeignKey(absence => absence.SubjectId)
                 .IsRequired();
 
-            builder.HasOne(absence => absence.User)
-                .WithMany(user => user.Absences)
-                .HasForeignKey(absence => absence.UserId)
+            builder.HasOne(absence => absence.Account)
+                .WithMany(account => account.Absences)
+                .HasForeignKey(absence => absence.AccountId)
                 .IsRequired();
 
             base.Configure(builder);
@@ -66,9 +66,9 @@ public class Absence : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Security.User" />.
+    ///     Идентификатор связанного объекта <see cref="Common.Account" />.
     /// </summary>
-    public required int UserId { get; set; }
+    public required int AccountId { get; set; }
 
     /// <summary>
     ///     Идентификатор связанного объекта <see cref="Schedule.Subject" />.
@@ -77,6 +77,6 @@ public class Absence : IdentifiableEntity
 
     #endregion
 
-    public User? User { get; set; }
+    public Account? Account { get; set; }
     public Subject? Subject { get; set; }
 }

@@ -7,7 +7,6 @@ using Studenda.Server.Model.Journal;
 using Studenda.Server.Model.Journal.Management;
 using Studenda.Server.Model.Schedule;
 using Studenda.Server.Model.Schedule.Management;
-using Studenda.Server.Model.Security;
 using Task = Studenda.Server.Model.Journal.Task;
 
 namespace Studenda.Server.Data;
@@ -36,6 +35,7 @@ public class DataContext(ContextConfiguration configuration) : DbContext
     public DbSet<Department> Departments => Set<Department>();
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Group> Groups => Set<Group>();
+    public DbSet<Account> Accounts => Set<Account>();
 
     public DbSet<SubjectPosition> SubjectPositions => Set<SubjectPosition>();
     public DbSet<DayPosition> DayPositions => Set<DayPosition>();
@@ -49,8 +49,6 @@ public class DataContext(ContextConfiguration configuration) : DbContext
     public DbSet<Absence> Absences => Set<Absence>();
     public DbSet<Mark> Marks => Set<Mark>();
     public DbSet<MarkType> MarkTypes => Set<MarkType>();
-
-    public DbSet<User> Users => Set<User>();
 
     /// <summary>
     ///     Попытаться инициализировать сессию.
@@ -103,6 +101,7 @@ public class DataContext(ContextConfiguration configuration) : DbContext
         modelBuilder.ApplyConfiguration(new Department.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Course.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Group.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Account.Configuration(Configuration));
 
         // Расписание.
         modelBuilder.ApplyConfiguration(new SubjectPosition.Configuration(Configuration));
@@ -118,9 +117,6 @@ public class DataContext(ContextConfiguration configuration) : DbContext
         modelBuilder.ApplyConfiguration(new Absence.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Mark.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new MarkType.Configuration(Configuration));
-
-        // Безопасность.
-        modelBuilder.ApplyConfiguration(new User.Configuration(Configuration));
 
         base.OnModelCreating(modelBuilder);
     }

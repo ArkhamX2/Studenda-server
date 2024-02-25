@@ -26,7 +26,7 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
     /// <summary>
     ///     Получить список заданий по идентификатору издателя.
     /// </summary>
-    /// <param name="issuerUserId">Идентификатор издателя.</param>
+    /// <param name="issuerAccountId">Идентификатор издателя.</param>
     /// <param name="groupIds">Идентификаторы групп.</param>
     /// <param name="disciplineId">Идентификатор дисциплины или null.</param>
     /// <param name="subjectTypeId">Идентификатор типа занятия или null.</param>
@@ -34,15 +34,15 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
     /// <returns>Список заданий.</returns>
     /// <exception cref="ArgumentException">При некорректных аргументах.</exception>
     public async Task<List<Task>> GetByIssuer(
-        int issuerUserId,
+        int issuerAccountId,
         List<int> groupIds,
         int? disciplineId,
         int? subjectTypeId,
         int? academicYear
     ) {
-        if (issuerUserId <= 0)
+        if (issuerAccountId <= 0)
         {
-            throw new ArgumentException("Invalid issuer user id!");
+            throw new ArgumentException("Invalid issuer account id!");
         }
 
         if (groupIds.IsNullOrEmpty())
@@ -50,14 +50,14 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
             throw new ArgumentException("Invalid group ids!");
         }
 
-        var assigneeUserIds = await DataContext.Users
-            .Where(user => user.GroupId.HasValue && groupIds.Contains(user.GroupId.Value))
-            .Select(user => user.Id)
+        var assigneeAccountId = await DataContext.Accounts
+            .Where(account => groupIds.Contains(account.GroupId.GetValueOrDefault()))
+            .Select(account => account.Id)
             .ToListAsync();
 
         var taskQuery = DataContext.Tasks
             .AsQueryable()
-            .Where(task => assigneeUserIds.Contains(task.AssigneeUserId));
+            .Where(task => assigneeAccountId.Contains(task.AssigneeAccountId));
 
         UseDisciplineIdFilter(ref taskQuery, disciplineId);
         UseSubjectTypeIdFilter(ref taskQuery, subjectTypeId);
@@ -71,26 +71,26 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
     /// <summary>
     ///     Получить список заданий по идентификаторам исполнителей.
     /// </summary>
-    /// <param name="assigneeUserIds">Идентификаторы исполнителей.</param>
+    /// <param name="assigneeAccountIds">Идентификаторы исполнителей.</param>
     /// <param name="disciplineId">Идентификатор дисциплины или null.</param>
     /// <param name="subjectTypeId">Идентификатор типа занятия или null.</param>
     /// <param name="academicYear">Учебный год или null.</param>
     /// <returns>Список заданий.</returns>
     /// <exception cref="ArgumentException">При некорректных аргументах.</exception>
     public async Task<List<Task>> GetByAssignee(
-        List<int> assigneeUserIds,
+        List<int> assigneeAccountIds,
         int? disciplineId,
         int? subjectTypeId,
         int? academicYear
     ) {
-        if (assigneeUserIds.IsNullOrEmpty())
+        if (assigneeAccountIds.IsNullOrEmpty())
         {
-            throw new ArgumentException("Invalid assignee user ids!");
+            throw new ArgumentException("Invalid assignee account ids!");
         }
 
         var taskQuery = DataContext.Tasks
             .AsQueryable()
-            .Where(task => assigneeUserIds.Contains(task.AssigneeUserId));
+            .Where(task => assigneeAccountIds.Contains(task.AssigneeAccountId));
 
         UseDisciplineIdFilter(ref taskQuery, disciplineId);
         UseSubjectTypeIdFilter(ref taskQuery, subjectTypeId);

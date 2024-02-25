@@ -1,17 +1,16 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
-using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Journal;
 using Studenda.Server.Model.Schedule;
 using Studenda.Server.Model.Schedule.Management;
 using Task = Studenda.Server.Model.Journal.Task;
 
-namespace Studenda.Server.Model.Security;
+namespace Studenda.Server.Model.Common;
 
 /// <summary>
 ///     Пользователь.
 /// </summary>
-public class User : IdentifiableEntity
+public class Account : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -36,35 +35,35 @@ public class User : IdentifiableEntity
     public const bool IsPatronymicRequired = false;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="User" />.
+    ///     Конфигурация модели <see cref="Account" />.
     /// </summary>
     /// <param name="configuration">Конфигурация базы данных.</param>
-    internal class Configuration(ContextConfiguration configuration) : Configuration<User>(configuration)
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Account>(configuration)
     {
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<User> builder)
+        public override void Configure(EntityTypeBuilder<Account> builder)
         {
-            builder.HasOne(user => user.Group)
-                .WithMany(group => group.Users)
-                .HasForeignKey(user => user.GroupId)
+            builder.HasOne(account => account.Group)
+                .WithMany(group => group.Accounts)
+                .HasForeignKey(account => account.GroupId)
                 .IsRequired(IsGroupIdRequired);
 
-            builder.Property(user => user.IdentityId)
+            builder.Property(account => account.IdentityId)
                 .HasMaxLength(IdentityIdLengthMax)
                 .IsRequired(IsIdentityIdRequired);
 
-            builder.Property(user => user.Name)
+            builder.Property(account => account.Name)
                 .HasMaxLength(NameLengthMax)
                 .IsRequired(IsNameRequired);
 
-            builder.Property(user => user.Surname)
+            builder.Property(account => account.Surname)
                 .HasMaxLength(SurnameLengthMax)
                 .IsRequired(IsSurnameRequired);
 
-            builder.Property(user => user.Patronymic)
+            builder.Property(account => account.Patronymic)
                 .HasMaxLength(PatronymicLengthMax)
                 .IsRequired(IsPatronymicRequired);
 

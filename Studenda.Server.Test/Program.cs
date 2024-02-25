@@ -59,7 +59,7 @@ await using (var context = new DataContext(configuration))
         var groups = await context.Groups
             .Include(group => group.Course)
             .Include(group => group.Department)
-            .Include(group => group.Users)
+            .Include(group => group.Accounts)
             .ToListAsync();
 
         Console.WriteLine(groups.Count);

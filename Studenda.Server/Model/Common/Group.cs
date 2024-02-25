@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
 using Studenda.Server.Model.Schedule;
-using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Model.Common;
 
@@ -90,6 +89,6 @@ public class Group : IdentifiableEntity
 
     public Course? Course { get; set; } 
     public Department? Department { get; set; } 
-    public List<User> Users { get; set; } = [];
+    public List<Account> Accounts { get; set; } = [];
     public List<Subject> StaticSchedules { get; set; } = [];
 }
