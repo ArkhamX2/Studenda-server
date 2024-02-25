@@ -5,24 +5,16 @@ namespace Studenda.Server.Data.Configuration;
 /// <summary>
 ///     Конфигурация контекста для работы с базами данных MySQL и MariaDB.
 /// </summary>
-public class MysqlConfiguration : ContextConfiguration
+/// <param name="connectionString">Строка подключения к базе данных.</param>
+/// <param name="serverVersion">Версия сервера базы данных.</param>
+/// <param name="isDebugMode">Статус конфигурации для разработки.</param>
+public class MysqlConfiguration(string connectionString, ServerVersion serverVersion, bool isDebugMode) : ContextConfiguration(
+    connectionString, isDebugMode)
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="connectionString">Строка подключения к базе данных.</param>
-    /// <param name="serverVersion">Версия сервера базы данных.</param>
-    /// <param name="isDebugMode">Статус конфигурации для разработки.</param>
-    public MysqlConfiguration(string connectionString, ServerVersion serverVersion, bool isDebugMode) : base(
-        connectionString, isDebugMode)
-    {
-        ServerVersion = serverVersion;
-    }
-
     /// <summary>
     ///     Версия сервера базы данных.
     /// </summary>
-    private ServerVersion ServerVersion { get; }
+    private ServerVersion ServerVersion { get; } = serverVersion;
 
     /// <summary>
     ///     Тип полей даты и времени в базе данных.

@@ -29,7 +29,7 @@ public class DataEntityService(DataContext dataContext)
             return await dbSet.ToListAsync();
         }
 
-        return await dbSet.Where(identity => ids.Contains(identity.Id.GetValueOrDefault())).ToListAsync();
+        return await dbSet.Where(entity => ids.Contains(entity.Id.GetValueOrDefault())).ToListAsync();
     }
 
     /// <summary>
@@ -58,12 +58,12 @@ public class DataEntityService(DataContext dataContext)
         newEntities.AddRange(oldEntities.Where(entity => oldIdsNotInDb.Contains(entity.Id.GetValueOrDefault())));
         oldEntities.RemoveAll(entity => oldIdsNotInDb.Contains(entity.Id.GetValueOrDefault()));
 
-        if (newEntities.Any())
+        if (newEntities.Count > 0)
         {
-            await dbSet.AddRangeAsync(newEntities);
+            dbSet.AddRange(newEntities);
         }
 
-        if (oldEntities.Any())
+        if (oldEntities.Count > 0)
         {
             dbSet.UpdateRange(oldEntities);
         }
@@ -85,8 +85,7 @@ public class DataEntityService(DataContext dataContext)
             return false;
         }
 
-        dbSet.RemoveRange(dbSet.Where(
-            identity => ids.Contains(identity.Id.GetValueOrDefault())));
+        dbSet.RemoveRange(dbSet.Where(entity => ids.Contains(entity.Id.GetValueOrDefault())));
 
         return await DataContext.SaveChangesAsync() > 0;
     }

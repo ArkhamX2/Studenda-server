@@ -5,17 +5,10 @@ namespace Studenda.Server.Data.Configuration;
 /// <summary>
 ///     Конфигурация контекста для работы с базой данных SQLite.
 /// </summary>
-public class SqliteConfiguration : ContextConfiguration
+/// <param name="connectionString">Строка подключения к базе данных.</param>
+/// <param name="isDebugMode">Статус конфигурации для разработки.</param>
+public class SqliteConfiguration(string connectionString, bool isDebugMode) : ContextConfiguration(connectionString, isDebugMode)
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="connectionString">Строка подключения к базе данных.</param>
-    /// <param name="isDebugMode">Статус конфигурации для разработки.</param>
-    public SqliteConfiguration(string connectionString, bool isDebugMode) : base(connectionString, isDebugMode)
-    {
-        // PASS.
-    }
 
     /// <summary>
     ///     Тип полей даты и времени в базе данных.

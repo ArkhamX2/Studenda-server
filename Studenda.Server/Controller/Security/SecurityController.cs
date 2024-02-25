@@ -76,11 +76,7 @@ public class SecurityController(
             return Unauthorized();
         }
 
-        var user = await DataContext.Users
-            .Include(user => user.Role)
-            .ThenInclude(role => role!.RolePermissionLinks)
-            .ThenInclude(link => link.Permission)
-            .FirstOrDefaultAsync(user => user.IdentityId == identityUser.Id);
+        var user = await DataContext.Users.FirstOrDefaultAsync(user => user.IdentityId == identityUser.Id);
 
         if (user is null)
         {
@@ -114,13 +110,6 @@ public class SecurityController(
         if (!ModelState.IsValid)
         {
             return BadRequest(request);
-        }
-
-        var role = await DataContext.Roles.FirstOrDefaultAsync(role => role.Name == request.RoleName);
-
-        if (role?.Name is null)
-        {
-            throw new Exception($"Role '{request.RoleName}' does not exists!");
         }
 
         var internalUser = new IdentityUser
@@ -157,17 +146,12 @@ public class SecurityController(
         await UserManager.AddToRoleAsync(identityUser, request.RoleName);
         await DataContext.Users.AddAsync(new User
         {
-            RoleId = role.Id,
             IdentityId = identityUser.Id
         });
 
         await DataContext.SaveChangesAsync();
 
-        var user = await DataContext.Users
-            .Include(user => user.Role)
-            .ThenInclude(innerRole => innerRole!.RolePermissionLinks)
-            .ThenInclude(link => link.Permission)
-            .FirstOrDefaultAsync(user => user.IdentityId == identityUser.Id);
+        var user = await DataContext.Users.FirstOrDefaultAsync(user => user.IdentityId == identityUser.Id);
 
         if (user is null)
         {

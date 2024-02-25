@@ -6,28 +6,20 @@ namespace Studenda.Server.Data.Configuration;
 /// <summary>
 ///     Конфигурация контекста для работы с базой данных.
 /// </summary>
-public abstract class ContextConfiguration
+/// <param name="connectionString">Строка подключения к базе данных.</param>
+/// <param name="isDebugMode">Статус конфигурации для разработки.</param>
+public abstract class ContextConfiguration(string connectionString, bool isDebugMode)
 {
-    /// <summary>
-    ///     Конструктор.
-    /// </summary>
-    /// <param name="connectionString">Строка подключения к базе данных.</param>
-    /// <param name="isDebugMode">Статус конфигурации для разработки.</param>
-    protected ContextConfiguration(string connectionString, bool isDebugMode)
-    {
-        ConnectionString = connectionString;
-        IsDebugMode = isDebugMode;
-    }
 
     /// <summary>
     ///     Строка подключения к базе данных.
     /// </summary>
-    protected string ConnectionString { get; }
+    protected string ConnectionString { get; } = connectionString;
 
     /// <summary>
     ///     Статус конфигурации для разработки.
     /// </summary>
-    private bool IsDebugMode { get; }
+    private bool IsDebugMode { get; } = isDebugMode;
 
     /// <summary>
     ///     Тип полей даты и времени в базе данных.

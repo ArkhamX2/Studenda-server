@@ -8,8 +8,6 @@ using Studenda.Server.Model.Journal.Management;
 using Studenda.Server.Model.Schedule;
 using Studenda.Server.Model.Schedule.Management;
 using Studenda.Server.Model.Security;
-using Studenda.Server.Model.Security.Link;
-using Studenda.Server.Model.Security.Management;
 using Task = Studenda.Server.Model.Journal.Task;
 
 namespace Studenda.Server.Data;
@@ -53,9 +51,6 @@ public class DataContext(ContextConfiguration configuration) : DbContext
     public DbSet<MarkType> MarkTypes => Set<MarkType>();
 
     public DbSet<User> Users => Set<User>();
-    public DbSet<Role> Roles => Set<Role>();
-    public DbSet<Permission> Permissions => Set<Permission>();
-    public DbSet<RolePermissionLink> RolePermissionLinks => Set<RolePermissionLink>();
 
     /// <summary>
     ///     Попытаться инициализировать сессию.
@@ -126,9 +121,6 @@ public class DataContext(ContextConfiguration configuration) : DbContext
 
         // Безопасность.
         modelBuilder.ApplyConfiguration(new User.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Role.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Permission.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new RolePermissionLink.Configuration(Configuration));
 
         base.OnModelCreating(modelBuilder);
     }

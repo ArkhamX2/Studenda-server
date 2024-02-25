@@ -4,7 +4,6 @@ using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Journal;
 using Studenda.Server.Model.Schedule;
 using Studenda.Server.Model.Schedule.Management;
-using Studenda.Server.Model.Security.Management;
 using Task = Studenda.Server.Model.Journal.Task;
 
 namespace Studenda.Server.Model.Security;
@@ -31,7 +30,6 @@ public class User : IdentifiableEntity
     public const int SurnameLengthMax = 32;
     public const int PatronymicLengthMax = 32;
     public const bool IsIdentityIdRequired = false;
-    public const bool IsRoleIdRequired = true;
     public const bool IsGroupIdRequired = false;
     public const bool IsNameRequired = false;
     public const bool IsSurnameRequired = false;
@@ -49,11 +47,6 @@ public class User : IdentifiableEntity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasOne(user => user.Role)
-                .WithMany(role => role.Users)
-                .HasForeignKey(user => user.RoleId)
-                .IsRequired();
-
             builder.HasOne(user => user.Group)
                 .WithMany(group => group.Users)
                 .HasForeignKey(user => user.GroupId)
@@ -94,11 +87,6 @@ public class User : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Management.Role" />.
-    /// </summary>
-    public int? RoleId { get; set; }
-
-    /// <summary>
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     ///     Необязательное поле.
     /// </summary>
@@ -130,7 +118,6 @@ public class User : IdentifiableEntity
 
     #endregion
 
-    public Role? Role { get; set; }
     public Group? Group { get; set; }
     public List<Subject> Subjects { get; set; } = [];
     public List<SubjectChange> SubjectChanges { get; set; } = [];
