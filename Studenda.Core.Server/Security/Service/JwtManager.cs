@@ -53,10 +53,10 @@ public static class JwtManager
         }
     }
 
+
     public static JwtSecurityToken CreateJwtToken(this IEnumerable<Claim> claims)
     {
         var key = GetSymmetricSecurityKey();
-
         return new JwtSecurityToken(
             Issuer,
             Audience,

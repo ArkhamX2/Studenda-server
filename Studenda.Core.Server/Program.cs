@@ -121,6 +121,10 @@ var application = applicationBuilder.Build();
 
 application.UseMiddleware<ExceptionHandler>();
 application.UseAuthentication();
+application.UseWhen(context => context.User.Identity.IsAuthenticated, appBuilder =>
+{
+    appBuilder.UseMiddleware<JwtHandler>(); // Ваше собственное middleware будет применяться только к защищенным путям
+});
 application.UseAuthorization();
 application.MapControllers();
 application.UseCors();
