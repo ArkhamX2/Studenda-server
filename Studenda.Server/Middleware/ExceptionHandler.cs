@@ -1,4 +1,6 @@
-﻿namespace Studenda.Server.Middleware;
+﻿using System.Net;
+
+namespace Studenda.Server.Middleware;
 
 public class ExceptionHandler(RequestDelegate requestDelegate)
 {
@@ -12,9 +14,7 @@ public class ExceptionHandler(RequestDelegate requestDelegate)
         }
         catch (Exception exception)
         {
-            // TODO: логгирование
-            // TODO: вынести коды ответов в константы
-            context.Response.StatusCode = 500;
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             await context.Response.WriteAsJsonAsync(new
             {

@@ -1,4 +1,4 @@
-﻿using Studenda.Server.Model.Security;
+﻿using Studenda.Server.Model.Common;
 
 namespace Studenda.Server.Data.Transfer.Security;
 
@@ -8,9 +8,9 @@ namespace Studenda.Server.Data.Transfer.Security;
 public class SecurityResponse
 {
     /// <summary>
-    ///     Объект <see cref="Model.Security.User" />.
+    ///     Объект <see cref="Common.Account" />.
     /// </summary>
-    public required User User { get; init; }
+    public required Account Account { get; init; }
 
     /// <summary>
     ///     Токен.

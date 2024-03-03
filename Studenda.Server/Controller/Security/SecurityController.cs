@@ -93,7 +93,7 @@ public class SecurityController(
 
         return Ok(DataSerializer.Serialize(new SecurityResponse
         {
-            User = account,
+            Account = account,
             Token = TokenService.CreateNewToken(identityUser, identityRoles)
         }));
     }
@@ -111,6 +111,8 @@ public class SecurityController(
         {
             return BadRequest(request);
         }
+
+        // TODO: Валидация роли.
 
         var internalUser = new IdentityUser
         {
@@ -169,7 +171,7 @@ public class SecurityController(
 
         return Ok(DataSerializer.Serialize(new SecurityResponse
         {
-            User = account,
+            Account = account,
             Token = TokenService.CreateNewToken(identityUser, identityRoles)
         }));
     }

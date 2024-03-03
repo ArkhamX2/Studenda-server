@@ -18,7 +18,15 @@ public class TokenService(ConfigurationRepository configuration)
     public string CreateNewToken(IdentityUser user, IReadOnlyCollection<IdentityRole> roles)
     {
         var claims = CreateTokenClaims(user, roles);
-        var token = CreateJwtToken(claims);
+        var lifetime = Configuration.GetTokenLifetimeMinutes();
+        var key = Configuration.GetTokenSecurityKey();
+
+        var token = new JwtSecurityToken(
+            Configuration.GetTokenIssuer(),
+            Configuration.GetTokenAudience(),
+            claims,
+            expires: DateTime.UtcNow.AddMinutes(lifetime),
+            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
@@ -49,18 +57,5 @@ public class TokenService(ConfigurationRepository configuration)
         }
 
         return claims;
-    }
-
-    private JwtSecurityToken CreateJwtToken(IEnumerable<Claim> claims)
-    {
-        var lifetime = Configuration.GetTokenLifetimeMinutes();
-        var key = Configuration.GetTokenSecurityKey();
-
-        return new JwtSecurityToken(
-            Configuration.GetTokenIssuer(),
-            Configuration.GetTokenAudience(),
-            claims,
-            expires: DateTime.UtcNow.AddMinutes(lifetime),
-            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
     }
 }
