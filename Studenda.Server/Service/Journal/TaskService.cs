@@ -64,7 +64,7 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
         UseAcademicYearFilter(ref taskQuery, academicYear);
 
         return await taskQuery
-            .OrderBy(task => task.CreatedAt)
+            .OrderBy(task => task.StartedAt)
             .ToListAsync();
     }
 
@@ -97,7 +97,7 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
         UseAcademicYearFilter(ref taskQuery, academicYear);
 
         return await taskQuery
-            .OrderBy(task => task.CreatedAt)
+            .OrderBy(task => task.StartedAt)
             .ToListAsync();
     }
 
@@ -139,9 +139,9 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
             var startDate = new DateTime(academicYear.Value, AcademicYearStartMonth, AcademicYearStartDay);
             var endDate = startDate.AddYears(1);
 
-            query = query.Where(task => task.CreatedAt.HasValue
-                && task.CreatedAt >= startDate
-                && task.CreatedAt < endDate);
+            query = query.Where(task => task.StartedAt.HasValue
+                && task.StartedAt >= startDate
+                && task.StartedAt < endDate);
         }
     }
 }

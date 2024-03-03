@@ -35,26 +35,26 @@ public class AbsenceController(AbsenceService absenceService) : ControllerBase
     ///     Получить список прогулов по идентификатору аккаунта.
     /// </summary>
     /// <param name="accountId">Идентификатор аккаунта.</param>
-    /// <param name="dates">Даты.</param>
+    /// <param name="sessionIds">Идентификаторы учебных сессий.</param>
     /// <returns>Результат операции со списком прогулов.</returns>
     [HttpGet]
     [Route("account")]
-    public async Task<ActionResult<List<Absence>>> GetByAccount([FromQuery] int accountId, [FromQuery] List<DateTime> dates)
+    public async Task<ActionResult<List<Absence>>> GetByAccount([FromQuery] int accountId, [FromQuery] List<int> sessionIds)
     {
-        return await AbsenceService.GetByAccount(accountId, dates);
+        return await AbsenceService.GetByAccount(accountId, sessionIds);
     }
 
     /// <summary>
-    ///     Получить список прогулов по датам.
+    ///     Получить список прогулов по идентификаторам учебных сессий.
     /// </summary>
     /// <param name="accountIds">Идентификаторы аккаунтов.</param>
-    /// <param name="date">Дата.</param>
+    /// <param name="sessionId">Идентификатор учебной сессии.</param>
     /// <returns>Результат операции со списком прогулов.</returns>
     [HttpGet]
-    [Route("date")]
-    public async Task<ActionResult<List<Absence>>> GetByDate([FromQuery] List<int> accountIds, [FromQuery] DateTime date)
+    [Route("session")]
+    public async Task<ActionResult<List<Absence>>> GetBySession([FromQuery] List<int> accountIds, [FromQuery] int sessionId)
     {
-        return await AbsenceService.GetByDate(accountIds, date);
+        return await AbsenceService.GetBySession(accountIds, sessionId);
     }
 
     /// <summary>

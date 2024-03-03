@@ -14,48 +14,48 @@ public class AbsenceService(DataContext dataContext) : DataEntityService(dataCon
     ///     Получить список прогулов по идентификатору аккаунта.
     /// </summary>
     /// <param name="accountId">Идентификатор аккаунта.</param>
-    /// <param name="dates">Даты.</param>
+    /// <param name="sessionIds">Идентификаторы учебных сессий.</param>
     /// <returns>Список прогулов.</returns>
     /// <exception cref="ArgumentException">При некорректных аргументах.</exception>
-    public async Task<List<Absence>> GetByAccount(int accountId, List<DateTime> dates)
+    public async Task<List<Absence>> GetByAccount(int accountId, List<int> sessionIds)
     {
         if (accountId <= 0)
         {
             throw new ArgumentException("Invalid account id!");
         }
 
-        if (dates.Count <= 0)
+        if (sessionIds.Count <= 0)
         {
-            throw new ArgumentException("Invalid dates!");
+            throw new ArgumentException("Invalid session ids!");
         }
-
-        var datesHashSet = new HashSet<DateTime>(dates.Select(date => new DateTime(date.Year, date.Month, date.Day)));
 
         return await DataContext.Absences
             .Where(absence => absence.AccountId == accountId
-                && absence.CreatedAt.HasValue
-                && datesHashSet.Contains(absence.CreatedAt.Value.Date))
+                && sessionIds.Contains(absence.SessionId))
             .ToListAsync();
     }
 
     /// <summary>
-    ///     Получить список прогулов по датам.
+    ///     Получить список прогулов по идентификатору учебной сессии.
     /// </summary>
     /// <param name="accountIds">Идентификаторы аккаунтов.</param>
-    /// <param name="date">Дата.</param>
+    /// <param name="sessionId">Идентификатор учебной сессии.</param>
     /// <returns>Список прогулов.</returns>
     /// <exception cref="ArgumentException">При пустом списке идентификаторов аккаунтов.</exception>
-    public async Task<List<Absence>> GetByDate(List<int> accountIds, DateTime date)
+    public async Task<List<Absence>> GetBySession(List<int> accountIds, int sessionId)
     {
         if (accountIds.Count <= 0)
         {
-            throw new ArgumentException("Invalid user ids!");
+            throw new ArgumentException("Invalid account ids!");
+        }
+        if (sessionId <= 0)
+        {
+            throw new ArgumentException("Invalid session id!");
         }
 
         return await DataContext.Absences
             .Where(absence => accountIds.Contains(absence.AccountId)
-                && absence.CreatedAt.HasValue
-                && absence.CreatedAt.Value.Date == date.Date)
+                && absence.SessionId == sessionId)
             .ToListAsync();
     }
 }

@@ -1,13 +1,14 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
-using Studenda.Server.Model.Common;
+using Studenda.Server.Model.Schedule;
 
 namespace Studenda.Server.Model.Journal;
 
 /// <summary>
-///     Прогул.
+///     Учебная сессия.
 /// </summary>
-public class Absence : IdentifiableEntity
+public class Session : IdentifiableEntity
 {
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
@@ -21,29 +22,28 @@ public class Absence : IdentifiableEntity
 
     #region Configuration
 
-    public const bool IsAccountIdRequired = true;
-    public const bool IsSessionIdRequired = true;
+    public const bool IsSubjectIdRequired = true;
+    public const bool IsStartedAtRequired = true;
 
     /// <summary>
     ///     Конфигурация модели.
     /// </summary>
     /// <param name="configuration">Конфигурация базы данных.</param>
-    internal class Configuration(ContextConfiguration configuration) : Configuration<Absence>(configuration)
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Session>(configuration)
     {
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Absence> builder)
+        public override void Configure(EntityTypeBuilder<Session> builder)
         {
-            builder.HasOne(absence => absence.Session)
-                .WithMany(session => session.Absences)
-                .HasForeignKey(absence => absence.SessionId)
+            builder.HasOne(session => session.Subject)
+                .WithMany(subject => subject.Sessions)
+                .HasForeignKey(session => session.SubjectId)
                 .IsRequired();
 
-            builder.HasOne(absence => absence.Account)
-                .WithMany(account => account.Absences)
-                .HasForeignKey(absence => absence.AccountId)
+            builder.Property(session => session.StartedAt)
+                .HasColumnType(ContextConfiguration.DateTimeType)
                 .IsRequired();
 
             base.Configure(builder);
@@ -65,17 +65,17 @@ public class Absence : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Account" />.
+    ///     Идентификатор связанного объекта <see cref="Schedule.Subject" />.
     /// </summary>
-    public required int AccountId { get; set; }
+    public required int SubjectId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Journal.Session" />.
+    ///     Дата начала.
     /// </summary>
-    public required int SessionId { get; set; }
+    public DateTime? StartedAt { get; set; }
 
     #endregion
 
-    public Account? Account { get; set; }
-    public Session? Session { get; set; }
+    public Subject? Subject { get; set; }
+    public List<Absence> Absences { get; set; } = [];
 }

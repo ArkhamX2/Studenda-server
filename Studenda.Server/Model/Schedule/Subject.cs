@@ -178,4 +178,5 @@ public class Subject : IdentifiableEntity
     public Group? Group { get; set; }
     public List<SubjectChange> ScheduleChanges { get; set; } = [];
     public List<Absence> Absences { get; set; } = [];
+    public List<Session> Sessions { get; set; } = [];
 }

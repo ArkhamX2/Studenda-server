@@ -31,7 +31,8 @@ public class Task : IdentifiableEntity
     public const bool IsAssigneeAccountIdRequired = true;
     public const bool IsNameRequired = true;
     public const bool IsDescriptionRequired = false;
-    public const bool IsEndsAtRequired = true;
+    public const bool IsStartedAtRequired = true;
+    public const bool IsEndedAtRequired = true;
 
     /// <summary>
     ///     Конфигурация модели.
@@ -73,7 +74,11 @@ public class Task : IdentifiableEntity
                 .HasMaxLength(DescriptionLengthMax)
                 .IsRequired(IsDescriptionRequired);
 
-            builder.Property(task => task.EndsAt)
+            builder.Property(task => task.StartedAt)
+                .HasColumnType(ContextConfiguration.DateTimeType)
+                .IsRequired();
+
+            builder.Property(task => task.EndedAt)
                 .HasColumnType(ContextConfiguration.DateTimeType)
                 .IsRequired();
 
@@ -127,9 +132,14 @@ public class Task : IdentifiableEntity
     public string? Description { get; set; }
 
     /// <summary>
-    ///     Дата закрытия.
+    ///     Дата начала.
     /// </summary>
-    public DateTime? EndsAt { get; set; }
+    public DateTime? StartedAt { get; set; }
+
+    /// <summary>
+    ///     Дата окончания.
+    /// </summary>
+    public DateTime? EndedAt { get; set; }
 
     #endregion
 
