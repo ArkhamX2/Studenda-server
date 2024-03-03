@@ -50,6 +50,7 @@ serviceCollection.AddScoped<WeekTypeService>();
 serviceCollection.AddScoped<MarkService>();
 serviceCollection.AddScoped<TaskService>();
 serviceCollection.AddScoped<AbsenceService>();
+serviceCollection.AddScoped<SessionService>();
 serviceCollection.AddTransient<ConfigurationRepository>();
 serviceCollection.AddControllers();
 
