@@ -39,7 +39,7 @@ public class SessionController(SessionService sessionService) : ControllerBase
     /// <returns>Результат операции со списком учебных сессий.</returns>
     [HttpGet]
     [Route("subject")]
-    public async Task<ActionResult<List<Session>>> GetByAccount([FromQuery] int subjectId, [FromQuery] List<DateTime> dates)
+    public async Task<ActionResult<List<Session>>> GetBySubject([FromQuery] int subjectId, [FromQuery] List<DateTime> dates)
     {
         return await SessionService.GetBySubject(subjectId, dates);
     }
