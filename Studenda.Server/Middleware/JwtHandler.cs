@@ -7,30 +7,17 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using static Studenda.Core.Server.Common.Middleware.HttpStatus;
 using Studenda.Core.Server.Security.Service;
+using Studenda.Server.Configuration.Repository;
+using ConfigurationManager = Studenda.Server.Configuration.ConfigurationManager;
 
 namespace Studenda.Core.Server.Common.Middleware
 {
-    public class JwtHandler
+    public class JwtHandler(ConfigurationManager configuration, RequestDelegate requestDelegate)
     {
-        private RequestDelegate RequestDelegate { get; }
-        private TokenValidationParameters validationParameters;
+        private RequestDelegate RequestDelegate { get; } = requestDelegate;
+        private TokenConfiguration Configuration { get; } = configuration.TokenConfiguration;
+       
 
-        public JwtHandler(RequestDelegate requestDelegate)
-        {
-            RequestDelegate = requestDelegate;
-
-            validationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = JwtManager.Issuer,
-                ValidAudience = JwtManager.Audience,
-                ClockSkew = TimeSpan.FromMinutes(2),
-                IssuerSigningKey = JwtManager.GetSymmetricSecurityKey()
-            };
-        }
 
         public async Task Invoke(HttpContext context)
         {
@@ -46,7 +33,7 @@ namespace Studenda.Core.Server.Common.Middleware
                 }
 
                 var tokenHandler = new JwtSecurityTokenHandler();
-
+                var validationParameters = configuration.TokenConfiguration.GetValidationParameters();
                 SecurityToken validatedToken;
                 ClaimsPrincipal principal = tokenHandler.ValidateToken(Token, validationParameters, out validatedToken);
                 //еще не работает

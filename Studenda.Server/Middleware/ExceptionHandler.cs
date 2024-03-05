@@ -1,7 +1,7 @@
 ﻿using System.Net;
 
 namespace Studenda.Server.Middleware;
-{
+
     public class ExceptionHandler
     {
         private RequestDelegate RequestDelegate { get; }
@@ -20,7 +20,7 @@ namespace Studenda.Server.Middleware;
             {
                 // TODO: логгирование
                 // TODO: вынести коды ответов в константы
-                context.Response.StatusCode = (int)ServerError;
+                context.Response.StatusCode = 500;
                 await context.Response.WriteAsJsonAsync(new
                 {
                     ErrorType = exception.GetType().ToString(),
@@ -29,4 +29,4 @@ namespace Studenda.Server.Middleware;
             }
         }
     }
-}
+

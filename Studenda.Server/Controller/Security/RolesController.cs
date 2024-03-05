@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Core.Server.Security.Service;
+using Studenda.Server.Data.Transfer.Security;
 
 namespace Studenda.Core.Server.Security.Controller
 {
-    [Route("api/roles")]
+    [Route("api/security/roles")]
     [ApiController]
     public class RolesController(RoleService roleService) : ControllerBase
     {
@@ -17,29 +19,30 @@ namespace Studenda.Core.Server.Security.Controller
             return await roleService.GetRolesList();
         }
         [HttpPost]
-        public async Task<IActionResult> PostRole([FromBody] string RoleName)
+        public async Task<IActionResult> PostRole([FromBody] RoleRequest role)
         {
-            var result = await roleService.Post(RoleName);
+            var result = await roleService.Post(role.rolename);
             if (result)
             {
                 return Ok();
             }
-            return BadRequest($"Role with name{RoleName} is exists");
+            return BadRequest($"Role with name{role.rolename} is exists");
         }
+        [Authorize(Roles = "admin")]
         [HttpPut]
-        public async Task<IdentityRole> EditRole([FromBody] string id, string rolename)
+        public async Task<IdentityRole> EditRole([FromBody] RoleRequest role)
         {
-            return await roleService.EditRole(id, rolename);
+            return await roleService.EditRole( role.rolename);
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteRole([FromBody] string id)
+        public async Task<IActionResult> DeleteRole([FromBody] RoleRequest role)
         {
-            var result = await roleService.DeleteRole(id);
+            var result = await roleService.DeleteRole(role.rolename);
             if (result)
             {
                 return Ok();
             }
-            return BadRequest($"Role with id:{id} is not exists");
+            return BadRequest($"Role with name:{role.rolename} is not exists");
         }
 
 
