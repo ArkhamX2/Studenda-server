@@ -48,7 +48,8 @@ public class TaskController(TaskService taskService) : ControllerBase
         [FromQuery] int? disciplineId,
         [FromQuery] int? subjectTypeId,
         [FromQuery] int? academicYear
-    ) {
+    )
+    {
         return await TaskService.GetByIssuer(
             issuerAccountId,
             groupIds,
@@ -73,7 +74,8 @@ public class TaskController(TaskService taskService) : ControllerBase
         [FromQuery] int? disciplineId,
         [FromQuery] int? subjectTypeId,
         [FromQuery] int? academicYear
-    ) {
+    )
+    {
         return await TaskService.GetByAssignee(
             assigneeAccountIds,
             disciplineId,

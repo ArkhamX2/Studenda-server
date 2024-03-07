@@ -39,7 +39,8 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
         int? disciplineId,
         int? subjectTypeId,
         int? academicYear
-    ) {
+    )
+    {
         if (issuerAccountId <= 0)
         {
             throw new ArgumentException("Invalid issuer account id!");
@@ -82,7 +83,8 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
         int? disciplineId,
         int? subjectTypeId,
         int? academicYear
-    ) {
+    )
+    {
         if (assigneeAccountIds.IsNullOrEmpty())
         {
             throw new ArgumentException("Invalid assignee account ids!");

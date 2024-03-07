@@ -87,8 +87,8 @@ public class Group : IdentifiableEntity
 
     #endregion
 
-    public Course? Course { get; set; } 
-    public Department? Department { get; set; } 
+    public Course? Course { get; set; }
+    public Department? Department { get; set; }
     public List<Account> Accounts { get; set; } = [];
     public List<Subject> StaticSchedules { get; set; } = [];
 }
