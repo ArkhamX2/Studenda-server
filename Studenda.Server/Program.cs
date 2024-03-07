@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Studenda.Core.Server.Common.Middleware;
 using Studenda.Core.Server.Security.Service;
 using Studenda.Server.Data;
 using Studenda.Server.Data.Factory;
@@ -128,7 +129,10 @@ internal class Program
         RegisterSecurityServices(services, configuration);
 
         var application = builder.Build();
-
+        application.UseWhen(
+            context => context.User.Identity.IsAuthenticated,
+            application=>application.UseMiddleware<JwtHandler>()
+        ); 
         application.UseMiddleware<ExceptionHandler>();
         application.UseAuthentication();
         application.UseAuthorization();

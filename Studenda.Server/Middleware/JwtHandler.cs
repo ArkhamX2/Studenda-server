@@ -9,16 +9,20 @@ using static Studenda.Core.Server.Common.Middleware.HttpStatus;
 using Studenda.Core.Server.Security.Service;
 using Studenda.Server.Configuration.Repository;
 using ConfigurationManager = Studenda.Server.Configuration.ConfigurationManager;
+using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json.Linq;
+using Studenda.Server.Service.Security;
 
 namespace Studenda.Core.Server.Common.Middleware
 {
-    public class JwtHandler(ConfigurationManager configuration, RequestDelegate requestDelegate)
+    public class JwtHandler(ConfigurationManager configuration, RequestDelegate requestDelegate, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,TokenService tokenService)
     {
         private RequestDelegate RequestDelegate { get; } = requestDelegate;
         private TokenConfiguration Configuration { get; } = configuration.TokenConfiguration;
+        private UserManager<IdentityUser> userManager { get; }=userManager;
+        private RoleManager<IdentityRole> roleManager { get;}=roleManager;
+        private TokenService tokenService { get;}=tokenService;
        
-
-
         public async Task Invoke(HttpContext context)
         {
             try
@@ -36,9 +40,13 @@ namespace Studenda.Core.Server.Common.Middleware
                 var validationParameters = configuration.TokenConfiguration.GetValidationParameters();
                 SecurityToken validatedToken;
                 ClaimsPrincipal principal = tokenHandler.ValidateToken(Token, validationParameters, out validatedToken);
-                //еще не работает
-                if (principal.HasClaim("Role","asd"))
+                var jwttoken=(JwtSecurityToken)validatedToken;                       
+                if (await CheckUser(jwttoken))
                 {
+                   var user = await userManager.FindByIdAsync(jwttoken.Claims.First(x => x.Type=="ClaimLabelUserEmail").Value);
+                   var role=roleManager.Roles.Where(role=>role.Name==jwttoken.Claims.First(x => x.Type=="ClaimLabelUserRole").Value).ToList();
+                   var token = tokenService.CreateNewToken(user, role);
+                   context.Response.Headers.Add("token",token);
                    await RequestDelegate.Invoke(context);
                 }
             }
@@ -54,5 +62,19 @@ namespace Studenda.Core.Server.Common.Middleware
                 });
             }
         }
+        private async Task<bool> CheckUser(JwtSecurityToken jwttoken)
+        {
+            var UserName = jwttoken.Claims.First(x => x.Type=="ClaimLabelUserName").Value;
+            var Email = jwttoken.Claims.First(x => x.Type=="ClaimLabelUserEmail").Value;
+            var Id = jwttoken.Claims.First(x => x.Type=="ClaimLabelUserEmail").Value;
+            var Role = jwttoken.Claims.First(x => x.Type=="ClaimLabelUserRole").Value;
+            var user =await userManager.FindByIdAsync(Id);
+            if(user.Email==Email && user.UserName==UserName && await userManager.IsInRoleAsync(user,Role))
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }

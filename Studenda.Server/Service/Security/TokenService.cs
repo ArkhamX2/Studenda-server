@@ -49,7 +49,7 @@ public class TokenService(ConfigurationManager configuration)
     /// <param name="roles">Роли.</param>
     /// <returns>Набор клеймов.</returns>
     private IEnumerable<Claim> CreateTokenClaims(IdentityUser user, IReadOnlyCollection<IdentityRole> roles)
-    {
+    {       
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, Configuration.GetClaimNameSub()),
