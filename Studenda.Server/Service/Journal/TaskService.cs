@@ -38,8 +38,7 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
         List<int> groupIds,
         int? disciplineId,
         int? subjectTypeId,
-        int? academicYear
-    )
+        int? academicYear)
     {
         if (issuerAccountId <= 0)
         {
@@ -82,8 +81,7 @@ public class TaskService(DataContext dataContext) : DataEntityService(dataContex
         List<int> assigneeAccountIds,
         int? disciplineId,
         int? subjectTypeId,
-        int? academicYear
-    )
+        int? academicYear)
     {
         if (assigneeAccountIds.IsNullOrEmpty())
         {
