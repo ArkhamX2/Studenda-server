@@ -15,7 +15,7 @@ jobs:
 
       # https://github.com/actions/setup-dotnet
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v3
 
       # https://github.com/renanrcp/dotnet-format-problem-matcher
       - name: Add dotnet-format problem matcher
