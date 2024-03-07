@@ -43,8 +43,8 @@ public class SubjectController(SubjectService subjectService) : ControllerBase
     public async Task<ActionResult<List<Subject>>> GetByGroup(
         [FromQuery] int groupId,
         [FromQuery] int weekTypeId,
-        [FromQuery] int year
-    ) {
+        [FromQuery] int year)
+    {
         return await SubjectService.GetByGroup(groupId, weekTypeId, year);
     }
 
@@ -60,8 +60,8 @@ public class SubjectController(SubjectService subjectService) : ControllerBase
     public async Task<ActionResult<List<Subject>>> GetByAccount(
         [FromQuery] int accountId,
         [FromQuery] int weekTypeId,
-        [FromQuery] int year
-    ) {
+        [FromQuery] int year)
+    {
         return await SubjectService.GetByAccount(accountId, weekTypeId, year);
     }
 

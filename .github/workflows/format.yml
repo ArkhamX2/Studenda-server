@@ -1,0 +1,26 @@
+name: Formatter
+
+on: push
+
+jobs:
+  build:
+    name: lint
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # https://github.com/actions/checkout
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # https://github.com/renanrcp/dotnet-format-problem-matcher
+      - name: Add dotnet-format problem matcher
+        uses: renanrcp/dotnet-format-problem-matcher@v1
+
+      # https://github.com/renanrcp/dotnet-format
+      - name: Install dotnet-format
+        run: dotnet tool install -g dotnet-format
+
+      # https://github.com/xt0rted/dotnet-format
+      - name: Run dotnet-format
+        run: dotnet format --verify-no-changes --no-restore
