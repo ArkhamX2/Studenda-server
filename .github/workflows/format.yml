@@ -23,4 +23,4 @@ jobs:
 
       # https://github.com/xt0rted/dotnet-format
       - name: Run dotnet-format
-        run: ls -al && dotnet format --verify-no-changes --no-restore
+        run: dotnet format --verify-no-changes --no-restore
