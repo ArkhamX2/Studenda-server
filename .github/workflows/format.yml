@@ -1,10 +1,10 @@
-name: Format check
+name: Formatter
 
 on: push
 
 jobs:
   build:
-    name: Format check
+    name: lint
 
     runs-on: ubuntu-latest
 
