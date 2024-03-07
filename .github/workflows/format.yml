@@ -13,10 +13,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # https://github.com/actions/setup-dotnet
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-
       # https://github.com/renanrcp/dotnet-format-problem-matcher
       - name: Add dotnet-format problem matcher
         uses: renanrcp/dotnet-format-problem-matcher@v1
