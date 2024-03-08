@@ -45,11 +45,11 @@ public class DataContext(ContextConfiguration configuration) : DbContext
     public DbSet<Subject> Subjects => Set<Subject>();
     public DbSet<SubjectChange> SubjectChanges => Set<SubjectChange>();
 
-    public DbSet<Task> Tasks => Set<Task>();
-    public DbSet<Absence> Absences => Set<Absence>();
-    public DbSet<Mark> Marks => Set<Mark>();
     public DbSet<MarkType> MarkTypes => Set<MarkType>();
+    public DbSet<Mark> Marks => Set<Mark>();
+    public DbSet<Task> Tasks => Set<Task>();
     public DbSet<Session> Sessions => Set<Session>();
+    public DbSet<Absence> Absences => Set<Absence>();
 
     /// <summary>
     ///     Попытаться инициализировать сессию.
@@ -114,11 +114,11 @@ public class DataContext(ContextConfiguration configuration) : DbContext
         modelBuilder.ApplyConfiguration(new SubjectChange.Configuration(Configuration));
 
         // Журнал.
-        modelBuilder.ApplyConfiguration(new Task.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Absence.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Mark.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new MarkType.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Mark.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Task.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Session.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Absence.Configuration(Configuration));
 
         base.OnModelCreating(modelBuilder);
     }

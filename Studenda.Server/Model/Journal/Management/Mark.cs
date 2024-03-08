@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
-using Studenda.Server.Model.Journal.Management;
 
-namespace Studenda.Server.Model.Journal;
+namespace Studenda.Server.Model.Journal.Management;
 
 /// <summary>
 ///     Оценка.
@@ -21,7 +20,6 @@ public class Mark : IdentifiableEntity
 
     #region Configuration
 
-    public const bool IsMarkTypeIdRequired = true;
     public const bool IsTaskIdRequired = true;
     public const bool IsValueRequired = true;
 
@@ -38,12 +36,8 @@ public class Mark : IdentifiableEntity
         public override void Configure(EntityTypeBuilder<Mark> builder)
         {
             builder.HasOne(mark => mark.MarkType)
-                .WithOne(type => type.Mark)
-                .HasForeignKey<Mark>(type => type.MarkTypeId);
-
-            builder.HasOne(mark => mark.Task)
-                .WithMany(task => task.Marks)
-                .HasForeignKey(mark => mark.TaskId)
+                .WithMany(type => type.Marks)
+                .HasForeignKey(mark => mark.MarkTypeId)
                 .IsRequired();
 
             builder.Property(mark => mark.Value)
@@ -73,11 +67,6 @@ public class Mark : IdentifiableEntity
     public required int MarkTypeId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Journal.Task" />.
-    /// </summary>
-    public required int TaskId { get; set; }
-
-    /// <summary>
     ///     Значение.
     /// </summary>
     public required int Value { get; set; }
@@ -85,5 +74,5 @@ public class Mark : IdentifiableEntity
     #endregion
 
     public MarkType? MarkType { get; set; }
-    public Task? Task { get; set; }
+    public List<Task> Tasks { get; set; } = [];
 }

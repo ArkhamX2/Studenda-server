@@ -31,7 +31,6 @@ internal class Program
         services.AddScoped<DataEntityService>();
         services.AddScoped<SubjectService>();
         services.AddScoped<WeekTypeService>();
-        services.AddScoped<MarkService>();
         services.AddScoped<TaskService>();
         services.AddScoped<AbsenceService>();
         services.AddScoped<SessionService>();
