@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Schedule;
 using Studenda.Server.Service.Schedule;
 
@@ -71,7 +70,7 @@ public class SubjectController(SubjectService subjectService) : ControllerBase
     /// </summary>
     /// <param name="entities">Список статичных занятий.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Subject> entities)
     {
@@ -90,7 +89,7 @@ public class SubjectController(SubjectService subjectService) : ControllerBase
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {

@@ -13,43 +13,12 @@ namespace Studenda.Server.Service.Security;
 /// <param name="configuration">Менеджер конфигурации.</param>
 public class TokenService(ConfigurationManager configuration)
 {
-    public const string ClaimLabelUserId = ClaimTypes.NameIdentifier;
-    public const string ClaimLabelUserName = ClaimTypes.Name;
-    public const string ClaimLabelUserEmail = ClaimTypes.Email;
-    public const string ClaimLabelUserRole = ClaimTypes.Role;
+    private const string ClaimLabelUserId = ClaimTypes.NameIdentifier;
+    private const string ClaimLabelUserName = ClaimTypes.Name;
+    private const string ClaimLabelUserEmail = ClaimTypes.Email;
+    private const string ClaimLabelUserRole = ClaimTypes.Role;
 
     private TokenConfiguration Configuration { get; } = configuration.TokenConfiguration;
-
-    /// <summary>
-    ///     Найти в клеймах значение указанного типа.
-    /// </summary>
-    /// <param name="claims">Набор клеймов.</param>
-    /// <param name="claimType">Тип.</param>
-    /// <returns>Значение.</returns>
-    public static string? FindTokenClaimValue(IEnumerable<Claim> claims, string claimType)
-    {
-        return claims.FirstOrDefault(claim => claim.Type == claimType)?.Value;
-    }
-
-    /// <summary>
-    ///     Сконвертировать список в стандартное значение клейма.
-    /// </summary>
-    /// <param name="enumerable">Список.</param>
-    /// <returns>Строковое значение.</returns>
-    public static string ConvertEnumerableToString(IEnumerable<string?> enumerable)
-    {
-        return string.Join(", ", enumerable);
-    }
-
-    /// <summary>
-    ///     Сконвертировать стандартное значение клейма в список.
-    /// </summary>
-    /// <param name="claimValue">Строковое значение.</param>
-    /// <returns>Список.</returns>
-    public static IEnumerable<string> ConvertEnumerableFromString(string claimValue)
-    {
-        return [.. claimValue.Split(", ")];
-    }
 
     /// <summary>
     ///     Создать новый токен.
@@ -101,7 +70,7 @@ public class TokenService(ConfigurationManager configuration)
 
         if (roles.Count > 0)
         {
-            claims.Add(new Claim(ClaimLabelUserRole, ConvertEnumerableToString(roles.Select(role => role.Name))));
+            claims.Add(new Claim(ClaimLabelUserRole, string.Join(",", roles.Select(role => role.Name))));
         }
 
         return claims;
