@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Studenda.Server.Data;
 using Studenda.Server.Data.Factory;
 using Studenda.Server.Middleware;
+using Studenda.Server.Middleware.Security;
+using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Service;
 using Studenda.Server.Service.Journal;
 using Studenda.Server.Service.Schedule;

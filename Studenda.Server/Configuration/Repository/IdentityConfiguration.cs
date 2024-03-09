@@ -4,6 +4,15 @@ namespace Studenda.Server.Configuration.Repository;
 
 public class IdentityConfiguration(IConfiguration configuration) : ConfigurationRepository(configuration)
 {
+    public bool GetRoleCanRegister(string roleName)
+    {
+        return Configuration
+            .GetSection("Identity")
+            .GetSection("Roles")
+            .GetSection(roleName)
+            .GetValue<bool>("CanRegister");
+    }
+
     private bool GetPasswordRequireDigit()
     {
         return Configuration

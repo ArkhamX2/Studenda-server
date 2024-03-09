@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Schedule.Management;
 using Studenda.Server.Service.Schedule;
 
@@ -46,7 +47,7 @@ public class WeekTypeController(WeekTypeService weekTypeService) : ControllerBas
     /// </summary>
     /// <param name="entities">Список типов недель.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize]
+    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<WeekType> entities)
     {
@@ -65,7 +66,7 @@ public class WeekTypeController(WeekTypeService weekTypeService) : ControllerBas
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize]
+    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
