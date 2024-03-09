@@ -16,7 +16,7 @@ public class SecurityRequest
     public required string Password { get; init; }
 
     /// <summary>
-    ///     Название роли.
+    ///     Названия ролей.
     /// </summary>
-    public required string RoleName { get; init; }
+    public required List<string> RoleNames { get; init; }
 }

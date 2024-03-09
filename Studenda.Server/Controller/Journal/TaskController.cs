@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Service.Journal;
 using Task = Studenda.Server.Model.Journal.Task;
 
@@ -87,7 +88,7 @@ public class TaskController(TaskService taskService) : ControllerBase
     /// </summary>
     /// <param name="entities">Список заданий.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize]
+    [Authorize(Policy = TeacherRoleAuthorizationRequirement.AuthorizationPolicyCode)]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Task> entities)
     {
@@ -106,7 +107,7 @@ public class TaskController(TaskService taskService) : ControllerBase
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize]
+    [Authorize(Policy = TeacherRoleAuthorizationRequirement.AuthorizationPolicyCode)]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
