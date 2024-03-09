@@ -110,7 +110,6 @@ internal class Program
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<LeaderRoleAuthorizationRequirement>>();
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<TeacherRoleAuthorizationRequirement>>();
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<AdminRoleAuthorizationRequirement>>();
-
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
