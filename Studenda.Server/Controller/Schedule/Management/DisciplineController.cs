@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Schedule.Management;
 using Studenda.Server.Service;
 
@@ -37,7 +36,7 @@ public class DisciplineController(DataEntityService dataEntityService) : Control
     /// </summary>
     /// <param name="entities">Список дисциплин.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Discipline> entities)
     {
@@ -56,7 +55,7 @@ public class DisciplineController(DataEntityService dataEntityService) : Control
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {

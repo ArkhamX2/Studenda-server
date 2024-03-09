@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Studenda.Server.Data;
 using Studenda.Server.Data.Factory;
 using Studenda.Server.Middleware;
-using Studenda.Server.Middleware.Security;
-using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Service;
 using Studenda.Server.Service.Journal;
 using Studenda.Server.Service.Schedule;
@@ -92,25 +89,7 @@ internal class Program
     /// <param name="configuration">Менеджер конфигурации.</param>
     private static void RegisterSecurityServices(IServiceCollection services, ConfigurationManager configuration)
     {
-        services.AddAuthorizationBuilder()
-            .AddPolicy(
-                StudentRoleAuthorizationRequirement.AuthorizationPolicyCode,
-                policy => policy.Requirements.Add(new StudentRoleAuthorizationRequirement()))
-            .AddPolicy(
-                LeaderRoleAuthorizationRequirement.AuthorizationPolicyCode,
-                policy => policy.Requirements.Add(new LeaderRoleAuthorizationRequirement()))
-            .AddPolicy(
-                TeacherRoleAuthorizationRequirement.AuthorizationPolicyCode,
-                policy => policy.Requirements.Add(new TeacherRoleAuthorizationRequirement()))
-            .AddPolicy(
-                AdminRoleAuthorizationRequirement.AuthorizationPolicyCode,
-                policy => policy.Requirements.Add(new AdminRoleAuthorizationRequirement()));
-
-        services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<StudentRoleAuthorizationRequirement>>();
-        services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<LeaderRoleAuthorizationRequirement>>();
-        services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<TeacherRoleAuthorizationRequirement>>();
-        services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<AdminRoleAuthorizationRequirement>>();
-
+        services.AddAuthorization();
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Common;
 using Studenda.Server.Service;
 
@@ -47,7 +46,7 @@ public class AccountController(AccountService accountService) : ControllerBase
     /// </summary>
     /// <param name="entities">Список аккаунтов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Account> entities)
     {
@@ -66,7 +65,7 @@ public class AccountController(AccountService accountService) : ControllerBase
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {

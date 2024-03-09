@@ -15,5 +15,5 @@ public class SecurityResponse
     /// <summary>
     ///     Токен.
     /// </summary>
-    public required string Token { get; init; }
+    public required string Token { get; set; }
 }
