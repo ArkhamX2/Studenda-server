@@ -1,6 +1,8 @@
 name: Docker
 
 on:
+  schedule:
+    - cron: '15 10 * * *'
   push:
     branches: [ "main" ]
     tags: [ 'v*.*.*' ]
@@ -13,7 +15,6 @@ env:
 
 jobs:
   build:
-    name: Build and push
     runs-on: ubuntu-latest
 
     permissions:
