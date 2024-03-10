@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Studenda.Server.Configuration.Repository;
 using Studenda.Server.Data;
-using Studenda.Server.Data.Factory;
+using Studenda.Server.Data.Initialization;
 using Studenda.Server.Middleware;
 using Studenda.Server.Middleware.Security;
 using Studenda.Server.Middleware.Security.Requirement;
@@ -22,6 +23,35 @@ internal class Program
 #else
     private const bool IsDebugMode = false;
 #endif
+
+    /// <summary>
+    ///     Точка входа в приложение.
+    /// </summary>
+    /// <param name="args">Аргументы из командной строки.</param>
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+        var configuration = new ConfigurationManager(builder.Configuration);
+
+        RegisterCoreServices(builder.Services);
+        RegisterDataSources(builder.Services, configuration.DataConfiguration);
+        RegisterIdentityServices(builder.Services, configuration.IdentityConfiguration);
+        RegisterAuthorizationServices(builder.Services);
+        RegisterAuthenticationServices(builder.Services, configuration.TokenConfiguration);
+        RegisterCorsServices(builder.Services);
+
+        var application = builder.Build();
+
+        application.UseMiddleware<ExceptionHandler>();
+        application.UseAuthentication();
+        application.UseAuthorization();
+        application.MapControllers();
+        application.UseCors();
+
+        InitializeDataSources(application);
+
+        application.Run();
+    }
 
     /// <summary>
     ///     Зарегистрировать основные сервисы и контроллеры.
@@ -46,35 +76,25 @@ internal class Program
     ///     Зарегистрировать источники данных.
     /// </summary>
     /// <param name="services">Коллекция сервисов.</param>
-    /// <param name="configuration">Менеджер конфигурации.</param>
-    private static void RegisterDataSources(IServiceCollection services, ConfigurationManager configuration)
+    /// <param name="configuration">Конфигурации данных.</param>
+    private static void RegisterDataSources(IServiceCollection services, DataConfiguration configuration)
     {
-        var dataConfiguration = configuration.DataConfiguration.GetDefaultContextConfiguration(IsDebugMode);
-        var identityDataConfiguration = configuration.DataConfiguration.GetIdentityContextConfiguration(IsDebugMode);
+        var dataConfiguration = configuration.GetDefaultContextConfiguration(IsDebugMode);
+        var identityConfiguration = configuration.GetIdentityContextConfiguration(IsDebugMode);
 
-        services.AddSingleton<IContextFactory<DataContext>>(new DataContextFactory(dataConfiguration));
-        services.AddSingleton<IContextFactory<IdentityContext>>(new IdentityContextFactory(identityDataConfiguration));
+        services.AddScoped(provider => new DataContext(dataConfiguration));
+        services.AddScoped(provider => new IdentityContext(identityConfiguration));
 
-        services.AddScoped(provider =>
-        {
-            var factory = provider.GetService<IContextFactory<DataContext>>();
-
-            return factory!.CreateDataContext();
-        });
-        services.AddScoped(provider =>
-        {
-            var factory = provider.GetService<IContextFactory<IdentityContext>>();
-
-            return factory!.CreateDataContext();
-        });
+        services.AddScoped<DataInitializationScript>();
+        services.AddScoped<IdentityInitializationScript>();
     }
 
     /// <summary>
     ///     Зарегистрировать сервисы идентификации.
     /// </summary>
     /// <param name="services">Коллекция сервисов.</param>
-    /// <param name="configuration">Менеджер конфигурации.</param>
-    private static void RegisterIdentityServices(IServiceCollection services, ConfigurationManager configuration)
+    /// <param name="configuration">Конфигурации модуля идентификации.</param>
+    private static void RegisterIdentityServices(IServiceCollection services, IdentityConfiguration configuration)
     {
         services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<IdentityContext>()
@@ -82,15 +102,14 @@ internal class Program
             .AddRoleManager<RoleManager<IdentityRole>>()
             .AddSignInManager<SignInManager<IdentityUser>>();
 
-        services.Configure<IdentityOptions>(options => configuration.IdentityConfiguration.GetOptions());
+        services.Configure<IdentityOptions>(options => configuration.GetOptions());
     }
 
     /// <summary>
-    ///     Зарегистрировать сервисы безопасности.
+    ///     Зарегистрировать сервисы авторизации.
     /// </summary>
     /// <param name="services">Коллекция сервисов.</param>
-    /// <param name="configuration">Менеджер конфигурации.</param>
-    private static void RegisterSecurityServices(IServiceCollection services, ConfigurationManager configuration)
+    private static void RegisterAuthorizationServices(IServiceCollection services)
     {
         services.AddAuthorizationBuilder()
             .AddPolicy(
@@ -110,7 +129,15 @@ internal class Program
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<LeaderRoleAuthorizationRequirement>>();
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<TeacherRoleAuthorizationRequirement>>();
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<AdminRoleAuthorizationRequirement>>();
+    }
 
+    /// <summary>
+    ///     Зарегистрировать сервисы аутентификации.
+    /// </summary>
+    /// <param name="services">Коллекция сервисов.</param>
+    /// <param name="configuration">Конфигурация токенов.</param>
+    private static void RegisterAuthenticationServices(IServiceCollection services, TokenConfiguration configuration)
+    {
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -119,7 +146,7 @@ internal class Program
         }).AddJwtBearer(options =>
         {
             options.IncludeErrorDetails = true;
-            options.TokenValidationParameters = configuration.TokenConfiguration.GetValidationParameters();
+            options.TokenValidationParameters = configuration.GetValidationParameters();
         });
 
         services.AddCors(options =>
@@ -132,27 +159,29 @@ internal class Program
     }
 
     /// <summary>
-    ///     Точка входа в приложение.
+    ///     Зарегистрировать сервисы межсайтовой аутентификации.
     /// </summary>
-    /// <param name="args">Аргументы из командной строки.</param>
-    private static void Main(string[] args)
+    /// <param name="services">Коллекция сервисов.</param>
+    private static void RegisterCorsServices(IServiceCollection services)
     {
-        var builder = WebApplication.CreateBuilder(args);
-        var services = builder.Services;
-        var configuration = new ConfigurationManager(builder.Configuration);
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            });
+        });
+    }
 
-        RegisterCoreServices(services);
-        RegisterDataSources(services, configuration);
-        RegisterIdentityServices(services, configuration);
-        RegisterSecurityServices(services, configuration);
+    /// <summary>
+    ///     Инициализировать сессии данных.
+    /// </summary>
+    /// <param name="application">Приложение.</param>
+    private static async void InitializeDataSources(WebApplication application)
+    {
+        using var scope = application.Services.CreateScope();
 
-        var application = builder.Build();
-
-        application.UseMiddleware<ExceptionHandler>();
-        application.UseAuthentication();
-        application.UseAuthorization();
-        application.MapControllers();
-        application.UseCors();
-        application.Run();
+        await scope.ServiceProvider.GetRequiredService<DataInitializationScript>().Run();
+        await scope.ServiceProvider.GetRequiredService<IdentityInitializationScript>().Run();
     }
 }

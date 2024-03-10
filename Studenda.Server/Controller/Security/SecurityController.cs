@@ -28,7 +28,8 @@ public class SecurityController(
     IdentityContext identityContext,
     TokenService tokenService,
     UserManager<IdentityUser> userManager,
-    RoleManager<IdentityRole> roleManager) : ControllerBase
+    RoleManager<IdentityRole> roleManager
+) : ControllerBase
 {
     private ConfigurationManager ConfigurationManager { get; } = configurationManager;
     private DataContext DataContext { get; } = dataContext;
