@@ -57,7 +57,7 @@ public class SubjectController(SubjectService subjectService) : ControllerBase
     /// <param name="year">Учебный год.</param>
     /// <returns>Результат операции со списком статичных занятий.</returns>
     [HttpGet]
-    [Route("user")]
+    [Route("account")]
     public async Task<ActionResult<List<Subject>>> GetByAccount(
         [FromQuery] int accountId,
         [FromQuery] int weekTypeId,

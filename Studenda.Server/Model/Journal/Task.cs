@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
 using Studenda.Server.Model.Common;
+using Studenda.Server.Model.Journal.Management;
 using Studenda.Server.Model.Schedule.Management;
 
 namespace Studenda.Server.Model.Journal;
@@ -29,6 +30,7 @@ public class Task : IdentifiableEntity
     public const bool IsSubjectTypeIdRequired = true;
     public const bool IsIssuerAccountIdRequired = true;
     public const bool IsAssigneeAccountIdRequired = true;
+    public const bool IsMarkIdRequired = false;
     public const bool IsNameRequired = true;
     public const bool IsDescriptionRequired = false;
     public const bool IsStartedAtRequired = true;
@@ -65,6 +67,11 @@ public class Task : IdentifiableEntity
                 .WithMany(account => account.AssignedTasks)
                 .HasForeignKey(task => task.AssigneeAccountId)
                 .IsRequired();
+
+            builder.HasOne(task => task.Mark)
+                .WithMany(mark => mark.Tasks)
+                .HasForeignKey(task => task.MarkId)
+                .IsRequired(IsMarkIdRequired);
 
             builder.Property(task => task.Name)
                 .HasMaxLength(NameLengthMax)
@@ -121,6 +128,12 @@ public class Task : IdentifiableEntity
     public required int AssigneeAccountId { get; set; }
 
     /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Management.Mark" />.
+    ///     Необязательное поле.
+    /// </summary>
+    public int MarkId { get; set; }
+
+    /// <summary>
     ///     Название.
     /// </summary>
     public required string Name { get; set; }
@@ -147,5 +160,5 @@ public class Task : IdentifiableEntity
     public SubjectType? SubjectType { get; set; }
     public Account? IssuerAccount { get; set; }
     public Account? AssigneeAccount { get; set; }
-    public List<Mark> Marks { get; set; } = [];
+    public Mark? Mark { get; set; }
 }
