@@ -92,11 +92,15 @@ class IdentityInitializationScript(
         }
 
         await UserManager.AddToRolesAsync(identityUser, defaultUserRoles);
-        await DataContext.Accounts.AddAsync(new Account
-        {
-            IdentityId = identityUser.Id
-        });
 
-        await DataContext.SaveChangesAsync();
+        if (!await DataContext.Accounts.AnyAsync(account => account.IdentityId == identityUser.Id))
+        {
+            await DataContext.Accounts.AddAsync(new Account
+            {
+                IdentityId = identityUser.Id
+            });
+
+            await DataContext.SaveChangesAsync();
+        }
     }
 }
