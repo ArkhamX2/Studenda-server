@@ -1,22 +1,22 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Studenda.Server.Model.Journal;
-using Studenda.Server.Service.Journal;
+using Studenda.Server.Model.Journal.Management;
+using Studenda.Server.Service;
 
-namespace Studenda.Server.Controller.Journal;
+namespace Studenda.Server.Controller.Journal.Management;
 
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Mark" />.
 /// </summary>
-/// <param name="markService">Сервис моделей.</param>
+/// <param name="dataEntityService">Сервис моделей.</param>
 [Route("api/journal/mark")]
 [ApiController]
-public class MarkController(MarkService markService) : ControllerBase
+public class MarkController(DataEntityService dataEntityService) : ControllerBase
 {
     /// <summary>
     ///     Сервис моделей.
     /// </summary>
-    private MarkService MarkService { get; } = markService;
+    private DataEntityService DataEntityService { get; } = dataEntityService;
 
     /// <summary>
     ///     Получить список оценок.
@@ -28,19 +28,7 @@ public class MarkController(MarkService markService) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<Mark>>> Get([FromQuery] List<int> ids)
     {
-        return await MarkService.Get(MarkService.DataContext.Marks, ids);
-    }
-
-    /// <summary>
-    ///     Получить список оценок по идентификаторам заданий.
-    /// </summary>
-    /// <param name="taskIds">Идентификаторы заданий.</param>
-    /// <returns>Результат операции со списком оценок.</returns>
-    [HttpGet]
-    [Route("task")]
-    public async Task<ActionResult<List<Mark>>> GetByTask([FromQuery] List<int> taskIds)
-    {
-        return await MarkService.GetByTask(taskIds);
+        return await DataEntityService.Get(DataEntityService.DataContext.Marks, ids);
     }
 
     /// <summary>
@@ -52,7 +40,7 @@ public class MarkController(MarkService markService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Mark> entities)
     {
-        var status = await MarkService.Set(MarkService.DataContext.Marks, entities);
+        var status = await DataEntityService.Set(DataEntityService.DataContext.Marks, entities);
 
         if (!status)
         {
@@ -71,7 +59,7 @@ public class MarkController(MarkService markService) : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = await MarkService.Remove(MarkService.DataContext.Marks, ids);
+        var status = await DataEntityService.Remove(DataEntityService.DataContext.Marks, ids);
 
         if (!status)
         {
