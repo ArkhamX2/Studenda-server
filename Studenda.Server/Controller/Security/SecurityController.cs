@@ -111,8 +111,11 @@ public class SecurityController(
         {
             return BadRequest(request);
         }
-
-        // TODO: Валидация роли.
+        bool roleExist = await RoleManager.RoleExistsAsync(request.RoleName);
+        if (!roleExist)
+        {
+            return BadRequest($"Role with name {request.RoleName} doesnt exist");
+        }
 
         var internalUser = new IdentityUser
         {

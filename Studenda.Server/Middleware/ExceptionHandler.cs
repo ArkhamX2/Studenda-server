@@ -2,25 +2,31 @@
 
 namespace Studenda.Server.Middleware;
 
-public class ExceptionHandler(RequestDelegate requestDelegate)
-{
-    private RequestDelegate RequestDelegate { get; } = requestDelegate;
-
-    public async Task InvokeAsync(HttpContext context)
+    public class ExceptionHandler
     {
-        try
+        private RequestDelegate RequestDelegate { get; }
+        public ExceptionHandler(RequestDelegate requestDelegate)
         {
-            await RequestDelegate.Invoke(context);
+            RequestDelegate = requestDelegate;
         }
-        catch (Exception exception)
+        public async Task Invoke(HttpContext context)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            try
 
-            await context.Response.WriteAsJsonAsync(new
             {
-                ErrorType = exception.GetType().ToString(),
-                ErrorMessage = exception.Message
-            });
+                await RequestDelegate.Invoke(context);
+            }
+            catch (Exception exception)
+            {
+                // TODO: логгирование
+                // TODO: вынести коды ответов в константы
+                context.Response.StatusCode = 500;
+                await context.Response.WriteAsJsonAsync(new
+                {
+                    ErrorType = exception.GetType().ToString(),
+                    ErrorMessage = exception.Message
+                });
+            }
         }
     }
-}
+

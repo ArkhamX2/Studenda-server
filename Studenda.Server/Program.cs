@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Studenda.Core.Server.Common.Middleware;
+using Studenda.Core.Server.Security.Service;
 using Studenda.Server.Data;
 using Studenda.Server.Data.Factory;
 using Studenda.Server.Middleware;
@@ -26,6 +28,7 @@ internal class Program
     /// <param name="services">Коллекция сервисов.</param>
     private static void RegisterCoreServices(IServiceCollection services)
     {
+        services.AddScoped<RoleService>();
         services.AddScoped<TokenService>();
         services.AddScoped<AccountService>();
         services.AddScoped<DataEntityService>();
@@ -126,7 +129,10 @@ internal class Program
         RegisterSecurityServices(services, configuration);
 
         var application = builder.Build();
-
+        application.UseWhen(
+            context => context.User.Identity.IsAuthenticated,
+            application=>application.UseMiddleware<JwtHandler>()
+        ); 
         application.UseMiddleware<ExceptionHandler>();
         application.UseAuthentication();
         application.UseAuthorization();
