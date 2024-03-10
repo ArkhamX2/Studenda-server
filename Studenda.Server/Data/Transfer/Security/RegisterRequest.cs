@@ -5,5 +5,8 @@
 /// </summary>
 public class RegisterRequest : SecurityRequest
 {
-    // PASS.
+    /// <summary>
+    ///     Названия ролей.
+    /// </summary>
+    public required List<string> RoleNames { get; init; }
 }
