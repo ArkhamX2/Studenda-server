@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Studenda.Server.Configuration.Static;
 using Studenda.Server.Data;
 using Studenda.Server.Data.Transfer.Security;
 using Studenda.Server.Data.Util;
+using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Common;
 using Studenda.Server.Service.Security;
 using ConfigurationManager = Studenda.Server.Configuration.ConfigurationManager;
@@ -37,6 +39,23 @@ public class SecurityController(
     private TokenService TokenService { get; } = tokenService;
     private UserManager<IdentityUser> UserManager { get; } = userManager;
     private RoleManager<IdentityRole> RoleManager { get; } = roleManager;
+
+    /// <summary>
+    ///     Получить базовые параметры.
+    /// </summary>
+    /// <returns>Результат с базовыми параметрами.</returns>
+    [HttpGet]
+    public ActionResult<List<Account>> Get()
+    {
+        return Ok(new HandshakeResponse
+        {
+            StudentRoleName = IdentityRoleConfiguration.StudentRoleName,
+            LeaderRoleName = IdentityRoleConfiguration.LeaderRoleName,
+            TeacherRoleName = IdentityRoleConfiguration.TeacherRoleName,
+            AdminRoleName = IdentityRoleConfiguration.AdminRoleName,
+            CoordinatedUniversalTime = DateTime.UtcNow
+        });
+    }
 
     /// <summary>
     ///     Авторизация пользователя.
@@ -169,20 +188,46 @@ public class SecurityController(
     }
 
     /// <summary>
-    ///     Получить базовые параметры.
+    ///     Выпустить новый токен для текущего авторизованного пользователя.
     /// </summary>
-    /// <returns>Результат с базовыми параметрами.</returns>
-    [HttpGet]
-    public ActionResult<List<Account>> Get()
+    /// <returns>Тело ответа модуля безопасности.</returns>
+    [Authorize(Policy = StudentRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [HttpPost("token")]
+    public async Task<IActionResult> RefreshToken()
     {
-        return Ok(new HandshakeResponse
+        if (User.Identity is null || !User.Identity.IsAuthenticated)
         {
-            StudentRoleName = IdentityRoleConfiguration.StudentRoleName,
-            LeaderRoleName = IdentityRoleConfiguration.LeaderRoleName,
-            TeacherRoleName = IdentityRoleConfiguration.TeacherRoleName,
-            AdminRoleName = IdentityRoleConfiguration.AdminRoleName,
-            CoordinatedUniversalTime = DateTime.UtcNow
-        });
+            return Unauthorized();
+        }
+
+        var identityUser = await IdentityContext.Users
+            .FirstOrDefaultAsync(identityUser => identityUser.UserName == User.Identity.Name);
+
+        if (identityUser is null)
+        {
+            return Unauthorized();
+        }
+
+        var account = await DataContext.Accounts.FirstOrDefaultAsync(account => account.IdentityId == identityUser.Id);
+
+        if (account is null)
+        {
+            return Unauthorized();
+        }
+
+        var identityRoles = await IdentityContext.UserRoles
+            .Where(userRole => userRole.UserId == identityUser.Id)
+            .Join(IdentityContext.Roles,
+                userRole => userRole.RoleId,
+                innerRole => innerRole.Id,
+                (userRole, innerRole) => innerRole)
+            .ToListAsync();
+
+        return Ok(DataSerializer.Serialize(new SecurityResponse
+        {
+            Account = account,
+            Token = TokenService.CreateNewToken(identityUser, identityRoles)
+        }));
     }
 
     /// <summary>
