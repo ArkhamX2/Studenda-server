@@ -4,6 +4,46 @@ namespace Studenda.Server.Configuration.Repository;
 
 public class IdentityConfiguration(IConfiguration configuration) : ConfigurationRepository(configuration)
 {
+    public bool GetRoleCanRegister(string roleName)
+    {
+        return Configuration
+            .GetSection("Identity")
+            .GetSection("Roles")
+            .GetSection(roleName)
+            .GetValue<bool>("CanRegister");
+    }
+
+    public string GetDefaultUserEmail()
+    {
+        var result = Configuration
+            .GetSection("Identity")
+            .GetSection("DefaultUser")
+            .GetValue<string>("Email");
+
+        return HandleStringValue(result, "Default user email is null or empty!");
+    }
+
+    public string GetDefaultUserPassword()
+    {
+        var result = Configuration
+            .GetSection("Identity")
+            .GetSection("DefaultUser")
+            .GetValue<string>("Password");
+
+        return HandleStringValue(result, "Default user password is null or empty!");
+    }
+
+    public List<string> GetDefaultUserRoles()
+    {
+        var result = Configuration
+            .GetSection("Identity")
+            .GetSection("DefaultUser")
+            .GetSection("Roles")
+            .Get<List<string>>();
+
+        return HandleStringListValue(result, "Default user roles is incorrect!");
+    }
+
     private bool GetPasswordRequireDigit()
     {
         return Configuration

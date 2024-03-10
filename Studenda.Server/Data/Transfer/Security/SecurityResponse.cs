@@ -8,12 +8,12 @@ namespace Studenda.Server.Data.Transfer.Security;
 public class SecurityResponse
 {
     /// <summary>
-    ///     Объект <see cref="Common.Account" />.
+    ///     Аккаунт.
     /// </summary>
     public required Account Account { get; init; }
 
     /// <summary>
     ///     Токен.
     /// </summary>
-    public required string Token { get; set; }
+    public required string Token { get; init; }
 }

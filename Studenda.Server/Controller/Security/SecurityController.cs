@@ -1,17 +1,22 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Studenda.Server.Configuration.Static;
 using Studenda.Server.Data;
 using Studenda.Server.Data.Transfer.Security;
 using Studenda.Server.Data.Util;
+using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Common;
 using Studenda.Server.Service.Security;
+using ConfigurationManager = Studenda.Server.Configuration.ConfigurationManager;
 
 namespace Studenda.Server.Controller.Security;
 
 /// <summary>
 ///     Контроллер авторизации аккаунтов.
 /// </summary>
+/// <param name="configurationManager">Менеджер конфигурации.</param>
 /// <param name="dataContext">Сессия работы с базой данных.</param>
 /// <param name="identityContext">Сессия работы с базой данных безопасности.</param>
 /// <param name="tokenService">Сервис работы с токенами.</param>
@@ -20,36 +25,37 @@ namespace Studenda.Server.Controller.Security;
 [Route("api/security")]
 [ApiController]
 public class SecurityController(
+    ConfigurationManager configurationManager,
     DataContext dataContext,
     IdentityContext identityContext,
     TokenService tokenService,
     UserManager<IdentityUser> userManager,
-    RoleManager<IdentityRole> roleManager) : ControllerBase
+    RoleManager<IdentityRole> roleManager
+) : ControllerBase
 {
-    /// <summary>
-    ///     Сессия работы с базой данных.
-    /// </summary>
+    private ConfigurationManager ConfigurationManager { get; } = configurationManager;
     private DataContext DataContext { get; } = dataContext;
-
-    /// <summary>
-    ///     Сессия работы с базой данных безопасности.
-    /// </summary>
     private IdentityContext IdentityContext { get; } = identityContext;
-
-    /// <summary>
-    ///     Сервис работы с токенами.
-    /// </summary>
     private TokenService TokenService { get; } = tokenService;
-
-    /// <summary>
-    ///     Менеджер работы с пользователями.
-    /// </summary>
     private UserManager<IdentityUser> UserManager { get; } = userManager;
+    private RoleManager<IdentityRole> RoleManager { get; } = roleManager;
 
     /// <summary>
-    ///     Менеджер работы с ролями.
+    ///     Получить базовые параметры.
     /// </summary>
-    private RoleManager<IdentityRole> RoleManager { get; } = roleManager;
+    /// <returns>Результат с базовыми параметрами.</returns>
+    [HttpGet]
+    public ActionResult<List<Account>> Get()
+    {
+        return Ok(new HandshakeResponse
+        {
+            StudentRoleName = IdentityRoleConfiguration.StudentRoleName,
+            LeaderRoleName = IdentityRoleConfiguration.LeaderRoleName,
+            TeacherRoleName = IdentityRoleConfiguration.TeacherRoleName,
+            AdminRoleName = IdentityRoleConfiguration.AdminRoleName,
+            CoordinatedUniversalTime = DateTime.UtcNow
+        });
+    }
 
     /// <summary>
     ///     Авторизация пользователя.
@@ -112,15 +118,18 @@ public class SecurityController(
             return BadRequest(request);
         }
 
-        // TODO: Валидация роли.
-
-        var internalUser = new IdentityUser
+        if (!CanRegisterWithRoles(request.RoleNames))
         {
-            UserName = request.Email,
-            Email = request.Email
-        };
+            return BadRequest("Incorrect roles!");
+        }
 
-        var result = await UserManager.CreateAsync(internalUser, request.Password);
+        var result = await UserManager.CreateAsync(
+            new IdentityUser
+            {
+                UserName = request.Email,
+                Email = request.Email
+            },
+            request.Password);
 
         if (!result.Succeeded)
         {
@@ -137,16 +146,18 @@ public class SecurityController(
 
         if (identityUser is null)
         {
-            throw new Exception("Internal error! Please try again.");
+            throw new Exception("Internal error!");
         }
 
-        var identityRole = new IdentityRole
+        foreach (var roleName in request.RoleNames)
         {
-            Name = request.RoleName
-        };
+            await RoleManager.CreateAsync(new IdentityRole
+            {
+                Name = roleName
+            });
+        }
 
-        await RoleManager.CreateAsync(identityRole);
-        await UserManager.AddToRoleAsync(identityUser, request.RoleName);
+        await UserManager.AddToRolesAsync(identityUser, request.RoleNames);
         await DataContext.Accounts.AddAsync(new Account
         {
             IdentityId = identityUser.Id
@@ -174,5 +185,71 @@ public class SecurityController(
             Account = account,
             Token = TokenService.CreateNewToken(identityUser, identityRoles)
         }));
+    }
+
+    /// <summary>
+    ///     Выпустить новый токен для текущего авторизованного пользователя.
+    /// </summary>
+    /// <returns>Тело ответа модуля безопасности.</returns>
+    [Authorize(Policy = StudentRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [HttpPost("token")]
+    public async Task<IActionResult> RefreshToken()
+    {
+        if (User.Identity is null || !User.Identity.IsAuthenticated)
+        {
+            return Unauthorized();
+        }
+
+        var identityUser = await IdentityContext.Users
+            .FirstOrDefaultAsync(identityUser => identityUser.UserName == User.Identity.Name);
+
+        if (identityUser is null)
+        {
+            return Unauthorized();
+        }
+
+        var account = await DataContext.Accounts.FirstOrDefaultAsync(account => account.IdentityId == identityUser.Id);
+
+        if (account is null)
+        {
+            return Unauthorized();
+        }
+
+        var identityRoles = await IdentityContext.UserRoles
+            .Where(userRole => userRole.UserId == identityUser.Id)
+            .Join(IdentityContext.Roles,
+                userRole => userRole.RoleId,
+                innerRole => innerRole.Id,
+                (userRole, innerRole) => innerRole)
+            .ToListAsync();
+
+        return Ok(DataSerializer.Serialize(new SecurityResponse
+        {
+            Account = account,
+            Token = TokenService.CreateNewToken(identityUser, identityRoles)
+        }));
+    }
+
+    /// <summary>
+    ///     Проверить возможность регистрации с указанными названиями ролей.
+    /// </summary>
+    /// <param name="roleNames">Имена ролей.</param>
+    /// <returns>Статус проверки.</returns>
+    private bool CanRegisterWithRoles(List<string> roleNames)
+    {
+        foreach (var roleName in roleNames)
+        {
+            if (!IdentityRoleConfiguration.GetRoleNames().Contains(roleName))
+            {
+                return false;
+            }
+
+            if (!ConfigurationManager.IdentityConfiguration.GetRoleCanRegister(roleName))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
