@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Common;
 using Studenda.Server.Service;
+using Studenda.Server.Service.Security;
 
 namespace Studenda.Server.Controller;
 
@@ -10,14 +11,16 @@ namespace Studenda.Server.Controller;
 ///     Контроллер для работы с объектами типа <see cref="Account" />.
 /// </summary>
 /// <param name="accountService">Сервис моделей.</param>
+/// <param name="securityService">Сервис работы с безопасностью.</param>
 [Route("api/account")]
 [ApiController]
-public class AccountController(AccountService accountService) : ControllerBase
+public class AccountController(
+    AccountService accountService,
+    SecurityService securityService
+) : ControllerBase
 {
-    /// <summary>
-    ///     Сервис моделей.
-    /// </summary>
     private AccountService AccountService { get; } = accountService;
+    private SecurityService SecurityService { get; } = securityService;
 
     /// <summary>
     ///     Получить список аккаунтов.
@@ -37,9 +40,22 @@ public class AccountController(AccountService accountService) : ControllerBase
     /// </summary>
     /// <param name="groupIds">Идентификаторы групп.</param>
     /// <returns>Результат операции со списком аккаунтов.</returns>
+    [HttpGet("group")]
     public async Task<ActionResult<List<Account>>> GetByGroup([FromQuery] List<int> groupIds)
     {
         return await AccountService.GetByGroup(groupIds);
+    }
+
+    /// <summary>
+    ///     Получить список аккаунтов по названию роли.
+    /// </summary>
+    /// <param name="roleName">Название роли.</param>
+    /// <returns>Результат операции со списком аккаунтов.</returns>
+    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [HttpGet("role")]
+    public async Task<ActionResult<List<Account>>> GetByIdentityRole([FromQuery] string roleName)
+    {
+        return await SecurityService.GetAccountsByRole(roleName);
     }
 
     /// <summary>

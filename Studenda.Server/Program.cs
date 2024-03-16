@@ -60,13 +60,17 @@ internal class Program
     private static void RegisterCoreServices(IServiceCollection services)
     {
         services.AddScoped<TokenService>();
-        services.AddScoped<AccountService>();
+        services.AddScoped<SecurityService>();
+
         services.AddScoped<DataEntityService>();
+        services.AddScoped<AccountService>();
         services.AddScoped<SubjectService>();
         services.AddScoped<WeekTypeService>();
+
         services.AddScoped<TaskService>();
         services.AddScoped<AbsenceService>();
         services.AddScoped<SessionService>();
+
         services.AddTransient<ConfigurationManager>();
         services.AddControllers();
     }
