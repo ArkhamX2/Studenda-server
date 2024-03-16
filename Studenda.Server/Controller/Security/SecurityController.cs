@@ -148,10 +148,10 @@ public class SecurityController(
             new Account
             {
                 IdentityId = identityUser.Id,
+                GroupId = request.Account?.GroupId,
                 Name = request.Account?.Name,
                 Surname = request.Account?.Surname,
-                Patronymic = request.Account?.Patronymic,
-                GroupId = request.Account?.GroupId
+                Patronymic = request.Account?.Patronymic
             }
         ]);
 
@@ -220,10 +220,10 @@ public class SecurityController(
             new Account
             {
                 IdentityId = identityUser.Id,
+                GroupId = request.Account?.GroupId,
                 Name = request.Account?.Name,
                 Surname = request.Account?.Surname,
-                Patronymic = request.Account?.Patronymic,
-                GroupId = request.Account?.GroupId
+                Patronymic = request.Account?.Patronymic
             }
         ]);
 

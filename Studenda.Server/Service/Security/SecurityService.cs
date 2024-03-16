@@ -12,14 +12,12 @@ namespace Studenda.Server.Service.Security;
 /// </summary>
 /// <param name="configurationManager">Менеджер конфигурации.</param>
 /// <param name="identityContext">Сессия работы с базой данных безопасности.</param>
-/// <param name="tokenService">Сервис работы с токенами.</param>
 /// <param name="accountService">Сервис работы с аккаунтами.</param>
 /// <param name="userManager">Менеджер работы с пользователями.</param>
 /// <param name="roleManager">Менеджер работы с ролями.</param>
 public class SecurityService(
     ConfigurationManager configurationManager,
     IdentityContext identityContext,
-    TokenService tokenService,
     AccountService accountService,
     UserManager<IdentityUser> userManager,
     RoleManager<IdentityRole> roleManager
@@ -27,7 +25,6 @@ public class SecurityService(
 {
     private ConfigurationManager ConfigurationManager { get; } = configurationManager;
     private IdentityContext IdentityContext { get; } = identityContext;
-    private TokenService TokenService { get; } = tokenService;
     private AccountService AccountService { get; } = accountService;
     private UserManager<IdentityUser> UserManager { get; } = userManager;
     private RoleManager<IdentityRole> RoleManager { get; } = roleManager;
