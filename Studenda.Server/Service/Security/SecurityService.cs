@@ -121,7 +121,8 @@ public class SecurityService(
             return false;
         }
 
-        var role = await RoleService.GetDefault();
+        var roles = await RoleService.GetDefault();
+        var role = roles.FirstOrDefault();
 
         if (role is null)
         {

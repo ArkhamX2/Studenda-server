@@ -30,11 +30,11 @@ public class RoleController(RoleService roleService) : ControllerBase
     }
 
     /// <summary>
-    ///     Получить роль по-умолчанию.
+    ///     Получить роли по-умолчанию.
     /// </summary>
-    /// <returns>Результат операции с ролью или пустой результат.</returns>
+    /// <returns>Результат операции со списком ролей.</returns>
     [HttpGet("default")]
-    public async Task<Role?> GetDefault()
+    public async Task<List<Role>> GetDefault()
     {
         return await RoleService.GetDefault();
     }

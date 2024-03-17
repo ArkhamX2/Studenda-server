@@ -11,15 +11,14 @@ namespace Studenda.Server.Service;
 public class RoleService(DataContext dataContext) : DataEntityService(dataContext)
 {
     /// <summary>
-    ///     Получить роль по-умолчанию.
+    ///     Получить роли по-умолчанию.
     /// </summary>
-    /// <returns>Роль или ничего.</returns>
-    /// <exception cref="ArgumentException">При пустом списке доступов.</exception>
-    public async Task<Role?> GetDefault()
+    /// <returns>Список ролей.</returns>
+    public async Task<List<Role>> GetDefault()
     {
         return await DataContext.Roles
             .Where(role => role.CanRegister)
-            .FirstOrDefaultAsync();
+            .ToListAsync();
     }
 
     /// <summary>
