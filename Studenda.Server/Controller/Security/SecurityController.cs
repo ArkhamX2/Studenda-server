@@ -60,38 +60,33 @@ public class SecurityController(
     /// <param name="request">Тело запроса авторизации.</param>
     /// <returns>Тело ответа модуля безопасности.</returns>
     [HttpPost("login")]
-    public async Task<ActionResult<SecurityResponse>> Login([FromBody] LoginRequest request)
+    public async Task<ActionResult<SecurityResponse>> AutorizeUser(LoginRequest request)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(request);
         }
 
-        var identityUser = await UserManager.FindByEmailAsync(request.Email);
+        var user = await UserManager.FindByEmailAsync(request.Email);
 
-        if (identityUser is null)
+        if (user == null || !await UserManager.CheckPasswordAsync(user, request.Password))
         {
             return Unauthorized();
         }
 
-        if (!await UserManager.CheckPasswordAsync(identityUser, request.Password))
-        {
-            return Unauthorized();
-        }
-
-        var accounts = await SecurityService.GetAccountsByUser([identityUser]);
+        var accounts = await SecurityService.GetAccountsByUser([user]);
 
         if (accounts.Count <= 0)
         {
             return Unauthorized();
         }
 
-        var identityRoles = await SecurityService.GetUserRoles(identityUser);
+        var roles = await SecurityService.GetUserRoles(user);
 
         return Ok(DataSerializer.Serialize(new SecurityResponse
         {
             Account = accounts.First(),
-            Token = TokenService.CreateNewToken(identityUser, identityRoles)
+            Token = TokenService.CreateNewToken(user, roles)
         }));
     }
 
@@ -109,51 +104,52 @@ public class SecurityController(
             return BadRequest(request);
         }
 
-        // TODO: Валидация по request.Account.GroupId.
-
         if (!SecurityService.CanRegisterWithRoles(request.RoleNames))
         {
             return BadRequest("Incorrect roles!");
         }
 
-        var result = await UserManager.CreateAsync(
-            new IdentityUser
-            {
-                UserName = request.Email,
-                Email = request.Email
-            },
-            request.Password);
+        return await CreateNewUserInternal(request);
+    }
 
-        if (!result.Succeeded)
+    /// <summary>
+    ///     Создать нового пользователя.
+    /// </summary>
+    /// <param name="request">Тело запроса регистрации.</param>
+    /// <returns>Тело ответа модуля безопасности.</returns>
+    /// <exception cref="Exception">При неудачной попытке создания пользователя.</exception>
+    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [HttpPost("user")]
+    public async Task<ActionResult<SecurityResponse>> CreateNewUser([FromBody] RegisterRequest request)
+    {
+        if (!ModelState.IsValid)
         {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(error.Code, error.Description);
-            }
+            return BadRequest(request);
+        }
 
-            return BadRequest(ModelState);
+        return await CreateNewUserInternal(request);
+    }
+
+    /// <summary>
+    ///     Выпустить новый токен для текущего авторизованного пользователя.
+    /// </summary>
+    /// <returns>Тело ответа модуля безопасности.</returns>
+    [Authorize(Policy = StudentRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [HttpPost("token")]
+    public async Task<IActionResult> RefreshToken()
+    {
+        if (User.Identity is null || !User.Identity.IsAuthenticated)
+        {
+            return Unauthorized();
         }
 
         var identityUser = await IdentityContext.Users
-            .FirstOrDefaultAsync(identityUser => identityUser.Email == request.Email);
+            .FirstOrDefaultAsync(identityUser => identityUser.UserName == User.Identity.Name);
 
         if (identityUser is null)
         {
-            throw new Exception("Internal error!");
+            return Unauthorized();
         }
-
-        await SecurityService.GrantRoleToUser([identityUser], request.RoleNames);
-        await AccountService.Set(AccountService.DataContext.Accounts,
-        [
-            new Account
-            {
-                IdentityId = identityUser.Id,
-                GroupId = request.Account?.GroupId,
-                Name = request.Account?.Name,
-                Surname = request.Account?.Surname,
-                Patronymic = request.Account?.Patronymic
-            }
-        ]);
 
         var accounts = await SecurityService.GetAccountsByUser([identityUser]);
 
@@ -177,16 +173,10 @@ public class SecurityController(
     /// <param name="request">Тело запроса регистрации.</param>
     /// <returns>Тело ответа модуля безопасности.</returns>
     /// <exception cref="Exception">При неудачной попытке создания пользователя.</exception>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
-    [HttpPost("user")]
-    public async Task<ActionResult<SecurityResponse>> CreateNewUser([FromBody] RegisterRequest request)
+    private async Task<ActionResult<SecurityResponse>> CreateNewUserInternal([FromBody] RegisterRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(request);
-        }
-
         // TODO: Валидация по request.Account.GroupId.
+        // TODO: Валидация по request.RoleNames.
 
         var result = await UserManager.CreateAsync(
             new IdentityUser
@@ -232,43 +222,6 @@ public class SecurityController(
         if (accounts.Count <= 0)
         {
             throw new Exception("Error while creating new user account!");
-        }
-
-        var identityRoles = await SecurityService.GetUserRoles(identityUser);
-
-        return Ok(DataSerializer.Serialize(new SecurityResponse
-        {
-            Account = accounts.First(),
-            Token = TokenService.CreateNewToken(identityUser, identityRoles)
-        }));
-    }
-
-    /// <summary>
-    ///     Выпустить новый токен для текущего авторизованного пользователя.
-    /// </summary>
-    /// <returns>Тело ответа модуля безопасности.</returns>
-    [Authorize(Policy = StudentRoleAuthorizationRequirement.AuthorizationPolicyCode)]
-    [HttpPost("token")]
-    public async Task<IActionResult> RefreshToken()
-    {
-        if (User.Identity is null || !User.Identity.IsAuthenticated)
-        {
-            return Unauthorized();
-        }
-
-        var identityUser = await IdentityContext.Users
-            .FirstOrDefaultAsync(identityUser => identityUser.UserName == User.Identity.Name);
-
-        if (identityUser is null)
-        {
-            return Unauthorized();
-        }
-
-        var accounts = await SecurityService.GetAccountsByUser([identityUser]);
-
-        if (accounts.Count <= 0)
-        {
-            return Unauthorized();
         }
 
         var identityRoles = await SecurityService.GetUserRoles(identityUser);
