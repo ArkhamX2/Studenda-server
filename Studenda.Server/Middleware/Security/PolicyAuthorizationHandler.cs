@@ -8,8 +8,8 @@ namespace Studenda.Server.Middleware.Security;
 ///     Обработчик авторизации для политики безопасности.
 /// </summary>
 /// <typeparam name="TRequirement">Требование авторизации.</typeparam>
-public class PolicyAuthorizationHandler<TRequirement>(
-) : AuthorizationHandler<TRequirement> where TRequirement : IPermissionAuthorizationRequirement
+public class PolicyAuthorizationHandler<TRequirement> : AuthorizationHandler<TRequirement>
+    where TRequirement : IPermissionAuthorizationRequirement
 {
     /// <summary>
     ///     Обработать авторизацию пользователя.
