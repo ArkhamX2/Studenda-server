@@ -41,14 +41,13 @@ public class TokenService(ConfigurationManager configuration)
     public string CreateNewToken(IdentityUser user, Role role)
     {
         var claims = CreateTokenClaims(user, role);
-        var lifetime = Configuration.GetLifetimeMinutes();
         var key = Configuration.GetSecurityKey();
 
         var token = new JwtSecurityToken(
             Configuration.GetIssuer(),
             Configuration.GetAudience(),
             claims,
-            expires: DateTime.UtcNow.AddMinutes(lifetime),
+            expires: DateTime.UtcNow.AddSeconds(role.TokenLifetimeSeconds),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -60,7 +59,7 @@ public class TokenService(ConfigurationManager configuration)
     /// <param name="user">Пользователь.</param>
     /// <param name="role">Роль аккаунта.</param>
     /// <returns>Набор клеймов.</returns>
-    private IEnumerable<Claim> CreateTokenClaims(IdentityUser user, Role role)
+    private List<Claim> CreateTokenClaims(IdentityUser user, Role role)
     {
         var claims = new List<Claim>
         {

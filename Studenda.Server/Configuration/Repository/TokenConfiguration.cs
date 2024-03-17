@@ -43,22 +43,13 @@ public class TokenConfiguration(IConfiguration configuration) : ConfigurationRep
         return HandleStringValue(result, "Token key is null or empty!");
     }
 
-    private int GetClockSkew()
+    private int GetClockSkewSeconds()
     {
         var result = Configuration
             .GetSection(SectionName)
-            .GetValue<int>("ClockSkewMinutes");
+            .GetValue<int>("ClockSkewSeconds");
 
         return HandleIntValue(result, "Token clock skew is invalid!");
-    }
-
-    public int GetLifetimeMinutes()
-    {
-        var result = Configuration
-            .GetSection(SectionName)
-            .GetValue<int>("LifetimeMinutes");
-
-        return HandleIntValue(result, "Token lifetime is invalid!");
     }
 
     public SymmetricSecurityKey GetSecurityKey()
@@ -76,7 +67,7 @@ public class TokenConfiguration(IConfiguration configuration) : ConfigurationRep
             ValidateIssuerSigningKey = true,
             ValidIssuer = GetIssuer(),
             ValidAudience = GetAudience(),
-            ClockSkew = TimeSpan.FromMinutes(GetClockSkew()),
+            ClockSkew = TimeSpan.FromSeconds(GetClockSkewSeconds()),
             IssuerSigningKey = GetSecurityKey()
         };
     }

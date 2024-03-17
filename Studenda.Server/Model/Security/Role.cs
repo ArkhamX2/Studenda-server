@@ -8,6 +8,9 @@ namespace Studenda.Server.Model.Security;
 /// </summary>
 public class Role : IdentifiableEntity
 {
+    public const int DefaultTokenLifetimeSeconds = 1 * 60 * 60 * 24;
+    public const bool DefaultCanRegister = false;
+
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
      *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
@@ -24,6 +27,7 @@ public class Role : IdentifiableEntity
     public const int NameLengthMax = 32;
     public const bool IsPermissionRequired = true;
     public const bool IsNameRequired = true;
+    public const bool IsTokenLifetimeSecondsRequired = true;
     public const bool IsCanRegisterRequired = true;
 
     /// <summary>
@@ -44,6 +48,9 @@ public class Role : IdentifiableEntity
 
             builder.Property(role => role.Permission)
                 .HasMaxLength(PermissionLengthMax)
+                .IsRequired();
+
+            builder.Property(role => role.TokenLifetimeSeconds)
                 .IsRequired();
 
             builder.Property(role => role.CanRegister)
@@ -78,9 +85,14 @@ public class Role : IdentifiableEntity
     public required string Permission { get; set; }
 
     /// <summary>
+    ///     Время жизни токена в секундах.
+    /// </summary>
+    public required int TokenLifetimeSeconds { get; set; }
+
+    /// <summary>
     ///     Флаг возможности регистрации.
     /// </summary>
-    public required bool CanRegister { get; set; } = false;
+    public required bool CanRegister { get; set; }
 
     #endregion
 

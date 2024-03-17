@@ -46,7 +46,8 @@ public class SecurityService(
             {
                 Name = roleName,
                 Permission = rolePermission,
-                CanRegister = false
+                TokenLifetimeSeconds = Role.DefaultTokenLifetimeSeconds,
+                CanRegister = Role.DefaultCanRegister
             });
 
             await DataContext.SaveChangesAsync();
