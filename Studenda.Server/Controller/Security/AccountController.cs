@@ -61,7 +61,7 @@ public class AccountController(AccountService accountService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Account> entities)
     {
-        var status = await AccountService.Set(AccountService.DataContext.Accounts, entities);
+        var status = await AccountService.Set(entities);
 
         if (!status)
         {

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Studenda.Server.Data;
 using Studenda.Server.Model.Security;
@@ -8,8 +9,14 @@ namespace Studenda.Server.Service.Security;
 ///     Сервис для работы с <see cref="Account" />.
 /// </summary>
 /// <param name="dataContext">Контекст данных.</param>
-public class AccountService(DataContext dataContext) : DataEntityService(dataContext)
+/// <param name="userManager">Менеджер пользователей.</param>
+public class AccountService(
+    DataContext dataContext,
+    UserManager<IdentityUser> userManager
+) : DataEntityService(dataContext)
 {
+    private UserManager<IdentityUser> UserManager { get; } = userManager;
+
     /// <summary>
     ///     Получить список аккаунтов по идентификаторам ролей.
     /// </summary>
@@ -87,6 +94,35 @@ public class AccountService(DataContext dataContext) : DataEntityService(dataCon
         }
 
         return await Set(DataContext.Accounts, accounts);
+    }
+
+    /// <summary>
+    ///     Удалить аккаунты.
+    /// </summary>
+    /// <param name="accounts">Идентификаторы.</param>
+    /// <returns>Статус операции.</returns>
+    public async Task<bool> Remove(List<int> ids)
+    {
+        var identityIds = DataContext.Accounts
+            .Where(account => ids.Contains(account.Id.GetValueOrDefault()))
+            .Select(account => account.IdentityId)
+            .ToList();
+
+        foreach (var identityId in identityIds)
+        {
+            if (string.IsNullOrEmpty(identityId))
+            {
+                continue;
+            }
+
+            // Дополнительно удаляем связанных пользователей.
+            await UserManager.DeleteAsync(new IdentityUser
+            {
+                Id = identityId
+            });
+        }
+
+        return await Remove(DataContext.Accounts, ids);
     }
 
     /// <summary>
