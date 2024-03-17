@@ -64,6 +64,7 @@ internal class Program
 
         services.AddScoped<DataEntityService>();
         services.AddScoped<AccountService>();
+        services.AddScoped<RoleService>();
         services.AddScoped<SubjectService>();
         services.AddScoped<WeekTypeService>();
 
@@ -116,22 +117,22 @@ internal class Program
     {
         services.AddAuthorizationBuilder()
             .AddPolicy(
-                StudentRoleAuthorizationRequirement.AuthorizationPolicyCode,
-                policy => policy.Requirements.Add(new StudentRoleAuthorizationRequirement()))
+                DefaultAuthorizationRequirement.PolicyCode,
+                policy => policy.Requirements.Add(new DefaultAuthorizationRequirement()))
             .AddPolicy(
-                LeaderRoleAuthorizationRequirement.AuthorizationPolicyCode,
-                policy => policy.Requirements.Add(new LeaderRoleAuthorizationRequirement()))
+                LeaderAuthorizationRequirement.PolicyCode,
+                policy => policy.Requirements.Add(new LeaderAuthorizationRequirement()))
             .AddPolicy(
-                TeacherRoleAuthorizationRequirement.AuthorizationPolicyCode,
-                policy => policy.Requirements.Add(new TeacherRoleAuthorizationRequirement()))
+                TeacherAuthorizationRequirement.PolicyCode,
+                policy => policy.Requirements.Add(new TeacherAuthorizationRequirement()))
             .AddPolicy(
-                AdminRoleAuthorizationRequirement.AuthorizationPolicyCode,
-                policy => policy.Requirements.Add(new AdminRoleAuthorizationRequirement()));
+                AdminAuthorizationRequirement.PolicyCode,
+                policy => policy.Requirements.Add(new AdminAuthorizationRequirement()));
 
-        services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<StudentRoleAuthorizationRequirement>>();
-        services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<LeaderRoleAuthorizationRequirement>>();
-        services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<TeacherRoleAuthorizationRequirement>>();
-        services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler<AdminRoleAuthorizationRequirement>>();
+        services.AddSingleton<IAuthorizationHandler, PolicyAuthorizationHandler<DefaultAuthorizationRequirement>>();
+        services.AddSingleton<IAuthorizationHandler, PolicyAuthorizationHandler<LeaderAuthorizationRequirement>>();
+        services.AddSingleton<IAuthorizationHandler, PolicyAuthorizationHandler<TeacherAuthorizationRequirement>>();
+        services.AddSingleton<IAuthorizationHandler, PolicyAuthorizationHandler<AdminAuthorizationRequirement>>();
     }
 
     /// <summary>

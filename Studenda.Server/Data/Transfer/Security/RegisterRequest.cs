@@ -8,9 +8,9 @@ namespace Studenda.Server.Data.Transfer.Security;
 public class RegisterRequest : SecurityRequest
 {
     /// <summary>
-    ///     Названия ролей.
+    ///     Доступ.
     /// </summary>
-    public required List<string> RoleNames { get; init; }
+    public required string Permission { get; init; }
 
     /// <summary>
     ///     Аккаунт.

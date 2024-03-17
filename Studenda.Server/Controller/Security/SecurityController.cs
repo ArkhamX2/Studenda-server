@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Studenda.Server.Configuration.Static;
 using Studenda.Server.Data;
 using Studenda.Server.Data.Transfer.Security;
-using Studenda.Server.Data.Util;
 using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Common;
 using Studenda.Server.Service;
@@ -19,6 +18,7 @@ namespace Studenda.Server.Controller.Security;
 /// <param name="identityContext">Сессия работы с базой данных безопасности.</param>
 /// <param name="tokenService">Сервис работы с токенами.</param>
 /// <param name="accountService">Сервис работы с аккаунтами.</param>
+/// <param name="accountService">Сервис работы с ролями.</param>
 /// <param name="securityService">Сервис работы с безопасностью.</param>
 /// <param name="userManager">Менеджер работы с пользователями.</param>
 [Route("api/security")]
@@ -27,6 +27,7 @@ public class SecurityController(
     IdentityContext identityContext,
     TokenService tokenService,
     AccountService accountService,
+    RoleService roleService,
     SecurityService securityService,
     UserManager<IdentityUser> userManager
 ) : ControllerBase
@@ -34,22 +35,23 @@ public class SecurityController(
     private IdentityContext IdentityContext { get; } = identityContext;
     private TokenService TokenService { get; } = tokenService;
     private AccountService AccountService { get; } = accountService;
+    private RoleService RoleService { get; } = roleService;
     private SecurityService SecurityService { get; } = securityService;
     private UserManager<IdentityUser> UserManager { get; } = userManager;
 
     /// <summary>
-    ///     Получить базовые параметры.
+    ///     Получить базовые параметры соединения.
     /// </summary>
-    /// <returns>Результат с базовыми параметрами.</returns>
+    /// <returns>Результат с параметрами.</returns>
     [HttpGet]
-    public ActionResult<List<Account>> Get()
+    public ActionResult<List<Account>> GetSettings()
     {
         return Ok(new HandshakeResponse
         {
-            StudentRoleName = IdentityRoleConfiguration.StudentRoleName,
-            LeaderRoleName = IdentityRoleConfiguration.LeaderRoleName,
-            TeacherRoleName = IdentityRoleConfiguration.TeacherRoleName,
-            AdminRoleName = IdentityRoleConfiguration.AdminRoleName,
+            DefaultPermission = PermissionConfiguration.DefaultPermission,
+            LeaderPermission = PermissionConfiguration.LeaderPermission,
+            TeacherPermission = PermissionConfiguration.TeacherPermission,
+            AdminPermission = PermissionConfiguration.AdminPermission,
             CoordinatedUniversalTime = DateTime.UtcNow
         });
     }
@@ -60,7 +62,7 @@ public class SecurityController(
     /// <param name="request">Тело запроса авторизации.</param>
     /// <returns>Тело ответа модуля безопасности.</returns>
     [HttpPost("login")]
-    public async Task<ActionResult<SecurityResponse>> AutorizeUser(LoginRequest request)
+    public async Task<ActionResult<SecurityResponse>> AuthorizeUser(LoginRequest request)
     {
         if (!ModelState.IsValid)
         {
@@ -74,20 +76,23 @@ public class SecurityController(
             return Unauthorized();
         }
 
-        var accounts = await SecurityService.GetAccountsByUser([user]);
+        var accounts = await AccountService.GetByIdentityId([user.Id]);
+        var accountIds = accounts.Select(x => x.Id.GetValueOrDefault()).ToList();
+        var roles = await RoleService.GetByAccount(accountIds);
 
-        if (accounts.Count <= 0)
+        var account = accounts.First();
+        var role = roles.First();
+
+        if (account is null || role is null)
         {
             return Unauthorized();
         }
 
-        var roles = await SecurityService.GetUserRoles(user);
-
-        return Ok(DataSerializer.Serialize(new SecurityResponse
+        return Ok(new SecurityResponse
         {
-            Account = accounts.First(),
-            Token = TokenService.CreateNewToken(user, roles)
-        }));
+            Account = account,
+            Token = TokenService.CreateNewToken(user, role)
+        });
     }
 
     /// <summary>
@@ -104,7 +109,9 @@ public class SecurityController(
             return BadRequest(request);
         }
 
-        if (!SecurityService.CanRegisterWithRoles(request.RoleNames))
+        var canRegister = await SecurityService.CanRegisterWithPermission(request.Permission);
+
+        if (!canRegister)
         {
             return BadRequest("Incorrect roles!");
         }
@@ -118,7 +125,7 @@ public class SecurityController(
     /// <param name="request">Тело запроса регистрации.</param>
     /// <returns>Тело ответа модуля безопасности.</returns>
     /// <exception cref="Exception">При неудачной попытке создания пользователя.</exception>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
     [HttpPost("user")]
     public async Task<ActionResult<SecurityResponse>> CreateNewUser([FromBody] RegisterRequest request)
     {
@@ -134,7 +141,7 @@ public class SecurityController(
     ///     Выпустить новый токен для текущего авторизованного пользователя.
     /// </summary>
     /// <returns>Тело ответа модуля безопасности.</returns>
-    [Authorize(Policy = StudentRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = DefaultAuthorizationRequirement.PolicyCode)]
     [HttpPost("token")]
     public async Task<IActionResult> RefreshToken()
     {
@@ -143,28 +150,31 @@ public class SecurityController(
             return Unauthorized();
         }
 
-        var identityUser = await IdentityContext.Users
-            .FirstOrDefaultAsync(identityUser => identityUser.UserName == User.Identity.Name);
+        var user = await IdentityContext.Users
+            .FirstOrDefaultAsync(user => user.UserName == User.Identity.Name);
 
-        if (identityUser is null)
+        if (user is null)
         {
             return Unauthorized();
         }
 
-        var accounts = await SecurityService.GetAccountsByUser([identityUser]);
+        var accounts = await AccountService.GetByIdentityId([user.Id]);
+        var accountIds = accounts.Select(x => x.Id.GetValueOrDefault()).ToList();
+        var roles = await RoleService.GetByAccount(accountIds);
 
-        if (accounts.Count <= 0)
+        var account = accounts.First();
+        var role = roles.First();
+
+        if (account is null || role is null)
         {
             return Unauthorized();
         }
 
-        var identityRoles = await SecurityService.GetUserRoles(identityUser);
-
-        return Ok(DataSerializer.Serialize(new SecurityResponse
+        return Ok(new SecurityResponse
         {
-            Account = accounts.First(),
-            Token = TokenService.CreateNewToken(identityUser, identityRoles)
-        }));
+            Account = account,
+            Token = TokenService.CreateNewToken(user, role)
+        });
     }
 
     /// <summary>
@@ -175,8 +185,13 @@ public class SecurityController(
     /// <exception cref="Exception">При неудачной попытке создания пользователя.</exception>
     private async Task<ActionResult<SecurityResponse>> CreateNewUserInternal([FromBody] RegisterRequest request)
     {
-        // TODO: Валидация по request.Account.GroupId.
-        // TODO: Валидация по request.RoleNames.
+        var roles = await RoleService.GetByPermission([request.Permission]);
+        var role = roles.First();
+
+        if (role is null)
+        {
+            return Unauthorized();
+        }
 
         var result = await UserManager.CreateAsync(
             new IdentityUser
@@ -196,20 +211,19 @@ public class SecurityController(
             return BadRequest(ModelState);
         }
 
-        var identityUser = await IdentityContext.Users
-            .FirstOrDefaultAsync(identityUser => identityUser.Email == request.Email);
+        var user = await IdentityContext.Users.FirstOrDefaultAsync(user => user.Email == request.Email);
 
-        if (identityUser is null)
+        if (user is null)
         {
             throw new Exception("Error while creating new identity user!");
         }
 
-        await SecurityService.GrantRoleToUser([identityUser], request.RoleNames);
         await AccountService.Set(AccountService.DataContext.Accounts,
         [
             new Account
             {
-                IdentityId = identityUser.Id,
+                RoleId = role.Id.GetValueOrDefault(),
+                IdentityId = user.Id, // TODO: Возможно дублирование?
                 GroupId = request.Account?.GroupId,
                 Name = request.Account?.Name,
                 Surname = request.Account?.Surname,
@@ -217,19 +231,18 @@ public class SecurityController(
             }
         ]);
 
-        var accounts = await SecurityService.GetAccountsByUser([identityUser]);
+        var accounts = await AccountService.GetByIdentityId([user.Id]);
+        var account = accounts.First();
 
-        if (accounts.Count <= 0)
+        if (account is null)
         {
-            throw new Exception("Error while creating new user account!");
+            return Unauthorized();
         }
 
-        var identityRoles = await SecurityService.GetUserRoles(identityUser);
-
-        return Ok(DataSerializer.Serialize(new SecurityResponse
+        return Ok(new SecurityResponse
         {
-            Account = accounts.First(),
-            Token = TokenService.CreateNewToken(identityUser, identityRoles)
-        }));
+            Account = account,
+            Token = TokenService.CreateNewToken(user, role)
+        });
     }
 }

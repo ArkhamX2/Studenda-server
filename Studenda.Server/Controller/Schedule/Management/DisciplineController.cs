@@ -37,7 +37,7 @@ public class DisciplineController(DataEntityService dataEntityService) : Control
     /// </summary>
     /// <param name="entities">Список дисциплин.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Discipline> entities)
     {
@@ -56,7 +56,7 @@ public class DisciplineController(DataEntityService dataEntityService) : Control
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {

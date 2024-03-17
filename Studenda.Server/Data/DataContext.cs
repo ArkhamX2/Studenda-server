@@ -36,6 +36,7 @@ public class DataContext(ContextConfiguration configuration) : DbContext
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Group> Groups => Set<Group>();
     public DbSet<Account> Accounts => Set<Account>();
+    public DbSet<Role> Roles => Set<Role>();
 
     public DbSet<SubjectPosition> SubjectPositions => Set<SubjectPosition>();
     public DbSet<DayPosition> DayPositions => Set<DayPosition>();
@@ -103,6 +104,7 @@ public class DataContext(ContextConfiguration configuration) : DbContext
         modelBuilder.ApplyConfiguration(new Course.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Group.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Account.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Role.Configuration(Configuration));
 
         // Расписание.
         modelBuilder.ApplyConfiguration(new SubjectPosition.Configuration(Configuration));

@@ -37,7 +37,7 @@ public class MarkTypeController(DataEntityService dataEntityService) : Controlle
     /// </summary>
     /// <param name="entities">Список типов оценивания.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = TeacherAuthorizationRequirement.PolicyCode)]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<MarkType> entities)
     {
@@ -56,7 +56,7 @@ public class MarkTypeController(DataEntityService dataEntityService) : Controlle
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = TeacherAuthorizationRequirement.PolicyCode)]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {

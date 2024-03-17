@@ -5,10 +5,12 @@ namespace Studenda.Server.Configuration.Repository;
 
 public class DataConfiguration(IConfiguration configuration) : ConfigurationRepository(configuration)
 {
+    private const string SectionName = "Data";
+
     private string GetConnectionType()
     {
         var result = Configuration
-            .GetSection("Data")
+            .GetSection(SectionName)
             .GetValue<string>("ConnectionType");
 
         return HandleStringValue(result, "Connection type is null or empty!");

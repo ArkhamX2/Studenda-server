@@ -37,7 +37,7 @@ public class CourseController(DataEntityService dataEntityService) : ControllerB
     /// </summary>
     /// <param name="entities">Список курсов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Course> entities)
     {
@@ -56,7 +56,7 @@ public class CourseController(DataEntityService dataEntityService) : ControllerB
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Schedule.Management;
 using Studenda.Server.Service.Schedule;
 

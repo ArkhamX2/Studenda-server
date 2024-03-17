@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Studenda.Server.Data.Configuration;
-
 namespace Studenda.Server.Configuration.Repository;
 
 public abstract class ConfigurationRepository(IConfiguration configuration)

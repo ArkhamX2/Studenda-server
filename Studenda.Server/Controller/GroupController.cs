@@ -37,7 +37,7 @@ public class GroupController(DataEntityService dataEntityService) : ControllerBa
     /// </summary>
     /// <param name="entities">Список групп.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Group> entities)
     {
@@ -56,7 +56,7 @@ public class GroupController(DataEntityService dataEntityService) : ControllerBa
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {

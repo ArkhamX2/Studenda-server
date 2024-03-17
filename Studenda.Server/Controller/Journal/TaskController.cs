@@ -88,7 +88,7 @@ public class TaskController(TaskService taskService) : ControllerBase
     /// </summary>
     /// <param name="entities">Список заданий.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = TeacherRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = TeacherAuthorizationRequirement.PolicyCode)]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Task> entities)
     {
@@ -107,7 +107,7 @@ public class TaskController(TaskService taskService) : ControllerBase
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = TeacherRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = TeacherAuthorizationRequirement.PolicyCode)]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
