@@ -114,7 +114,7 @@ public class SecurityController(
 
         if (!canRegister)
         {
-            return BadRequest("Incorrect permissions!");
+            return BadRequest("Incorrect permission!");
         }
 
         return await CreateNewUserInternal(request);
@@ -187,11 +187,11 @@ public class SecurityController(
     private async Task<ActionResult<SecurityResponse>> CreateNewUserInternal([FromBody] RegisterRequest request)
     {
         var roles = await RoleService.GetByPermission([request.Permission]);
-        var role = roles.First();
+        var role = roles.FirstOrDefault();
 
         if (role is null)
         {
-            return Unauthorized();
+            return BadRequest("Incorrect permission! Role not found!");
         }
 
         var result = await UserManager.CreateAsync(
