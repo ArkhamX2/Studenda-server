@@ -24,7 +24,7 @@ public class Role : IdentifiableEntity
     public const int NameLengthMax = 32;
     public const bool IsPermissionRequired = true;
     public const bool IsNameRequired = true;
-    public const bool IsIsDefaultRequired = true;
+    public const bool IsCanRegisterRequired = true;
 
     /// <summary>
     ///     Конфигурация модели <see cref="Role" />.
@@ -46,7 +46,7 @@ public class Role : IdentifiableEntity
                 .HasMaxLength(PermissionLengthMax)
                 .IsRequired();
 
-            builder.Property(role => role.IsDefault)
+            builder.Property(role => role.CanRegister)
                 .IsRequired();
 
             base.Configure(builder);
@@ -78,9 +78,9 @@ public class Role : IdentifiableEntity
     public required string Permission { get; set; }
 
     /// <summary>
-    ///     Флаг роли по-умолчанию.
+    ///     Флаг возможности регистрации.
     /// </summary>
-    public required bool IsDefault { get; set; } = false;
+    public required bool CanRegister { get; set; } = false;
 
     #endregion
 

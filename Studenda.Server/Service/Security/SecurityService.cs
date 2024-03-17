@@ -46,7 +46,7 @@ public class SecurityService(
             {
                 Name = roleName,
                 Permission = rolePermission,
-                IsDefault = false
+                CanRegister = false
             });
 
             await DataContext.SaveChangesAsync();

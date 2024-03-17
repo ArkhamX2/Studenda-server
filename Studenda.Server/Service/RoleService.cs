@@ -18,7 +18,7 @@ public class RoleService(DataContext dataContext) : DataEntityService(dataContex
     public async Task<Role?> GetDefault()
     {
         return await DataContext.Roles
-            .Where(role => role.IsDefault)
+            .Where(role => role.CanRegister)
             .FirstOrDefaultAsync();
     }
 
