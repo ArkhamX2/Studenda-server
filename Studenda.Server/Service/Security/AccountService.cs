@@ -103,10 +103,13 @@ public class AccountService(
     /// <returns>Статус операции.</returns>
     public async Task<bool> Remove(List<int> ids)
     {
-        var identityIds = DataContext.Accounts
+        var identityIds = await DataContext.Accounts
             .Where(account => ids.Contains(account.Id.GetValueOrDefault()))
             .Select(account => account.IdentityId)
-            .ToList();
+            .ToListAsync();
+        var users = await UserManager.Users
+            .Where(user => identityIds.Contains(user.Id))
+            .ToListAsync();
 
         foreach (var identityId in identityIds)
         {
@@ -115,11 +118,13 @@ public class AccountService(
                 continue;
             }
 
-            // Дополнительно удаляем связанных пользователей.
-            await UserManager.DeleteAsync(new IdentityUser
+            var user = users.Where(user => user.Id == identityId).FirstOrDefault();
+
+            if (user is not null)
             {
-                Id = identityId
-            });
+                // Дополнительно удаляем связанных пользователей.
+                await UserManager.DeleteAsync(user);
+            }
         }
 
         return await Remove(DataContext.Accounts, ids);
