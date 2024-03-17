@@ -6,7 +6,7 @@ namespace Studenda.Server.Data.Transfer.Security;
 public class HandshakeResponse
 {
     /// <summary>
-    ///     Доступ студента.
+    ///     Доступ по-умолчанию.
     /// </summary>
     public required string DefaultPermission { get; init; }
 

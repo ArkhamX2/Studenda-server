@@ -4,9 +4,7 @@ namespace Studenda.Server.Data.Initialization;
 ///     Скрипт инициализации контекста данных.
 /// </summary>
 /// <param name="dataContext">Контекст данных.</param>
-class DataInitializationScript(
-    DataContext dataContext
-) : IInitializationScript
+class DataInitializationScript(DataContext dataContext) : IInitializationScript
 {
     private DataContext DataContext { get; } = dataContext;
 

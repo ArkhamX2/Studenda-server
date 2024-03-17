@@ -28,9 +28,6 @@ namespace Studenda.Server.Data;
 /// <param name="configuration">Конфигурация базы данных.</param>
 public class DataContext(ContextConfiguration configuration) : DbContext
 {
-    /// <summary>
-    ///     Конфигурация базы данных.
-    /// </summary>
     private ContextConfiguration Configuration { get; } = configuration;
 
     public DbSet<Account> Accounts => Set<Account>();

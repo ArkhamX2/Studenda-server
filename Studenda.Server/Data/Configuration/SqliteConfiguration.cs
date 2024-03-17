@@ -7,9 +7,11 @@ namespace Studenda.Server.Data.Configuration;
 /// </summary>
 /// <param name="connectionString">Строка подключения к базе данных.</param>
 /// <param name="isDebugMode">Статус конфигурации для разработки.</param>
-public class SqliteConfiguration(string connectionString, bool isDebugMode) : ContextConfiguration(connectionString, isDebugMode)
+public class SqliteConfiguration(
+    string connectionString,
+    bool isDebugMode
+) : ContextConfiguration(connectionString, isDebugMode)
 {
-
     /// <summary>
     ///     Тип полей даты и времени в базе данных.
     /// </summary>

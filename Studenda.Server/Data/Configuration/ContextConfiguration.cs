@@ -10,15 +10,7 @@ namespace Studenda.Server.Data.Configuration;
 /// <param name="isDebugMode">Статус конфигурации для разработки.</param>
 public abstract class ContextConfiguration(string connectionString, bool isDebugMode)
 {
-
-    /// <summary>
-    ///     Строка подключения к базе данных.
-    /// </summary>
     protected string ConnectionString { get; } = connectionString;
-
-    /// <summary>
-    ///     Статус конфигурации для разработки.
-    /// </summary>
     private bool IsDebugMode { get; } = isDebugMode;
 
     /// <summary>
