@@ -13,14 +13,13 @@ public class RoleService(DataContext dataContext) : DataEntityService(dataContex
     /// <summary>
     ///     Получить роль по-умолчанию.
     /// </summary>
-    /// <returns>Список ролей.</returns>
+    /// <returns>Роль или ничего.</returns>
     /// <exception cref="ArgumentException">При пустом списке доступов.</exception>
-    public async Task<Role> GetDefault()
+    public async Task<Role?> GetDefault()
     {
-        // TODO: Может отсутствовать роль по-умолчанию?
         return await DataContext.Roles
             .Where(role => role.IsDefault)
-            .FirstAsync();
+            .FirstOrDefaultAsync();
     }
 
     /// <summary>

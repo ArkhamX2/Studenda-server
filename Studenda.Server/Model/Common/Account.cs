@@ -128,8 +128,8 @@ public class Account : IdentifiableEntity
 
     #endregion
 
-    public Role? Role { get; set; }
-    public Group? Group { get; set; }
+    public Role? Role { get; set; } = null;
+    public Group? Group { get; set; } = null;
     public List<Subject> Subjects { get; set; } = [];
     public List<SubjectChange> SubjectChanges { get; set; } = [];
     public List<Discipline> Disciplines { get; set; } = [];

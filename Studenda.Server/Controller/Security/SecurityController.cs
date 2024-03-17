@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Studenda.Server.Configuration.Static;
 using Studenda.Server.Data;
 using Studenda.Server.Data.Transfer.Security;
+using Studenda.Server.Data.Util;
 using Studenda.Server.Middleware.Security.Requirement;
 using Studenda.Server.Model.Common;
 using Studenda.Server.Service;
@@ -88,11 +89,11 @@ public class SecurityController(
             return Unauthorized();
         }
 
-        return Ok(new SecurityResponse
+        return Ok(DataSerializer.Serialize(new SecurityResponse
         {
             Account = account,
             Token = TokenService.CreateNewToken(user, role)
-        });
+        }));
     }
 
     /// <summary>
@@ -113,7 +114,7 @@ public class SecurityController(
 
         if (!canRegister)
         {
-            return BadRequest("Incorrect roles!");
+            return BadRequest("Incorrect permissions!");
         }
 
         return await CreateNewUserInternal(request);
@@ -170,11 +171,11 @@ public class SecurityController(
             return Unauthorized();
         }
 
-        return Ok(new SecurityResponse
+        return Ok(DataSerializer.Serialize(new SecurityResponse
         {
             Account = account,
             Token = TokenService.CreateNewToken(user, role)
-        });
+        }));
     }
 
     /// <summary>
@@ -239,10 +240,10 @@ public class SecurityController(
             return Unauthorized();
         }
 
-        return Ok(new SecurityResponse
+        return Ok(DataSerializer.Serialize(new SecurityResponse
         {
             Account = account,
             Token = TokenService.CreateNewToken(user, role)
-        });
+        }));
     }
 }

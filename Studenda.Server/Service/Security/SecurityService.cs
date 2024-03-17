@@ -46,7 +46,7 @@ public class SecurityService(
             {
                 Name = roleName,
                 Permission = rolePermission,
-                IsDefault = true
+                IsDefault = false
             });
 
             await DataContext.SaveChangesAsync();
@@ -122,6 +122,11 @@ public class SecurityService(
         }
 
         var role = await RoleService.GetDefault();
+
+        if (role is null)
+        {
+            return false;
+        }
 
         return permission == role.Permission;
     }
