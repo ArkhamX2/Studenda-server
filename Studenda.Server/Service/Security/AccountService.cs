@@ -63,4 +63,62 @@ public class AccountService(DataContext dataContext) : DataEntityService(dataCon
             .Where(account => identityIds.Contains(account.IdentityId!))
             .ToListAsync();
     }
+
+    /// <summary>
+    ///     Сохранить аккаунты.
+    /// </summary>
+    /// <param name="accounts">Аккаунты.</param>
+    /// <returns>Статус операции.</returns>
+    public async Task<bool> Set(List<Account> accounts)
+    {
+        var identityIds = accounts
+            .Where(account => !string.IsNullOrEmpty(account.IdentityId))
+            .Select(account => account.IdentityId)
+            .ToList();
+        var sameUsers = await DataContext.Accounts
+            .Where(account => identityIds.Contains(account.IdentityId))
+            .ToListAsync();
+
+        if (HasSameIdentities(sameUsers, accounts))
+        {
+            // Попытка создать аккаунт пользователю,
+            // который уже имеет аккаунт.
+            return false;
+        }
+
+        return await Set(DataContext.Accounts, accounts);
+    }
+
+    /// <summary>
+    ///     Проверить, что аккаунты для сохранения в базу данных
+    ///     не противоречат существующим аккаунтам пользователей.
+    ///     Проверяется соответствие идентификаторов аккаунтов
+    ///     и идентификаторов пользователей.
+    /// </summary>
+    /// <param name="existingAccounts">Существующие аккаунты.</param>
+    /// <param name="accountsToSave">Аккаунта для сохранения.</param>
+    /// <returns>Статус проверки.</returns>
+    private static bool HasSameIdentities(List<Account> existingAccounts, List<Account> accountsToSave)
+    {
+        foreach (var account in existingAccounts)
+        {
+            var identityId = account.IdentityId;
+
+            if (string.IsNullOrEmpty(identityId))
+            {
+                continue;
+            }
+
+            var sample = accountsToSave.First(x => x.IdentityId == identityId);
+
+            if (sample is null || sample.Id == account.Id)
+            {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 }

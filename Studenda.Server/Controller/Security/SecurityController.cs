@@ -218,18 +218,22 @@ public class SecurityController(
             throw new Exception("Error while creating new identity user!");
         }
 
-        await AccountService.Set(AccountService.DataContext.Accounts,
-        [
+        var status = await AccountService.Set([
             new Account
             {
                 RoleId = role.Id.GetValueOrDefault(),
-                IdentityId = user.Id, // TODO: Возможно дублирование?
+                IdentityId = user.Id,
                 GroupId = request.Account?.GroupId,
                 Name = request.Account?.Name,
                 Surname = request.Account?.Surname,
                 Patronymic = request.Account?.Patronymic
             }
         ]);
+
+        if (!status)
+        {
+            throw new Exception("Error while creating new account!");
+        }
 
         var accounts = await AccountService.GetByIdentityId([user.Id]);
         var account = accounts.First();
