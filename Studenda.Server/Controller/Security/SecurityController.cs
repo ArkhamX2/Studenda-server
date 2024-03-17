@@ -18,7 +18,7 @@ namespace Studenda.Server.Controller.Security;
 /// <param name="identityContext">Сессия работы с базой данных безопасности.</param>
 /// <param name="tokenService">Сервис работы с токенами.</param>
 /// <param name="accountService">Сервис работы с аккаунтами.</param>
-/// <param name="accountService">Сервис работы с ролями.</param>
+/// <param name="roleService">Сервис работы с ролями.</param>
 /// <param name="securityService">Сервис работы с безопасностью.</param>
 /// <param name="userManager">Менеджер работы с пользователями.</param>
 [Route("api/security")]
@@ -109,14 +109,22 @@ public class SecurityController(
             return BadRequest(request);
         }
 
-        var canRegister = await SecurityService.CanRegisterWithPermission(request.Permission);
+        var roles = await RoleService.Get(RoleService.DataContext.Roles, [request.Account.RoleId]);
+        var role = roles.FirstOrDefault();
+
+        if (role is null)
+        {
+            return BadRequest("Incorrect permission! Role not found!");
+        }
+
+        var canRegister = await SecurityService.CanRegisterWithPermission(role.Permission);
 
         if (!canRegister)
         {
             return BadRequest("Incorrect permission!");
         }
 
-        return await CreateNewUserInternal(request);
+        return await CreateNewUserInternal(request, role);
     }
 
     /// <summary>
@@ -134,7 +142,15 @@ public class SecurityController(
             return BadRequest(request);
         }
 
-        return await CreateNewUserInternal(request);
+        var roles = await RoleService.Get(RoleService.DataContext.Roles, [request.Account.RoleId]);
+        var role = roles.FirstOrDefault();
+
+        if (role is null)
+        {
+            return BadRequest("Incorrect permission! Role not found!");
+        }
+
+        return await CreateNewUserInternal(request, role);
     }
 
     /// <summary>
@@ -183,16 +199,11 @@ public class SecurityController(
     /// <param name="request">Тело запроса регистрации.</param>
     /// <returns>Тело ответа модуля безопасности.</returns>
     /// <exception cref="Exception">При неудачной попытке создания пользователя.</exception>
-    private async Task<ActionResult<SecurityResponse>> CreateNewUserInternal([FromBody] RegisterRequest request)
+    private async Task<ActionResult<SecurityResponse>> CreateNewUserInternal(
+        [FromBody] RegisterRequest request,
+        Role role
+    )
     {
-        var roles = await RoleService.GetByPermission([request.Permission]);
-        var role = roles.FirstOrDefault();
-
-        if (role is null)
-        {
-            return BadRequest("Incorrect permission! Role not found!");
-        }
-
         var result = await UserManager.CreateAsync(
             new IdentityUser
             {
