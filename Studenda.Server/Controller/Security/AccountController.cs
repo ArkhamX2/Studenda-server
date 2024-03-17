@@ -80,7 +80,7 @@ public class AccountController(AccountService accountService) : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = await AccountService.Remove(AccountService.DataContext.Accounts, ids);
+        var status = await AccountService.Remove(ids);
 
         if (!status)
         {
