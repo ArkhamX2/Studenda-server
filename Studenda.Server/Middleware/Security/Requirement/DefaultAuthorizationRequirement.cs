@@ -10,11 +10,16 @@ public class DefaultAuthorizationRequirement : IPermissionAuthorizationRequireme
     public const string PolicyCode = "DefaultAuthorizationPolicy";
 
     /// <summary>
-    ///     Получить требуемый доступ.
+    ///     Получить требуемые доступы.
     /// </summary>
-    /// <returns>Доступ.</returns>
-    public string GetRequiredPermission()
+    /// <returns>Список доступов.</returns>
+    public IEnumerable<string> GetRequiredPermissions()
     {
-        return PermissionConfiguration.DefaultPermission;
+        return [
+            PermissionConfiguration.DefaultPermission,
+            PermissionConfiguration.LeaderPermission,
+            PermissionConfiguration.TeacherPermission,
+            PermissionConfiguration.AdminPermission
+        ];
     }
 }

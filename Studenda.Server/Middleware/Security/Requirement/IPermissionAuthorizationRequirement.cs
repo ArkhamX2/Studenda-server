@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 namespace Studenda.Server.Middleware.Security.Requirement;
 
 /// <summary>
-///     Требование авторизации для доступа.
+///     Требование авторизации для доступов.
 /// </summary>
 public interface IPermissionAuthorizationRequirement : IAuthorizationRequirement
 {
     /// <summary>
-    ///     Получить требуемый доступ.
+    ///     Получить требуемые доступы.
     /// </summary>
-    /// <returns>Доступ.</returns>
-    public string GetRequiredPermission();
+    /// <returns>Список доступов.</returns>
+    public IEnumerable<string> GetRequiredPermissions();
 }

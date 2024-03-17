@@ -32,9 +32,9 @@ public class PolicyAuthorizationHandler<TRequirement> : AuthorizationHandler<TRe
             return Task.CompletedTask;
         }
 
-        var requiredPermission = requirement.GetRequiredPermission();
+        var requiredPermissions = requirement.GetRequiredPermissions();
 
-        if (permission == requiredPermission)
+        if (requiredPermissions.Contains(permission))
         {
             context.Succeed(requirement);
         }

@@ -10,11 +10,14 @@ public class TeacherAuthorizationRequirement : IPermissionAuthorizationRequireme
     public const string PolicyCode = "TeacherAuthorizationPolicy";
 
     /// <summary>
-    ///     Получить требуемый доступ.
+    ///     Получить требуемые доступы.
     /// </summary>
-    /// <returns>Доступ.</returns>
-    public string GetRequiredPermission()
+    /// <returns>Список доступов.</returns>
+    public IEnumerable<string> GetRequiredPermissions()
     {
-        return PermissionConfiguration.TeacherPermission;
+        return [
+            PermissionConfiguration.TeacherPermission,
+            PermissionConfiguration.AdminPermission
+        ];
     }
 }
