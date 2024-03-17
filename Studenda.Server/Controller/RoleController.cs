@@ -30,6 +30,40 @@ public class RoleController(RoleService roleService) : ControllerBase
     }
 
     /// <summary>
+    ///     Получить роль по-умолчанию.
+    /// </summary>
+    /// <returns>Результат операции с ролью или пустой результат.</returns>
+    [HttpGet("default")]
+    public async Task<Role?> GetDefault()
+    {
+        return await RoleService.GetDefault();
+    }
+
+    /// <summary>
+    ///     Получить список ролей по идентификаторам аккаунтов.
+    /// </summary>
+    /// <param name="accountIds">Идентификаторы аккаунтов.</param>
+    /// <returns>Результат операции со списком ролей.</returns>
+    /// <exception cref="ArgumentException">При пустом списке идентификаторов.</exception>
+    [HttpGet("account")]
+    public async Task<List<Role>> GetByAccount(List<int> accountIds)
+    {
+        return await RoleService.GetByAccount(accountIds);
+    }
+
+    /// <summary>
+    ///     Получить список ролей по доступам.
+    /// </summary>
+    /// <param name="permissions">Доступы.</param>
+    /// <returns>Результат операции со списком ролей.</returns>
+    /// <exception cref="ArgumentException">При пустом списке доступов.</exception>
+    [HttpGet("permission")]
+    public async Task<List<Role>> GetByPermission(List<string> permissions)
+    {
+        return await RoleService.GetByPermission(permissions);
+    }
+
+    /// <summary>
     ///     Сохранить роли.
     /// </summary>
     /// <param name="entities">Список ролей.</param>
