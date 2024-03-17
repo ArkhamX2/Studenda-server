@@ -1,4 +1,6 @@
-﻿namespace Studenda.Server.Data.Transfer.Security;
+﻿using Studenda.Server.Model.Security;
+
+namespace Studenda.Server.Data.Transfer.Security;
 
 /// <summary>
 ///     Тело запроса регистрации.
@@ -6,7 +8,7 @@
 public class RegisterRequest : SecurityRequest
 {
     /// <summary>
-    ///     Названия ролей.
+    ///     Аккаунт.
     /// </summary>
-    public required List<string> RoleNames { get; init; }
+    public required Account Account { get; init; }
 }

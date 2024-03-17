@@ -4,50 +4,12 @@ namespace Studenda.Server.Configuration.Repository;
 
 public class IdentityConfiguration(IConfiguration configuration) : ConfigurationRepository(configuration)
 {
-    public bool GetRoleCanRegister(string roleName)
-    {
-        return Configuration
-            .GetSection("Identity")
-            .GetSection("Roles")
-            .GetSection(roleName)
-            .GetValue<bool>("CanRegister");
-    }
-
-    public string GetDefaultUserEmail()
-    {
-        var result = Configuration
-            .GetSection("Identity")
-            .GetSection("DefaultUser")
-            .GetValue<string>("Email");
-
-        return HandleStringValue(result, "Default user email is null or empty!");
-    }
-
-    public string GetDefaultUserPassword()
-    {
-        var result = Configuration
-            .GetSection("Identity")
-            .GetSection("DefaultUser")
-            .GetValue<string>("Password");
-
-        return HandleStringValue(result, "Default user password is null or empty!");
-    }
-
-    public List<string> GetDefaultUserRoles()
-    {
-        var result = Configuration
-            .GetSection("Identity")
-            .GetSection("DefaultUser")
-            .GetSection("Roles")
-            .Get<List<string>>();
-
-        return HandleStringListValue(result, "Default user roles is incorrect!");
-    }
+    private const string SectionName = "Identity";
 
     private bool GetPasswordRequireDigit()
     {
         return Configuration
-            .GetSection("Identity")
+            .GetSection(SectionName)
             .GetSection("Password")
             .GetValue<bool>("RequireDigit");
     }
@@ -55,7 +17,7 @@ public class IdentityConfiguration(IConfiguration configuration) : Configuration
     private bool GetPasswordRequireLowercase()
     {
         return Configuration
-            .GetSection("Identity")
+            .GetSection(SectionName)
             .GetSection("Password")
             .GetValue<bool>("RequireLowercase");
     }
@@ -63,7 +25,7 @@ public class IdentityConfiguration(IConfiguration configuration) : Configuration
     private bool GetPasswordRequireUppercase()
     {
         return Configuration
-            .GetSection("Identity")
+            .GetSection(SectionName)
             .GetSection("Password")
             .GetValue<bool>("RequireUppercase");
     }
@@ -71,7 +33,7 @@ public class IdentityConfiguration(IConfiguration configuration) : Configuration
     private bool GetPasswordRequireNonAlphanumeric()
     {
         return Configuration
-            .GetSection("Identity")
+            .GetSection(SectionName)
             .GetSection("Password")
             .GetValue<bool>("RequireNonAlphanumeric");
     }
@@ -79,7 +41,7 @@ public class IdentityConfiguration(IConfiguration configuration) : Configuration
     private int GetPasswordRequiredLength()
     {
         var result = Configuration
-            .GetSection("Identity")
+            .GetSection(SectionName)
             .GetSection("Password")
             .GetValue<int>("RequiredLength");
 
@@ -89,7 +51,7 @@ public class IdentityConfiguration(IConfiguration configuration) : Configuration
     private int GetPasswordRequiredUniqueChars()
     {
         var result = Configuration
-            .GetSection("Identity")
+            .GetSection(SectionName)
             .GetSection("Password")
             .GetValue<int>("RequiredUniqueChars");
 
@@ -99,7 +61,7 @@ public class IdentityConfiguration(IConfiguration configuration) : Configuration
     private bool GetUserRequireUniqueEmail()
     {
         return Configuration
-            .GetSection("Identity")
+            .GetSection(SectionName)
             .GetSection("User")
             .GetValue<bool>("RequireUniqueEmail");
     }

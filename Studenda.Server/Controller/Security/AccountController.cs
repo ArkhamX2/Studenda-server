@@ -1,22 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Server.Middleware.Security.Requirement;
-using Studenda.Server.Model.Common;
-using Studenda.Server.Service;
+using Studenda.Server.Model.Security;
+using Studenda.Server.Service.Security;
 
-namespace Studenda.Server.Controller;
+namespace Studenda.Server.Controller.Security;
 
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Account" />.
 /// </summary>
 /// <param name="accountService">Сервис моделей.</param>
-[Route("api/account")]
+[Route("api/security/account")]
 [ApiController]
 public class AccountController(AccountService accountService) : ControllerBase
 {
-    /// <summary>
-    ///     Сервис моделей.
-    /// </summary>
     private AccountService AccountService { get; } = accountService;
 
     /// <summary>
@@ -37,9 +34,22 @@ public class AccountController(AccountService accountService) : ControllerBase
     /// </summary>
     /// <param name="groupIds">Идентификаторы групп.</param>
     /// <returns>Результат операции со списком аккаунтов.</returns>
+    [HttpGet("group")]
     public async Task<ActionResult<List<Account>>> GetByGroup([FromQuery] List<int> groupIds)
     {
         return await AccountService.GetByGroup(groupIds);
+    }
+
+    /// <summary>
+    ///     Получить список аккаунтов по идентификаторам ролей.
+    /// </summary>
+    /// <param name="roleIds">Идентификаторы ролей.</param>
+    /// <returns>Результат операции со списком аккаунтов.</returns>
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
+    [HttpGet("role")]
+    public async Task<ActionResult<List<Account>>> GetByRole([FromQuery] List<int> roleIds)
+    {
+        return await AccountService.GetByRole(roleIds);
     }
 
     /// <summary>
@@ -47,11 +57,11 @@ public class AccountController(AccountService accountService) : ControllerBase
     /// </summary>
     /// <param name="entities">Список аккаунтов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] List<Account> entities)
     {
-        var status = await AccountService.Set(AccountService.DataContext.Accounts, entities);
+        var status = await AccountService.Set(entities);
 
         if (!status)
         {
@@ -66,11 +76,11 @@ public class AccountController(AccountService accountService) : ControllerBase
     /// </summary>
     /// <param name="ids">Список идентификаторов.</param>
     /// <returns>Результат операции.</returns>
-    [Authorize(Policy = AdminRoleAuthorizationRequirement.AuthorizationPolicyCode)]
+    [Authorize(Policy = AdminAuthorizationRequirement.PolicyCode)]
     [HttpDelete]
     public async Task<IActionResult> Delete([FromBody] List<int> ids)
     {
-        var status = await AccountService.Remove(AccountService.DataContext.Accounts, ids);
+        var status = await AccountService.Remove(ids);
 
         if (!status)
         {

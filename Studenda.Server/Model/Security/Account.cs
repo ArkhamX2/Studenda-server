@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
+using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Journal;
 using Studenda.Server.Model.Schedule;
 using Studenda.Server.Model.Schedule.Management;
 using Task = Studenda.Server.Model.Journal.Task;
 
-namespace Studenda.Server.Model.Common;
+namespace Studenda.Server.Model.Security;
 
 /// <summary>
-///     Пользователь.
+///     Аккаунт пользователя.
 /// </summary>
 public class Account : IdentifiableEntity
 {
@@ -28,8 +29,9 @@ public class Account : IdentifiableEntity
     public const int NameLengthMax = 32;
     public const int SurnameLengthMax = 32;
     public const int PatronymicLengthMax = 32;
-    public const bool IsIdentityIdRequired = false;
+    public const bool IsRoleIdRequired = true;
     public const bool IsGroupIdRequired = false;
+    public const bool IsIdentityIdRequired = false;
     public const bool IsNameRequired = false;
     public const bool IsSurnameRequired = false;
     public const bool IsPatronymicRequired = false;
@@ -46,6 +48,11 @@ public class Account : IdentifiableEntity
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
         public override void Configure(EntityTypeBuilder<Account> builder)
         {
+            builder.HasOne(account => account.Role)
+                .WithMany(role => role.Accounts)
+                .HasForeignKey(account => account.RoleId)
+                .IsRequired();
+
             builder.HasOne(account => account.Group)
                 .WithMany(group => group.Accounts)
                 .HasForeignKey(account => account.GroupId)
@@ -86,6 +93,11 @@ public class Account : IdentifiableEntity
     #region Entity
 
     /// <summary>
+    ///     Идентификатор связанного объекта <see cref="Security.Role" />.
+    /// </summary>
+    public required int RoleId { get; set; }
+
+    /// <summary>
     ///     Идентификатор связанного объекта <see cref="Common.Group" />.
     ///     Необязательное поле.
     /// </summary>
@@ -117,7 +129,8 @@ public class Account : IdentifiableEntity
 
     #endregion
 
-    public Group? Group { get; set; }
+    public Role? Role { get; set; } = null;
+    public Group? Group { get; set; } = null;
     public List<Subject> Subjects { get; set; } = [];
     public List<SubjectChange> SubjectChanges { get; set; } = [];
     public List<Discipline> Disciplines { get; set; } = [];

@@ -5,10 +5,12 @@ namespace Studenda.Server.Configuration.Repository;
 
 public class TokenConfiguration(IConfiguration configuration) : ConfigurationRepository(configuration)
 {
+    private const string SectionName = "Token";
+
     public string GetIssuer()
     {
         var result = Configuration
-            .GetSection("Token")
+            .GetSection(SectionName)
             .GetValue<string>("Issuer");
 
         return HandleStringValue(result, "Token issuer is null or empty!");
@@ -17,7 +19,7 @@ public class TokenConfiguration(IConfiguration configuration) : ConfigurationRep
     public string GetAudience()
     {
         var result = Configuration
-            .GetSection("Token")
+            .GetSection(SectionName)
             .GetValue<string>("Audience");
 
         return HandleStringValue(result, "Token audience is null or empty!");
@@ -26,7 +28,7 @@ public class TokenConfiguration(IConfiguration configuration) : ConfigurationRep
     public string GetClaimNameSub()
     {
         var result = Configuration
-            .GetSection("Token")
+            .GetSection(SectionName)
             .GetValue<string>("ClaimNameSub");
 
         return HandleStringValue(result, "Token claim name sub is null or empty!");
@@ -35,28 +37,19 @@ public class TokenConfiguration(IConfiguration configuration) : ConfigurationRep
     private string GetKey()
     {
         var result = Configuration
-            .GetSection("Token")
+            .GetSection(SectionName)
             .GetValue<string>("Key");
 
         return HandleStringValue(result, "Token key is null or empty!");
     }
 
-    private int GetClockSkew()
+    private int GetClockSkewSeconds()
     {
         var result = Configuration
-            .GetSection("Token")
-            .GetValue<int>("ClockSkewMinutes");
+            .GetSection(SectionName)
+            .GetValue<int>("ClockSkewSeconds");
 
         return HandleIntValue(result, "Token clock skew is invalid!");
-    }
-
-    public int GetLifetimeMinutes()
-    {
-        var result = Configuration
-            .GetSection("Token")
-            .GetValue<int>("LifetimeMinutes");
-
-        return HandleIntValue(result, "Token lifetime is invalid!");
     }
 
     public SymmetricSecurityKey GetSecurityKey()
@@ -74,7 +67,7 @@ public class TokenConfiguration(IConfiguration configuration) : ConfigurationRep
             ValidateIssuerSigningKey = true,
             ValidIssuer = GetIssuer(),
             ValidAudience = GetAudience(),
-            ClockSkew = TimeSpan.FromMinutes(GetClockSkew()),
+            ClockSkew = TimeSpan.FromSeconds(GetClockSkewSeconds()),
             IssuerSigningKey = GetSecurityKey()
         };
     }

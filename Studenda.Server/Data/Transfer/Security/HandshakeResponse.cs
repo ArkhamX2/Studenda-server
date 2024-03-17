@@ -6,24 +6,24 @@ namespace Studenda.Server.Data.Transfer.Security;
 public class HandshakeResponse
 {
     /// <summary>
-    ///     Роль студента.
+    ///     Доступ по-умолчанию.
     /// </summary>
-    public required string StudentRoleName { get; init; }
+    public required string DefaultPermission { get; init; }
 
     /// <summary>
-    ///     Роль старосты.
+    ///     Доступ старосты.
     /// </summary>
-    public required string LeaderRoleName { get; init; }
+    public required string LeaderPermission { get; init; }
 
     /// <summary>
-    ///     Роль преподавателя.
+    ///     Доступ преподавателя.
     /// </summary>
-    public required string TeacherRoleName { get; init; }
+    public required string TeacherPermission { get; init; }
 
     /// <summary>
-    ///     Роль администратора.
+    ///     Доступ администратора.
     /// </summary>
-    public required string AdminRoleName { get; init; }
+    public required string AdminPermission { get; init; }
 
     /// <summary>
     ///     Дата и время на сервере.

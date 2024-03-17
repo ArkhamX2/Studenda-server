@@ -52,11 +52,14 @@ public class DataEntityService(DataContext dataContext)
         var oldIds = oldEntities.Select(entity => entity.Id.GetValueOrDefault()).ToList();
         var oldIdsInDb = await dbSet
             .Where(entity => oldIds.Contains(entity.Id.GetValueOrDefault()))
-            .Select(entity => entity.Id.GetValueOrDefault()).ToListAsync();
+            .Select(entity => entity.Id.GetValueOrDefault())
+            .ToListAsync();
         var oldIdsNotInDb = oldIds.Except(oldIdsInDb).ToList();
 
         newEntities.AddRange(oldEntities.Where(entity => oldIdsNotInDb.Contains(entity.Id.GetValueOrDefault())));
         oldEntities.RemoveAll(entity => oldIdsNotInDb.Contains(entity.Id.GetValueOrDefault()));
+
+        DetachTrackedEntities(oldEntities);
 
         if (newEntities.Count > 0)
         {
@@ -88,5 +91,27 @@ public class DataEntityService(DataContext dataContext)
         dbSet.RemoveRange(dbSet.Where(entity => ids.Contains(entity.Id.GetValueOrDefault())));
 
         return await DataContext.SaveChangesAsync() > 0;
+    }
+
+    /// <summary>
+    ///     Остановить отслеживание для указанных моделей.
+    /// </summary>
+    /// <typeparam name="TSource">Тип модели.</typeparam>
+    /// <param name="entities">Список моделей.</param>
+    private void DetachTrackedEntities<TSource>(List<TSource> entities) where TSource : IdentifiableEntity
+    {
+        var entityIds = entities.Select(entity => entity.Id.GetValueOrDefault()).ToList();
+
+        foreach (var entityId in entityIds)
+        {
+            var entry = DataContext.ChangeTracker
+                .Entries<TSource>()
+                .FirstOrDefault(entry => entry.Entity.Id == entityId);
+
+            if (entry is not null)
+            {
+                DataContext.Entry(entry.Entity).State = EntityState.Detached;
+            }
+        }
     }
 }

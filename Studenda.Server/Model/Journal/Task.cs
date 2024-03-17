@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
-using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Journal.Management;
 using Studenda.Server.Model.Schedule.Management;
+using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Model.Journal;
 

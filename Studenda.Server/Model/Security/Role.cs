@@ -1,15 +1,16 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
-using Studenda.Server.Model.Schedule;
-using Studenda.Server.Model.Security;
 
-namespace Studenda.Server.Model.Common;
+namespace Studenda.Server.Model.Security;
 
 /// <summary>
-///     Группа.
+///     Роль аккаунта пользователя.
 /// </summary>
-public class Group : IdentifiableEntity
+public class Role : IdentifiableEntity
 {
+    public const int DefaultTokenLifetimeSeconds = 1 * 60 * 60 * 24;
+    public const bool DefaultCanRegister = false;
+
     /*                   __ _                       _   _
      *   ___ ___  _ __  / _(_) __ _ _   _ _ __ __ _| |_(_) ___  _ __
      *  / __/ _ \| '_ \| |_| |/ _` | | | | '__/ _` | __| |/ _ \| '_ \
@@ -22,35 +23,37 @@ public class Group : IdentifiableEntity
 
     #region Configuration
 
-    public const int NameLengthMax = 128;
-    public const bool IsCourseIdRequired = true;
-    public const bool IsDepartmentIdRequired = true;
+    public const int PermissionLengthMax = 128;
+    public const int NameLengthMax = 32;
+    public const bool IsPermissionRequired = true;
     public const bool IsNameRequired = true;
+    public const bool IsTokenLifetimeSecondsRequired = true;
+    public const bool IsCanRegisterRequired = true;
 
     /// <summary>
-    ///     Конфигурация модели <see cref="Group" />.
+    ///     Конфигурация модели <see cref="Role" />.
     /// </summary>
     /// <param name="configuration">Конфигурация базы данных.</param>
-    internal class Configuration(ContextConfiguration configuration) : Configuration<Group>(configuration)
+    internal class Configuration(ContextConfiguration configuration) : Configuration<Role>(configuration)
     {
         /// <summary>
         ///     Задать конфигурацию для модели.
         /// </summary>
         /// <param name="builder">Набор интерфейсов настройки модели.</param>
-        public override void Configure(EntityTypeBuilder<Group> builder)
+        public override void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.HasOne(group => group.Course)
-                .WithMany(course => course.Groups)
-                .HasForeignKey(group => group.CourseId)
-                .IsRequired();
-
-            builder.HasOne(group => group.Department)
-                .WithMany(department => department.Groups)
-                .HasForeignKey(group => group.DepartmentId)
-                .IsRequired();
-
-            builder.Property(group => group.Name)
+            builder.Property(role => role.Name)
                 .HasMaxLength(NameLengthMax)
+                .IsRequired();
+
+            builder.Property(role => role.Permission)
+                .HasMaxLength(PermissionLengthMax)
+                .IsRequired();
+
+            builder.Property(role => role.TokenLifetimeSeconds)
+                .IsRequired();
+
+            builder.Property(role => role.CanRegister)
                 .IsRequired();
 
             base.Configure(builder);
@@ -72,24 +75,26 @@ public class Group : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Course" />.
-    /// </summary>
-    public int? CourseId { get; set; }
-
-    /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Department" />.
-    /// </summary>
-    public int? DepartmentId { get; set; }
-
-    /// <summary>
-    ///     Название.
+    ///     Имя.
     /// </summary>
     public required string Name { get; set; }
 
+    /// <summary>
+    ///     Идентификатор в системе безопасности.
+    /// </summary>
+    public required string Permission { get; set; }
+
+    /// <summary>
+    ///     Время жизни токена в секундах.
+    /// </summary>
+    public required int TokenLifetimeSeconds { get; set; }
+
+    /// <summary>
+    ///     Флаг возможности регистрации.
+    /// </summary>
+    public required bool CanRegister { get; set; }
+
     #endregion
 
-    public Course? Course { get; set; }
-    public Department? Department { get; set; }
     public List<Account> Accounts { get; set; } = [];
-    public List<Subject> StaticSchedules { get; set; } = [];
 }

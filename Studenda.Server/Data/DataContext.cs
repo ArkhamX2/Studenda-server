@@ -7,6 +7,7 @@ using Studenda.Server.Model.Journal;
 using Studenda.Server.Model.Journal.Management;
 using Studenda.Server.Model.Schedule;
 using Studenda.Server.Model.Schedule.Management;
+using Studenda.Server.Model.Security;
 using Task = Studenda.Server.Model.Journal.Task;
 
 namespace Studenda.Server.Data;
@@ -27,15 +28,14 @@ namespace Studenda.Server.Data;
 /// <param name="configuration">Конфигурация базы данных.</param>
 public class DataContext(ContextConfiguration configuration) : DbContext
 {
-    /// <summary>
-    ///     Конфигурация базы данных.
-    /// </summary>
     private ContextConfiguration Configuration { get; } = configuration;
+
+    public DbSet<Account> Accounts => Set<Account>();
+    public DbSet<Role> Roles => Set<Role>();
 
     public DbSet<Department> Departments => Set<Department>();
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Group> Groups => Set<Group>();
-    public DbSet<Account> Accounts => Set<Account>();
 
     public DbSet<SubjectPosition> SubjectPositions => Set<SubjectPosition>();
     public DbSet<DayPosition> DayPositions => Set<DayPosition>();
@@ -98,11 +98,14 @@ public class DataContext(ContextConfiguration configuration) : DbContext
     /// <param name="modelBuilder">Набор интерфейсов настройки модели.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Безопасность.
+        modelBuilder.ApplyConfiguration(new Account.Configuration(Configuration));
+        modelBuilder.ApplyConfiguration(new Role.Configuration(Configuration));
+
         // Общее.
         modelBuilder.ApplyConfiguration(new Department.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Course.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Group.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Account.Configuration(Configuration));
 
         // Расписание.
         modelBuilder.ApplyConfiguration(new SubjectPosition.Configuration(Configuration));

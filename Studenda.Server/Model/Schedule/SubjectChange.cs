@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
-using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Schedule.Management;
+using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Model.Schedule;
 
@@ -108,7 +108,7 @@ public class SubjectChange : IdentifiableEntity
     public int? SubjectTypeId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Account" />.
+    ///     Идентификатор связанного объекта <see cref="Security.Account" />.
     ///     Необязательное поле.
     /// </summary>
     public int? AccountId { get; set; }

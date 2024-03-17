@@ -8,12 +8,12 @@ namespace Studenda.Server.Data.Configuration;
 /// <param name="connectionString">Строка подключения к базе данных.</param>
 /// <param name="serverVersion">Версия сервера базы данных.</param>
 /// <param name="isDebugMode">Статус конфигурации для разработки.</param>
-public class MysqlConfiguration(string connectionString, ServerVersion serverVersion, bool isDebugMode) : ContextConfiguration(
-    connectionString, isDebugMode)
+public class MysqlConfiguration(
+    string connectionString,
+    ServerVersion serverVersion,
+    bool isDebugMode
+) : ContextConfiguration(connectionString, isDebugMode)
 {
-    /// <summary>
-    ///     Версия сервера базы данных.
-    /// </summary>
     private ServerVersion ServerVersion { get; } = serverVersion;
 
     /// <summary>
