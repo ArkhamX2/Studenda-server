@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Studenda.Server.Configuration.Repository;
-using Studenda.Server.Model.Common;
+using Studenda.Server.Model.Security;
 using ConfigurationManager = Studenda.Server.Configuration.ConfigurationManager;
 
 namespace Studenda.Server.Service.Security;

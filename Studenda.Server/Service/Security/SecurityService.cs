@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Studenda.Server.Configuration.Repository;
 using Studenda.Server.Configuration.Static;
 using Studenda.Server.Data;
-using Studenda.Server.Model.Common;
+using Studenda.Server.Model.Security;
 using ConfigurationManager = Studenda.Server.Configuration.ConfigurationManager;
 
 namespace Studenda.Server.Service.Security;

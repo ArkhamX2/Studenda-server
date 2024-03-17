@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
-using Studenda.Server.Model.Common;
+using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Model.Journal;
 
@@ -65,7 +65,7 @@ public class Absence : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Account" />.
+    ///     Идентификатор связанного объекта <see cref="Security.Account" />.
     /// </summary>
     public required int AccountId { get; set; }
 

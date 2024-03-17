@@ -1,4 +1,4 @@
-﻿using Studenda.Server.Model.Common;
+﻿using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Data.Transfer.Security;
 

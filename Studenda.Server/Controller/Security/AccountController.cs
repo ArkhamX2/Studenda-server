@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Studenda.Server.Middleware.Security.Requirement;
-using Studenda.Server.Model.Common;
-using Studenda.Server.Service;
+using Studenda.Server.Model.Security;
+using Studenda.Server.Service.Security;
 
-namespace Studenda.Server.Controller;
+namespace Studenda.Server.Controller.Security;
 
 /// <summary>
 ///     Контроллер для работы с объектами типа <see cref="Account" />.
 /// </summary>
 /// <param name="accountService">Сервис моделей.</param>
-[Route("api/account")]
+[Route("api/security/account")]
 [ApiController]
 public class AccountController(AccountService accountService) : ControllerBase
 {

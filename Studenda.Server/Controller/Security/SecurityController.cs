@@ -7,8 +7,7 @@ using Studenda.Server.Data;
 using Studenda.Server.Data.Transfer.Security;
 using Studenda.Server.Data.Util;
 using Studenda.Server.Middleware.Security.Requirement;
-using Studenda.Server.Model.Common;
-using Studenda.Server.Service;
+using Studenda.Server.Model.Security;
 using Studenda.Server.Service.Security;
 
 namespace Studenda.Server.Controller.Security;

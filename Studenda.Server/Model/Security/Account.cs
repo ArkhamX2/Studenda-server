@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
+using Studenda.Server.Model.Common;
 using Studenda.Server.Model.Journal;
 using Studenda.Server.Model.Schedule;
 using Studenda.Server.Model.Schedule.Management;
 using Task = Studenda.Server.Model.Journal.Task;
 
-namespace Studenda.Server.Model.Common;
+namespace Studenda.Server.Model.Security;
 
 /// <summary>
 ///     Аккаунт пользователя.
@@ -92,7 +93,7 @@ public class Account : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Role" />.
+    ///     Идентификатор связанного объекта <see cref="Security.Role" />.
     /// </summary>
     public required int RoleId { get; set; }
 

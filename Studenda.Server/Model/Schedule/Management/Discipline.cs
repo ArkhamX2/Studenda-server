@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
-using Studenda.Server.Model.Common;
+using Studenda.Server.Model.Security;
 using Task = Studenda.Server.Model.Journal.Task;
 
 namespace Studenda.Server.Model.Schedule.Management;
@@ -72,7 +72,7 @@ public class Discipline : IdentifiableEntity
     #region Entity
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Common.Account" />.
+    ///     Идентификатор связанного объекта <see cref="Security.Account" />.
     /// </summary>
     public int? AccountId { get; set; }
 

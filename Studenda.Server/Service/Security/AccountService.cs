@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Studenda.Server.Data;
-using Studenda.Server.Model.Common;
+using Studenda.Server.Model.Security;
 
-namespace Studenda.Server.Service;
+namespace Studenda.Server.Service.Security;
 
 /// <summary>
 ///     Сервис для работы с <see cref="Account" />.

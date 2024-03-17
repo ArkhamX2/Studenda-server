@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
 using Studenda.Server.Model.Schedule;
+using Studenda.Server.Model.Security;
 
 namespace Studenda.Server.Model.Common;
 

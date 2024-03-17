@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Studenda.Server.Data.Configuration;
 
-namespace Studenda.Server.Model.Common;
+namespace Studenda.Server.Model.Security;
 
 /// <summary>
 ///     Роль аккаунта пользователя.
