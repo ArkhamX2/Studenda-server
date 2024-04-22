@@ -101,6 +101,7 @@ public class SecurityService(
             {
                 RoleId = roleId.GetValueOrDefault(),
                 IdentityId = user.Id,
+                Email = userEmail,
                 Name = accountName,
                 Surname = accountSurname,
                 Patronymic = accountPatronymic

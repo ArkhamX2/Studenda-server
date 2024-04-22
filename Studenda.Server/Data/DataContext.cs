@@ -46,7 +46,6 @@ public class DataContext(ContextConfiguration configuration) : DbContext
     public DbSet<SubjectChange> SubjectChanges => Set<SubjectChange>();
 
     public DbSet<MarkType> MarkTypes => Set<MarkType>();
-    public DbSet<Mark> Marks => Set<Mark>();
     public DbSet<Task> Tasks => Set<Task>();
     public DbSet<Session> Sessions => Set<Session>();
     public DbSet<Absence> Absences => Set<Absence>();
@@ -118,7 +117,6 @@ public class DataContext(ContextConfiguration configuration) : DbContext
 
         // Журнал.
         modelBuilder.ApplyConfiguration(new MarkType.Configuration(Configuration));
-        modelBuilder.ApplyConfiguration(new Mark.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Task.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Session.Configuration(Configuration));
         modelBuilder.ApplyConfiguration(new Absence.Configuration(Configuration));
