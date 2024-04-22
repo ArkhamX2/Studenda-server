@@ -235,6 +235,7 @@ public class SecurityController(
                 RoleId = role.Id.GetValueOrDefault(),
                 IdentityId = user.Id,
                 GroupId = request.Account?.GroupId,
+                Email = request.Email,
                 Name = request.Account?.Name,
                 Surname = request.Account?.Surname,
                 Patronymic = request.Account?.Patronymic

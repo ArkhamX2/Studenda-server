@@ -26,12 +26,14 @@ public class Account : IdentifiableEntity
     #region Configuration
 
     public const int IdentityIdLengthMax = 128;
+    public const int EmailLengthMax = 64;
     public const int NameLengthMax = 32;
     public const int SurnameLengthMax = 32;
     public const int PatronymicLengthMax = 32;
     public const bool IsRoleIdRequired = true;
     public const bool IsGroupIdRequired = false;
     public const bool IsIdentityIdRequired = false;
+    public const bool IsEmailRequired = true;
     public const bool IsNameRequired = false;
     public const bool IsSurnameRequired = false;
     public const bool IsPatronymicRequired = false;
@@ -61,6 +63,10 @@ public class Account : IdentifiableEntity
             builder.Property(account => account.IdentityId)
                 .HasMaxLength(IdentityIdLengthMax)
                 .IsRequired(IsIdentityIdRequired);
+
+            builder.Property(account => account.Email)
+                .HasMaxLength(EmailLengthMax)
+                .IsRequired();
 
             builder.Property(account => account.Name)
                 .HasMaxLength(NameLengthMax)
@@ -108,6 +114,11 @@ public class Account : IdentifiableEntity
     ///     Необязательное поле.
     /// </summary>
     public string? IdentityId { get; set; }
+
+    /// <summary>
+    ///     Почта.
+    /// </summary>
+    public required string Email { get; set; }
 
     /// <summary>
     ///     Имя.
