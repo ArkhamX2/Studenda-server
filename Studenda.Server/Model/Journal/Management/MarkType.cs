@@ -82,5 +82,5 @@ public class MarkType : IdentifiableEntity
 
     #endregion
 
-    public List<Mark> Marks { get; set; } = [];
+    public List<Task> Tasks { get; set; } = [];
 }

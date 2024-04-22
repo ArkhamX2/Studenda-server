@@ -30,7 +30,8 @@ public class Task : IdentifiableEntity
     public const bool IsSubjectTypeIdRequired = true;
     public const bool IsIssuerAccountIdRequired = true;
     public const bool IsAssigneeAccountIdRequired = true;
-    public const bool IsMarkIdRequired = false;
+    public const bool IsMarkTypeIdRequired = true;
+    public const bool IsMarkRequired = false;
     public const bool IsNameRequired = true;
     public const bool IsDescriptionRequired = false;
     public const bool IsStartedAtRequired = true;
@@ -68,10 +69,13 @@ public class Task : IdentifiableEntity
                 .HasForeignKey(task => task.AssigneeAccountId)
                 .IsRequired();
 
-            builder.HasOne(task => task.Mark)
-                .WithMany(mark => mark.Tasks)
-                .HasForeignKey(task => task.MarkId)
-                .IsRequired(IsMarkIdRequired);
+            builder.HasOne(task => task.MarkType)
+                .WithMany(type => type.Tasks)
+                .HasForeignKey(task => task.MarkTypeId)
+                .IsRequired();
+
+            builder.Property(task => task.Mark)
+                .IsRequired(IsMarkRequired);
 
             builder.Property(task => task.Name)
                 .HasMaxLength(NameLengthMax)
@@ -128,10 +132,15 @@ public class Task : IdentifiableEntity
     public required int AssigneeAccountId { get; set; }
 
     /// <summary>
-    ///     Идентификатор связанного объекта <see cref="Management.Mark" />.
+    ///     Идентификатор связанного объекта <see cref="Management.MarkType" />.
+    /// </summary>
+    public required int MarkTypeId { get; set; }
+
+    /// <summary>
+    ///     Оценка.
     ///     Необязательное поле.
     /// </summary>
-    public int? MarkId { get; set; }
+    public int? Mark { get; set; }
 
     /// <summary>
     ///     Название.
@@ -160,5 +169,5 @@ public class Task : IdentifiableEntity
     public SubjectType? SubjectType { get; set; }
     public Account? IssuerAccount { get; set; }
     public Account? AssigneeAccount { get; set; }
-    public Mark? Mark { get; set; }
+    public MarkType? MarkType { get; set; }
 }
