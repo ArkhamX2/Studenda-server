@@ -131,7 +131,7 @@ public class Task : IdentifiableEntity
     ///     Идентификатор связанного объекта <see cref="Management.Mark" />.
     ///     Необязательное поле.
     /// </summary>
-    public int MarkId { get; set; }
+    public int? MarkId { get; set; }
 
     /// <summary>
     ///     Название.
